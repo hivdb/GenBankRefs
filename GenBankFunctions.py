@@ -48,16 +48,45 @@ def compare_author_lists(list1, list2):
         max_pcnt = max(pcnt_set1, pcnt_set2)
         return max_pcnt
 
+
+
 def process_accession_lists(df):
-    accession_list = df('accession')
+    new_df_consolidate_rows_with_same_accessions = df
+    accession_list = df['accession']
     close_lists = {}
     for i, item1 in enumerate(accession_list):
+        close_matches = []
         for j, item2 in enumerate(accession_list):
-        # Skip comparison if the indices are the same
+            if i >= j:
+                continue
             score = compare_accession_lists(item1, item2)
             if score == 1:
-                close_lists[(i,j)] = score
-            print("Authorlist1: ", item1, "\nAuthorList2: ", item2, "\n", score, "\n")
+                if item1[0].startswith('NM') or item1[0].startswith('NC') or item1[0].startswith('NG'):
+                    continue
+                close_matches.append(j)
+                #print("Accesion list: ", item1, "\nAccession list: ", item2, "\n", score, "\n")
+        if len(close_matches) >=1:
+            close_lists[i] = close_matches
+    
+    list_of_indexes_with_same_accessions = []
+    for index, value in close_lists.items():
+        indexes_with_same_accessions = set()
+        indexes_with_same_accessions.add(index)
+        indexes_with_same_accessions.update(set(value))
+        subset_flag = False
+        for items in list_of_indexes_with_same_accessions:
+            if indexes_with_same_accessions.issubset(items):
+                subset_flag = True
+        if subset_flag == True:
+            continue
+        list_of_indexes_with_same_accessions.append(indexes_with_same_accessions)
+    print(list_of_indexes_with_same_accessions)
+
+    indexes_of_rows_to_be_dropped = []
+    list_of_new_rows = []
+    for item in list_of_indexes_with_same_accessions:
+        new_row = merge_refs_sharing_accessions(df, list(item))
+
 
 
 def process_author_sets(author_list_column):
@@ -73,8 +102,22 @@ def process_author_sets(author_list_column):
             close_lists[(i,j)] = score
             print("Authorlist1: ", item1, "\nAuthorList2: ", item2, "\n", score, "\n")
 
-    
-            
+def merge_refs_sharing_accessions(df, indexes_with_same_accessions):
+    new_row = {}
+    #author_list_list = df.loc[indexes_with_same_accessions, 'author list'].tolist()
+    authors_list = df.loc[indexes_with_same_accessions, 'authors'].tolist()
+    titles_list = df.loc[indexes_with_same_accessions, 'title'].tolist()
+    journal_list = df.loc[indexes_with_same_accessions, 'journal'].tolist()
+    pmid_list = df.loc[indexes_with_same_accessions, 'pmid'].tolist()
+    year_list = df.loc[indexes_with_same_accessions, 'year'].tolist()
+    #new_row['author list'] = max(author_list_list, key=len)
+    new_row['authors'] = max(authors_list, key=len)
+    new_row['year'] =year_list[0]
+    new_row['title'] = max(titles_list, key=len)
+    new_row['pmid'] = ' '.join(pmid_list)
+    new_row['jorunal'] = ' '.join(journal_list)
+    new_row_df = pd.DataFrame(new_row)
+    print(new_row_df, "\n\n")        
 
 
 

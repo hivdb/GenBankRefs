@@ -18,7 +18,7 @@ pd.set_option('display.max_rows', 100)
 
 genbank_file = "CCHF.gb"
 
-from GenBankFunctions import extract_year_from_journal, process_author_field, process_author_sets
+from GenBankFunctions import extract_year_from_journal, process_author_field, process_author_sets, process_accession_lists
 
 def extract_organism(annotations):
     organism = annotations.get("source")
@@ -92,7 +92,10 @@ grouped_ref_df = reference_df.groupby(['authors', 'author list', 'title', 'journ
 print(len(grouped_ref_df))
 #print(grouped_ref_df.head(100))
 grouped_ref_df.to_excel("Grouped_Refs.xlsx")
-process_author_sets(grouped_ref_df['author list'])
+process_accession_lists(grouped_ref_df)
+#process_author_sets(grouped_ref_df['author list'])
+
+
 #reference_df.to_csv("CCHF_GenBankRefs.csv", index=False)
 #df_refs = pd.read_csv('CCHF_GenBankRefs.csv')
 # Create a new dataframe containing just the 2nd to 5th columns
