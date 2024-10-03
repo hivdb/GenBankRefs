@@ -18,7 +18,7 @@ pd.set_option('display.max_rows', 100)
 
 genbank_file = "CCHF.gb"
 
-from GenBankFunctions import extract_year_from_journal, process_author_field, process_author_sets, process_accession_lists
+from GenBankFunctions import extract_year_from_journal, process_author_field, process_accession_lists, process_authors_titles
 
 def extract_organism(annotations):
     organism = annotations.get("source")
@@ -96,6 +96,8 @@ grouped_ref_df.to_excel("Grouped_Refs.xlsx")
 merged_ref_df = process_accession_lists(grouped_ref_df)
 print(len(merged_ref_df))
 merged_ref_df.to_excel("Merged_Refs.xlsx")
+
+merged_ref_df = process_authors_titles(merged_ref_df) 
 
 #process_author_sets(grouped_ref_df['author list'])
 

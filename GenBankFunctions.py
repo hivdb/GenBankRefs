@@ -51,7 +51,7 @@ def compare_author_lists(list1, list2):
 
 
 def process_accession_lists(df):
-    new_df_consolidate_rows_with_same_accessions = df
+    #new_df_consolidate_rows_with_same_accessions = df
     accession_list = df['accession']
     close_lists = {}
     for i, item1 in enumerate(accession_list):
@@ -80,7 +80,8 @@ def process_accession_lists(df):
         if subset_flag == True:
             continue
         list_of_indexes_with_same_accessions.append(indexes_with_same_accessions)
-    print('same accessions', len(list_of_indexes_with_same_accessions))
+    print(f'''number with same accessions: {len(list_of_indexes_with_same_accessions)}:   
+          {list_of_indexes_with_same_accessions}''')
 
     indexes_of_rows_to_be_dropped = [
         j
@@ -99,20 +100,43 @@ def process_accession_lists(df):
 
     return list_of_new_rows
 
+def compare_rows(row_i, row_j):
+    author_list_i = row_i['author list']
+    author_list_j = row_j['author list']
+    title_i = row_i['title']
+    title_j = row_j['title']
+    year_i = row_i['year']
+    year_j = row_j['year']
+    if author_list_i == author_list_j:
+        print(row_i, row_j)
+        print("-------------------------------------------------")
+
+    #print("Author_list_i:", author_list_i)
+    #print("Author_list_j:", author_list_j)
 
 
-def process_author_sets(author_list_column):
-    close_lists = {}
-    for i, item1 in enumerate(author_list_column):
-        for j, item2 in enumerate(author_list_column):
-        # Skip comparison if the indices are the same
+def process_authors_titles(df):
+    close_lists = {} 
+    for i, row_i in df.iterrows():
+        close_matches = []
+        for j, row_j in df.iterrows(): 
             if i >= j:
                 continue
-            score = compare_author_lists(item1, item2)
-            if (score < 0.8):
-                continue
-            close_lists[(i,j)] = score
-            print("Authorlist1: ", item1, "\nAuthorList2: ", item2, "\n", score, "\n")
+            score = compare_rows(row_i, row_j)
+
+
+# def process_author_sets(author_list_column):
+#     close_lists = {}
+#     for i, item1 in enumerate(author_list_column):
+#         for j, item2 in enumerate(author_list_column):
+#         # Skip comparison if the indices are the same
+#             if i >= j:
+#                 continue
+#             score = compare_author_lists(item1, item2)
+#             if (score < 0.8):
+#                 continue
+#             close_lists[(i,j)] = score
+#             print("Authorlist1: ", item1, "\nAuthorList2: ", item2, "\n", score, "\n")
 
 def merge_refs_sharing_accessions(df, indexes_with_same_accessions):
     new_row = {}
@@ -131,8 +155,7 @@ def merge_refs_sharing_accessions(df, indexes_with_same_accessions):
     new_row['journal'] = ['; '.join(journal_list)]
     new_row['accession'] = accession_list[:1]
     new_row_df = pd.DataFrame(new_row)
-    # print(new_row_df, "\n\n")
-
+    #print(new_row_df, "\n\n")
     return new_row_df
 
 
