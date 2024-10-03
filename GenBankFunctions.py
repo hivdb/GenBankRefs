@@ -13,14 +13,14 @@ def extract_year_from_journal(text):
         #print(match.group(1))
         return match.group(1)
     match = re.search (r'\d{2}-[A-Z]{3}-(\d{4})', text)
-    if match: 
+    if match:
         #print(match.group(1))
         return match.group(1)
     return ''
 
 def string_edit_dist(string1, string2):
     distance = Levenshtein.distance(string1, string2)
-    print("Levenshtein Distance:", distance)    
+    print("Levenshtein Distance:", distance)
     return distance
 
 def process_author_field(text):
@@ -67,7 +67,7 @@ def process_accession_lists(df):
                 #print("Accesion list: ", item1, "\nAccession list: ", item2, "\n", score, "\n")
         if len(close_matches) >=1:
             close_lists[i] = close_matches
-    
+
     list_of_indexes_with_same_accessions = []
     for index, value in close_lists.items():
         indexes_with_same_accessions = set()
@@ -80,12 +80,24 @@ def process_accession_lists(df):
         if subset_flag == True:
             continue
         list_of_indexes_with_same_accessions.append(indexes_with_same_accessions)
-    print(list_of_indexes_with_same_accessions)
+    print('same accessions', len(list_of_indexes_with_same_accessions))
 
-    indexes_of_rows_to_be_dropped = []
+    indexes_of_rows_to_be_dropped = [
+        j
+        for i in list_of_indexes_with_same_accessions
+        for j in i
+    ]
+    print('Dropped', len(indexes_of_rows_to_be_dropped))
     list_of_new_rows = []
     for item in list_of_indexes_with_same_accessions:
         new_row = merge_refs_sharing_accessions(df, list(item))
+        list_of_new_rows.append(new_row)
+
+    df = df.drop(indexes_of_rows_to_be_dropped)
+    list_of_new_rows.insert(0, df)
+    list_of_new_rows = pd.concat(list_of_new_rows, ignore_index=True)
+
+    return list_of_new_rows
 
 
 
@@ -104,20 +116,24 @@ def process_author_sets(author_list_column):
 
 def merge_refs_sharing_accessions(df, indexes_with_same_accessions):
     new_row = {}
-    #author_list_list = df.loc[indexes_with_same_accessions, 'author list'].tolist()
+    author_list_list = df.loc[indexes_with_same_accessions, 'author list'].tolist()
     authors_list = df.loc[indexes_with_same_accessions, 'authors'].tolist()
     titles_list = df.loc[indexes_with_same_accessions, 'title'].tolist()
     journal_list = df.loc[indexes_with_same_accessions, 'journal'].tolist()
     pmid_list = df.loc[indexes_with_same_accessions, 'pmid'].tolist()
     year_list = df.loc[indexes_with_same_accessions, 'year'].tolist()
-    #new_row['author list'] = max(author_list_list, key=len)
-    new_row['authors'] = max(authors_list, key=len)
-    new_row['year'] =year_list[0]
-    new_row['title'] = max(titles_list, key=len)
-    new_row['pmid'] = ' '.join(pmid_list)
-    new_row['jorunal'] = ' '.join(journal_list)
+    accession_list = df.loc[indexes_with_same_accessions, 'accession'].tolist()
+    new_row['author list'] = [max(author_list_list, key=len)]
+    new_row['authors'] = [max(authors_list, key=len)]
+    new_row['year'] = [','.join(i for i in year_list if i)]
+    new_row['title'] = [max(titles_list, key=len)]
+    new_row['pmid'] = ['; '.join(i for i in pmid_list if i)]
+    new_row['journal'] = ['; '.join(journal_list)]
+    new_row['accession'] = accession_list[:1]
     new_row_df = pd.DataFrame(new_row)
-    print(new_row_df, "\n\n")        
+    # print(new_row_df, "\n\n")
+
+    return new_row_df
 
 
 
@@ -136,11 +152,11 @@ def search_popsets_for_virus(virus_name):
     handle = Entrez.esearch(db="popset", term=search_query, retmax=200)
     record = Entrez.read(handle)
     handle.close()
-    
+
     # Get the list of UIDs (PopSet IDs) from the search results
     uid_list = record["IdList"]
     print(uid_list)
-    
+
     # If there are results, fetch detailed info about each PopSet
     if uid_list:
         print(f"Found {len(uid_list)} PopSets for {virus_name}.")

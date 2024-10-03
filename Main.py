@@ -33,7 +33,7 @@ def extract_references(annotations, accession):
         #print ("\nReference:", ref, "\n")
         ref_items["accession"] = accession
         ref_items["authors"] = ref.authors
-        ref_items["title"] = ref.title 
+        ref_items["title"] = ref.title
         ref_items["journal"] = ref.journal
         ref_items["pmid"] = ref.pubmed_id
         ref_data.append(ref_items)
@@ -44,7 +44,7 @@ def extract_features(features, accession):
     feature_items = {}
     feature_items["accession"] = accession
     for feature in features:
-        #print(f"\nFeature type: {feature.type}\n")     
+        #print(f"\nFeature type: {feature.type}\n")
         for key, value in feature.qualifiers.items():
             if key == "translation":
                 continue
@@ -85,14 +85,18 @@ reference_df = pd.DataFrame(reference_list)
 reference_df['year'] = reference_df['journal'].apply(extract_year_from_journal)
 reference_df['journal'] = reference_df['journal'].str.replace(r"Submitted \(\d{2}-[A-Z]{3}-\d{4}\)", "", regex=True)
 reference_df['journal'] = reference_df['journal'].str.replace(r"(Patent).*", r"\1", regex=True)
-reference_df['author list'] = reference_df['authors'].apply(process_author_field) 
+reference_df['author list'] = reference_df['authors'].apply(process_author_field)
 
 print(len(reference_df))
 grouped_ref_df = reference_df.groupby(['authors', 'author list', 'title', 'journal', 'pmid', 'year'])['accession'].apply(list).reset_index()
 print(len(grouped_ref_df))
 #print(grouped_ref_df.head(100))
 grouped_ref_df.to_excel("Grouped_Refs.xlsx")
-process_accession_lists(grouped_ref_df)
+
+merged_ref_df = process_accession_lists(grouped_ref_df)
+print(len(merged_ref_df))
+merged_ref_df.to_excel("Merged_Refs.xlsx")
+
 #process_author_sets(grouped_ref_df['author list'])
 
 
