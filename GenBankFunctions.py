@@ -101,18 +101,29 @@ def process_accession_lists(df):
     return list_of_new_rows
 
 def compare_rows(row_i, row_j):
+    score = 0
     author_list_i = row_i['author list']
     author_list_j = row_j['author list']
     title_i = row_i['title']
     title_j = row_j['title']
     year_i = row_i['year']
     year_j = row_j['year']
-    if author_list_i == author_list_j:
+
+    if author_list_i == author_list_j:        
+        if title_i == 'Direct Submssion' or title_j == 'Direct Submission':
+            if pd.notna(year_i) and pd.notna(year_j):
+                if abs(year_i - year_j) <= 1:
+                    score = 1
+                else:
+                    score = 0
+            else:
+                score = 1     
+        elif title_i == title_j:
+            score = 1             
+    if score == 1:
         print(row_i, row_j)
         print("-------------------------------------------------")
-
-    #print("Author_list_i:", author_list_i)
-    #print("Author_list_j:", author_list_j)
+    return score
 
 
 def process_authors_titles(df):
@@ -149,7 +160,7 @@ def merge_refs_sharing_accessions(df, indexes_with_same_accessions):
     accession_list = df.loc[indexes_with_same_accessions, 'accession'].tolist()
     new_row['author list'] = [max(author_list_list, key=len)]
     new_row['authors'] = [max(authors_list, key=len)]
-    new_row['year'] = [','.join(i for i in year_list if i)]
+    new_row['year'] = [','.join(str(i) for i in year_list if i)]
     new_row['title'] = [max(titles_list, key=len)]
     new_row['pmid'] = ['; '.join(i for i in pmid_list if i)]
     new_row['journal'] = ['; '.join(journal_list)]
