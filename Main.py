@@ -2,17 +2,8 @@ from Bio import SeqIO
 from Bio import Entrez
 import pandas as pd
 
-from GenBankFunctions import fetch_popset_info, search_popsets_for_virus
 
 Entrez.email = "rshafer.stanford.edu"
-## Is there a way to obtain this file directly?
-## References
-##   Obtain journal, year, authors
-##   Discard duplicate references
-## Features
-##   Organism; country; year; host; body source; gene
-## Popset
-##   Need to use API to obtain list of Accession numbers; title; gene (UID)
 
 pd.set_option('display.max_rows', 100)
 
@@ -94,12 +85,12 @@ print(len(grouped_ref_df))
 #print(grouped_ref_df.head(100))
 grouped_ref_df.to_excel("Grouped_Refs.xlsx")
 
-merged_ref_df = process_accession_lists(grouped_ref_df)
+merged_ref_df = process_accession_lists(grouped_ref_df, "accession_code.txt")
 print(len(merged_ref_df))
-merged_ref_df.to_excel("Merged_Refs.xlsx")
+merged_ref_df.to_excel("Merged_Accessions.xlsx")
 
-merged_ref_df = process_authors_titles(merged_ref_df) 
-
+merged_ref_df = process_authors_titles(merged_ref_df, "authors_title_code.txt") 
+merged_ref_df.to_excel("Merged_Author_Titles.xlsx")
 #process_author_sets(grouped_ref_df['author list'])
 
 

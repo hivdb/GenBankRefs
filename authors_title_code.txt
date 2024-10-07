@@ -1,0 +1,901 @@
+12: authors        Ashraf,S., Love,H., Burton,C., Carmichael,S., ...
+author list    (Ashraf,S,  Love,H,  Burton,C,  Carmichael,S, ...
+title                                          Direct Submission
+journal         MRC Centre for Virus Research, University of ...
+pmid                                                            
+year                                                      2021.0
+accession      [OL741599.1, OL741598.1, OL741597.1, OL741596....
+Name: 12, dtype: object
+ 13: authors        Ashraf,S., Love,H., Burton,C., Carmichael,S., ...
+author list    (Ashraf,S,  Love,H,  Burton,C,  Carmichael,S, ...
+title                                          Direct Submission
+journal         MRC Centre for Virus Research, University of ...
+pmid                                                            
+year                                                      2021.0
+accession      [OL774851.1, OL774850.1, OL774849.1, OL774842....
+Name: 13, dtype: object
+
+24: authors        Bendary,H.A., Rasslan,F., Zaki,A.M. and Abdula...
+author list    (Bendary,H.A,  Rasslan,F,  Zaki,A.M,  Abdulall...
+title                                          Direct Submission
+journal         Microbiology and Immunology, Faculty of Pharm...
+pmid                                                            
+year                                                      2020.0
+accession                                           [MW424419.1]
+Name: 24, dtype: object
+ 25: authors        Bendary,H.A., Rasslan,F., Zaki,A.M. and Abdula...
+author list    (Bendary,H.A,  Rasslan,F,  Zaki,A.M,  Abdulall...
+title                                          Direct Submission
+journal         Microbiology and Immunology, Faculty of Pharm...
+pmid                                                            
+year                                                      2021.0
+accession      [MZ361738.1, MZ342904.1, MZ330127.1, MW467898....
+Name: 25, dtype: object
+
+37: authors                             Chamberlain,J. and Hewson,R.
+author list                          (Chamberlain,J,  Hewson,R.)
+title                                          Direct Submission
+journal         Novel & Dangerous Pathogens, Centre for Emerg...
+pmid                                                            
+year                                                      2005.0
+accession      [DQ076418.1, DQ076416.1, DQ076413.1, DQ076417....
+Name: 37, dtype: object
+ 38: authors                             Chamberlain,J. and Hewson,R.
+author list                          (Chamberlain,J,  Hewson,R.)
+title                                          Direct Submission
+journal         Novel & Dangerous Pathogens, Centre for Emerg...
+pmid                                                            
+year                                                      2005.0
+accession                               [DQ157175.1, DQ157174.1]
+Name: 38, dtype: object
+
+37: authors                             Chamberlain,J. and Hewson,R.
+author list                          (Chamberlain,J,  Hewson,R.)
+title                                          Direct Submission
+journal         Novel & Dangerous Pathogens, Centre for Emerg...
+pmid                                                            
+year                                                      2005.0
+accession      [DQ076418.1, DQ076416.1, DQ076413.1, DQ076417....
+Name: 37, dtype: object
+ 39: authors                             Chamberlain,J. and Hewson,R.
+author list                          (Chamberlain,J,  Hewson,R.)
+title                                          Direct Submission
+journal         Novel and Dangerous Pathogens, Centre for Eme...
+pmid                                                            
+year                                                      2006.0
+accession                                           [EF123122.1]
+Name: 39, dtype: object
+
+38: authors                             Chamberlain,J. and Hewson,R.
+author list                          (Chamberlain,J,  Hewson,R.)
+title                                          Direct Submission
+journal         Novel & Dangerous Pathogens, Centre for Emerg...
+pmid                                                            
+year                                                      2005.0
+accession                               [DQ157175.1, DQ157174.1]
+Name: 38, dtype: object
+ 39: authors                             Chamberlain,J. and Hewson,R.
+author list                          (Chamberlain,J,  Hewson,R.)
+title                                          Direct Submission
+journal         Novel and Dangerous Pathogens, Centre for Eme...
+pmid                                                            
+year                                                      2006.0
+accession                                           [EF123122.1]
+Name: 39, dtype: object
+
+42: authors        Chamberlain,J., Logue,C.H., Atkinson,B., Latha...
+author list    (Chamberlain,J,  Logue,C.H,  Atkinson,B,  Lath...
+title                                          Direct Submission
+journal         Research, Health Protection Agency - Porton, ...
+pmid                                                            
+year                                                      2012.0
+accession                                           [JX999735.1]
+Name: 42, dtype: object
+ 43: authors        Chamberlain,J., Logue,C.H., Atkinson,B., Latha...
+author list    (Chamberlain,J,  Logue,C.H,  Atkinson,B,  Lath...
+title                                          Direct Submission
+journal         Virology and Pathogenesis, Centre for Emergen...
+pmid                                                            
+year                                                      2012.0
+accession                                           [KC344856.1]
+Name: 43, dtype: object
+
+47: authors         Chinikar,S. and Shahhosseini,N.
+author list      (Chinikar,S,  Shahhosseini,N.)
+title                         Direct Submission
+journal         Pasteur Institute of Iran, Iran
+pmid                                           
+year                                     2015.0
+accession                          [KT931954.1]
+Name: 47, dtype: object
+ 48: authors                 Chinikar,S. and Shahhosseini,N.
+author list              (Chinikar,S,  Shahhosseini,N.)
+title                                 Direct Submission
+journal         Pasteur Institute of Iran, Tehran, Iran
+pmid                                                   
+year                                             2015.0
+accession                      [KU242341.1, KT588640.1]
+Name: 48, dtype: object
+
+54: authors        Chinikar,S., Shahhosseini,N., Jalali,T. and Kh...
+author list    (Chinikar,S,  Shahhosseini,N,  Jalali,T,  Khak...
+title                                          Direct Submission
+journal                  Pasteur Institute of Iran, Tehran, Iran
+pmid                                                            
+year                                                      2014.0
+accession                                           [KP075635.1]
+Name: 54, dtype: object
+ 55: authors        Chinikar,S., Shahhosseini,N., Jalali,T. and Kh...
+author list    (Chinikar,S,  Shahhosseini,N,  Jalali,T,  Khak...
+title                                          Direct Submission
+journal                  Pasteur Institute of Iran, Tehran, Iran
+pmid                                                            
+year                                                      2015.0
+accession      [KR136199.1, KR136196.1, KR136191.1, KR136189....
+Name: 55, dtype: object
+
+56: authors        Chinikar,S., Shahhosseini,N., Khakifirouz,S. a...
+author list    (Chinikar,S,  Shahhosseini,N,  Khakifirouz,S, ...
+title                                          Direct Submission
+journal                  Pasteur Institute of Iran, Tehran, Iran
+pmid                                                            
+year                                                      2014.0
+accession                               [KP075662.1, KP075658.1]
+Name: 56, dtype: object
+ 57: authors        Chinikar,S., Shahhosseini,N., Khakifirouz,S. a...
+author list    (Chinikar,S,  Shahhosseini,N,  Khakifirouz,S, ...
+title                                          Direct Submission
+journal                  Pasteur Institute of Iran, Tehran, Iran
+pmid                                                            
+year                                                      2015.0
+accession      [KR136198.1, KR136195.1, KR136193.1, KR136188....
+Name: 57, dtype: object
+
+73: authors        Durmaz,R., Kalaycioglu,A.T., Ozkul,A., Uyar,Y....
+author list    (Durmaz,R,  Kalaycioglu,A.T,  Ozkul,A,  Uyar,Y...
+title                                          Direct Submission
+journal         Molecular Microbiology Research and Applicati...
+pmid                                                            
+year                                                      2010.0
+accession                               [HQ833035.1, HQ833034.1]
+Name: 73, dtype: object
+ 74: authors        Durmaz,R., Kalaycioglu,A.T., Ozkul,A., Uyar,Y....
+author list    (Durmaz,R,  Kalaycioglu,A.T,  Ozkul,A,  Uyar,Y...
+title                                          Direct Submission
+journal         Refik Saydam National Public Health Agency, M...
+pmid                                                            
+year                                                      2010.0
+accession                   [HQ829819.1, HQ829818.1, HQ829817.1]
+Name: 74, dtype: object
+
+75: authors        Durmaz,R., Kalaycioglu,A.T., Unaldi,O., Ozkul,...
+author list    (Durmaz,R,  Kalaycioglu,A.T,  Unaldi,O,  Ozkul...
+title                                          Direct Submission
+journal         Molecular Microbiology Research and Applicati...
+pmid                                                            
+year                                                      2011.0
+accession                                           [HQ891305.1]
+Name: 75, dtype: object
+ 76: authors        Durmaz,R., Kalaycioglu,A.T., Unaldi,O., Ozkul,...
+author list    (Durmaz,R,  Kalaycioglu,A.T,  Unaldi,O,  Ozkul...
+title                                          Direct Submission
+journal         Molecular Microbiology, Research and Applicat...
+pmid                                                            
+year                                                      2011.0
+accession                                           [HQ864322.1]
+Name: 76, dtype: object
+
+75: authors        Durmaz,R., Kalaycioglu,A.T., Unaldi,O., Ozkul,...
+author list    (Durmaz,R,  Kalaycioglu,A.T,  Unaldi,O,  Ozkul...
+title                                          Direct Submission
+journal         Molecular Microbiology Research and Applicati...
+pmid                                                            
+year                                                      2011.0
+accession                                           [HQ891305.1]
+Name: 75, dtype: object
+ 77: authors        Durmaz,R., Kalaycioglu,A.T., Unaldi,O., Ozkul,...
+author list    (Durmaz,R,  Kalaycioglu,A.T,  Unaldi,O,  Ozkul...
+title                                          Direct Submission
+journal         Refik Saydam National Public Health Agency, M...
+pmid                                                            
+year                                                      2010.0
+accession                                           [HQ829816.1]
+Name: 77, dtype: object
+
+76: authors        Durmaz,R., Kalaycioglu,A.T., Unaldi,O., Ozkul,...
+author list    (Durmaz,R,  Kalaycioglu,A.T,  Unaldi,O,  Ozkul...
+title                                          Direct Submission
+journal         Molecular Microbiology, Research and Applicat...
+pmid                                                            
+year                                                      2011.0
+accession                                           [HQ864322.1]
+Name: 76, dtype: object
+ 77: authors        Durmaz,R., Kalaycioglu,A.T., Unaldi,O., Ozkul,...
+author list    (Durmaz,R,  Kalaycioglu,A.T,  Unaldi,O,  Ozkul...
+title                                          Direct Submission
+journal         Refik Saydam National Public Health Agency, M...
+pmid                                                            
+year                                                      2010.0
+accession                                           [HQ829816.1]
+Name: 77, dtype: object
+
+86: authors                              Fajs,L. and Avsic-Zupanc,T.
+author list                           (Fajs,L,  Avsic-Zupanc,T.)
+title                                          Direct Submission
+journal         Institute of Microbiology and Immunology, Uni...
+pmid                                                            
+year                                                      2013.0
+accession      [KF595149.1, KF595148.1, KF595147.1, KF595146....
+Name: 86, dtype: object
+ 87: authors                              Fajs,L. and Avsic-Zupanc,T.
+author list                           (Fajs,L,  Avsic-Zupanc,T.)
+title                                          Direct Submission
+journal         Laboratory for Diagnosis of Zoonoses, Institu...
+pmid                                                            
+year                                                      2013.0
+accession      [KF039983.1, KF039982.1, KF039981.1, KF039980....
+Name: 87, dtype: object
+
+90: authors        Fazlalipour,M., Baniasadi,V., Jalali,T., Jamsh...
+author list    (Fazlalipour,M,  Baniasadi,V,  Jalali,T,  Jams...
+title                                          Direct Submission
+journal         Virology, Tehran University of Medical Scienc...
+pmid                                                            
+year                                                      2016.0
+accession      [KX458023.1, KX458022.1, KX458021.1, KX458020....
+Name: 90, dtype: object
+ 91: authors        Fazlalipour,M., Baniasadi,V., Jalali,T., Jamsh...
+author list    (Fazlalipour,M,  Baniasadi,V,  Jalali,T,  Jams...
+title                                          Direct Submission
+journal         virology, Tehran University of Medical Scienc...
+pmid                                                            
+year                                                      2016.0
+accession                   [KX432285.1, KX432284.1, KX432283.1]
+Name: 91, dtype: object
+
+135: authors        Kalaycioglu,A.T., Durmaz,R., Ozkul,A., Koruklu...
+author list    (Kalaycioglu,A.T,  Durmaz,R,  Ozkul,A,  Korukl...
+title                                          Direct Submission
+journal         Molecular Microbiology Research and Applicati...
+pmid                                                            
+year                                                      2010.0
+accession      [HQ685840.1, HQ675010.1, HQ675009.1, HQ675008....
+Name: 135, dtype: object
+ 136: authors        Kalaycioglu,A.T., Durmaz,R., Ozkul,A., Koruklu...
+author list    (Kalaycioglu,A.T,  Durmaz,R,  Ozkul,A,  Korukl...
+title                                          Direct Submission
+journal         Refik Saydam National Public Health Agency, M...
+pmid                                                            
+year                                                      2010.0
+accession                                           [HQ821873.1]
+Name: 136, dtype: object
+
+139: authors        Kalaycioglu,A.T., Durmaz,R., Ozkul,A., Uyar,Y....
+author list    (Kalaycioglu,A.T,  Durmaz,R,  Ozkul,A,  Uyar,Y...
+title                                          Direct Submission
+journal         Molecular Microbiology, Research and Applicat...
+pmid                                                            
+year                                                      2011.0
+accession                                           [HQ864321.1]
+Name: 139, dtype: object
+ 140: authors        Kalaycioglu,A.T., Durmaz,R., Ozkul,A., Uyar,Y....
+author list    (Kalaycioglu,A.T,  Durmaz,R,  Ozkul,A,  Uyar,Y...
+title                                          Direct Submission
+journal         Refik Saydam National Public Health Agency, M...
+pmid                                                            
+year                                                      2010.0
+accession      [HQ829813.1, HQ829812.1, HQ829811.1, HQ829810....
+Name: 140, dtype: object
+
+152: authors        Kalaycioglu,A.T., Oguzoglu,T.C., Ari,O., Durma...
+author list    (Kalaycioglu,A.T,  Oguzoglu,T.C,  Ari,O,  Durm...
+title                                          Direct Submission
+journal         Faculty of Pharmacy Department of Pharmaceuti...
+pmid                                                            
+year                                                      2022.0
+accession      [ON623086.1, ON254100.1, ON254099.1, ON254098....
+Name: 152, dtype: object
+ 153: authors        Kalaycioglu,A.T., Oguzoglu,T.C., Ari,O., Durma...
+author list    (Kalaycioglu,A.T,  Oguzoglu,T.C,  Ari,O,  Durm...
+title                                          Direct Submission
+journal         Faculty of Pharmacy Department of Pharmaceuti...
+pmid                                                            
+year                                                      2022.0
+accession                   [ON191019.1, ON191018.1, ON191017.1]
+Name: 153, dtype: object
+
+155: authors        Kalaycioglu,A.T., Oguzoglu,T.C., Ari,O., Durma...
+author list    (Kalaycioglu,A.T,  Oguzoglu,T.C,  Ari,O,  Durm...
+title                                          Direct Submission
+journal         Department of Pharmaceutical Microbiology, Ka...
+pmid                                                            
+year                                                      2022.0
+accession                                           [ON755121.1]
+Name: 155, dtype: object
+ 156: authors        Kalaycioglu,A.T., Oguzoglu,T.C., Ari,O., Durma...
+author list    (Kalaycioglu,A.T,  Oguzoglu,T.C,  Ari,O,  Durm...
+title                                          Direct Submission
+journal         Faculty of Pharmacy Department of Pharmaceuti...
+pmid                                                            
+year                                                      2022.0
+accession                   [ON668035.1, ON668034.1, ON668033.1]
+Name: 156, dtype: object
+
+155: authors        Kalaycioglu,A.T., Oguzoglu,T.C., Ari,O., Durma...
+author list    (Kalaycioglu,A.T,  Oguzoglu,T.C,  Ari,O,  Durm...
+title                                          Direct Submission
+journal         Department of Pharmaceutical Microbiology, Ka...
+pmid                                                            
+year                                                      2022.0
+accession                                           [ON755121.1]
+Name: 155, dtype: object
+ 157: authors        Kalaycioglu,A.T., Oguzoglu,T.C., Ari,O., Durma...
+author list    (Kalaycioglu,A.T,  Oguzoglu,T.C,  Ari,O,  Durm...
+title                                          Direct Submission
+journal         Faculty of Pharmacy Department of Pharmaceuti...
+pmid                                                            
+year                                                      2022.0
+accession      [ON623085.1, ON623084.1, ON623083.1, ON623082....
+Name: 157, dtype: object
+
+156: authors        Kalaycioglu,A.T., Oguzoglu,T.C., Ari,O., Durma...
+author list    (Kalaycioglu,A.T,  Oguzoglu,T.C,  Ari,O,  Durm...
+title                                          Direct Submission
+journal         Faculty of Pharmacy Department of Pharmaceuti...
+pmid                                                            
+year                                                      2022.0
+accession                   [ON668035.1, ON668034.1, ON668033.1]
+Name: 156, dtype: object
+ 157: authors        Kalaycioglu,A.T., Oguzoglu,T.C., Ari,O., Durma...
+author list    (Kalaycioglu,A.T,  Oguzoglu,T.C,  Ari,O,  Durm...
+title                                          Direct Submission
+journal         Faculty of Pharmacy Department of Pharmaceuti...
+pmid                                                            
+year                                                      2022.0
+accession      [ON623085.1, ON623084.1, ON623083.1, ON623082....
+Name: 157, dtype: object
+
+158: authors        Kalaycioglu,A.T., Oguzoglu,T.C., Ari,O., Durma...
+author list    (Kalaycioglu,A.T,  Oguzoglu,T.C,  Ari,O,  Durm...
+title                                          Direct Submission
+journal         Faculty of Pharmacy Department of Pharmaceuti...
+pmid                                                            
+year                                                      2022.0
+accession                               [ON640907.1, ON640906.1]
+Name: 158, dtype: object
+ 159: authors        Kalaycioglu,A.T., Oguzoglu,T.C., Ari,O., Durma...
+author list    (Kalaycioglu,A.T,  Oguzoglu,T.C,  Ari,O,  Durm...
+title                                          Direct Submission
+journal         Faculty of Pharmacy Department of Pharmaceuti...
+pmid                                                            
+year                                                      2022.0
+accession                   [ON640910.1, ON640909.1, ON640908.1]
+Name: 159, dtype: object
+
+160: authors        Kalaycioglu,A.T., Oguzoglu,T.C., Ari,O., Engin...
+author list    (Kalaycioglu,A.T,  Oguzoglu,T.C,  Ari,O,  Engi...
+title                                          Direct Submission
+journal         Faculty of Pharmacy Department of Pharmaceuti...
+pmid                                                            
+year                                                      2023.0
+accession      [OQ935547.1, OQ935546.1, OQ935545.1, OQ935544....
+Name: 160, dtype: object
+ 161: authors        Kalaycioglu,A.T., Oguzoglu,T.C., Ari,O., Engin...
+author list    (Kalaycioglu,A.T,  Oguzoglu,T.C,  Ari,O,  Engi...
+title                                          Direct Submission
+journal         Faculty of Pharmacy, Karadeniz Technical Univ...
+pmid                                                            
+year                                                      2023.0
+accession                                           [OQ935541.1]
+Name: 161, dtype: object
+
+173: authors        Kinsella,E., Martin,S.G., Grolla,A., Czub,M., ...
+author list    (Kinsella,E,  Martin,S.G,  Grolla,A,  Czub,M, ...
+title                                          Direct Submission
+journal         Special Pathogens, Canadian Science Center fo...
+pmid                                                            
+year                                                      2003.0
+accession                              [NC_005301.3, AY389361.2]
+Name: 173, dtype: object
+ 174: authors        Kinsella,E., Martin,S.G., Grolla,A., Czub,M., ...
+author list    (Kinsella,E,  Martin,S.G,  Grolla,A,  Czub,M, ...
+title                                          Direct Submission
+journal         Special Pathogens, Canadian Science Center fo...
+pmid                                                            
+year                                                      2004.0
+accession                              [NC_005301.3, AY389361.2]
+Name: 174, dtype: object
+
+189: authors        Logue,C.H., Chamberlain,J., Atkinson,B., Latha...
+author list    (Logue,C.H,  Chamberlain,J,  Atkinson,B,  Lath...
+title                                          Direct Submission
+journal         Research, Health Protection Agency - Porton, ...
+pmid                                                            
+year                                                      2012.0
+accession                                           [JX999734.1]
+Name: 189, dtype: object
+ 190: authors        Logue,C.H., Chamberlain,J., Atkinson,B., Latha...
+author list    (Logue,C.H,  Chamberlain,J,  Atkinson,B,  Lath...
+title                                          Direct Submission
+journal         Virology and Pathogenesis, Centre for Emergen...
+pmid                                                            
+year                                                      2012.0
+accession                                           [KC344855.1]
+Name: 190, dtype: object
+
+193: authors        Maghsood,H., Nabian,S., Chinikar,S. and Shayan,P.
+author list     (Maghsood,H,  Nabian,S,  Chinikar,S,  Shayan,P.)
+title                                          Direct Submission
+journal         Parasitology, Faculty of Veterinary Medicine,...
+pmid                                                            
+year                                                      2015.0
+accession                                           [KP682503.1]
+Name: 193, dtype: object
+ 194: authors        Maghsood,H., Nabian,S., Chinikar,S. and Shayan,P.
+author list     (Maghsood,H,  Nabian,S,  Chinikar,S,  Shayan,P.)
+title                                          Direct Submission
+journal         Parasitology, Faculty of Veterinary Medicine,...
+pmid                                                            
+year                                                      2015.0
+accession                                           [KP742979.1]
+Name: 194, dtype: object
+
+207: authors        Meissner,J.D., Seregin,S.S., Seregin,S.V., Vys...
+author list    (Meissner,J.D,  Seregin,S.S,  Seregin,S.V,  Vy...
+title          A variable region in the Crimean-Congo hemorrh...
+journal                    J. Med. Virol. 78 (2), 223-228 (2006)
+pmid                                                    16372290
+year                                                      2006.0
+accession      [DQ206449.1, AY995170.2, AY995167.2, AY995159....
+Name: 207, dtype: object
+ 208: authors        Meissner,J.D., Seregin,S.S., Seregin,S.V., Vys...
+author list    (Meissner,J.D,  Seregin,S.S,  Seregin,S.V,  Vy...
+title                                          Direct Submission
+journal         State Research Center for Virology and Biotec...
+pmid                                                            
+year                                                      2005.0
+accession      [AY995170.2, AY995170.2, AY995167.2, AY995167....
+Name: 208, dtype: object
+
+227: authors        Nilsson,M., Shinikar,S., Mirazimi,A., Plyusnin...
+author list    (Nilsson,M,  Shinikar,S,  Mirazimi,A,  Plyusni...
+title                                          Direct Submission
+journal         Centre for Microbiological Preparedness, Swed...
+pmid                                                            
+year                                                      2003.0
+accession      [AY366379.1, AY366378.1, AY366377.1, AY366376....
+Name: 227, dtype: object
+ 228: authors        Nilsson,M., Shinikar,S., Mirazimi,A., Plyusnin...
+author list    (Nilsson,M,  Shinikar,S,  Mirazimi,A,  Plyusni...
+title                                          Direct Submission
+journal         Centre for Microbiological Preparedness, Swed...
+pmid                                                            
+year                                                      2003.0
+accession      [AY366387.1, AY366386.1, AY366385.1, AY366384....
+Name: 228, dtype: object
+
+265: authors        Petrova,I.D., Seregin,S.V., Kuzina,I.I., Vyshe...
+author list    (Petrova,I.D,  Seregin,S.V,  Kuzina,I.I,  Vysh...
+title            Crimean-Congo hemorrhagic fever virus S segment
+journal                           Vopr. Virusol. (2002) In press
+pmid                                                            
+year                                                      2002.0
+accession                   [AF481805.1, AF481804.1, AF481803.1]
+Name: 265, dtype: object
+ 266: authors        Petrova,I.D., Seregin,S.V., Kuzina,I.I., Vyshe...
+author list    (Petrova,I.D,  Seregin,S.V,  Kuzina,I.I,  Vysh...
+title                                          Direct Submission
+journal         Biochemistry of Viruses, State Research Cente...
+pmid                                                            
+year                                                      2002.0
+accession      [AF481805.1, AF481803.1, AF481801.1, AF481800....
+Name: 266, dtype: object
+
+265: authors        Petrova,I.D., Seregin,S.V., Kuzina,I.I., Vyshe...
+author list    (Petrova,I.D,  Seregin,S.V,  Kuzina,I.I,  Vysh...
+title            Crimean-Congo hemorrhagic fever virus S segment
+journal                           Vopr. Virusol. (2002) In press
+pmid                                                            
+year                                                      2002.0
+accession                   [AF481805.1, AF481804.1, AF481803.1]
+Name: 265, dtype: object
+ 267: authors        Petrova,I.D., Seregin,S.V., Kuzina,I.I., Vyshe...
+author list    (Petrova,I.D,  Seregin,S.V,  Kuzina,I.I,  Vysh...
+title                                          Direct Submission
+journal         Biochemistry of Viruses, State Research Cente...
+pmid                                                            
+year                                                      2003.0
+accession                                           [AY277672.1]
+Name: 267, dtype: object
+
+266: authors        Petrova,I.D., Seregin,S.V., Kuzina,I.I., Vyshe...
+author list    (Petrova,I.D,  Seregin,S.V,  Kuzina,I.I,  Vysh...
+title                                          Direct Submission
+journal         Biochemistry of Viruses, State Research Cente...
+pmid                                                            
+year                                                      2002.0
+accession      [AF481805.1, AF481803.1, AF481801.1, AF481800....
+Name: 266, dtype: object
+ 267: authors        Petrova,I.D., Seregin,S.V., Kuzina,I.I., Vyshe...
+author list    (Petrova,I.D,  Seregin,S.V,  Kuzina,I.I,  Vysh...
+title                                          Direct Submission
+journal         Biochemistry of Viruses, State Research Cente...
+pmid                                                            
+year                                                      2003.0
+accession                                           [AY277672.1]
+Name: 267, dtype: object
+
+291: authors               Sanchez,A.J., Vincent,M.J. and Nichol,S.T.
+author list            (Sanchez,A.J,  Vincent,M.J,  Nichol,S.T.)
+title          Characterization of the glycoproteins of crime...
+journal                      J. Virol. 76 (14), 7263-7275 (2002)
+pmid                                                    12072526
+year                                                      2002.0
+accession                  [NC_005300.2, AF467769.2, AF467768.2]
+Name: 291, dtype: object
+ 292: authors               Sanchez,A.J., Vincent,M.J. and Nichol,S.T.
+author list            (Sanchez,A.J,  Vincent,M.J,  Nichol,S.T.)
+title                                          Direct Submission
+journal         Special Pathogens Branch, DVRD, NCID, Centers...
+pmid                                                            
+year                                                      2002.0
+accession                  [NC_005300.2, AF467769.2, AF467768.2]
+Name: 292, dtype: object
+
+304: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         Bernhard Nocht Institute for Tropical Medicin...
+pmid                                                            
+year                                                      2015.0
+accession      [KT931958.1, KT931957.1, KT931956.1, KT931955....
+Name: 304, dtype: object
+ 305: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         Bernhard Nocht Institute for Tropical Medicin...
+pmid                                                            
+year                                                      2015.0
+accession                                           [KT588642.1]
+Name: 305, dtype: object
+
+304: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         Bernhard Nocht Institute for Tropical Medicin...
+pmid                                                            
+year                                                      2015.0
+accession      [KT931958.1, KT931957.1, KT931956.1, KT931955....
+Name: 304, dtype: object
+ 306: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         Bernhard Nocht Institute for Tropical Medicin...
+pmid                                                            
+year                                                      2016.0
+accession       [KU707901.1, KU707900.1, KU707899.1, KU707898.1]
+Name: 306, dtype: object
+
+304: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         Bernhard Nocht Institute for Tropical Medicin...
+pmid                                                            
+year                                                      2015.0
+accession      [KT931958.1, KT931957.1, KT931956.1, KT931955....
+Name: 304, dtype: object
+ 307: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         Virology, Bernhard Nocht Institute for Tropic...
+pmid                                                            
+year                                                      2015.0
+accession                               [KU242340.1, KU242339.1]
+Name: 307, dtype: object
+
+304: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         Bernhard Nocht Institute for Tropical Medicin...
+pmid                                                            
+year                                                      2015.0
+accession      [KT931958.1, KT931957.1, KT931956.1, KT931955....
+Name: 304, dtype: object
+ 308: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         virilogy, Bernhard Nocht Institute fro Tropic...
+pmid                                                            
+year                                                      2015.0
+accession                                           [KT588641.1]
+Name: 308, dtype: object
+
+305: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         Bernhard Nocht Institute for Tropical Medicin...
+pmid                                                            
+year                                                      2015.0
+accession                                           [KT588642.1]
+Name: 305, dtype: object
+ 306: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         Bernhard Nocht Institute for Tropical Medicin...
+pmid                                                            
+year                                                      2016.0
+accession       [KU707901.1, KU707900.1, KU707899.1, KU707898.1]
+Name: 306, dtype: object
+
+305: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         Bernhard Nocht Institute for Tropical Medicin...
+pmid                                                            
+year                                                      2015.0
+accession                                           [KT588642.1]
+Name: 305, dtype: object
+ 307: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         Virology, Bernhard Nocht Institute for Tropic...
+pmid                                                            
+year                                                      2015.0
+accession                               [KU242340.1, KU242339.1]
+Name: 307, dtype: object
+
+305: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         Bernhard Nocht Institute for Tropical Medicin...
+pmid                                                            
+year                                                      2015.0
+accession                                           [KT588642.1]
+Name: 305, dtype: object
+ 308: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         virilogy, Bernhard Nocht Institute fro Tropic...
+pmid                                                            
+year                                                      2015.0
+accession                                           [KT588641.1]
+Name: 308, dtype: object
+
+306: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         Bernhard Nocht Institute for Tropical Medicin...
+pmid                                                            
+year                                                      2016.0
+accession       [KU707901.1, KU707900.1, KU707899.1, KU707898.1]
+Name: 306, dtype: object
+ 307: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         Virology, Bernhard Nocht Institute for Tropic...
+pmid                                                            
+year                                                      2015.0
+accession                               [KU242340.1, KU242339.1]
+Name: 307, dtype: object
+
+306: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         Bernhard Nocht Institute for Tropical Medicin...
+pmid                                                            
+year                                                      2016.0
+accession       [KU707901.1, KU707900.1, KU707899.1, KU707898.1]
+Name: 306, dtype: object
+ 308: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         virilogy, Bernhard Nocht Institute fro Tropic...
+pmid                                                            
+year                                                      2015.0
+accession                                           [KT588641.1]
+Name: 308, dtype: object
+
+307: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         Virology, Bernhard Nocht Institute for Tropic...
+pmid                                                            
+year                                                      2015.0
+accession                               [KU242340.1, KU242339.1]
+Name: 307, dtype: object
+ 308: authors                          Shahhosseini,N. and Chinikar,S.
+author list                       (Shahhosseini,N,  Chinikar,S.)
+title                                          Direct Submission
+journal         virilogy, Bernhard Nocht Institute fro Tropic...
+pmid                                                            
+year                                                      2015.0
+accession                                           [KT588641.1]
+Name: 308, dtype: object
+
+309: authors        Shahhosseini,N., Chinikar,S., Jalali,T. and Kh...
+author list    (Shahhosseini,N,  Chinikar,S,  Jalali,T,  Khak...
+title                                          Direct Submission
+journal         Bernhard Nocht Institute for Tropical Medicin...
+pmid                                                            
+year                                                      2014.0
+accession      [KP075683.1, KP075682.1, KP075681.1, KP075680....
+Name: 309, dtype: object
+ 310: authors        Shahhosseini,N., Chinikar,S., Jalali,T. and Kh...
+author list    (Shahhosseini,N,  Chinikar,S,  Jalali,T,  Khak...
+title                                          Direct Submission
+journal                  Pasteur Institute of Iran, Tehran, Iran
+pmid                                                            
+year                                                      2015.0
+accession      [KR136201.1, KR136200.1, KR136197.1, KR136194....
+Name: 310, dtype: object
+
+311: authors        Shahhosseini,N., Chinikar,S., Khakifirouz,S. a...
+author list    (Shahhosseini,N,  Chinikar,S,  Khakifirouz,S, ...
+title                                          Direct Submission
+journal         Bernhard Nocht Institute for Tropical Medicin...
+pmid                                                            
+year                                                      2014.0
+accession                   [KP075660.1, KP075653.1, KP075649.1]
+Name: 311, dtype: object
+ 312: authors        Shahhosseini,N., Chinikar,S., Khakifirouz,S. a...
+author list    (Shahhosseini,N,  Chinikar,S,  Khakifirouz,S, ...
+title                                          Direct Submission
+journal                  Pasteur Institute of Iran, Tehran, Iran
+pmid                                                            
+year                                                      2015.0
+accession      [KR136202.1, KR136190.1, KR136187.1, KR136186....
+Name: 312, dtype: object
+
+324: authors              Tang,Q., Gao,D., Han,L., Zhao,X. and Tao,X.
+author list           (Tang,Q,  Gao,D,  Han,L,  Zhao,X,  Tao,X.)
+title                                          Direct Submission
+journal         Institute of Epidemiology and Microbiology, C...
+pmid                                                            
+year                                                      2001.0
+accession                                           [AY029157.1]
+Name: 324, dtype: object
+ 325: authors              Tang,Q., Gao,D., Han,L., Zhao,X. and Tao,X.
+author list           (Tang,Q,  Gao,D,  Han,L,  Zhao,X,  Tao,X.)
+title                                          Direct Submission
+journal         Institute of Epidemiology and Microbiology, C...
+pmid                                                            
+year                                                      2001.0
+accession                               [AF362080.1, AF358784.1]
+Name: 325, dtype: object
+
+324: authors              Tang,Q., Gao,D., Han,L., Zhao,X. and Tao,X.
+author list           (Tang,Q,  Gao,D,  Han,L,  Zhao,X,  Tao,X.)
+title                                          Direct Submission
+journal         Institute of Epidemiology and Microbiology, C...
+pmid                                                            
+year                                                      2001.0
+accession                                           [AY029157.1]
+Name: 324, dtype: object
+ 326: authors              Tang,Q., Gao,D., Han,L., Zhao,X. and Tao,X.
+author list           (Tang,Q,  Gao,D,  Han,L,  Zhao,X,  Tao,X.)
+title                                          Direct Submission
+journal         Institute of Epidemiology and Microbiology, C...
+pmid                                                            
+year                                                      2001.0
+accession                                           [AF354296.1]
+Name: 326, dtype: object
+
+325: authors              Tang,Q., Gao,D., Han,L., Zhao,X. and Tao,X.
+author list           (Tang,Q,  Gao,D,  Han,L,  Zhao,X,  Tao,X.)
+title                                          Direct Submission
+journal         Institute of Epidemiology and Microbiology, C...
+pmid                                                            
+year                                                      2001.0
+accession                               [AF362080.1, AF358784.1]
+Name: 325, dtype: object
+ 326: authors              Tang,Q., Gao,D., Han,L., Zhao,X. and Tao,X.
+author list           (Tang,Q,  Gao,D,  Han,L,  Zhao,X,  Tao,X.)
+title                                          Direct Submission
+journal         Institute of Epidemiology and Microbiology, C...
+pmid                                                            
+year                                                      2001.0
+accession                                           [AF354296.1]
+Name: 326, dtype: object
+
+332: authors                               Timurkan,M.O. and Aydin,H.
+author list                            (Timurkan,M.O,  Aydin,H.)
+title                                          Direct Submission
+journal         Department of Virology, Ataturk University, F...
+pmid                                                            
+year                                                      2020.0
+accession      [MT178302.1, MT178301.1, MT178300.1, MT178299....
+Name: 332, dtype: object
+ 333: authors                               Timurkan,M.O. and Aydin,H.
+author list                            (Timurkan,M.O,  Aydin,H.)
+title                                          Direct Submission
+journal         Departmet of Virology, Ataturk University, Fa...
+pmid                                                            
+year                                                      2020.0
+accession      [MT178327.1, MT178326.1, MT178325.1, MT178324....
+Name: 333, dtype: object
+
+374: authors                   Yadav,P.D., Shete,A.M. and Mourya,D.T.
+author list                (Yadav,P.D,  Shete,A.M,  Mourya,D.T.)
+title                                          Direct Submission
+journal         Maximum Containment Laboratory, National Inst...
+pmid                                                            
+year                                                      2015.0
+accession      [KT384400.1, KT384397.1, KT384402.1, KT384401....
+Name: 374, dtype: object
+ 375: authors                   Yadav,P.D., Shete,A.M. and Mourya,D.T.
+author list                (Yadav,P.D,  Shete,A.M,  Mourya,D.T.)
+title                                          Direct Submission
+journal         Maximum Containment Laboratory, National Inst...
+pmid                                                            
+year                                                      2015.0
+accession      [KT384388.1, KT384382.1, KT384394.1, KT384395....
+Name: 375, dtype: object
+
+374: authors                   Yadav,P.D., Shete,A.M. and Mourya,D.T.
+author list                (Yadav,P.D,  Shete,A.M,  Mourya,D.T.)
+title                                          Direct Submission
+journal         Maximum Containment Laboratory, National Inst...
+pmid                                                            
+year                                                      2015.0
+accession      [KT384400.1, KT384397.1, KT384402.1, KT384401....
+Name: 374, dtype: object
+ 376: authors                   Yadav,P.D., Shete,A.M. and Mourya,D.T.
+author list                (Yadav,P.D,  Shete,A.M,  Mourya,D.T.)
+title                                          Direct Submission
+journal         Maximum Containment Laboratory, National Inst...
+pmid                                                            
+year                                                      2015.0
+accession                               [KT384404.1, KT384403.1]
+Name: 376, dtype: object
+
+375: authors                   Yadav,P.D., Shete,A.M. and Mourya,D.T.
+author list                (Yadav,P.D,  Shete,A.M,  Mourya,D.T.)
+title                                          Direct Submission
+journal         Maximum Containment Laboratory, National Inst...
+pmid                                                            
+year                                                      2015.0
+accession      [KT384388.1, KT384382.1, KT384394.1, KT384395....
+Name: 375, dtype: object
+ 376: authors                   Yadav,P.D., Shete,A.M. and Mourya,D.T.
+author list                (Yadav,P.D,  Shete,A.M,  Mourya,D.T.)
+title                                          Direct Submission
+journal         Maximum Containment Laboratory, National Inst...
+pmid                                                            
+year                                                      2015.0
+accession                               [KT384404.1, KT384403.1]
+Name: 376, dtype: object
+
+383: authors        Zarrabi Ahrabi,S., Akyildiz,G. and Gargili Kel...
+author list    (Zarrabi Ahrabi,S,  Akyildiz,G,  Gargili Keles...
+title                                          Direct Submission
+journal         Faculty of Health Sciences/Basic Health Scien...
+pmid                                                            
+year                                                      2022.0
+accession      [OP312076.1, OP312075.1, OP312074.1, OP312073....
+Name: 383, dtype: object
+ 384: authors        Zarrabi Ahrabi,S., Akyildiz,G. and Gargili Kel...
+author list    (Zarrabi Ahrabi,S,  Akyildiz,G,  Gargili Keles...
+title                                          Direct Submission
+journal         Faculty of Health Sciences/Basic Health Scien...
+pmid                                                            
+year                                                      2023.0
+accession      [OQ377564.1, OQ377563.1, OQ377562.1, OQ377561....
+Name: 384, dtype: object
+
+476: authors        Papa,A., Dalla,V., Papadimitriou,E., Kartalis,...
+author list    (Papa,A,  Dalla,V,  Papadimitriou,E,  Kartalis...
+title          Emergence of Crimean-Congo haemorrhagic fever ...
+journal         Dept. of Microbiology, Aristotle University o...
+pmid                                                    19845692
+year                                               2009.0,2009.0
+accession                                           [FJ643480.1]
+Name: 476, dtype: object
+ 479: authors        Papa,A., Dalla,V., Papadimitriou,E., Kartalis,...
+author list    (Papa,A,  Dalla,V,  Papadimitriou,E,  Kartalis...
+title          Emergence of Crimean-Congo haemorrhagic fever ...
+journal         Dept. of Microbiology, Medical School, Aristo...
+pmid                                                    19845692
+year                                        2008.0,2013.0,2010.0
+accession                                           [EU871766.2]
+Name: 479, dtype: object
+
