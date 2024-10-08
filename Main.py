@@ -75,6 +75,8 @@ with open(genbank_file, "r") as handle:
 reference_df = pd.DataFrame(reference_list)
 reference_df['year'] = reference_df['journal'].apply(extract_year_from_journal)
 reference_df['year'] = pd.to_numeric(reference_df['year'], errors='coerce')
+#reference_df['year'] = reference_df['year'].fillna(0).astype(int)
+reference_df['year'] = reference_df['year'].apply(lambda x: '' if pd.isna(x) else int(x))
 reference_df['journal'] = reference_df['journal'].str.replace(r"Submitted \(\d{2}-[A-Z]{3}-\d{4}\)", "", regex=True)
 reference_df['journal'] = reference_df['journal'].str.replace(r"(Patent).*", r"\1", regex=True)
 reference_df['author list'] = reference_df['authors'].apply(process_author_field)

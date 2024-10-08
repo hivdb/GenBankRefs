@@ -124,7 +124,7 @@ def compare_authors_titles(row_i, row_j):
     if author_list_i == author_list_j and len(author_list_i) > 1:       
         if title_i == 'Direct Submssion' or title_j == 'Direct Submission':
             if pd.notna(year_i) and pd.notna(year_j):
-                if abs(year_i - year_j) <= 1:
+                if year_i == year_j:
                     score = 1
                 else:
                     score = 0
@@ -184,6 +184,7 @@ def process_authors_titles(df, logfile):
 
 
 def merge_refs_sharing_accessions(df, shared_indexes):
+    #print(df)
     new_row = {}
     author_list_list = df.loc[shared_indexes, 'author list'].tolist()
     authors_list = df.loc[shared_indexes, 'authors'].tolist()
@@ -191,6 +192,7 @@ def merge_refs_sharing_accessions(df, shared_indexes):
     journal_list = df.loc[shared_indexes, 'journal'].tolist()
     pmid_list = df.loc[shared_indexes, 'pmid'].tolist()
     year_list = df.loc[shared_indexes, 'year'].tolist()
+    print(year_list)
     accession_list = df.loc[shared_indexes, 'accession'].tolist()
     new_row['author list'] = [max(author_list_list, key=len)]
     new_row['authors'] = [max(authors_list, key=len)]
@@ -213,7 +215,7 @@ def merge_refs_sharing_author_title(df, shared_indexes):
     accession_list = df.loc[shared_indexes, 'accession'].tolist()
     new_row['author list'] = author_list_list[:1] 
     new_row['authors'] = authors_list[:1]
-    new_row['year'] = [','.join(str(i) for i in year_list if i)]
+    new_row['year'] = [';'.join(str(i) for i in year_list if i)]
     new_row['title'] = ['\n'.join(i for i in titles_list)]
     new_row['pmid'] = ['; '.join(i for i in pmid_list if i)]
     new_row['journal'] = ['; '.join(journal_list)]
