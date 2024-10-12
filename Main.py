@@ -1,6 +1,7 @@
 from Bio import SeqIO
 from Bio import Entrez
 import pandas as pd
+import ast
 
 
 Entrez.email = "rshafer.stanford.edu"
@@ -30,6 +31,7 @@ def extract_references(annotations, accession):
         ref_data.append(ref_items)
     return ref_data
 
+columns_of_interest = []
 def extract_features(features, accession):
     #feature_data = []
     feature_items = {}
@@ -53,6 +55,9 @@ feature_list = []
 with open(genbank_file, "r") as handle:
     count=0
     for record in SeqIO.parse(handle, "genbank"):
+        acc_num = record.id
+        seq_len = len(record.seq)
+
         count +=1
         #print(f"ID: {record.id}")
         #print(f"Description: {record.description}")
@@ -65,6 +70,15 @@ with open(genbank_file, "r") as handle:
         ref_data = extract_references(record.annotations, record.id)
         reference_list.extend(ref_data)
         feature_data = extract_features(record.features, record.id)
+        #print(feature_data)
+        segment_source = feature_data.get('segment_source','')
+        #print("Segment source:", segment_source)
+        country_region = feature_data.get('geo_loc_name_source', '')
+        #print("Country region", country_region)
+        #if 'segment_source' in feature_data:
+        #    print (feature_data['segment_source'])
+        #else:
+        #    print("record does not contain segment_source")
         feature_list.append(feature_data)
         #print(feature_data)
         #extract_features(record.features)
@@ -72,6 +86,10 @@ with open(genbank_file, "r") as handle:
         #    break
 
 ## Aggregate by reference
+excluded_accessions = ['NM_010185.4', 'NM_010508.2', 'NM_134350.2', 'NM_021268.2', 'NM_009283.4', \
+                       'NM_001205313.1', 'NM_001205314.1', 'NM_001357627.1', 'NM_009283.4', \
+                       'NR_104124.3', 'NR_104125.3', 'NR_186227.2', 'NR_186228.2', 'NR_186229.2', \
+                       'NR_186230.2', 'NR_186231.2', 'NR_126359.1']
 reference_df = pd.DataFrame(reference_list)
 reference_df['year'] = reference_df['journal'].apply(extract_year_from_journal)
 reference_df['year'] = pd.to_numeric(reference_df['year'], errors='coerce')
@@ -79,19 +97,23 @@ reference_df['year'] = pd.to_numeric(reference_df['year'], errors='coerce')
 reference_df['year'] = reference_df['year'].apply(lambda x: '' if pd.isna(x) else int(x))
 reference_df['journal'] = reference_df['journal'].str.replace(r"Submitted \(\d{2}-[A-Z]{3}-\d{4}\)", "", regex=True)
 reference_df['journal'] = reference_df['journal'].str.replace(r"(Patent).*", r"\1", regex=True)
-reference_df['author list'] = reference_df['authors'].apply(process_author_field)
+reference_df['authors'] = reference_df['authors'].apply(process_author_field)
+reference_df = reference_df[~reference_df['accession'].isin (excluded_accessions)]
+
 
 print(len(reference_df))
-grouped_ref_df = reference_df.groupby(['authors', 'author list', 'title', 'journal', 'pmid', 'year'])['accession'].apply(list).reset_index()
+grouped_ref_df = reference_df.groupby(['authors', 'title', 'journal', 'pmid', 'year'])['accession'].apply(list).reset_index()
+grouped_ref_df['accession'] = grouped_ref_df['accession'].apply(lambda x: ', '.join(x))
+#grouped_ref_df = reference_df.groupby(['authors', 'title', 'journal', 'pmid', 'year'])['accession'].reset_index()
 print(len(grouped_ref_df))
 #print(grouped_ref_df.head(100))
 grouped_ref_df.to_excel("Grouped_Refs.xlsx")
 
-merged_ref_df = process_accession_lists(grouped_ref_df, "accession_code.txt")
+merged_ref_df = process_accession_lists(grouped_ref_df)
 print(len(merged_ref_df))
 merged_ref_df.to_excel("Merged_Accessions.xlsx")
 
-merged_ref_df = process_authors_titles(merged_ref_df, "authors_title_code.txt") 
+merged_ref_df = process_authors_titles(merged_ref_df) 
 merged_ref_df.to_excel("Merged_Author_Titles.xlsx")
 #process_author_sets(grouped_ref_df['author list'])
 
@@ -104,7 +126,6 @@ merged_ref_df.to_excel("Merged_Author_Titles.xlsx")
 # print(unique_refs_df)
 # print(len(unique_refs_df))
 
-
 # Add a reference back to the original "accession" column from the original dataframe
 # We will do this by reattaching the first column ('accession') to the unique dataframe
 #unique_df_with_accession = pd.concat([df['accession'], new_df], axis=1).drop_duplicates()
@@ -112,13 +133,8 @@ merged_ref_df.to_excel("Merged_Author_Titles.xlsx")
 #import ace_tools as tools; tools.display_dataframe_to_user(name="Unique DataFrame with Accession", dataframe=unique_df_with_accession)
 
 
-
-
-
-
 # features_df = pd.DataFrame(feature_list)
 #features_df.to_csv("CCHF_GenBankFeatures.csv", index = False)
-
 # value_counts = features_df["organism_source"].value_counts()
 # print(value_counts)
 # value_counts = features_df["mol_type_source"].value_counts()

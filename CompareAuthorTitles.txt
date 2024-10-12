@@ -1,0 +1,2574 @@
+Title_i:Crimean-Congo Hemorrhagic Fever Virus in ticks and livestock: a Molecular and Seroepidemiological Survey in Borderline of Iran-Pakistan-Gulf of Oman Littoral
+Title_j:Direct Submission
+Title_distance:145
+Author_list_i: ('ChinikarS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i: Year_j:2015 Max_year_dif:0
+Accessions_i:['KU242341.1']
+Accessions_j:['KU242341.1', 'KT588640.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Phylogenetic study on Crimean-Congo hemorrhagic fever virus obtained from human cases in the northern Iran
+Title_distance:93
+Author_list_i: ('ChinikarS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KU242341.1', 'KT588640.1']
+Accessions_j:['KT588640.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Phylogenetic study on Crimean-Congo hemorrhagic fever virus obtained from human cases in the northern Iran
+Title_j:Direct Submission
+Title_distance:93
+Author_list_i: ('ChinikarS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS')
+Author_list_pcnt:1.0
+Year_i: Year_j:2015 Max_year_dif:0
+Accessions_i:['KT588640.1']
+Accessions_j:['KT588642.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Phylogenetic study on Crimean-Congo hemorrhagic fever virus obtained from human cases in the northern Iran
+Title_j:Direct Submission
+Title_distance:93
+Author_list_i: ('ChinikarS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS')
+Author_list_pcnt:1.0
+Year_i: Year_j:2015 Max_year_dif:0
+Accessions_i:['KT588640.1']
+Accessions_j:['KT588641.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j: Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Num_shared_accessions21 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j: Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075646.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j: Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075645.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'KhakifirouzS', 'JalaliT', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075661.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN', 'JalaliT', 'KhakifirouzS')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075635.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN', 'KhakifirouzS', 'JalaliT')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075662.1', 'KP075658.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('KhakifirouzS', 'ChinikarS', 'JalaliT', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075644.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS', 'JalaliT', 'KhakifirouzS')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075683.1', 'KP075682.1', 'KP075681.1', 'KP075680.1', 'KP075674.1', 'KP075673.1', 'KP075667.1', 'KP075666.1', 'KP075665.1', 'KP075656.1', 'KP075655.1', 'KP075654.1', 'KP075652.1', 'KP075651.1', 'KP075650.1', 'KP075648.1', 'KP075647.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS', 'KhakifirouzS', 'JalaliT')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075660.1', 'KP075653.1', 'KP075649.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_j:Direct Submission
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i: Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075646.1', 'KP075645.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'KorukluogluG', 'UyarY', 'OzkulA', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2010 Year_j: Max_year_dif:0
+Accessions_i:['HQ821875.1']
+Accessions_j:['HQ821875.1', 'HQ821874.1', 'HQ821873.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2010 Year_j: Max_year_dif:0
+Accessions_i:['HQ829819.1', 'HQ829818.1', 'HQ829817.1']
+Accessions_j:['HQ864321.1', 'HQ829816.1', 'HQ829815.1', 'HQ829814.1', 'HQ829819.1', 'HQ829818.1', 'HQ829817.1', 'HQ829813.1', 'HQ829812.1', 'HQ829811.1', 'HQ829810.1', 'HQ829809.1']
+Num_shared_accessions3 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_j: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2011 Year_j: Max_year_dif:0
+Accessions_i:['HQ891305.1']
+Accessions_j:['HQ891305.1', 'HQ864322.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_j: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'UyarY', 'KorukluogluG', 'OzkulA', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2011 Year_j:2011 Max_year_dif:0
+Accessions_i:['HQ891305.1']
+Accessions_j:['HQ891308.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'UnaldiO', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2011 Year_j:2011 Max_year_dif:0
+Accessions_i:['HQ891305.1']
+Accessions_j:['HQ891307.1', 'HQ891306.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_j: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2011 Year_j: Max_year_dif:0
+Accessions_i:['HQ864322.1']
+Accessions_j:['HQ891305.1', 'HQ864322.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Genetic analysis of Crimean-Congo hemorrhagic fever virus isolates in 2012
+Title_distance:64
+Author_list_i: ('DurmazR', 'KorukluogluG', 'ErtekM', 'KalayciogluA')
+Author_list_j: ('DurmazR', 'KorukluogluG', 'ErtekM', 'KalayciogluA')
+Author_list_pcnt:1.0
+Year_i:2012 Year_j: Max_year_dif:0
+Accessions_i:['KC150000.1']
+Accessions_j:['KC150005.1', 'KC150004.1', 'KC150003.1', 'KC150002.1', 'KC150001.1', 'KC150000.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Genetic analysis of Crimean-Congo hemorrhagic fever virus isolates in 2012
+Title_j:Direct Submission
+Title_distance:64
+Author_list_i: ('DurmazR', 'KorukluogluG', 'ErtekM', 'KalayciogluA')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'KorukluogluG', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i: Year_j:2012 Max_year_dif:0
+Accessions_i:['KC150005.1', 'KC150004.1', 'KC150003.1', 'KC150002.1', 'KC150001.1', 'KC150000.1']
+Accessions_j:['KC150001.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:An Outbreak of Crimean-Congo Hemorrhagic Fever in South East of Iran, May 2016
+Title_j:Direct Submission
+Title_distance:69
+Author_list_i: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_j: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_pcnt:1.0
+Year_i: Year_j:2016 Max_year_dif:0
+Accessions_i:['KX458021.1', 'KX458020.1', 'KX458019.1', 'KX458018.1', 'KX458017.1']
+Accessions_j:['KX458023.1', 'KX458022.1', 'KX458021.1', 'KX458020.1', 'KX458019.1', 'KX458018.1', 'KX458017.1']
+Num_shared_accessions5 Pcnt_shared_stems:1.0
+
+Title_i:Crimean-Congo Hemorrhagic Fever Virus isolated from Kurdistan
+Title_j:Direct Submission
+Title_distance:52
+Author_list_i: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_j: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_pcnt:1.0
+Year_i: Year_j:2016 Max_year_dif:0
+Accessions_i:['KX458022.1']
+Accessions_j:['KX458023.1', 'KX458022.1', 'KX458021.1', 'KX458020.1', 'KX458019.1', 'KX458018.1', 'KX458017.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Crimean-Congo Hemorrhagic Fever Virus isolated from Mazandaran
+Title_j:Direct Submission
+Title_distance:53
+Author_list_i: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_j: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_pcnt:1.0
+Year_i: Year_j:2016 Max_year_dif:0
+Accessions_i:['KX458023.1']
+Accessions_j:['KX458023.1', 'KX458022.1', 'KX458021.1', 'KX458020.1', 'KX458019.1', 'KX458018.1', 'KX458017.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j: Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075646.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j: Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075645.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'KhakifirouzS', 'JalaliT', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075661.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN', 'JalaliT', 'KhakifirouzS')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075635.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN', 'KhakifirouzS', 'JalaliT')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075662.1', 'KP075658.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('KhakifirouzS', 'ChinikarS', 'JalaliT', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075644.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS', 'JalaliT', 'KhakifirouzS')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075683.1', 'KP075682.1', 'KP075681.1', 'KP075680.1', 'KP075674.1', 'KP075673.1', 'KP075667.1', 'KP075666.1', 'KP075665.1', 'KP075656.1', 'KP075655.1', 'KP075654.1', 'KP075652.1', 'KP075651.1', 'KP075650.1', 'KP075648.1', 'KP075647.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS', 'KhakifirouzS', 'JalaliT')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075660.1', 'KP075653.1', 'KP075649.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935538.1']
+Accessions_j:['OQ935539.1', 'OQ935538.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'EnginA', 'BakirM', 'AriO', 'DalT', 'OguzogluT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j:2023 Max_year_dif:0
+Accessions_i:['OQ935538.1']
+Accessions_j:['OQ935537.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_j:Direct Submission
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_pcnt:1.0
+Year_i: Year_j:2023 Max_year_dif:0
+Accessions_i:['OQ935539.1', 'OQ935538.1']
+Accessions_j:['OQ935539.1', 'OQ935540.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'DurmazR', 'AriO', 'BakirM', 'EnginA', 'DalT')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'AriO', 'BakirM', 'EnginA', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935554.1', 'OQ935553.1', 'OQ935552.1', 'OQ935551.1', 'OQ935550.1', 'OQ935549.1', 'OQ954468.1', 'OQ954467.1', 'OQ954466.1', 'OQ954465.1', 'OQ954464.1', 'OQ954463.1', 'OQ954474.1', 'OQ954473.1', 'OQ954472.1', 'OQ954471.1']
+Accessions_j:['OQ935554.1', 'OQ935553.1', 'OQ935552.1', 'OQ935551.1', 'OQ935550.1', 'OQ935549.1']
+Num_shared_accessions6 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'DurmazR', 'AriO', 'BakirM', 'EnginA', 'DalT')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'AriO', 'BakirM', 'EnginA', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935554.1', 'OQ935553.1', 'OQ935552.1', 'OQ935551.1', 'OQ935550.1', 'OQ935549.1', 'OQ954468.1', 'OQ954467.1', 'OQ954466.1', 'OQ954465.1', 'OQ954464.1', 'OQ954463.1', 'OQ954474.1', 'OQ954473.1', 'OQ954472.1', 'OQ954471.1']
+Accessions_j:['OQ954468.1', 'OQ954467.1', 'OQ954466.1', 'OQ954465.1', 'OQ954464.1', 'OQ954463.1']
+Num_shared_accessions6 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('KalayciogluA', 'DurmazR', 'KorukluogluG', 'UyarY', 'OzkulA', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2010 Year_j: Max_year_dif:0
+Accessions_i:['HQ821874.1']
+Accessions_j:['HQ821875.1', 'HQ821874.1', 'HQ821873.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('KalayciogluA', 'DurmazR', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2010 Year_j: Max_year_dif:0
+Accessions_i:['HQ821873.1']
+Accessions_j:['HQ821875.1', 'HQ821874.1', 'HQ821873.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2011 Year_j: Max_year_dif:0
+Accessions_i:['HQ864321.1']
+Accessions_j:['HQ864321.1', 'HQ829816.1', 'HQ829815.1', 'HQ829814.1', 'HQ829819.1', 'HQ829818.1', 'HQ829817.1', 'HQ829813.1', 'HQ829812.1', 'HQ829811.1', 'HQ829810.1', 'HQ829809.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2010 Year_j: Max_year_dif:0
+Accessions_i:['HQ829813.1', 'HQ829812.1', 'HQ829811.1', 'HQ829810.1', 'HQ829809.1']
+Accessions_j:['HQ864321.1', 'HQ829816.1', 'HQ829815.1', 'HQ829814.1', 'HQ829819.1', 'HQ829818.1', 'HQ829817.1', 'HQ829813.1', 'HQ829812.1', 'HQ829811.1', 'HQ829810.1', 'HQ829809.1']
+Num_shared_accessions5 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'EnginA', 'AriO', 'DurmazR', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'EnginA', 'AriO', 'DurmazR', 'BakirM', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935548.1', 'OQ954478.1', 'OQ954476.1']
+Accessions_j:['OQ935548.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo hemorrhagic fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'EnginA', 'AriO', 'DurmazR', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'EnginA', 'AriO', 'DurmazR', 'BakirM', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935548.1', 'OQ954478.1', 'OQ954476.1']
+Accessions_j:['OQ954478.1', 'OQ954476.1']
+Num_shared_accessions2 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease. This study was funded by the Scientific and Technological Research Council of Turkey (TUBITAK grant number SBAG 118R018)
+Title_distance:317
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['ON623086.1', 'ON254100.1', 'ON254099.1', 'ON254098.1', 'ON254097.1', 'ON254096.1', 'ON254095.1', 'ON209431.1', 'ON623080.1']
+Accessions_j:['ON623080.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.3333333333333333
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'EnginA', 'BakirM', 'AriO', 'DalT', 'OguzogluT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j:2023 Max_year_dif:0
+Accessions_i:['OQ935539.1', 'OQ935540.1']
+Accessions_j:['OQ935537.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease. This study was funded by the Scientific and Technological Research Council of Turkey (TUBITAK grant number SBAG 118R018)
+Title_distance:317
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['ON668035.1', 'ON668034.1', 'ON668033.1']
+Accessions_j:['ON668035.1', 'ON668034.1', 'ON668033.1', 'ON623085.1', 'ON623084.1', 'ON623083.1', 'ON623082.1', 'ON623081.1']
+Num_shared_accessions3 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease. This study was funded by the Scientific and Technological Research Council of Turkey (TUBITAK grant number SBAG 118R018)
+Title_distance:317
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['ON623085.1', 'ON623084.1', 'ON623083.1', 'ON623082.1', 'ON623081.1', 'ON623089.1', 'ON623088.1', 'ON623087.1']
+Accessions_j:['ON668035.1', 'ON668034.1', 'ON668033.1', 'ON623085.1', 'ON623084.1', 'ON623083.1', 'ON623082.1', 'ON623081.1']
+Num_shared_accessions5 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease. This study was funded by the Scientific and Technological Research Council of Turkey (TUBITAK grant number SBAG 118R018)
+Title_distance:317
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE', 'DalT')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['ON640907.1', 'ON640906.1']
+Accessions_j:['ON640910.1', 'ON640909.1', 'ON640908.1', 'ON640907.1', 'ON640906.1']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease. This study was funded by the Scientific and Technological Research Council of Turkey (TUBITAK grant number SBAG 118R018)
+Title_distance:317
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE', 'DalT')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['ON640910.1', 'ON640909.1', 'ON640908.1']
+Accessions_j:['ON640910.1', 'ON640909.1', 'ON640908.1', 'ON640907.1', 'ON640906.1']
+Num_shared_accessions3 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'EnginA', 'BakirM', 'DurmazR')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'EnginA', 'BakirM', 'DurmazR')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935547.1', 'OQ935546.1', 'OQ935545.1', 'OQ935544.1', 'OQ935543.1', 'OQ935542.1']
+Accessions_j:['OQ935547.1', 'OQ935546.1', 'OQ935545.1', 'OQ935544.1', 'OQ935543.1', 'OQ935542.1', 'OQ935541.1']
+Num_shared_accessions6 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'EnginA', 'BakirM', 'DurmazR')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'EnginA', 'BakirM', 'DurmazR')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935541.1']
+Accessions_j:['OQ935547.1', 'OQ935546.1', 'OQ935545.1', 'OQ935544.1', 'OQ935543.1', 'OQ935542.1', 'OQ935541.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Sequence determination of the Crimean-Congo hemorrhagic fever virus L segment
+Title_distance:68
+Author_list_i: ('KinsellaE', 'MartinS', 'GrollaA', 'CzubM', 'FeldmannH', 'FlickR')
+Author_list_j: ('KinsellaE', 'MartinS', 'GrollaA', 'CzubM', 'FeldmannH', 'FlickR')
+Author_list_pcnt:1.0
+Year_i:2003 Year_j:2004 Max_year_dif:1
+Accessions_i:['NC_005301.3', 'AY389361.2']
+Accessions_j:['NC_005301.3', 'AY389361.2']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Sequence determination of the Crimean-Congo hemorrhagic fever virus L segment
+Title_distance:68
+Author_list_i: ('KinsellaE', 'MartinS', 'GrollaA', 'CzubM', 'FeldmannH', 'FlickR')
+Author_list_j: ('KinsellaE', 'MartinS', 'GrollaA', 'CzubM', 'FeldmannH', 'FlickR')
+Author_list_pcnt:1.0
+Year_i:2004 Year_j:2004 Max_year_dif:0
+Accessions_i:['NC_005301.3', 'AY389361.2']
+Accessions_j:['NC_005301.3', 'AY389361.2']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Crimean-Congo hemorrhagic fever virus S segment
+Title_j:Direct Submission
+Title_distance:40
+Author_list_i: ('LoftsR', 'HodgsonL', 'SmithJ')
+Author_list_j: ('LoftsR', 'HodgsonL', 'SmithJ')
+Author_list_pcnt:1.0
+Year_i: Year_j:1997 Max_year_dif:0
+Accessions_i:['NC_005302.1', 'U88416.1', 'U88415.1', 'U88414.1', 'U88413.1', 'U88412.1', 'U88411.1', 'U88410.1']
+Accessions_j:['NC_005302.1', 'U88416.1', 'U88415.1', 'U88414.1', 'U88413.1', 'U88412.1', 'U88411.1', 'U88410.1']
+Num_shared_accessions8 Pcnt_shared_stems:1.0
+
+Title_i:A variable region in the Crimean-Congo hemorrhagic fever virus L segment distinguishes between strains isolated from different geographic regions
+Title_j:Direct Submission
+Title_distance:131
+Author_list_i: ('MeissnerJ', 'SereginS', 'SereginS', 'VyshemirskiiO', 'SamokhvalovE', 'LvovD', 'NetesovS', 'PetrovV')
+Author_list_j: ('MeissnerJ', 'SereginS', 'SereginS', 'VyshemirskiiO', 'SamokhvalovE', 'LvovD', 'NetesovS', 'PetrovV')
+Author_list_pcnt:1.0
+Year_i:2006 Year_j:2005 Max_year_dif:1
+Accessions_i:['DQ206449.1', 'AY995170.2', 'AY995167.2', 'AY995159.2', 'AY995169.2', 'AY995168.2', 'AY995164.2', 'AY995162.2', 'AY995161.2', 'AY995158.2', 'AY995165.2', 'AY995163.2', 'AY995160.2', 'AY995166.2']
+Accessions_j:['AY995170.2', 'AY995170.2', 'AY995167.2', 'AY995167.2', 'AY995159.2', 'AY995159.2', 'AY995169.2', 'AY995169.2', 'AY995168.2', 'AY995168.2', 'AY995164.2', 'AY995164.2', 'AY995162.2', 'AY995162.2', 'AY995161.2', 'AY995161.2', 'AY995158.2', 'AY995158.2', 'AY995165.2', 'AY995163.2', 'AY995160.2', 'AY995160.2', 'AY995166.2', 'AY995166.2']
+Num_shared_accessions13 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Prevalence and Phylogenetic Analysis of Crimean-Congo Hemorrhagic Fever Virus in Ticks from Different Ecosystems in Xinjiang, China
+Title_distance:119
+Author_list_i: ('MomingA', 'YueX', 'ShenS', 'ChangC', 'WangC', 'LuoT', 'GuoR', 'HuZ', 'ZhangY', 'DengF', 'SunS')
+Author_list_j: ('MomingA', 'YueX', 'ShenS', 'ChangC', 'WangC', 'LuoT', 'ZhangY', 'GuoR', 'HuZ', 'ZhangY', 'DengF', 'SunS')
+Author_list_pcnt:1.0
+Year_i:2017 Year_j:2018 Max_year_dif:1
+Accessions_i:['MG696085.1', 'MG696084.1', 'MG696083.1', 'MG696082.1', 'MG696081.1', 'MG696080.1', 'MG696079.1', 'MG696078.1', 'MG696077.1', 'MG696076.1', 'MG696075.1', 'MG696074.1', 'MG696073.1', 'MG696072.1', 'MG696071.1', 'MG696070.1']
+Accessions_j:['MG696085.1', 'MG696084.1', 'MG696083.1', 'MG696082.1', 'MG696081.1', 'MG696080.1', 'MG696079.1', 'MG696078.1', 'MG696077.1', 'MG696076.1', 'MG696075.1', 'MG696074.1', 'MG696073.1', 'MG696072.1', 'MG696071.1', 'MG696070.1', 'MG696069.1', 'MG696068.1']
+Num_shared_accessions16 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Partial Genetic Characterization of different strains of C-CHF virus circulating in territory of NIS countries
+Title_distance:99
+Author_list_i: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_j: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j: Max_year_dif:0
+Accessions_i:['AF481806.1', 'AF492424.1', 'AF492423.1', 'AF492422.1', 'AF492421.1', 'AF489587.1', 'AF489586.1', 'AF481807.1']
+Accessions_j:['AF481806.1', 'AF481807.1']
+Num_shared_accessions2 Pcnt_shared_stems:0.3333333333333333
+
+Title_i:Direct Submission
+Title_j:Partial genetic characterization of different strain of C-CHF virus circulating in the territory of NIS countries
+Title_distance:102
+Author_list_i: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_j: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j: Max_year_dif:0
+Accessions_i:['AF481806.1', 'AF492424.1', 'AF492423.1', 'AF492422.1', 'AF492421.1', 'AF489587.1', 'AF489586.1', 'AF481807.1']
+Accessions_j:['AF489587.1', 'AF489586.1']
+Num_shared_accessions2 Pcnt_shared_stems:0.3333333333333333
+
+Title_i:Direct Submission
+Title_j:Partial genetic characterization of different strains of C-CHF virus circulating in territory of NIS countries
+Title_distance:99
+Author_list_i: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_j: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j: Max_year_dif:0
+Accessions_i:['AF481806.1', 'AF492424.1', 'AF492423.1', 'AF492422.1', 'AF492421.1', 'AF489587.1', 'AF489586.1', 'AF481807.1']
+Accessions_j:['AF492424.1', 'AF492423.1', 'AF492422.1', 'AF492421.1']
+Num_shared_accessions4 Pcnt_shared_stems:0.3333333333333333
+
+Title_i:Crimean-Congo hemorrhagic fever virus S segment
+Title_j:Direct Submission
+Title_distance:40
+Author_list_i: ('PetrovaI', 'SereginS', 'KuzinaI', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS', 'PetrovV')
+Author_list_j: ('PetrovaI', 'SereginS', 'KuzinaI', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS', 'PetrovV')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j:2002 Max_year_dif:0
+Accessions_i:['AF481805.1', 'AF481804.1', 'AF481803.1']
+Accessions_j:['AF481805.1', 'AF481803.1', 'AF481801.1', 'AF481800.1', 'AF481802.1', 'AF481799.1']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:The Saharan antelope addax (Addax nasomaculatus) as a host for Hyalomma marginatum, tick vector of Crimean-Congo hemorrhagic fever virus
+Title_distance:126
+Author_list_i: ('RodriguezO', 'De la fuenteG', 'Fernandez de meraI', 'Vaz-rodriguesR', 'GortazarC', 'De la fuenteJ')
+Author_list_j: ('RodriguezO', 'De la fuenteG', 'Fernandez de meraI', 'Vaz-rodriguesR', 'GortazarC', 'De la fuenteJ')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j:2022 Max_year_dif:0
+Accessions_i:['ON664916.1', 'ON664915.1', 'ON646079.1', 'ON646078.1']
+Accessions_j:['ON557389.1', 'ON664916.1', 'ON664915.1', 'ON646079.1', 'ON646078.1']
+Num_shared_accessions4 Pcnt_shared_stems:0.6666666666666666
+
+Title_i:Characterization of the glycoproteins of crimean-congo hemorrhagic Fever virus
+Title_j:Direct Submission
+Title_distance:69
+Author_list_i: ('SanchezA', 'VincentM', 'NicholS')
+Author_list_j: ('SanchezA', 'VincentM', 'NicholS')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j:2002 Max_year_dif:0
+Accessions_i:['NC_005300.2', 'AF467769.2', 'AF467768.2']
+Accessions_j:['NC_005300.2', 'AF467769.2', 'AF467768.2']
+Num_shared_accessions3 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Phylogenetic study on Crimean-Congo hemorrhagic fever virus obtained from human cases in the northern Iran
+Title_distance:93
+Author_list_i: ('ShahhosseiniN', 'ChinikarS')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KT588642.1']
+Accessions_j:['KT588642.1', 'KT588641.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Phylogenetic study on Crimean-Congo hemorrhagic fever virus obtained from human cases in the northern Iran
+Title_distance:93
+Author_list_i: ('ShahhosseiniN', 'ChinikarS')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KT588641.1']
+Accessions_j:['KT588642.1', 'KT588641.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:CCHF genetic variety research
+Title_j:Direct Submission
+Title_distance:25
+Author_list_i: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_j: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_pcnt:1.0
+Year_i: Year_j:2001 Max_year_dif:0
+Accessions_i:['AF362080.1', 'AF358784.1', 'AY029157.1', 'AF354296.1']
+Accessions_j:['AY029157.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.25
+
+Title_i:CCHF genetic variety research
+Title_j:Direct Submission
+Title_distance:25
+Author_list_i: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_j: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_pcnt:1.0
+Year_i: Year_j:2001 Max_year_dif:0
+Accessions_i:['AF362080.1', 'AF358784.1', 'AY029157.1', 'AF354296.1']
+Accessions_j:['AF362080.1', 'AF358784.1']
+Num_shared_accessions2 Pcnt_shared_stems:0.5
+
+Title_i:CCHF genetic variety research
+Title_j:Direct Submission
+Title_distance:25
+Author_list_i: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_j: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_pcnt:1.0
+Year_i: Year_j:2001 Max_year_dif:0
+Accessions_i:['AF362080.1', 'AF358784.1', 'AY029157.1', 'AF354296.1']
+Accessions_j:['AF354296.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.25
+
+Title_i:Direct Submission
+Title_j:Novel segmented RNA Jingmenvirus group isolated from human
+Title_distance:49
+Author_list_i: ('TernovoiV', 'GladyshevaA', 'SementsovaA', 'ZaykovskayaA', 'VolynkinaA', 'KotenevE', 'AgafonovA', 'LoktevV')
+Author_list_j: ('TernovoiV', 'GladyshevaA', 'SementsovaA', 'ZaykovskayaA', 'VolynkinaA', 'KotenevE', 'AgafonovA', 'LoktevV')
+Author_list_pcnt:1.0
+Year_i:2019 Year_j: Max_year_dif:0
+Accessions_i:['MN218696.1', 'MN218695.1', 'MN218694.1', 'MN218693.1']
+Accessions_j:['MN218696.1', 'MN218695.1', 'MN218693.1']
+Num_shared_accessions3 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Molecular characterization of S and M segments of Crimean Congo Hemorrhagic Fever Virus in Turkey
+Title_distance:87
+Author_list_i: ('TimurkanM', 'AydinH')
+Author_list_j: ('TimurkanM', 'AydinH')
+Author_list_pcnt:1.0
+Year_i:2020 Year_j: Max_year_dif:0
+Accessions_i:['MT178302.1', 'MT178301.1', 'MT178300.1', 'MT178299.1', 'MT178298.1', 'MT178297.1', 'MT178296.1', 'MT178295.1', 'MT178294.1', 'MT178293.1', 'MT178292.1', 'MT178291.1', 'MT178290.1', 'MT178289.1', 'MT178288.1', 'MT178287.1', 'MT178286.1', 'MT178285.1', 'MT178284.1', 'MT178283.1', 'MT178282.1', 'MT178281.1', 'MT178280.1', 'MT178279.1', 'MT178278.1']
+Accessions_j:['MT178327.1', 'MT178326.1', 'MT178325.1', 'MT178324.1', 'MT178323.1', 'MT178322.1', 'MT178321.1', 'MT178320.1', 'MT178319.1', 'MT178318.1', 'MT178317.1', 'MT178316.1', 'MT178315.1', 'MT178314.1', 'MT178313.1', 'MT178312.1', 'MT178311.1', 'MT178310.1', 'MT178309.1', 'MT178308.1', 'MT178307.1', 'MT178306.1', 'MT178305.1', 'MT178304.1', 'MT178303.1', 'MT178302.1', 'MT178301.1', 'MT178300.1', 'MT178299.1', 'MT178298.1', 'MT178297.1', 'MT178296.1', 'MT178295.1', 'MT178294.1', 'MT178293.1', 'MT178292.1', 'MT178291.1', 'MT178290.1', 'MT178289.1', 'MT178288.1', 'MT178287.1', 'MT178286.1', 'MT178285.1', 'MT178284.1', 'MT178283.1', 'MT178282.1', 'MT178281.1', 'MT178280.1', 'MT178279.1', 'MT178278.1']
+Num_shared_accessions25 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Molecular characterization of S and M segments of Crimean Congo Hemorrhagic Fever Virus in Turkey
+Title_distance:87
+Author_list_i: ('TimurkanM', 'AydinH')
+Author_list_j: ('TimurkanM', 'AydinH')
+Author_list_pcnt:1.0
+Year_i:2020 Year_j: Max_year_dif:0
+Accessions_i:['MT178327.1', 'MT178326.1', 'MT178325.1', 'MT178324.1', 'MT178323.1', 'MT178322.1', 'MT178321.1', 'MT178320.1', 'MT178319.1', 'MT178318.1', 'MT178317.1', 'MT178316.1', 'MT178315.1', 'MT178314.1', 'MT178313.1', 'MT178312.1', 'MT178311.1', 'MT178310.1', 'MT178309.1', 'MT178308.1', 'MT178307.1', 'MT178306.1', 'MT178305.1', 'MT178304.1', 'MT178303.1']
+Accessions_j:['MT178327.1', 'MT178326.1', 'MT178325.1', 'MT178324.1', 'MT178323.1', 'MT178322.1', 'MT178321.1', 'MT178320.1', 'MT178319.1', 'MT178318.1', 'MT178317.1', 'MT178316.1', 'MT178315.1', 'MT178314.1', 'MT178313.1', 'MT178312.1', 'MT178311.1', 'MT178310.1', 'MT178309.1', 'MT178308.1', 'MT178307.1', 'MT178306.1', 'MT178305.1', 'MT178304.1', 'MT178303.1', 'MT178302.1', 'MT178301.1', 'MT178300.1', 'MT178299.1', 'MT178298.1', 'MT178297.1', 'MT178296.1', 'MT178295.1', 'MT178294.1', 'MT178293.1', 'MT178292.1', 'MT178291.1', 'MT178290.1', 'MT178289.1', 'MT178288.1', 'MT178287.1', 'MT178286.1', 'MT178285.1', 'MT178284.1', 'MT178283.1', 'MT178282.1', 'MT178281.1', 'MT178280.1', 'MT178279.1', 'MT178278.1']
+Num_shared_accessions25 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:First report of nosocomial outbreak of Crimean-Congo hemorrhagic fever, Rajasthan State, India
+Title_distance:83
+Author_list_i: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_j: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KT384400.1', 'KT384397.1', 'KT384402.1', 'KT384401.1', 'KT384399.1', 'KT384398.1', 'KT384396.1']
+Accessions_j:['KT384400.1', 'KT384397.1', 'KT384388.1', 'KT384382.1']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:First report of nosocomial outbreak of Crimean-Congo hemorrhagic fever, Rajasthan State, India
+Title_distance:83
+Author_list_i: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_j: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KT384388.1', 'KT384382.1', 'KT384394.1', 'KT384395.1', 'KT384393.1', 'KT384392.1', 'KT384391.1', 'KT384390.1', 'KT384389.1', 'KT384387.1', 'KT384386.1', 'KT384385.1', 'KT384384.1', 'KT384383.1']
+Accessions_j:['KT384400.1', 'KT384397.1', 'KT384388.1', 'KT384382.1']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:First report of nosocomial outbreak of Crimean-Congo hemorrhagic fever, Rajasthan State, India
+Title_distance:83
+Author_list_i: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_j: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KT384404.1', 'KT384403.1']
+Accessions_j:['KT384400.1', 'KT384397.1', 'KT384388.1', 'KT384382.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic variability of Crimean-Congo hemorrhagic fever virus in Russia and Middle Asia
+Title_distance:75
+Author_list_i: ('YashinaL', 'PetrovV', 'VyshemirskyO', 'PetrovaI', 'AristovaV', 'LvovD', 'GutorovV', 'TyunnikovG', 'KuzinaI', 'SereginS', 'NetesovS')
+Author_list_j: ('YashinaL', 'PetrovV', 'VyshemirskyO', 'PetrovaI', 'AristovaV', 'LvovD', 'GutorovV', 'TyunnikovG', 'KuzinaI', 'SereginS', 'NetesovS')
+Author_list_pcnt:1.0
+Year_i:2001 Year_j: Max_year_dif:0
+Accessions_i:['AF401650.1', 'AF401649.1', 'AF401648.1', 'AF401647.1', 'AF401651.1']
+Accessions_j:['AF401651.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic analysis of wild-type Crimean-Congo hemorrhagic fever virus in Russia and Central Asia
+Title_distance:83
+Author_list_i: ('YashinaL', 'VyshemirskiO', 'SereginS', 'PetrovaI', 'LvovD', 'GutorovV', 'NetesovS', 'PetrovV')
+Author_list_j: ('YashinaL', 'VyshemirskiO', 'SereginS', 'PetrovaI', 'LvovD', 'GutorovV', 'NetesovS', 'PetrovV')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j: Max_year_dif:0
+Accessions_i:['AY093627.1', 'AY093626.1', 'AY093625.1', 'AY093624.1', 'AY093623.1', 'AY093622.1', 'AY093621.1', 'AY093620.1']
+Accessions_j:['AY093627.1', 'AY093626.1']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:The current status of tick populations in Istanbul and their biorisks in terms of CCHF and public health
+Title_distance:91
+Author_list_i: ('Zarrabi ahrabiS', 'AkyildizG', 'Gargili kelesA')
+Author_list_j: ('Zarrabi ahrabiS', 'AkyildizG', 'Gargili kelesA')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['OP312076.1', 'OP312075.1', 'OP312074.1', 'OP312073.1', 'OP312072.1']
+Accessions_j:['OP312076.1', 'OP312075.1', 'OP312074.1', 'OP312073.1', 'OP312072.1', 'OQ377564.1', 'OQ377563.1', 'OQ377562.1', 'OQ377561.1', 'OQ377560.1', 'OQ377559.1']
+Num_shared_accessions5 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:The current status of tick populations in Istanbul and their biorisks in terms of CCHF and public health
+Title_distance:91
+Author_list_i: ('Zarrabi ahrabiS', 'AkyildizG', 'Gargili kelesA')
+Author_list_j: ('Zarrabi ahrabiS', 'AkyildizG', 'Gargili kelesA')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ377564.1', 'OQ377563.1', 'OQ377562.1', 'OQ377561.1', 'OQ377560.1', 'OQ377559.1']
+Accessions_j:['OP312076.1', 'OP312075.1', 'OP312074.1', 'OP312073.1', 'OP312072.1', 'OQ377564.1', 'OQ377563.1', 'OQ377562.1', 'OQ377561.1', 'OQ377560.1', 'OQ377559.1']
+Num_shared_accessions6 Pcnt_shared_stems:0.5
+
+Title_i:Crimean-Congo Hemorrhagic Fever Virus in ticks and livestock: a Molecular and Seroepidemiological Survey in Borderline of Iran-Pakistan-Gulf of Oman Littoral
+Title_j:Direct Submission
+Title_distance:145
+Author_list_i: ('ChinikarS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i: Year_j:2015 Max_year_dif:0
+Accessions_i:['KU242341.1']
+Accessions_j:['KU242341.1', 'KT588640.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Phylogenetic study on Crimean-Congo hemorrhagic fever virus obtained from human cases in the northern Iran
+Title_distance:93
+Author_list_i: ('ChinikarS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KU242341.1', 'KT588640.1']
+Accessions_j:['KT588640.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Phylogenetic study on Crimean-Congo hemorrhagic fever virus obtained from human cases in the northern Iran
+Title_j:Direct Submission
+Title_distance:93
+Author_list_i: ('ChinikarS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS')
+Author_list_pcnt:1.0
+Year_i: Year_j:2015 Max_year_dif:0
+Accessions_i:['KT588640.1']
+Accessions_j:['KT588642.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Phylogenetic study on Crimean-Congo hemorrhagic fever virus obtained from human cases in the northern Iran
+Title_j:Direct Submission
+Title_distance:93
+Author_list_i: ('ChinikarS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS')
+Author_list_pcnt:1.0
+Year_i: Year_j:2015 Max_year_dif:0
+Accessions_i:['KT588640.1']
+Accessions_j:['KT588641.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j: Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Num_shared_accessions21 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j: Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075646.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j: Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075645.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'KhakifirouzS', 'JalaliT', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075661.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN', 'JalaliT', 'KhakifirouzS')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075635.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN', 'KhakifirouzS', 'JalaliT')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075662.1', 'KP075658.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('KhakifirouzS', 'ChinikarS', 'JalaliT', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075644.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS', 'JalaliT', 'KhakifirouzS')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075683.1', 'KP075682.1', 'KP075681.1', 'KP075680.1', 'KP075674.1', 'KP075673.1', 'KP075667.1', 'KP075666.1', 'KP075665.1', 'KP075656.1', 'KP075655.1', 'KP075654.1', 'KP075652.1', 'KP075651.1', 'KP075650.1', 'KP075648.1', 'KP075647.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS', 'KhakifirouzS', 'JalaliT')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075660.1', 'KP075653.1', 'KP075649.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_j:Direct Submission
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i: Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075646.1', 'KP075645.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'KorukluogluG', 'UyarY', 'OzkulA', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2010 Year_j: Max_year_dif:0
+Accessions_i:['HQ821875.1']
+Accessions_j:['HQ821875.1', 'HQ821874.1', 'HQ821873.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2010 Year_j: Max_year_dif:0
+Accessions_i:['HQ829819.1', 'HQ829818.1', 'HQ829817.1']
+Accessions_j:['HQ864321.1', 'HQ829816.1', 'HQ829815.1', 'HQ829814.1', 'HQ829819.1', 'HQ829818.1', 'HQ829817.1', 'HQ829813.1', 'HQ829812.1', 'HQ829811.1', 'HQ829810.1', 'HQ829809.1']
+Num_shared_accessions3 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_j: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2011 Year_j: Max_year_dif:0
+Accessions_i:['HQ891305.1']
+Accessions_j:['HQ891305.1', 'HQ864322.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_j: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'UyarY', 'KorukluogluG', 'OzkulA', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2011 Year_j:2011 Max_year_dif:0
+Accessions_i:['HQ891305.1']
+Accessions_j:['HQ891308.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'UnaldiO', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2011 Year_j:2011 Max_year_dif:0
+Accessions_i:['HQ891305.1']
+Accessions_j:['HQ891307.1', 'HQ891306.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_j: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2011 Year_j: Max_year_dif:0
+Accessions_i:['HQ864322.1']
+Accessions_j:['HQ891305.1', 'HQ864322.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Genetic analysis of Crimean-Congo hemorrhagic fever virus isolates in 2012
+Title_distance:64
+Author_list_i: ('DurmazR', 'KorukluogluG', 'ErtekM', 'KalayciogluA')
+Author_list_j: ('DurmazR', 'KorukluogluG', 'ErtekM', 'KalayciogluA')
+Author_list_pcnt:1.0
+Year_i:2012 Year_j: Max_year_dif:0
+Accessions_i:['KC150000.1']
+Accessions_j:['KC150005.1', 'KC150004.1', 'KC150003.1', 'KC150002.1', 'KC150001.1', 'KC150000.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Genetic analysis of Crimean-Congo hemorrhagic fever virus isolates in 2012
+Title_j:Direct Submission
+Title_distance:64
+Author_list_i: ('DurmazR', 'KorukluogluG', 'ErtekM', 'KalayciogluA')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'KorukluogluG', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i: Year_j:2012 Max_year_dif:0
+Accessions_i:['KC150005.1', 'KC150004.1', 'KC150003.1', 'KC150002.1', 'KC150001.1', 'KC150000.1']
+Accessions_j:['KC150001.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:An Outbreak of Crimean-Congo Hemorrhagic Fever in South East of Iran, May 2016
+Title_j:Direct Submission
+Title_distance:69
+Author_list_i: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_j: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_pcnt:1.0
+Year_i: Year_j:2016 Max_year_dif:0
+Accessions_i:['KX458021.1', 'KX458020.1', 'KX458019.1', 'KX458018.1', 'KX458017.1']
+Accessions_j:['KX458023.1', 'KX458022.1', 'KX458021.1', 'KX458020.1', 'KX458019.1', 'KX458018.1', 'KX458017.1']
+Num_shared_accessions5 Pcnt_shared_stems:1.0
+
+Title_i:Crimean-Congo Hemorrhagic Fever Virus isolated from Kurdistan
+Title_j:Direct Submission
+Title_distance:52
+Author_list_i: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_j: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_pcnt:1.0
+Year_i: Year_j:2016 Max_year_dif:0
+Accessions_i:['KX458022.1']
+Accessions_j:['KX458023.1', 'KX458022.1', 'KX458021.1', 'KX458020.1', 'KX458019.1', 'KX458018.1', 'KX458017.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Crimean-Congo Hemorrhagic Fever Virus isolated from Mazandaran
+Title_j:Direct Submission
+Title_distance:53
+Author_list_i: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_j: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_pcnt:1.0
+Year_i: Year_j:2016 Max_year_dif:0
+Accessions_i:['KX458023.1']
+Accessions_j:['KX458023.1', 'KX458022.1', 'KX458021.1', 'KX458020.1', 'KX458019.1', 'KX458018.1', 'KX458017.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j: Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075646.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j: Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075645.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'KhakifirouzS', 'JalaliT', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075661.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN', 'JalaliT', 'KhakifirouzS')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075635.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN', 'KhakifirouzS', 'JalaliT')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075662.1', 'KP075658.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('KhakifirouzS', 'ChinikarS', 'JalaliT', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075644.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS', 'JalaliT', 'KhakifirouzS')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075683.1', 'KP075682.1', 'KP075681.1', 'KP075680.1', 'KP075674.1', 'KP075673.1', 'KP075667.1', 'KP075666.1', 'KP075665.1', 'KP075656.1', 'KP075655.1', 'KP075654.1', 'KP075652.1', 'KP075651.1', 'KP075650.1', 'KP075648.1', 'KP075647.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS', 'KhakifirouzS', 'JalaliT')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075660.1', 'KP075653.1', 'KP075649.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935538.1']
+Accessions_j:['OQ935539.1', 'OQ935538.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'EnginA', 'BakirM', 'AriO', 'DalT', 'OguzogluT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j:2023 Max_year_dif:0
+Accessions_i:['OQ935538.1']
+Accessions_j:['OQ935537.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_j:Direct Submission
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_pcnt:1.0
+Year_i: Year_j:2023 Max_year_dif:0
+Accessions_i:['OQ935539.1', 'OQ935538.1']
+Accessions_j:['OQ935539.1', 'OQ935540.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'DurmazR', 'AriO', 'BakirM', 'EnginA', 'DalT')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'AriO', 'BakirM', 'EnginA', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935554.1', 'OQ935553.1', 'OQ935552.1', 'OQ935551.1', 'OQ935550.1', 'OQ935549.1', 'OQ954468.1', 'OQ954467.1', 'OQ954466.1', 'OQ954465.1', 'OQ954464.1', 'OQ954463.1', 'OQ954474.1', 'OQ954473.1', 'OQ954472.1', 'OQ954471.1']
+Accessions_j:['OQ935554.1', 'OQ935553.1', 'OQ935552.1', 'OQ935551.1', 'OQ935550.1', 'OQ935549.1']
+Num_shared_accessions6 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'DurmazR', 'AriO', 'BakirM', 'EnginA', 'DalT')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'AriO', 'BakirM', 'EnginA', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935554.1', 'OQ935553.1', 'OQ935552.1', 'OQ935551.1', 'OQ935550.1', 'OQ935549.1', 'OQ954468.1', 'OQ954467.1', 'OQ954466.1', 'OQ954465.1', 'OQ954464.1', 'OQ954463.1', 'OQ954474.1', 'OQ954473.1', 'OQ954472.1', 'OQ954471.1']
+Accessions_j:['OQ954468.1', 'OQ954467.1', 'OQ954466.1', 'OQ954465.1', 'OQ954464.1', 'OQ954463.1']
+Num_shared_accessions6 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('KalayciogluA', 'DurmazR', 'KorukluogluG', 'UyarY', 'OzkulA', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2010 Year_j: Max_year_dif:0
+Accessions_i:['HQ821874.1']
+Accessions_j:['HQ821875.1', 'HQ821874.1', 'HQ821873.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('KalayciogluA', 'DurmazR', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2010 Year_j: Max_year_dif:0
+Accessions_i:['HQ821873.1']
+Accessions_j:['HQ821875.1', 'HQ821874.1', 'HQ821873.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2011 Year_j: Max_year_dif:0
+Accessions_i:['HQ864321.1']
+Accessions_j:['HQ864321.1', 'HQ829816.1', 'HQ829815.1', 'HQ829814.1', 'HQ829819.1', 'HQ829818.1', 'HQ829817.1', 'HQ829813.1', 'HQ829812.1', 'HQ829811.1', 'HQ829810.1', 'HQ829809.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2010 Year_j: Max_year_dif:0
+Accessions_i:['HQ829813.1', 'HQ829812.1', 'HQ829811.1', 'HQ829810.1', 'HQ829809.1']
+Accessions_j:['HQ864321.1', 'HQ829816.1', 'HQ829815.1', 'HQ829814.1', 'HQ829819.1', 'HQ829818.1', 'HQ829817.1', 'HQ829813.1', 'HQ829812.1', 'HQ829811.1', 'HQ829810.1', 'HQ829809.1']
+Num_shared_accessions5 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'EnginA', 'AriO', 'DurmazR', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'EnginA', 'AriO', 'DurmazR', 'BakirM', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935548.1', 'OQ954478.1', 'OQ954476.1']
+Accessions_j:['OQ935548.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo hemorrhagic fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'EnginA', 'AriO', 'DurmazR', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'EnginA', 'AriO', 'DurmazR', 'BakirM', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935548.1', 'OQ954478.1', 'OQ954476.1']
+Accessions_j:['OQ954478.1', 'OQ954476.1']
+Num_shared_accessions2 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease. This study was funded by the Scientific and Technological Research Council of Turkey (TUBITAK grant number SBAG 118R018)
+Title_distance:317
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['ON623086.1', 'ON254100.1', 'ON254099.1', 'ON254098.1', 'ON254097.1', 'ON254096.1', 'ON254095.1', 'ON209431.1', 'ON623080.1']
+Accessions_j:['ON623080.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.3333333333333333
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'EnginA', 'BakirM', 'AriO', 'DalT', 'OguzogluT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j:2023 Max_year_dif:0
+Accessions_i:['OQ935539.1', 'OQ935540.1']
+Accessions_j:['OQ935537.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease. This study was funded by the Scientific and Technological Research Council of Turkey (TUBITAK grant number SBAG 118R018)
+Title_distance:317
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['ON668035.1', 'ON668034.1', 'ON668033.1']
+Accessions_j:['ON668035.1', 'ON668034.1', 'ON668033.1', 'ON623085.1', 'ON623084.1', 'ON623083.1', 'ON623082.1', 'ON623081.1']
+Num_shared_accessions3 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease. This study was funded by the Scientific and Technological Research Council of Turkey (TUBITAK grant number SBAG 118R018)
+Title_distance:317
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['ON623085.1', 'ON623084.1', 'ON623083.1', 'ON623082.1', 'ON623081.1', 'ON623089.1', 'ON623088.1', 'ON623087.1']
+Accessions_j:['ON668035.1', 'ON668034.1', 'ON668033.1', 'ON623085.1', 'ON623084.1', 'ON623083.1', 'ON623082.1', 'ON623081.1']
+Num_shared_accessions5 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease. This study was funded by the Scientific and Technological Research Council of Turkey (TUBITAK grant number SBAG 118R018)
+Title_distance:317
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE', 'DalT')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['ON640907.1', 'ON640906.1']
+Accessions_j:['ON640910.1', 'ON640909.1', 'ON640908.1', 'ON640907.1', 'ON640906.1']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease. This study was funded by the Scientific and Technological Research Council of Turkey (TUBITAK grant number SBAG 118R018)
+Title_distance:317
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE', 'DalT')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['ON640910.1', 'ON640909.1', 'ON640908.1']
+Accessions_j:['ON640910.1', 'ON640909.1', 'ON640908.1', 'ON640907.1', 'ON640906.1']
+Num_shared_accessions3 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'EnginA', 'BakirM', 'DurmazR')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'EnginA', 'BakirM', 'DurmazR')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935547.1', 'OQ935546.1', 'OQ935545.1', 'OQ935544.1', 'OQ935543.1', 'OQ935542.1']
+Accessions_j:['OQ935547.1', 'OQ935546.1', 'OQ935545.1', 'OQ935544.1', 'OQ935543.1', 'OQ935542.1', 'OQ935541.1']
+Num_shared_accessions6 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'EnginA', 'BakirM', 'DurmazR')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'EnginA', 'BakirM', 'DurmazR')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935541.1']
+Accessions_j:['OQ935547.1', 'OQ935546.1', 'OQ935545.1', 'OQ935544.1', 'OQ935543.1', 'OQ935542.1', 'OQ935541.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Sequence determination of the Crimean-Congo hemorrhagic fever virus L segment
+Title_distance:68
+Author_list_i: ('KinsellaE', 'MartinS', 'GrollaA', 'CzubM', 'FeldmannH', 'FlickR')
+Author_list_j: ('KinsellaE', 'MartinS', 'GrollaA', 'CzubM', 'FeldmannH', 'FlickR')
+Author_list_pcnt:1.0
+Year_i:2003 Year_j:2004 Max_year_dif:1
+Accessions_i:['NC_005301.3', 'AY389361.2']
+Accessions_j:['NC_005301.3', 'AY389361.2']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Sequence determination of the Crimean-Congo hemorrhagic fever virus L segment
+Title_distance:68
+Author_list_i: ('KinsellaE', 'MartinS', 'GrollaA', 'CzubM', 'FeldmannH', 'FlickR')
+Author_list_j: ('KinsellaE', 'MartinS', 'GrollaA', 'CzubM', 'FeldmannH', 'FlickR')
+Author_list_pcnt:1.0
+Year_i:2004 Year_j:2004 Max_year_dif:0
+Accessions_i:['NC_005301.3', 'AY389361.2']
+Accessions_j:['NC_005301.3', 'AY389361.2']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Crimean-Congo hemorrhagic fever virus S segment
+Title_j:Direct Submission
+Title_distance:40
+Author_list_i: ('LoftsR', 'HodgsonL', 'SmithJ')
+Author_list_j: ('LoftsR', 'HodgsonL', 'SmithJ')
+Author_list_pcnt:1.0
+Year_i: Year_j:1997 Max_year_dif:0
+Accessions_i:['NC_005302.1', 'U88416.1', 'U88415.1', 'U88414.1', 'U88413.1', 'U88412.1', 'U88411.1', 'U88410.1']
+Accessions_j:['NC_005302.1', 'U88416.1', 'U88415.1', 'U88414.1', 'U88413.1', 'U88412.1', 'U88411.1', 'U88410.1']
+Num_shared_accessions8 Pcnt_shared_stems:1.0
+
+Title_i:A variable region in the Crimean-Congo hemorrhagic fever virus L segment distinguishes between strains isolated from different geographic regions
+Title_j:Direct Submission
+Title_distance:131
+Author_list_i: ('MeissnerJ', 'SereginS', 'SereginS', 'VyshemirskiiO', 'SamokhvalovE', 'LvovD', 'NetesovS', 'PetrovV')
+Author_list_j: ('MeissnerJ', 'SereginS', 'SereginS', 'VyshemirskiiO', 'SamokhvalovE', 'LvovD', 'NetesovS', 'PetrovV')
+Author_list_pcnt:1.0
+Year_i:2006 Year_j:2005 Max_year_dif:1
+Accessions_i:['DQ206449.1', 'AY995170.2', 'AY995167.2', 'AY995159.2', 'AY995169.2', 'AY995168.2', 'AY995164.2', 'AY995162.2', 'AY995161.2', 'AY995158.2', 'AY995165.2', 'AY995163.2', 'AY995160.2', 'AY995166.2']
+Accessions_j:['AY995170.2', 'AY995170.2', 'AY995167.2', 'AY995167.2', 'AY995159.2', 'AY995159.2', 'AY995169.2', 'AY995169.2', 'AY995168.2', 'AY995168.2', 'AY995164.2', 'AY995164.2', 'AY995162.2', 'AY995162.2', 'AY995161.2', 'AY995161.2', 'AY995158.2', 'AY995158.2', 'AY995165.2', 'AY995163.2', 'AY995160.2', 'AY995160.2', 'AY995166.2', 'AY995166.2']
+Num_shared_accessions13 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Prevalence and Phylogenetic Analysis of Crimean-Congo Hemorrhagic Fever Virus in Ticks from Different Ecosystems in Xinjiang, China
+Title_distance:119
+Author_list_i: ('MomingA', 'YueX', 'ShenS', 'ChangC', 'WangC', 'LuoT', 'GuoR', 'HuZ', 'ZhangY', 'DengF', 'SunS')
+Author_list_j: ('MomingA', 'YueX', 'ShenS', 'ChangC', 'WangC', 'LuoT', 'ZhangY', 'GuoR', 'HuZ', 'ZhangY', 'DengF', 'SunS')
+Author_list_pcnt:1.0
+Year_i:2017 Year_j:2018 Max_year_dif:1
+Accessions_i:['MG696085.1', 'MG696084.1', 'MG696083.1', 'MG696082.1', 'MG696081.1', 'MG696080.1', 'MG696079.1', 'MG696078.1', 'MG696077.1', 'MG696076.1', 'MG696075.1', 'MG696074.1', 'MG696073.1', 'MG696072.1', 'MG696071.1', 'MG696070.1']
+Accessions_j:['MG696085.1', 'MG696084.1', 'MG696083.1', 'MG696082.1', 'MG696081.1', 'MG696080.1', 'MG696079.1', 'MG696078.1', 'MG696077.1', 'MG696076.1', 'MG696075.1', 'MG696074.1', 'MG696073.1', 'MG696072.1', 'MG696071.1', 'MG696070.1', 'MG696069.1', 'MG696068.1']
+Num_shared_accessions16 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Partial Genetic Characterization of different strains of C-CHF virus circulating in territory of NIS countries
+Title_distance:99
+Author_list_i: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_j: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j: Max_year_dif:0
+Accessions_i:['AF481806.1', 'AF492424.1', 'AF492423.1', 'AF492422.1', 'AF492421.1', 'AF489587.1', 'AF489586.1', 'AF481807.1']
+Accessions_j:['AF481806.1', 'AF481807.1']
+Num_shared_accessions2 Pcnt_shared_stems:0.3333333333333333
+
+Title_i:Direct Submission
+Title_j:Partial genetic characterization of different strain of C-CHF virus circulating in the territory of NIS countries
+Title_distance:102
+Author_list_i: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_j: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j: Max_year_dif:0
+Accessions_i:['AF481806.1', 'AF492424.1', 'AF492423.1', 'AF492422.1', 'AF492421.1', 'AF489587.1', 'AF489586.1', 'AF481807.1']
+Accessions_j:['AF489587.1', 'AF489586.1']
+Num_shared_accessions2 Pcnt_shared_stems:0.3333333333333333
+
+Title_i:Direct Submission
+Title_j:Partial genetic characterization of different strains of C-CHF virus circulating in territory of NIS countries
+Title_distance:99
+Author_list_i: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_j: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j: Max_year_dif:0
+Accessions_i:['AF481806.1', 'AF492424.1', 'AF492423.1', 'AF492422.1', 'AF492421.1', 'AF489587.1', 'AF489586.1', 'AF481807.1']
+Accessions_j:['AF492424.1', 'AF492423.1', 'AF492422.1', 'AF492421.1']
+Num_shared_accessions4 Pcnt_shared_stems:0.3333333333333333
+
+Title_i:Crimean-Congo hemorrhagic fever virus S segment
+Title_j:Direct Submission
+Title_distance:40
+Author_list_i: ('PetrovaI', 'SereginS', 'KuzinaI', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS', 'PetrovV')
+Author_list_j: ('PetrovaI', 'SereginS', 'KuzinaI', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS', 'PetrovV')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j:2002 Max_year_dif:0
+Accessions_i:['AF481805.1', 'AF481804.1', 'AF481803.1']
+Accessions_j:['AF481805.1', 'AF481803.1', 'AF481801.1', 'AF481800.1', 'AF481802.1', 'AF481799.1']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:The Saharan antelope addax (Addax nasomaculatus) as a host for Hyalomma marginatum, tick vector of Crimean-Congo hemorrhagic fever virus
+Title_distance:126
+Author_list_i: ('RodriguezO', 'De la fuenteG', 'Fernandez de meraI', 'Vaz-rodriguesR', 'GortazarC', 'De la fuenteJ')
+Author_list_j: ('RodriguezO', 'De la fuenteG', 'Fernandez de meraI', 'Vaz-rodriguesR', 'GortazarC', 'De la fuenteJ')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j:2022 Max_year_dif:0
+Accessions_i:['ON664916.1', 'ON664915.1', 'ON646079.1', 'ON646078.1']
+Accessions_j:['ON557389.1', 'ON664916.1', 'ON664915.1', 'ON646079.1', 'ON646078.1']
+Num_shared_accessions4 Pcnt_shared_stems:0.6666666666666666
+
+Title_i:Characterization of the glycoproteins of crimean-congo hemorrhagic Fever virus
+Title_j:Direct Submission
+Title_distance:69
+Author_list_i: ('SanchezA', 'VincentM', 'NicholS')
+Author_list_j: ('SanchezA', 'VincentM', 'NicholS')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j:2002 Max_year_dif:0
+Accessions_i:['NC_005300.2', 'AF467769.2', 'AF467768.2']
+Accessions_j:['NC_005300.2', 'AF467769.2', 'AF467768.2']
+Num_shared_accessions3 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Phylogenetic study on Crimean-Congo hemorrhagic fever virus obtained from human cases in the northern Iran
+Title_distance:93
+Author_list_i: ('ShahhosseiniN', 'ChinikarS')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KT588642.1']
+Accessions_j:['KT588642.1', 'KT588641.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Phylogenetic study on Crimean-Congo hemorrhagic fever virus obtained from human cases in the northern Iran
+Title_distance:93
+Author_list_i: ('ShahhosseiniN', 'ChinikarS')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KT588641.1']
+Accessions_j:['KT588642.1', 'KT588641.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:CCHF genetic variety research
+Title_j:Direct Submission
+Title_distance:25
+Author_list_i: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_j: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_pcnt:1.0
+Year_i: Year_j:2001 Max_year_dif:0
+Accessions_i:['AF362080.1', 'AF358784.1', 'AY029157.1', 'AF354296.1']
+Accessions_j:['AY029157.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.25
+
+Title_i:CCHF genetic variety research
+Title_j:Direct Submission
+Title_distance:25
+Author_list_i: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_j: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_pcnt:1.0
+Year_i: Year_j:2001 Max_year_dif:0
+Accessions_i:['AF362080.1', 'AF358784.1', 'AY029157.1', 'AF354296.1']
+Accessions_j:['AF362080.1', 'AF358784.1']
+Num_shared_accessions2 Pcnt_shared_stems:0.5
+
+Title_i:CCHF genetic variety research
+Title_j:Direct Submission
+Title_distance:25
+Author_list_i: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_j: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_pcnt:1.0
+Year_i: Year_j:2001 Max_year_dif:0
+Accessions_i:['AF362080.1', 'AF358784.1', 'AY029157.1', 'AF354296.1']
+Accessions_j:['AF354296.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.25
+
+Title_i:Direct Submission
+Title_j:Novel segmented RNA Jingmenvirus group isolated from human
+Title_distance:49
+Author_list_i: ('TernovoiV', 'GladyshevaA', 'SementsovaA', 'ZaykovskayaA', 'VolynkinaA', 'KotenevE', 'AgafonovA', 'LoktevV')
+Author_list_j: ('TernovoiV', 'GladyshevaA', 'SementsovaA', 'ZaykovskayaA', 'VolynkinaA', 'KotenevE', 'AgafonovA', 'LoktevV')
+Author_list_pcnt:1.0
+Year_i:2019 Year_j: Max_year_dif:0
+Accessions_i:['MN218696.1', 'MN218695.1', 'MN218694.1', 'MN218693.1']
+Accessions_j:['MN218696.1', 'MN218695.1', 'MN218693.1']
+Num_shared_accessions3 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Molecular characterization of S and M segments of Crimean Congo Hemorrhagic Fever Virus in Turkey
+Title_distance:87
+Author_list_i: ('TimurkanM', 'AydinH')
+Author_list_j: ('TimurkanM', 'AydinH')
+Author_list_pcnt:1.0
+Year_i:2020 Year_j: Max_year_dif:0
+Accessions_i:['MT178302.1', 'MT178301.1', 'MT178300.1', 'MT178299.1', 'MT178298.1', 'MT178297.1', 'MT178296.1', 'MT178295.1', 'MT178294.1', 'MT178293.1', 'MT178292.1', 'MT178291.1', 'MT178290.1', 'MT178289.1', 'MT178288.1', 'MT178287.1', 'MT178286.1', 'MT178285.1', 'MT178284.1', 'MT178283.1', 'MT178282.1', 'MT178281.1', 'MT178280.1', 'MT178279.1', 'MT178278.1']
+Accessions_j:['MT178327.1', 'MT178326.1', 'MT178325.1', 'MT178324.1', 'MT178323.1', 'MT178322.1', 'MT178321.1', 'MT178320.1', 'MT178319.1', 'MT178318.1', 'MT178317.1', 'MT178316.1', 'MT178315.1', 'MT178314.1', 'MT178313.1', 'MT178312.1', 'MT178311.1', 'MT178310.1', 'MT178309.1', 'MT178308.1', 'MT178307.1', 'MT178306.1', 'MT178305.1', 'MT178304.1', 'MT178303.1', 'MT178302.1', 'MT178301.1', 'MT178300.1', 'MT178299.1', 'MT178298.1', 'MT178297.1', 'MT178296.1', 'MT178295.1', 'MT178294.1', 'MT178293.1', 'MT178292.1', 'MT178291.1', 'MT178290.1', 'MT178289.1', 'MT178288.1', 'MT178287.1', 'MT178286.1', 'MT178285.1', 'MT178284.1', 'MT178283.1', 'MT178282.1', 'MT178281.1', 'MT178280.1', 'MT178279.1', 'MT178278.1']
+Num_shared_accessions25 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Molecular characterization of S and M segments of Crimean Congo Hemorrhagic Fever Virus in Turkey
+Title_distance:87
+Author_list_i: ('TimurkanM', 'AydinH')
+Author_list_j: ('TimurkanM', 'AydinH')
+Author_list_pcnt:1.0
+Year_i:2020 Year_j: Max_year_dif:0
+Accessions_i:['MT178327.1', 'MT178326.1', 'MT178325.1', 'MT178324.1', 'MT178323.1', 'MT178322.1', 'MT178321.1', 'MT178320.1', 'MT178319.1', 'MT178318.1', 'MT178317.1', 'MT178316.1', 'MT178315.1', 'MT178314.1', 'MT178313.1', 'MT178312.1', 'MT178311.1', 'MT178310.1', 'MT178309.1', 'MT178308.1', 'MT178307.1', 'MT178306.1', 'MT178305.1', 'MT178304.1', 'MT178303.1']
+Accessions_j:['MT178327.1', 'MT178326.1', 'MT178325.1', 'MT178324.1', 'MT178323.1', 'MT178322.1', 'MT178321.1', 'MT178320.1', 'MT178319.1', 'MT178318.1', 'MT178317.1', 'MT178316.1', 'MT178315.1', 'MT178314.1', 'MT178313.1', 'MT178312.1', 'MT178311.1', 'MT178310.1', 'MT178309.1', 'MT178308.1', 'MT178307.1', 'MT178306.1', 'MT178305.1', 'MT178304.1', 'MT178303.1', 'MT178302.1', 'MT178301.1', 'MT178300.1', 'MT178299.1', 'MT178298.1', 'MT178297.1', 'MT178296.1', 'MT178295.1', 'MT178294.1', 'MT178293.1', 'MT178292.1', 'MT178291.1', 'MT178290.1', 'MT178289.1', 'MT178288.1', 'MT178287.1', 'MT178286.1', 'MT178285.1', 'MT178284.1', 'MT178283.1', 'MT178282.1', 'MT178281.1', 'MT178280.1', 'MT178279.1', 'MT178278.1']
+Num_shared_accessions25 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:First report of nosocomial outbreak of Crimean-Congo hemorrhagic fever, Rajasthan State, India
+Title_distance:83
+Author_list_i: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_j: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KT384400.1', 'KT384397.1', 'KT384402.1', 'KT384401.1', 'KT384399.1', 'KT384398.1', 'KT384396.1']
+Accessions_j:['KT384400.1', 'KT384397.1', 'KT384388.1', 'KT384382.1']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:First report of nosocomial outbreak of Crimean-Congo hemorrhagic fever, Rajasthan State, India
+Title_distance:83
+Author_list_i: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_j: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KT384388.1', 'KT384382.1', 'KT384394.1', 'KT384395.1', 'KT384393.1', 'KT384392.1', 'KT384391.1', 'KT384390.1', 'KT384389.1', 'KT384387.1', 'KT384386.1', 'KT384385.1', 'KT384384.1', 'KT384383.1']
+Accessions_j:['KT384400.1', 'KT384397.1', 'KT384388.1', 'KT384382.1']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:First report of nosocomial outbreak of Crimean-Congo hemorrhagic fever, Rajasthan State, India
+Title_distance:83
+Author_list_i: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_j: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KT384404.1', 'KT384403.1']
+Accessions_j:['KT384400.1', 'KT384397.1', 'KT384388.1', 'KT384382.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic variability of Crimean-Congo hemorrhagic fever virus in Russia and Middle Asia
+Title_distance:75
+Author_list_i: ('YashinaL', 'PetrovV', 'VyshemirskyO', 'PetrovaI', 'AristovaV', 'LvovD', 'GutorovV', 'TyunnikovG', 'KuzinaI', 'SereginS', 'NetesovS')
+Author_list_j: ('YashinaL', 'PetrovV', 'VyshemirskyO', 'PetrovaI', 'AristovaV', 'LvovD', 'GutorovV', 'TyunnikovG', 'KuzinaI', 'SereginS', 'NetesovS')
+Author_list_pcnt:1.0
+Year_i:2001 Year_j: Max_year_dif:0
+Accessions_i:['AF401650.1', 'AF401649.1', 'AF401648.1', 'AF401647.1', 'AF401651.1']
+Accessions_j:['AF401651.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic analysis of wild-type Crimean-Congo hemorrhagic fever virus in Russia and Central Asia
+Title_distance:83
+Author_list_i: ('YashinaL', 'VyshemirskiO', 'SereginS', 'PetrovaI', 'LvovD', 'GutorovV', 'NetesovS', 'PetrovV')
+Author_list_j: ('YashinaL', 'VyshemirskiO', 'SereginS', 'PetrovaI', 'LvovD', 'GutorovV', 'NetesovS', 'PetrovV')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j: Max_year_dif:0
+Accessions_i:['AY093627.1', 'AY093626.1', 'AY093625.1', 'AY093624.1', 'AY093623.1', 'AY093622.1', 'AY093621.1', 'AY093620.1']
+Accessions_j:['AY093627.1', 'AY093626.1']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:The current status of tick populations in Istanbul and their biorisks in terms of CCHF and public health
+Title_distance:91
+Author_list_i: ('Zarrabi ahrabiS', 'AkyildizG', 'Gargili kelesA')
+Author_list_j: ('Zarrabi ahrabiS', 'AkyildizG', 'Gargili kelesA')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['OP312076.1', 'OP312075.1', 'OP312074.1', 'OP312073.1', 'OP312072.1']
+Accessions_j:['OP312076.1', 'OP312075.1', 'OP312074.1', 'OP312073.1', 'OP312072.1', 'OQ377564.1', 'OQ377563.1', 'OQ377562.1', 'OQ377561.1', 'OQ377560.1', 'OQ377559.1']
+Num_shared_accessions5 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:The current status of tick populations in Istanbul and their biorisks in terms of CCHF and public health
+Title_distance:91
+Author_list_i: ('Zarrabi ahrabiS', 'AkyildizG', 'Gargili kelesA')
+Author_list_j: ('Zarrabi ahrabiS', 'AkyildizG', 'Gargili kelesA')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ377564.1', 'OQ377563.1', 'OQ377562.1', 'OQ377561.1', 'OQ377560.1', 'OQ377559.1']
+Accessions_j:['OP312076.1', 'OP312075.1', 'OP312074.1', 'OP312073.1', 'OP312072.1', 'OQ377564.1', 'OQ377563.1', 'OQ377562.1', 'OQ377561.1', 'OQ377560.1', 'OQ377559.1']
+Num_shared_accessions6 Pcnt_shared_stems:0.5
+
+Title_i:Crimean-Congo Hemorrhagic Fever Virus in ticks and livestock: a Molecular and Seroepidemiological Survey in Borderline of Iran-Pakistan-Gulf of Oman Littoral
+Title_j:Direct Submission
+Title_distance:145
+Author_list_i: ('ChinikarS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i: Year_j:2015 Max_year_dif:0
+Accessions_i:['KU242341.1']
+Accessions_j:['KU242341.1', 'KT588640.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Phylogenetic study on Crimean-Congo hemorrhagic fever virus obtained from human cases in the northern Iran
+Title_distance:93
+Author_list_i: ('ChinikarS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KU242341.1', 'KT588640.1']
+Accessions_j:['KT588640.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Phylogenetic study on Crimean-Congo hemorrhagic fever virus obtained from human cases in the northern Iran
+Title_j:Direct Submission
+Title_distance:93
+Author_list_i: ('ChinikarS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS')
+Author_list_pcnt:1.0
+Year_i: Year_j:2015 Max_year_dif:0
+Accessions_i:['KT588640.1']
+Accessions_j:['KT588642.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Phylogenetic study on Crimean-Congo hemorrhagic fever virus obtained from human cases in the northern Iran
+Title_j:Direct Submission
+Title_distance:93
+Author_list_i: ('ChinikarS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS')
+Author_list_pcnt:1.0
+Year_i: Year_j:2015 Max_year_dif:0
+Accessions_i:['KT588640.1']
+Accessions_j:['KT588641.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j: Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Num_shared_accessions21 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j: Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075646.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j: Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075645.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'KhakifirouzS', 'JalaliT', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075661.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN', 'JalaliT', 'KhakifirouzS')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075635.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN', 'KhakifirouzS', 'JalaliT')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075662.1', 'KP075658.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('KhakifirouzS', 'ChinikarS', 'JalaliT', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075644.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS', 'JalaliT', 'KhakifirouzS')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075683.1', 'KP075682.1', 'KP075681.1', 'KP075680.1', 'KP075674.1', 'KP075673.1', 'KP075667.1', 'KP075666.1', 'KP075665.1', 'KP075656.1', 'KP075655.1', 'KP075654.1', 'KP075652.1', 'KP075651.1', 'KP075650.1', 'KP075648.1', 'KP075647.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS', 'KhakifirouzS', 'JalaliT')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075639.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075660.1', 'KP075653.1', 'KP075649.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_j:Direct Submission
+Title_distance:65
+Author_list_i: ('ChinikarS', 'JalaliT', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i: Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075679.1', 'KP075678.1', 'KP075677.1', 'KP075676.1', 'KP075675.1', 'KP075672.1', 'KP075671.1', 'KP075670.1', 'KP075669.1', 'KP075668.1', 'KP075664.1', 'KP075663.1', 'KP075659.1', 'KP075657.1', 'KP075643.1', 'KP075642.1', 'KP075641.1', 'KP075640.1', 'KP075638.1', 'KP075637.1', 'KP075636.1']
+Accessions_j:['KP075646.1', 'KP075645.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'KorukluogluG', 'UyarY', 'OzkulA', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2010 Year_j: Max_year_dif:0
+Accessions_i:['HQ821875.1']
+Accessions_j:['HQ821875.1', 'HQ821874.1', 'HQ821873.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2010 Year_j: Max_year_dif:0
+Accessions_i:['HQ829819.1', 'HQ829818.1', 'HQ829817.1']
+Accessions_j:['HQ864321.1', 'HQ829816.1', 'HQ829815.1', 'HQ829814.1', 'HQ829819.1', 'HQ829818.1', 'HQ829817.1', 'HQ829813.1', 'HQ829812.1', 'HQ829811.1', 'HQ829810.1', 'HQ829809.1']
+Num_shared_accessions3 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_j: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2011 Year_j: Max_year_dif:0
+Accessions_i:['HQ891305.1']
+Accessions_j:['HQ891305.1', 'HQ864322.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_j: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'UyarY', 'KorukluogluG', 'OzkulA', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2011 Year_j:2011 Max_year_dif:0
+Accessions_i:['HQ891305.1']
+Accessions_j:['HQ891308.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'UnaldiO', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2011 Year_j:2011 Max_year_dif:0
+Accessions_i:['HQ891305.1']
+Accessions_j:['HQ891307.1', 'HQ891306.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_j: ('DurmazR', 'KalayciogluA', 'UnaldiO', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2011 Year_j: Max_year_dif:0
+Accessions_i:['HQ864322.1']
+Accessions_j:['HQ891305.1', 'HQ864322.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Genetic analysis of Crimean-Congo hemorrhagic fever virus isolates in 2012
+Title_distance:64
+Author_list_i: ('DurmazR', 'KorukluogluG', 'ErtekM', 'KalayciogluA')
+Author_list_j: ('DurmazR', 'KorukluogluG', 'ErtekM', 'KalayciogluA')
+Author_list_pcnt:1.0
+Year_i:2012 Year_j: Max_year_dif:0
+Accessions_i:['KC150000.1']
+Accessions_j:['KC150005.1', 'KC150004.1', 'KC150003.1', 'KC150002.1', 'KC150001.1', 'KC150000.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Genetic analysis of Crimean-Congo hemorrhagic fever virus isolates in 2012
+Title_j:Direct Submission
+Title_distance:64
+Author_list_i: ('DurmazR', 'KorukluogluG', 'ErtekM', 'KalayciogluA')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'KorukluogluG', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i: Year_j:2012 Max_year_dif:0
+Accessions_i:['KC150005.1', 'KC150004.1', 'KC150003.1', 'KC150002.1', 'KC150001.1', 'KC150000.1']
+Accessions_j:['KC150001.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:An Outbreak of Crimean-Congo Hemorrhagic Fever in South East of Iran, May 2016
+Title_j:Direct Submission
+Title_distance:69
+Author_list_i: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_j: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_pcnt:1.0
+Year_i: Year_j:2016 Max_year_dif:0
+Accessions_i:['KX458021.1', 'KX458020.1', 'KX458019.1', 'KX458018.1', 'KX458017.1']
+Accessions_j:['KX458023.1', 'KX458022.1', 'KX458021.1', 'KX458020.1', 'KX458019.1', 'KX458018.1', 'KX458017.1']
+Num_shared_accessions5 Pcnt_shared_stems:1.0
+
+Title_i:Crimean-Congo Hemorrhagic Fever Virus isolated from Kurdistan
+Title_j:Direct Submission
+Title_distance:52
+Author_list_i: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_j: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_pcnt:1.0
+Year_i: Year_j:2016 Max_year_dif:0
+Accessions_i:['KX458022.1']
+Accessions_j:['KX458023.1', 'KX458022.1', 'KX458021.1', 'KX458020.1', 'KX458019.1', 'KX458018.1', 'KX458017.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Crimean-Congo Hemorrhagic Fever Virus isolated from Mazandaran
+Title_j:Direct Submission
+Title_distance:53
+Author_list_i: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_j: ('FazlalipourM', 'BaniasadiV', 'JalaliT', 'JamshidiY', 'MohammadiT', 'Azad-manjiriS', 'KhakifirouzS', 'Salehi-vaziriM')
+Author_list_pcnt:1.0
+Year_i: Year_j:2016 Max_year_dif:0
+Accessions_i:['KX458023.1']
+Accessions_j:['KX458023.1', 'KX458022.1', 'KX458021.1', 'KX458020.1', 'KX458019.1', 'KX458018.1', 'KX458017.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j: Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075646.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j: Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075645.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'KhakifirouzS', 'JalaliT', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075661.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN', 'JalaliT', 'KhakifirouzS')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075635.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ChinikarS', 'ShahhosseiniN', 'KhakifirouzS', 'JalaliT')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075662.1', 'KP075658.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('KhakifirouzS', 'ChinikarS', 'JalaliT', 'ShahhosseiniN')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075644.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS', 'JalaliT', 'KhakifirouzS')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075683.1', 'KP075682.1', 'KP075681.1', 'KP075680.1', 'KP075674.1', 'KP075673.1', 'KP075667.1', 'KP075666.1', 'KP075665.1', 'KP075656.1', 'KP075655.1', 'KP075654.1', 'KP075652.1', 'KP075651.1', 'KP075650.1', 'KP075648.1', 'KP075647.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever virus strains from Iran
+Title_distance:65
+Author_list_i: ('JalaliT', 'ChinikarS', 'KhakifirouzS', 'ShahhosseiniN')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS', 'KhakifirouzS', 'JalaliT')
+Author_list_pcnt:1.0
+Year_i:2014 Year_j:2014 Max_year_dif:0
+Accessions_i:['KP075646.1', 'KP075645.1']
+Accessions_j:['KP075660.1', 'KP075653.1', 'KP075649.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935538.1']
+Accessions_j:['OQ935539.1', 'OQ935538.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'EnginA', 'BakirM', 'AriO', 'DalT', 'OguzogluT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j:2023 Max_year_dif:0
+Accessions_i:['OQ935538.1']
+Accessions_j:['OQ935537.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_j:Direct Submission
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_pcnt:1.0
+Year_i: Year_j:2023 Max_year_dif:0
+Accessions_i:['OQ935539.1', 'OQ935538.1']
+Accessions_j:['OQ935539.1', 'OQ935540.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'DurmazR', 'AriO', 'BakirM', 'EnginA', 'DalT')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'AriO', 'BakirM', 'EnginA', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935554.1', 'OQ935553.1', 'OQ935552.1', 'OQ935551.1', 'OQ935550.1', 'OQ935549.1', 'OQ954468.1', 'OQ954467.1', 'OQ954466.1', 'OQ954465.1', 'OQ954464.1', 'OQ954463.1', 'OQ954474.1', 'OQ954473.1', 'OQ954472.1', 'OQ954471.1']
+Accessions_j:['OQ935554.1', 'OQ935553.1', 'OQ935552.1', 'OQ935551.1', 'OQ935550.1', 'OQ935549.1']
+Num_shared_accessions6 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'DurmazR', 'AriO', 'BakirM', 'EnginA', 'DalT')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'AriO', 'BakirM', 'EnginA', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935554.1', 'OQ935553.1', 'OQ935552.1', 'OQ935551.1', 'OQ935550.1', 'OQ935549.1', 'OQ954468.1', 'OQ954467.1', 'OQ954466.1', 'OQ954465.1', 'OQ954464.1', 'OQ954463.1', 'OQ954474.1', 'OQ954473.1', 'OQ954472.1', 'OQ954471.1']
+Accessions_j:['OQ954468.1', 'OQ954467.1', 'OQ954466.1', 'OQ954465.1', 'OQ954464.1', 'OQ954463.1']
+Num_shared_accessions6 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('KalayciogluA', 'DurmazR', 'KorukluogluG', 'UyarY', 'OzkulA', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2010 Year_j: Max_year_dif:0
+Accessions_i:['HQ821874.1']
+Accessions_j:['HQ821875.1', 'HQ821874.1', 'HQ821873.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('KalayciogluA', 'DurmazR', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'KorukluogluG', 'UyarY', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2010 Year_j: Max_year_dif:0
+Accessions_i:['HQ821873.1']
+Accessions_j:['HQ821875.1', 'HQ821874.1', 'HQ821873.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2011 Year_j: Max_year_dif:0
+Accessions_i:['HQ864321.1']
+Accessions_j:['HQ864321.1', 'HQ829816.1', 'HQ829815.1', 'HQ829814.1', 'HQ829819.1', 'HQ829818.1', 'HQ829817.1', 'HQ829813.1', 'HQ829812.1', 'HQ829811.1', 'HQ829810.1', 'HQ829809.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Genetic diversity of Crimean-Congo hemorrhagic fever viruses in Turkey
+Title_distance:61
+Author_list_i: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'OzkulA', 'UyarY', 'KorukluogluG', 'ErtekM')
+Author_list_pcnt:1.0
+Year_i:2010 Year_j: Max_year_dif:0
+Accessions_i:['HQ829813.1', 'HQ829812.1', 'HQ829811.1', 'HQ829810.1', 'HQ829809.1']
+Accessions_j:['HQ864321.1', 'HQ829816.1', 'HQ829815.1', 'HQ829814.1', 'HQ829819.1', 'HQ829818.1', 'HQ829817.1', 'HQ829813.1', 'HQ829812.1', 'HQ829811.1', 'HQ829810.1', 'HQ829809.1']
+Num_shared_accessions5 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'EnginA', 'AriO', 'DurmazR', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'EnginA', 'AriO', 'DurmazR', 'BakirM', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935548.1', 'OQ954478.1', 'OQ954476.1']
+Accessions_j:['OQ935548.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo hemorrhagic fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'EnginA', 'AriO', 'DurmazR', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'EnginA', 'AriO', 'DurmazR', 'BakirM', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935548.1', 'OQ954478.1', 'OQ954476.1']
+Accessions_j:['OQ954478.1', 'OQ954476.1']
+Num_shared_accessions2 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease. This study was funded by the Scientific and Technological Research Council of Turkey (TUBITAK grant number SBAG 118R018)
+Title_distance:317
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['ON623086.1', 'ON254100.1', 'ON254099.1', 'ON254098.1', 'ON254097.1', 'ON254096.1', 'ON254095.1', 'ON209431.1', 'ON623080.1']
+Accessions_j:['ON623080.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.3333333333333333
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'DalT')
+Author_list_j: ('KalayciogluA', 'DurmazR', 'EnginA', 'BakirM', 'AriO', 'DalT', 'OguzogluT')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j:2023 Max_year_dif:0
+Accessions_i:['OQ935539.1', 'OQ935540.1']
+Accessions_j:['OQ935537.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease. This study was funded by the Scientific and Technological Research Council of Turkey (TUBITAK grant number SBAG 118R018)
+Title_distance:317
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['ON668035.1', 'ON668034.1', 'ON668033.1']
+Accessions_j:['ON668035.1', 'ON668034.1', 'ON668033.1', 'ON623085.1', 'ON623084.1', 'ON623083.1', 'ON623082.1', 'ON623081.1']
+Num_shared_accessions3 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease. This study was funded by the Scientific and Technological Research Council of Turkey (TUBITAK grant number SBAG 118R018)
+Title_distance:317
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['ON623085.1', 'ON623084.1', 'ON623083.1', 'ON623082.1', 'ON623081.1', 'ON623089.1', 'ON623088.1', 'ON623087.1']
+Accessions_j:['ON668035.1', 'ON668034.1', 'ON668033.1', 'ON623085.1', 'ON623084.1', 'ON623083.1', 'ON623082.1', 'ON623081.1']
+Num_shared_accessions5 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease. This study was funded by the Scientific and Technological Research Council of Turkey (TUBITAK grant number SBAG 118R018)
+Title_distance:317
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE', 'DalT')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['ON640907.1', 'ON640906.1']
+Accessions_j:['ON640910.1', 'ON640909.1', 'ON640908.1', 'ON640907.1', 'ON640906.1']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease. This study was funded by the Scientific and Technological Research Council of Turkey (TUBITAK grant number SBAG 118R018)
+Title_distance:317
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE', 'DalT')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'DurmazR', 'EnginA', 'BakirM', 'ErdemE', 'DalT')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['ON640910.1', 'ON640909.1', 'ON640908.1']
+Accessions_j:['ON640910.1', 'ON640909.1', 'ON640908.1', 'ON640907.1', 'ON640906.1']
+Num_shared_accessions3 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'EnginA', 'BakirM', 'DurmazR')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'EnginA', 'BakirM', 'DurmazR')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935547.1', 'OQ935546.1', 'OQ935545.1', 'OQ935544.1', 'OQ935543.1', 'OQ935542.1']
+Accessions_j:['OQ935547.1', 'OQ935546.1', 'OQ935545.1', 'OQ935544.1', 'OQ935543.1', 'OQ935542.1', 'OQ935541.1']
+Num_shared_accessions6 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Investigation of genetic variations of Crimean-Congo Hemorrhagic Fever viruses in Turkey based on whole genome sequences and examination of relationship between posible variations and the course of the disease
+Title_distance:195
+Author_list_i: ('KalayciogluA', 'OguzogluT', 'AriO', 'EnginA', 'BakirM', 'DurmazR')
+Author_list_j: ('KalayciogluA', 'OguzogluT', 'AriO', 'EnginA', 'BakirM', 'DurmazR')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ935541.1']
+Accessions_j:['OQ935547.1', 'OQ935546.1', 'OQ935545.1', 'OQ935544.1', 'OQ935543.1', 'OQ935542.1', 'OQ935541.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Sequence determination of the Crimean-Congo hemorrhagic fever virus L segment
+Title_distance:68
+Author_list_i: ('KinsellaE', 'MartinS', 'GrollaA', 'CzubM', 'FeldmannH', 'FlickR')
+Author_list_j: ('KinsellaE', 'MartinS', 'GrollaA', 'CzubM', 'FeldmannH', 'FlickR')
+Author_list_pcnt:1.0
+Year_i:2003 Year_j:2004 Max_year_dif:1
+Accessions_i:['NC_005301.3', 'AY389361.2']
+Accessions_j:['NC_005301.3', 'AY389361.2']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Sequence determination of the Crimean-Congo hemorrhagic fever virus L segment
+Title_distance:68
+Author_list_i: ('KinsellaE', 'MartinS', 'GrollaA', 'CzubM', 'FeldmannH', 'FlickR')
+Author_list_j: ('KinsellaE', 'MartinS', 'GrollaA', 'CzubM', 'FeldmannH', 'FlickR')
+Author_list_pcnt:1.0
+Year_i:2004 Year_j:2004 Max_year_dif:0
+Accessions_i:['NC_005301.3', 'AY389361.2']
+Accessions_j:['NC_005301.3', 'AY389361.2']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Crimean-Congo hemorrhagic fever virus S segment
+Title_j:Direct Submission
+Title_distance:40
+Author_list_i: ('LoftsR', 'HodgsonL', 'SmithJ')
+Author_list_j: ('LoftsR', 'HodgsonL', 'SmithJ')
+Author_list_pcnt:1.0
+Year_i: Year_j:1997 Max_year_dif:0
+Accessions_i:['NC_005302.1', 'U88416.1', 'U88415.1', 'U88414.1', 'U88413.1', 'U88412.1', 'U88411.1', 'U88410.1']
+Accessions_j:['NC_005302.1', 'U88416.1', 'U88415.1', 'U88414.1', 'U88413.1', 'U88412.1', 'U88411.1', 'U88410.1']
+Num_shared_accessions8 Pcnt_shared_stems:1.0
+
+Title_i:A variable region in the Crimean-Congo hemorrhagic fever virus L segment distinguishes between strains isolated from different geographic regions
+Title_j:Direct Submission
+Title_distance:131
+Author_list_i: ('MeissnerJ', 'SereginS', 'SereginS', 'VyshemirskiiO', 'SamokhvalovE', 'LvovD', 'NetesovS', 'PetrovV')
+Author_list_j: ('MeissnerJ', 'SereginS', 'SereginS', 'VyshemirskiiO', 'SamokhvalovE', 'LvovD', 'NetesovS', 'PetrovV')
+Author_list_pcnt:1.0
+Year_i:2006 Year_j:2005 Max_year_dif:1
+Accessions_i:['DQ206449.1', 'AY995170.2', 'AY995167.2', 'AY995159.2', 'AY995169.2', 'AY995168.2', 'AY995164.2', 'AY995162.2', 'AY995161.2', 'AY995158.2', 'AY995165.2', 'AY995163.2', 'AY995160.2', 'AY995166.2']
+Accessions_j:['AY995170.2', 'AY995170.2', 'AY995167.2', 'AY995167.2', 'AY995159.2', 'AY995159.2', 'AY995169.2', 'AY995169.2', 'AY995168.2', 'AY995168.2', 'AY995164.2', 'AY995164.2', 'AY995162.2', 'AY995162.2', 'AY995161.2', 'AY995161.2', 'AY995158.2', 'AY995158.2', 'AY995165.2', 'AY995163.2', 'AY995160.2', 'AY995160.2', 'AY995166.2', 'AY995166.2']
+Num_shared_accessions13 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:Prevalence and Phylogenetic Analysis of Crimean-Congo Hemorrhagic Fever Virus in Ticks from Different Ecosystems in Xinjiang, China
+Title_distance:119
+Author_list_i: ('MomingA', 'YueX', 'ShenS', 'ChangC', 'WangC', 'LuoT', 'GuoR', 'HuZ', 'ZhangY', 'DengF', 'SunS')
+Author_list_j: ('MomingA', 'YueX', 'ShenS', 'ChangC', 'WangC', 'LuoT', 'ZhangY', 'GuoR', 'HuZ', 'ZhangY', 'DengF', 'SunS')
+Author_list_pcnt:1.0
+Year_i:2017 Year_j:2018 Max_year_dif:1
+Accessions_i:['MG696085.1', 'MG696084.1', 'MG696083.1', 'MG696082.1', 'MG696081.1', 'MG696080.1', 'MG696079.1', 'MG696078.1', 'MG696077.1', 'MG696076.1', 'MG696075.1', 'MG696074.1', 'MG696073.1', 'MG696072.1', 'MG696071.1', 'MG696070.1']
+Accessions_j:['MG696085.1', 'MG696084.1', 'MG696083.1', 'MG696082.1', 'MG696081.1', 'MG696080.1', 'MG696079.1', 'MG696078.1', 'MG696077.1', 'MG696076.1', 'MG696075.1', 'MG696074.1', 'MG696073.1', 'MG696072.1', 'MG696071.1', 'MG696070.1', 'MG696069.1', 'MG696068.1']
+Num_shared_accessions16 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Partial Genetic Characterization of different strains of C-CHF virus circulating in territory of NIS countries
+Title_distance:99
+Author_list_i: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_j: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j: Max_year_dif:0
+Accessions_i:['AF481806.1', 'AF492424.1', 'AF492423.1', 'AF492422.1', 'AF492421.1', 'AF489587.1', 'AF489586.1', 'AF481807.1']
+Accessions_j:['AF481806.1', 'AF481807.1']
+Num_shared_accessions2 Pcnt_shared_stems:0.3333333333333333
+
+Title_i:Direct Submission
+Title_j:Partial genetic characterization of different strain of C-CHF virus circulating in the territory of NIS countries
+Title_distance:102
+Author_list_i: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_j: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j: Max_year_dif:0
+Accessions_i:['AF481806.1', 'AF492424.1', 'AF492423.1', 'AF492422.1', 'AF492421.1', 'AF489587.1', 'AF489586.1', 'AF481807.1']
+Accessions_j:['AF489587.1', 'AF489586.1']
+Num_shared_accessions2 Pcnt_shared_stems:0.3333333333333333
+
+Title_i:Direct Submission
+Title_j:Partial genetic characterization of different strains of C-CHF virus circulating in territory of NIS countries
+Title_distance:99
+Author_list_i: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_j: ('PetrovV', 'PetrovaI', 'SereginS', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j: Max_year_dif:0
+Accessions_i:['AF481806.1', 'AF492424.1', 'AF492423.1', 'AF492422.1', 'AF492421.1', 'AF489587.1', 'AF489586.1', 'AF481807.1']
+Accessions_j:['AF492424.1', 'AF492423.1', 'AF492422.1', 'AF492421.1']
+Num_shared_accessions4 Pcnt_shared_stems:0.3333333333333333
+
+Title_i:Crimean-Congo hemorrhagic fever virus S segment
+Title_j:Direct Submission
+Title_distance:40
+Author_list_i: ('PetrovaI', 'SereginS', 'KuzinaI', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS', 'PetrovV')
+Author_list_j: ('PetrovaI', 'SereginS', 'KuzinaI', 'VyshemirskiO', 'LvovD', 'TyunnikovG', 'GutorovV', 'YashinaL', 'NetesovS', 'PetrovV')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j:2002 Max_year_dif:0
+Accessions_i:['AF481805.1', 'AF481804.1', 'AF481803.1']
+Accessions_j:['AF481805.1', 'AF481803.1', 'AF481801.1', 'AF481800.1', 'AF481802.1', 'AF481799.1']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:The Saharan antelope addax (Addax nasomaculatus) as a host for Hyalomma marginatum, tick vector of Crimean-Congo hemorrhagic fever virus
+Title_distance:126
+Author_list_i: ('RodriguezO', 'De la fuenteG', 'Fernandez de meraI', 'Vaz-rodriguesR', 'GortazarC', 'De la fuenteJ')
+Author_list_j: ('RodriguezO', 'De la fuenteG', 'Fernandez de meraI', 'Vaz-rodriguesR', 'GortazarC', 'De la fuenteJ')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j:2022 Max_year_dif:0
+Accessions_i:['ON664916.1', 'ON664915.1', 'ON646079.1', 'ON646078.1']
+Accessions_j:['ON557389.1', 'ON664916.1', 'ON664915.1', 'ON646079.1', 'ON646078.1']
+Num_shared_accessions4 Pcnt_shared_stems:0.6666666666666666
+
+Title_i:Characterization of the glycoproteins of crimean-congo hemorrhagic Fever virus
+Title_j:Direct Submission
+Title_distance:69
+Author_list_i: ('SanchezA', 'VincentM', 'NicholS')
+Author_list_j: ('SanchezA', 'VincentM', 'NicholS')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j:2002 Max_year_dif:0
+Accessions_i:['NC_005300.2', 'AF467769.2', 'AF467768.2']
+Accessions_j:['NC_005300.2', 'AF467769.2', 'AF467768.2']
+Num_shared_accessions3 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Phylogenetic study on Crimean-Congo hemorrhagic fever virus obtained from human cases in the northern Iran
+Title_distance:93
+Author_list_i: ('ShahhosseiniN', 'ChinikarS')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KT588642.1']
+Accessions_j:['KT588642.1', 'KT588641.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Phylogenetic study on Crimean-Congo hemorrhagic fever virus obtained from human cases in the northern Iran
+Title_distance:93
+Author_list_i: ('ShahhosseiniN', 'ChinikarS')
+Author_list_j: ('ShahhosseiniN', 'ChinikarS')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KT588641.1']
+Accessions_j:['KT588642.1', 'KT588641.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:CCHF genetic variety research
+Title_j:Direct Submission
+Title_distance:25
+Author_list_i: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_j: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_pcnt:1.0
+Year_i: Year_j:2001 Max_year_dif:0
+Accessions_i:['AF362080.1', 'AF358784.1', 'AY029157.1', 'AF354296.1']
+Accessions_j:['AY029157.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.25
+
+Title_i:CCHF genetic variety research
+Title_j:Direct Submission
+Title_distance:25
+Author_list_i: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_j: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_pcnt:1.0
+Year_i: Year_j:2001 Max_year_dif:0
+Accessions_i:['AF362080.1', 'AF358784.1', 'AY029157.1', 'AF354296.1']
+Accessions_j:['AF362080.1', 'AF358784.1']
+Num_shared_accessions2 Pcnt_shared_stems:0.5
+
+Title_i:CCHF genetic variety research
+Title_j:Direct Submission
+Title_distance:25
+Author_list_i: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_j: ('TangQ', 'GaoD', 'HanL', 'ZhaoX', 'TaoX')
+Author_list_pcnt:1.0
+Year_i: Year_j:2001 Max_year_dif:0
+Accessions_i:['AF362080.1', 'AF358784.1', 'AY029157.1', 'AF354296.1']
+Accessions_j:['AF354296.1']
+Num_shared_accessions1 Pcnt_shared_stems:0.25
+
+Title_i:Direct Submission
+Title_j:Novel segmented RNA Jingmenvirus group isolated from human
+Title_distance:49
+Author_list_i: ('TernovoiV', 'GladyshevaA', 'SementsovaA', 'ZaykovskayaA', 'VolynkinaA', 'KotenevE', 'AgafonovA', 'LoktevV')
+Author_list_j: ('TernovoiV', 'GladyshevaA', 'SementsovaA', 'ZaykovskayaA', 'VolynkinaA', 'KotenevE', 'AgafonovA', 'LoktevV')
+Author_list_pcnt:1.0
+Year_i:2019 Year_j: Max_year_dif:0
+Accessions_i:['MN218696.1', 'MN218695.1', 'MN218694.1', 'MN218693.1']
+Accessions_j:['MN218696.1', 'MN218695.1', 'MN218693.1']
+Num_shared_accessions3 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Molecular characterization of S and M segments of Crimean Congo Hemorrhagic Fever Virus in Turkey
+Title_distance:87
+Author_list_i: ('TimurkanM', 'AydinH')
+Author_list_j: ('TimurkanM', 'AydinH')
+Author_list_pcnt:1.0
+Year_i:2020 Year_j: Max_year_dif:0
+Accessions_i:['MT178302.1', 'MT178301.1', 'MT178300.1', 'MT178299.1', 'MT178298.1', 'MT178297.1', 'MT178296.1', 'MT178295.1', 'MT178294.1', 'MT178293.1', 'MT178292.1', 'MT178291.1', 'MT178290.1', 'MT178289.1', 'MT178288.1', 'MT178287.1', 'MT178286.1', 'MT178285.1', 'MT178284.1', 'MT178283.1', 'MT178282.1', 'MT178281.1', 'MT178280.1', 'MT178279.1', 'MT178278.1']
+Accessions_j:['MT178327.1', 'MT178326.1', 'MT178325.1', 'MT178324.1', 'MT178323.1', 'MT178322.1', 'MT178321.1', 'MT178320.1', 'MT178319.1', 'MT178318.1', 'MT178317.1', 'MT178316.1', 'MT178315.1', 'MT178314.1', 'MT178313.1', 'MT178312.1', 'MT178311.1', 'MT178310.1', 'MT178309.1', 'MT178308.1', 'MT178307.1', 'MT178306.1', 'MT178305.1', 'MT178304.1', 'MT178303.1', 'MT178302.1', 'MT178301.1', 'MT178300.1', 'MT178299.1', 'MT178298.1', 'MT178297.1', 'MT178296.1', 'MT178295.1', 'MT178294.1', 'MT178293.1', 'MT178292.1', 'MT178291.1', 'MT178290.1', 'MT178289.1', 'MT178288.1', 'MT178287.1', 'MT178286.1', 'MT178285.1', 'MT178284.1', 'MT178283.1', 'MT178282.1', 'MT178281.1', 'MT178280.1', 'MT178279.1', 'MT178278.1']
+Num_shared_accessions25 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Molecular characterization of S and M segments of Crimean Congo Hemorrhagic Fever Virus in Turkey
+Title_distance:87
+Author_list_i: ('TimurkanM', 'AydinH')
+Author_list_j: ('TimurkanM', 'AydinH')
+Author_list_pcnt:1.0
+Year_i:2020 Year_j: Max_year_dif:0
+Accessions_i:['MT178327.1', 'MT178326.1', 'MT178325.1', 'MT178324.1', 'MT178323.1', 'MT178322.1', 'MT178321.1', 'MT178320.1', 'MT178319.1', 'MT178318.1', 'MT178317.1', 'MT178316.1', 'MT178315.1', 'MT178314.1', 'MT178313.1', 'MT178312.1', 'MT178311.1', 'MT178310.1', 'MT178309.1', 'MT178308.1', 'MT178307.1', 'MT178306.1', 'MT178305.1', 'MT178304.1', 'MT178303.1']
+Accessions_j:['MT178327.1', 'MT178326.1', 'MT178325.1', 'MT178324.1', 'MT178323.1', 'MT178322.1', 'MT178321.1', 'MT178320.1', 'MT178319.1', 'MT178318.1', 'MT178317.1', 'MT178316.1', 'MT178315.1', 'MT178314.1', 'MT178313.1', 'MT178312.1', 'MT178311.1', 'MT178310.1', 'MT178309.1', 'MT178308.1', 'MT178307.1', 'MT178306.1', 'MT178305.1', 'MT178304.1', 'MT178303.1', 'MT178302.1', 'MT178301.1', 'MT178300.1', 'MT178299.1', 'MT178298.1', 'MT178297.1', 'MT178296.1', 'MT178295.1', 'MT178294.1', 'MT178293.1', 'MT178292.1', 'MT178291.1', 'MT178290.1', 'MT178289.1', 'MT178288.1', 'MT178287.1', 'MT178286.1', 'MT178285.1', 'MT178284.1', 'MT178283.1', 'MT178282.1', 'MT178281.1', 'MT178280.1', 'MT178279.1', 'MT178278.1']
+Num_shared_accessions25 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:First report of nosocomial outbreak of Crimean-Congo hemorrhagic fever, Rajasthan State, India
+Title_distance:83
+Author_list_i: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_j: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KT384400.1', 'KT384397.1', 'KT384402.1', 'KT384401.1', 'KT384399.1', 'KT384398.1', 'KT384396.1']
+Accessions_j:['KT384400.1', 'KT384397.1', 'KT384388.1', 'KT384382.1']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:First report of nosocomial outbreak of Crimean-Congo hemorrhagic fever, Rajasthan State, India
+Title_distance:83
+Author_list_i: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_j: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KT384388.1', 'KT384382.1', 'KT384394.1', 'KT384395.1', 'KT384393.1', 'KT384392.1', 'KT384391.1', 'KT384390.1', 'KT384389.1', 'KT384387.1', 'KT384386.1', 'KT384385.1', 'KT384384.1', 'KT384383.1']
+Accessions_j:['KT384400.1', 'KT384397.1', 'KT384388.1', 'KT384382.1']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:First report of nosocomial outbreak of Crimean-Congo hemorrhagic fever, Rajasthan State, India
+Title_distance:83
+Author_list_i: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_j: ('YadavP', 'SheteA', 'MouryaD')
+Author_list_pcnt:1.0
+Year_i:2015 Year_j: Max_year_dif:0
+Accessions_i:['KT384404.1', 'KT384403.1']
+Accessions_j:['KT384400.1', 'KT384397.1', 'KT384388.1', 'KT384382.1']
+Num_shared_accessions0 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic variability of Crimean-Congo hemorrhagic fever virus in Russia and Middle Asia
+Title_distance:75
+Author_list_i: ('YashinaL', 'PetrovV', 'VyshemirskyO', 'PetrovaI', 'AristovaV', 'LvovD', 'GutorovV', 'TyunnikovG', 'KuzinaI', 'SereginS', 'NetesovS')
+Author_list_j: ('YashinaL', 'PetrovV', 'VyshemirskyO', 'PetrovaI', 'AristovaV', 'LvovD', 'GutorovV', 'TyunnikovG', 'KuzinaI', 'SereginS', 'NetesovS')
+Author_list_pcnt:1.0
+Year_i:2001 Year_j: Max_year_dif:0
+Accessions_i:['AF401650.1', 'AF401649.1', 'AF401648.1', 'AF401647.1', 'AF401651.1']
+Accessions_j:['AF401651.1']
+Num_shared_accessions1 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:Genetic analysis of wild-type Crimean-Congo hemorrhagic fever virus in Russia and Central Asia
+Title_distance:83
+Author_list_i: ('YashinaL', 'VyshemirskiO', 'SereginS', 'PetrovaI', 'LvovD', 'GutorovV', 'NetesovS', 'PetrovV')
+Author_list_j: ('YashinaL', 'VyshemirskiO', 'SereginS', 'PetrovaI', 'LvovD', 'GutorovV', 'NetesovS', 'PetrovV')
+Author_list_pcnt:1.0
+Year_i:2002 Year_j: Max_year_dif:0
+Accessions_i:['AY093627.1', 'AY093626.1', 'AY093625.1', 'AY093624.1', 'AY093623.1', 'AY093622.1', 'AY093621.1', 'AY093620.1']
+Accessions_j:['AY093627.1', 'AY093626.1']
+Num_shared_accessions2 Pcnt_shared_stems:1.0
+
+Title_i:Direct Submission
+Title_j:The current status of tick populations in Istanbul and their biorisks in terms of CCHF and public health
+Title_distance:91
+Author_list_i: ('Zarrabi ahrabiS', 'AkyildizG', 'Gargili kelesA')
+Author_list_j: ('Zarrabi ahrabiS', 'AkyildizG', 'Gargili kelesA')
+Author_list_pcnt:1.0
+Year_i:2022 Year_j: Max_year_dif:0
+Accessions_i:['OP312076.1', 'OP312075.1', 'OP312074.1', 'OP312073.1', 'OP312072.1']
+Accessions_j:['OP312076.1', 'OP312075.1', 'OP312074.1', 'OP312073.1', 'OP312072.1', 'OQ377564.1', 'OQ377563.1', 'OQ377562.1', 'OQ377561.1', 'OQ377560.1', 'OQ377559.1']
+Num_shared_accessions5 Pcnt_shared_stems:0.5
+
+Title_i:Direct Submission
+Title_j:The current status of tick populations in Istanbul and their biorisks in terms of CCHF and public health
+Title_distance:91
+Author_list_i: ('Zarrabi ahrabiS', 'AkyildizG', 'Gargili kelesA')
+Author_list_j: ('Zarrabi ahrabiS', 'AkyildizG', 'Gargili kelesA')
+Author_list_pcnt:1.0
+Year_i:2023 Year_j: Max_year_dif:0
+Accessions_i:['OQ377564.1', 'OQ377563.1', 'OQ377562.1', 'OQ377561.1', 'OQ377560.1', 'OQ377559.1']
+Accessions_j:['OP312076.1', 'OP312075.1', 'OP312074.1', 'OP312073.1', 'OP312072.1', 'OQ377564.1', 'OQ377563.1', 'OQ377562.1', 'OQ377561.1', 'OQ377560.1', 'OQ377559.1']
+Num_shared_accessions6 Pcnt_shared_stems:0.5
+
