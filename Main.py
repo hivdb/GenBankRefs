@@ -3,26 +3,21 @@ from Bio import Entrez
 import pandas as pd
 import ast
 
-
 Entrez.email = "rshafer.stanford.edu"
-
 pd.set_option('display.max_rows', 100)
-
 genbank_file = "CCHF.gb"
 
 from GenBankFunctions import extract_year_from_journal, process_author_field, process_accession_lists, process_authors_titles
 
-def extract_organism(annotations):
-    organism = annotations.get("source")
-    #print("\nOrganism:", organism, "\n")
+#def extract_organism(annotations):
+#    organism = annotations.get("source")
+#    #print("\nOrganism:", organism, "\n")
 
 def extract_references(annotations, accession):
     ref_list = annotations.get("references")
     ref_data = []
     for ref in ref_list:
-        #print(dir(ref))
         ref_items = {}
-        #print ("\nReference:", ref, "\n")
         ref_items["accession"] = accession
         ref_items["authors"] = ref.authors
         ref_items["title"] = ref.title
@@ -31,124 +26,103 @@ def extract_references(annotations, accession):
         ref_data.append(ref_items)
     return ref_data
 
-columns_of_interest = []
+#columns_of_interest = []
 def extract_features(features, accession):
-    #feature_data = []
     feature_items = {}
     feature_items["accession"] = accession
     for feature in features:
-        #print(f"\nFeature type: {feature.type}\n")
         for key, value in feature.qualifiers.items():
             if key == "translation":
                 continue
             key = key + '_' + feature.type
             feature_items[key] = value[0]
-            #print(f"Key {key}: value {value}\n")
-    #feature_data.append(feature_items)
+           #print(f"Key {key}: value {value}\n")
     return feature_items
 
-# Example usage
-#search_popsets_for_virus("Orthonairovirus")
 
 reference_list = []
 feature_list = []
 with open(genbank_file, "r") as handle:
     count=0
     for record in SeqIO.parse(handle, "genbank"):
+        count +=1
         acc_num = record.id
         seq_len = len(record.seq)
-
-        count +=1
-        #print(f"ID: {record.id}")
-        #print(f"Description: {record.description}")
-        #print(f"Sequence Length: {len(record.seq)}")
-        #print(f"Annotations: {record.annotations}")
-        #print(f"Features (length): {len(record.features)}")
-        #print(f"Features: {record.features}")
-        #print("-" * 40)  # Separator between entries
-        #extract_organism(record.annotations)
+        description = record.description
+        record_date = record.annotations['date']
+        organism = record.annotations['organism']
+     
         ref_data = extract_references(record.annotations, record.id)
         reference_list.extend(ref_data)
+        
         feature_data = extract_features(record.features, record.id)
-        #print(feature_data)
-        segment_source = feature_data.get('segment_source','')
-        #print("Segment source:", segment_source)
+        #print("\nFeature data:", feature_data, "\n")
+
+        segment_source = feature_data.get('segment_source', '')
+        cds = feature_data.get('product_CDS', '')
+        host = feature_data.get('host_source', '')
+        isolate_source = feature_data.get('isolation_source_source', '')
+        isolate_source_name = feature_data.get('isolate_source', '')
         country_region = feature_data.get('geo_loc_name_source', '')
-        #print("Country region", country_region)
-        #if 'segment_source' in feature_data:
-        #    print (feature_data['segment_source'])
-        #else:
-        #    print("record does not contain segment_source")
+        collection_date = feature_data.get('collection_date_source', '')
+
+        print(f"Acc_num: {acc_num}")
+        print(f"Organism: {organism}")
+        print(f"Description: {description}")
+        print(f"Record date: {record_date}")
+        print(f"Sequence Length: {seq_len}")
+        print("Segment source:", segment_source)
+        print("CDS:", cds)
+        print("Host:", host)
+        print("Isolation source:", isolate_source)
+        print("Isolate_name:", isolate_source_name)
+        print("Country region:", country_region)
+        print("Collection date:", collection_date)
+
         feature_list.append(feature_data)
-        #print(feature_data)
-        #extract_features(record.features)
-        #if count > 5:
-        #    break
+        print("___________________________________________________")
+        if count > 10:
+            break
 
 ## Aggregate by reference
 excluded_accessions = ['NM_010185.4', 'NM_010508.2', 'NM_134350.2', 'NM_021268.2', 'NM_009283.4', \
                        'NM_001205313.1', 'NM_001205314.1', 'NM_001357627.1', 'NM_009283.4', \
                        'NR_104124.3', 'NR_104125.3', 'NR_186227.2', 'NR_186228.2', 'NR_186229.2', \
-                       'NR_186230.2', 'NR_186231.2', 'NR_126359.1']
+                       'NR_186230.2', 'NR_186231.2', 'NR_126359.1', \
+                       'JAHWGI010000070.1', 'JAHWGI010000979.1', 'JAHWGI010001134.1', 'JAHWGI010001142.1', 'JAHWGI010001356.1']
 reference_df = pd.DataFrame(reference_list)
 reference_df['year'] = reference_df['journal'].apply(extract_year_from_journal)
 reference_df['year'] = pd.to_numeric(reference_df['year'], errors='coerce')
-#reference_df['year'] = reference_df['year'].fillna(0).astype(int)
 reference_df['year'] = reference_df['year'].apply(lambda x: '' if pd.isna(x) else int(x))
 reference_df['journal'] = reference_df['journal'].str.replace(r"Submitted \(\d{2}-[A-Z]{3}-\d{4}\)", "", regex=True)
 reference_df['journal'] = reference_df['journal'].str.replace(r"(Patent).*", r"\1", regex=True)
 reference_df['authors'] = reference_df['authors'].apply(process_author_field)
 reference_df = reference_df[~reference_df['accession'].isin (excluded_accessions)]
+print("Number of original entries: ", len(reference_df))
 
-
-print(len(reference_df))
 grouped_ref_df = reference_df.groupby(['authors', 'title', 'journal', 'pmid', 'year'])['accession'].apply(list).reset_index()
 grouped_ref_df['accession'] = grouped_ref_df['accession'].apply(lambda x: ', '.join(x))
-#grouped_ref_df = reference_df.groupby(['authors', 'title', 'journal', 'pmid', 'year'])['accession'].reset_index()
-print(len(grouped_ref_df))
-#print(grouped_ref_df.head(100))
-grouped_ref_df.to_excel("Grouped_Refs.xlsx")
+print("Number of entries following aggregation by metadata: ", len(grouped_ref_df))
+grouped_ref_df.to_excel("CCHF_Grouped_Refs.xlsx")
 
 merged_ref_df = process_accession_lists(grouped_ref_df)
-print(len(merged_ref_df))
-merged_ref_df.to_excel("Merged_Accessions.xlsx")
+print("Number of entries following aggregation by accession numbers: ", len(merged_ref_df))
+merged_ref_df.to_excel("CCHF_Merged_Accessions.xlsx")
 
 merged_ref_df = process_authors_titles(merged_ref_df) 
-merged_ref_df.to_excel("Merged_Author_Titles.xlsx")
-#process_author_sets(grouped_ref_df['author list'])
+print("Number of entries following aggregation by metadata: ", len(merged_ref_df))
+merged_ref_df.to_excel("CCHF_Merged_Author_Titles.xlsx")
 
-
-#reference_df.to_csv("CCHF_GenBankRefs.csv", index=False)
-#df_refs = pd.read_csv('CCHF_GenBankRefs.csv')
-# Create a new dataframe containing just the 2nd to 5th columns
-# new_ref_df = reference_df.iloc[:, 1:5]
-# unique_refs_df = new_ref_df.drop_duplicates()
-# print(unique_refs_df)
-# print(len(unique_refs_df))
+features_df = pd.DataFrame(feature_list)
+features_df.to_csv("CCHF_GenBankFeatures.csv", index = False)
 
 # Add a reference back to the original "accession" column from the original dataframe
 # We will do this by reattaching the first column ('accession') to the unique dataframe
 #unique_df_with_accession = pd.concat([df['accession'], new_df], axis=1).drop_duplicates()
-
 #import ace_tools as tools; tools.display_dataframe_to_user(name="Unique DataFrame with Accession", dataframe=unique_df_with_accession)
 
 
-# features_df = pd.DataFrame(feature_list)
-#features_df.to_csv("CCHF_GenBankFeatures.csv", index = False)
-# value_counts = features_df["organism_source"].value_counts()
-# print(value_counts)
-# value_counts = features_df["mol_type_source"].value_counts()
-# print(value_counts)
-# value_counts = features_df["strain_source"].value_counts()
-# print(value_counts)
-# value_counts = features_df["db_xref_source"].value_counts()
-# print(value_counts)
-# value_counts = features_df["segment_source"].value_counts()
-# print(value_counts)
-# value_counts = features_df["geo_loc_name_source"].value_counts()
-# print(value_counts)
-# value_counts = features_df["product_CDS"].value_counts()
-# print(value_counts)
+
 
 
 

@@ -15,11 +15,6 @@ def extract_year_from_journal(text):
         return match.group(1)
     return ''
 
-# def is_incorrect_accession(accession):
-#     if accession == 'NM_010185.4':
-#         return True
-#     else: 
-#         return False
 
 def is_reference_genome(acc):
     prefix_list = ['NC', 'NG', 'NM', 'NR']
@@ -129,8 +124,6 @@ def compare_authors_titles(row_i, row_j):
     title_j = row_j['title']
     year_i = str(row_i['year'])
     year_j = str(row_j['year'])
-    pmid_i = str(row_i['pmid'])
-    pmid_j = str(row_j['pmid'])
     accessions_i = row_i['accession']
     accessions_j = row_j['accession']
 
@@ -141,31 +134,26 @@ def compare_authors_titles(row_i, row_j):
     pcnt_shared_stems = get_pcnt_shared_stems(accessions_i, accessions_j)
 
     if title_i != 'Direct Submission' and title_distance < 5:
-        with open('SameTitles.txt', 'a') as file:
-            file.write(f'Title_i:{title_i}\nTitle_j:{title_j}\nTitle_distance:{title_distance}\n')     
-            file.write(f'Authors_i: {authors_i}\nAuthors_j: {authors_j}\n')
-            file.write(f'Authors_overlap:{pcnt_authors_overlap}\n')
-            file.write(f'Year_i:{year_i} Year_j:{year_j} Max_year_dif:{max_year_dif}\n')
-            file.write(f'Accessions_i:{accessions_i}\nAccessions_j:{accessions_j}\n')
-            file.write(f'Pcnt_shared_accessions:{pcnt_shared_accessions} Pcnt_shared_stems:{pcnt_shared_stems}\n\n')   
-        return 1 
+        match = 1
     elif (title_i == 'Direct Submission') | (title_j == 'Direct Submission') \
         and authors_i != 'NCBI' \
         and pcnt_authors_overlap >= 0.75 \
         and max_year_dif <= 1 \
         and pcnt_shared_stems >0.75:
-        with open('SameAuthors.txt', 'a') as file:
-            file.write(f'Index_i: {row_i.name} Index_j: {row_j.name}\n')
+            match = 1
+    else:
+        match = 0
+
+    if match == 1:
+        with open('MatchingReferences.txt', 'a') as file:
             file.write(f'Title_i:{title_i}\nTitle_j:{title_j}\nTitle_distance:{title_distance}\n')     
             file.write(f'Authors_i: {authors_i}\nAuthors_j: {authors_j}\n')
             file.write(f'Authors_overlap:{pcnt_authors_overlap}\n')
             file.write(f'Year_i:{year_i} Year_j:{year_j} Max_year_dif:{max_year_dif}\n')
             file.write(f'Accessions_i:{accessions_i}\nAccessions_j:{accessions_j}\n')
-            file.write(f'Pcnt_shared_accessions:{pcnt_shared_accessions} Pcnt_shared_stems:{pcnt_shared_stems}\n\n')                  
-        return 1
-    else: 
-        return 0
-
+            file.write(f'Pcnt_shared_accessions:{pcnt_shared_accessions} Pcnt_shared_stems:{pcnt_shared_stems}\n\n')       
+    return match
+    
 
 def process_authors_titles(df):
     close_lists = {} 
@@ -178,16 +166,16 @@ def process_authors_titles(df):
             if score == 1:
                 close_matches.append(j)
             if len(close_matches) >=1:
-                close_lists[i] = close_matches
-    print("Close lists:", close_lists)
+                close_lists[i] = close_matches  
 
     list_of_sets_w_shared_indexes, complete_list_of_shared_indexes = convert_dict_to_list_of_sets(close_lists)  
-    print(f'''No with shared author_titles: {len(list_of_sets_w_shared_indexes)}: {list_of_sets_w_shared_indexes}''')
-    print(f'''To be dropped: {len(complete_list_of_shared_indexes)}: {complete_list_of_shared_indexes}''')      
+    #print("Close lists:", close_lists)
+    #print(f'''No with shared author_titles: {len(list_of_sets_w_shared_indexes)}: {list_of_sets_w_shared_indexes}''')
+    #print(f'''To be dropped: {len(complete_list_of_shared_indexes)}: {complete_list_of_shared_indexes}''')      
 
     list_of_new_rows = []
     for item in list_of_sets_w_shared_indexes:
-        new_row = merge_refs_sharing_author_title(df, list(item))
+        new_row = merge_rows(df, list(item))
         list_of_new_rows.append(new_row)
 
     df = df.drop(complete_list_of_shared_indexes)
@@ -216,7 +204,7 @@ def process_accession_lists(df):
     
     list_of_new_rows = []
     for item in list_of_sets_w_shared_indexes:
-        new_row = merge_refs_sharing_accessions(df, list(item))
+        new_row = merge_rows(df, list(item))
         list_of_new_rows.append(new_row)
 
     df = df.drop(complete_list_of_shared_indexes)
@@ -243,7 +231,7 @@ def combine_items_in_different_lists(lists):
     return unique_items
 
 
-def merge_refs_sharing_accessions(df, shared_indexes):
+def merge_rows(df, shared_indexes):
     new_row = {}
     authors_list = df.loc[shared_indexes, 'authors'].tolist()
     titles_list = df.loc[shared_indexes, 'title'].tolist()
@@ -251,14 +239,12 @@ def merge_refs_sharing_accessions(df, shared_indexes):
     pmid_list = df.loc[shared_indexes, 'pmid'].tolist()
     year_list = df.loc[shared_indexes, 'year'].tolist()
     accession_list = df.loc[shared_indexes, 'accession'].tolist()
-
     new_accessions = combine_items_in_different_lists(accession_list)
     new_years = combine_items_in_different_lists(year_list)
     new_titles = combine_items_in_different_lists(titles_list)
     new_authors = combine_items_in_different_lists(authors_list)
     new_pmids = combine_items_in_different_lists(pmid_list)
     new_journals = combine_items_in_different_lists(journal_list)
-
     new_row['authors'] = new_authors
     new_row['year'] = new_years
     new_row['title'] = new_titles
@@ -269,34 +255,4 @@ def merge_refs_sharing_accessions(df, shared_indexes):
     return new_row_df
 
 
-def merge_refs_sharing_author_title(df, shared_indexes):
-    new_row = {}
-    authors_list = df.loc[shared_indexes, 'authors'].tolist()
-    titles_list = df.loc[shared_indexes, 'title'].tolist()
-    journal_list = df.loc[shared_indexes, 'journal'].tolist()
-    pmid_list = df.loc[shared_indexes, 'pmid'].tolist()
-    year_list = df.loc[shared_indexes, 'year'].tolist()
-    accession_list = df.loc[shared_indexes, 'accession'].tolist()
-
-    new_accessions = combine_items_in_different_lists(accession_list)
-    new_years = combine_items_in_different_lists(year_list)
-    new_titles = combine_items_in_different_lists(titles_list)
-    new_authors = combine_items_in_different_lists(authors_list)
-    new_pmids = combine_items_in_different_lists(pmid_list)
-    new_journals = combine_items_in_different_lists(journal_list)
-
-    #new_row['authors'] = authors[:1]
-    new_row['authors'] = new_authors
-    #new_row['year'] = [';'.join(str(i) for i in year_list if i)]
-    new_row['year'] = new_years
-    new_row['title'] = new_titles
-    new_row['pmid'] = new_pmids
-    new_row['journal'] = new_journals
-     #new_row['title'] = ['\n'.join(i for i in titles_list)]
-    #new_row['pmid'] = ['; '.join(i for i in pmid_list if i)]
-    #new_row['journal'] = ['; '.join(journal_list)]
-
-    new_row['accession'] = new_accessions
-    new_row_df = pd.DataFrame(new_row, index=[0])
-    return new_row_df
 
