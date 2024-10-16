@@ -1,0 +1,22 @@
+{
+  "version": "1.2",
+  "dbname": "ref_db",
+  "dbtype": "Protein",
+  "db-version": 5,
+  "description": "ref.fasta",
+  "number-of-letters": 6115,
+  "number-of-sequences": 1,
+  "last-updated": "2024-10-15T17:51:00",
+  "number-of-volumes": 1,
+  "bytes-total": 43175,
+  "bytes-to-cache": 6213,
+  "files": [
+    "ref_db.pdb",
+    "ref_db.phr",
+    "ref_db.pin",
+    "ref_db.pot",
+    "ref_db.psq",
+    "ref_db.ptf",
+    "ref_db.pto"
+  ]
+}

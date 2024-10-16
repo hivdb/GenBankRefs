@@ -2,9 +2,86 @@ from Bio import SeqIO
 from Bio import Entrez
 import pandas as pd
 import re
+import os
+from Bio.Blast.Applications import NcbiblastpCommandline
+from Bio.Blast import NCBIXML
 import Levenshtein
 
 Entrez.email = "rshafer.stanford.edu"
+
+
+def fetch_genbank_by_accession(accession):
+    # Use Entrez to fetch the GenBank file using the accession number
+    handle = Entrez.efetch(db="nucleotide", id=accession, rettype="gb", retmode="text")
+    return SeqIO.read(handle, "genbank")
+
+
+def create_ref_aa_seq(accession_list):
+    #ref_files = []
+    combined_ref_aa_seq = ''
+    for acc in accession_list:
+        record = fetch_genbank_by_accession(acc)
+        #ref_files.append(record)
+        for feature in record.features:
+            if feature.type == "CDS":
+                if 'translation' in feature.qualifiers:
+                    protein_seq = feature.qualifiers['translation'][0]
+                    combined_ref_aa_seq = combined_ref_aa_seq + protein_seq
+                else:
+                    print("No translation available for this CDS feature.")
+    return combined_ref_aa_seq
+
+
+def perform_blastp(ref_aa_seq, sample_seq, db_name="ref_db", output_file="blast_results.xml"):
+    with open("ref.fasta", "w") as ref_file:
+        ref_file.write(f">ref_seq\n{ref_aa_seq}\n")
+
+    with open("sample.fasta", "w") as sample_file:
+        sample_file.write(f">sample_seq\n{sample_seq}\n")
+
+    # Create a BLAST database from the reference sequence
+    os.system(f"makeblastdb -in ref.fasta -dbtype prot -out {db_name}")
+
+    # Run BLASTP with the sample sequence against the reference database
+    blastp_cline = NcbiblastpCommandline(query="sample.fasta", db=db_name, outfmt=5, out=output_file)
+    stdout, stderr = blastp_cline()
+
+    # Parse the BLAST results
+    with open(output_file) as result_handle:
+        blast_records = NCBIXML.read(result_handle)
+    
+    # Extract statistics (assuming a single hit, adjust as needed)
+    # Try blast_records.alignments[0].hsps[0]
+    for alignment in blast_records.alignments:
+        for hsp in alignment.hsps:  # High-scoring segment pairs
+            e_value = hsp.expect
+            alignment_length = hsp.align_length
+            identity = hsp.identities
+            percent_identity = (identity / alignment_length) * 100
+            overlap = hsp.align_length
+            
+            # print(f"E-value: {e_value}")
+            # print(f"Pcnt id: {percent_identity:.2f}%")
+            # print(f"Alignm len: {alignment_length}")
+            # print(f"Overlap: {overlap}")
+            
+            # Cleanup temporary files; move before the return statement
+            os.remove("ref.fasta")
+            os.remove("sample.fasta")
+            os.remove(f"{db_name}.phr")
+            os.remove(f"{db_name}.pin")
+            os.remove(f"{db_name}.psq")
+            os.remove(output_file)
+            
+            return {
+                "e_value": e_value,
+                "pcnt_id": percent_identity,
+                "align_len": alignment_length,
+                "overlap": overlap
+            }
+
+   
+
 
 def extract_year_from_journal(text):
     match = re.search(r'\((\d{4})\)', text)
@@ -113,10 +190,6 @@ def calc_year_dif(list1, list2):
     return max_dif
 
 
-# The score is 1 if the author list is the same and 1 of the following criteria is met
-# (1) One or both of the titles are 'Direct Submission" and the years are within 1. If the years
-# are not present they are treated as being the same
-# (2) The titles are the same (and not both 'Direct Submission')
 def compare_authors_titles(row_i, row_j):
     authors_i = row_i['authors']
     authors_j = row_j['authors']

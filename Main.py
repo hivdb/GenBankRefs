@@ -7,11 +7,20 @@ Entrez.email = "rshafer.stanford.edu"
 pd.set_option('display.max_rows', 100)
 genbank_file = "CCHF.gb"
 
-from GenBankFunctions import extract_year_from_journal, process_author_field, process_accession_lists, process_authors_titles
+from GenBankFunctions import (
+    extract_year_from_journal, 
+    process_author_field, 
+    process_accession_lists, 
+    process_authors_titles, 
+    fetch_genbank_by_accession, 
+    create_ref_aa_seq,
+    perform_blastp)
 
-#def extract_organism(annotations):
-#    organism = annotations.get("source")
-#    #print("\nOrganism:", organism, "\n")
+# S: DQ133507, M: EU037902 and L: EU044832
+cchf_ref_accessions = ['DQ133507', 'EU037902', 'EU044832']
+ref_aa_seq = create_ref_aa_seq(cchf_ref_accessions)
+print("Reference sequence:", ref_aa_seq)
+
 
 def extract_references(annotations, accession):
     ref_list = annotations.get("references")
@@ -26,17 +35,15 @@ def extract_references(annotations, accession):
         ref_data.append(ref_items)
     return ref_data
 
-#columns_of_interest = []
+
 def extract_features(features, accession):
     feature_items = {}
     feature_items["accession"] = accession
     for feature in features:
         for key, value in feature.qualifiers.items():
-            if key == "translation":
-                continue
-            key = key + '_' + feature.type
-            feature_items[key] = value[0]
-           #print(f"Key {key}: value {value}\n")
+             key = key + '_' + feature.type
+             feature_items[key] = value[0]
+             #print(f"Key {key}: value {value}\n")
     return feature_items
 
 
@@ -44,45 +51,45 @@ reference_list = []
 feature_list = []
 with open(genbank_file, "r") as handle:
     count=0
+    features = {}
     for record in SeqIO.parse(handle, "genbank"):
         count +=1
-        acc_num = record.id
-        seq_len = len(record.seq)
-        description = record.description
-        record_date = record.annotations['date']
-        organism = record.annotations['organism']
-     
         ref_data = extract_references(record.annotations, record.id)
         reference_list.extend(ref_data)
         
         feature_data = extract_features(record.features, record.id)
-        #print("\nFeature data:", feature_data, "\n")
 
-        segment_source = feature_data.get('segment_source', '')
-        cds = feature_data.get('product_CDS', '')
-        host = feature_data.get('host_source', '')
-        isolate_source = feature_data.get('isolation_source_source', '')
-        isolate_source_name = feature_data.get('isolate_source', '')
-        country_region = feature_data.get('geo_loc_name_source', '')
-        collection_date = feature_data.get('collection_date_source', '')
+        features = {}
+        features['acc_num'] = record.id
+        sample_seq  = feature_data.get('translation_CDS','')
+        features['seq_len'] = len(record.seq)
+        features['description'] = record.description
+        features['record_date'] = record.annotations['date']
+        features['organism'] = record.annotations['organism']     
+        features['segment_source'] = feature_data.get('segment_source', '')
+        features['cds'] = feature_data.get('product_CDS', '')
+        features['host'] = feature_data.get('host_source', '')
+        features['isolate_source'] = feature_data.get('isolation_source_source', '')
+        features['isolate_name'] = feature_data.get('isolate_source', '')
+        features['country_region'] = feature_data.get('geo_loc_name_source', '')
+        features['collection_date'] = feature_data.get('collection_date_source', '')
+            
+        if len(sample_seq) > 30:
+            blast_data = perform_blastp(ref_aa_seq, sample_seq)
+            print(blast_data)
+            features['e_value'] = blast_data['e_value']
+            features['pcnt_id'] = blast_data['pcnt_id']
+            features['align_len'] = blast_data['align_len']
+        else:
+           features['e_value'] = 999
+           features['pcnt_id'] = 0
+           features['align_len'] = 0 
 
-        print(f"Acc_num: {acc_num}")
-        print(f"Organism: {organism}")
-        print(f"Description: {description}")
-        print(f"Record date: {record_date}")
-        print(f"Sequence Length: {seq_len}")
-        print("Segment source:", segment_source)
-        print("CDS:", cds)
-        print("Host:", host)
-        print("Isolation source:", isolate_source)
-        print("Isolate_name:", isolate_source_name)
-        print("Country region:", country_region)
-        print("Collection date:", collection_date)
-
-        feature_list.append(feature_data)
+        print(features)
+        feature_list.append(features)
         print("___________________________________________________")
-        if count > 10:
-            break
+        count = count + 1
+        print("Count:", count)
 
 ## Aggregate by reference
 excluded_accessions = ['NM_010185.4', 'NM_010508.2', 'NM_134350.2', 'NM_021268.2', 'NM_009283.4', \
@@ -113,13 +120,11 @@ merged_ref_df = process_authors_titles(merged_ref_df)
 print("Number of entries following aggregation by metadata: ", len(merged_ref_df))
 merged_ref_df.to_excel("CCHF_Merged_Author_Titles.xlsx")
 
+#print(feature_list)
 features_df = pd.DataFrame(feature_list)
 features_df.to_csv("CCHF_GenBankFeatures.csv", index = False)
 
-# Add a reference back to the original "accession" column from the original dataframe
-# We will do this by reattaching the first column ('accession') to the unique dataframe
-#unique_df_with_accession = pd.concat([df['accession'], new_df], axis=1).drop_duplicates()
-#import ace_tools as tools; tools.display_dataframe_to_user(name="Unique DataFrame with Accession", dataframe=unique_df_with_accession)
+
 
 
 
