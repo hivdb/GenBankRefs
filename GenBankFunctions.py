@@ -1,8 +1,10 @@
 from Bio import SeqIO
 from Bio import Entrez
 import pandas as pd
+import numpy as np
 import re
 import os
+from collections import Counter
 from Bio.Blast.Applications import NcbiblastpCommandline
 from Bio.Blast import NCBIXML
 import Levenshtein
@@ -328,4 +330,66 @@ def merge_rows(df, shared_indexes):
     return new_row_df
 
 
+def count_unique_elements(input_list):
+    return dict(Counter(input_list))
+
+def dict_to_sorted_string(element_counts):
+    sorted_elements = sorted(element_counts.items(), key=lambda x: x[1], reverse=True)
+    result = ", ".join([f"{key} ({value})" for key, value in sorted_elements])
+    return result
+
+def create_binned_pcnts(percentages):
+    bins = [25, 50, 75, 90, 95, 100]
+    labels = ['25%-50%', '50%-75%', '75%-90%', '90%-95%', '95%-100%']
+    
+    if len(percentages) == 0:
+        return ""
+       
+    binned = pd.cut(percentages, bins=bins, labels=labels, right=True, include_lowest=True)
+    counts = binned.value_counts().reindex(labels, fill_value=0)
+    non_zero_counts = {label: count for label, count in counts.items() if count > 0}
+    result_str = ", ".join([f"{label} ({count})" for label, count in non_zero_counts.items()])
+    return result_str
+
+
+def create_binned_seq_lens(numbers):
+    #print("Numbers:", numbers)
+    if len(numbers) == 0:
+        return ""
+    
+    unique_counts = pd.Series(numbers).value_counts().to_dict()
+    if len(unique_counts) < 6:
+        return dict_to_sorted_string(unique_counts)
+    
+    bins = [0, 30, 100, 500, 1000, 3000, 5000, 10000, 1000000]
+    labels = ['<30', '30-100', '100-500', '500-1000', '1000-3000', '3000-5000', '5000-10000', '>10000']
+        
+    binned = pd.cut(numbers, bins=bins, labels=labels, right=True, include_lowest=True)
+    counts = binned.value_counts().reindex(labels, fill_value=0)
+    non_zero_counts = {label: count for label, count in counts.items() if count > 0}
+    result_str = ", ".join([f"{label} ({count})" for label, count in non_zero_counts.items()])
+    return result_str
+
+
+def merge_feature_rows(df):
+    df = df.copy()
+    new_row = {}
+    unique_organisms = count_unique_elements(df['organism'].tolist())
+    new_row['Organisms'] = dict_to_sorted_string(unique_organisms)
+    df['record_year'] = df['record_date'].astype(str).str[:4]
+    unique_record_years = count_unique_elements(df['record_year'].tolist())
+    new_row['RecordYears'] =  dict_to_sorted_string(unique_record_years)
+    unique_hosts = count_unique_elements(df['host'].tolist())
+    new_row['Hosts'] =  dict_to_sorted_string(unique_hosts)
+    unique_countries = count_unique_elements(df['country_region'].tolist())
+    new_row['Countries'] = dict_to_sorted_string(unique_countries)
+    df['isolate_year'] = df['collection_date'].astype(str).str[:4]
+    unique_isolate_years = count_unique_elements(df['isolate_year'].tolist())
+    new_row['IsolateYears'] = dict_to_sorted_string(unique_isolate_years)
+    unique_cds = count_unique_elements(df['cds'].tolist())
+    new_row['CDS'] = dict_to_sorted_string(unique_cds)
+    new_row['SeqLens'] = create_binned_seq_lens(df['seq_len'].tolist())
+    new_row['AlignLens'] = create_binned_seq_lens(df['align_len'].tolist()) 
+    new_row['PcntIDs'] = create_binned_pcnts(df['pcnt_id'].tolist())
+    return new_row
 

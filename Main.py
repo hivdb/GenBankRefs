@@ -88,7 +88,6 @@ with open(genbank_file, "r") as handle:
         print(features)
         feature_list.append(features)
         print("___________________________________________________")
-        count = count + 1
         print("Count:", count)
 
 ## Aggregate by reference
