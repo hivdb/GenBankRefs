@@ -172,3 +172,5 @@ ref_db.pjs
 ref.fasta
 sample.fasta
 CCHF_GenBankFeatures.csv
+
+.DS_Store
