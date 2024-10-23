@@ -8,6 +8,7 @@ from collections import Counter
 from Bio.Blast.Applications import NcbiblastpCommandline
 from Bio.Blast import NCBIXML
 import Levenshtein
+import subprocess
 
 Entrez.email = "rshafer.stanford.edu"
 
@@ -34,22 +35,25 @@ def create_ref_aa_seq(accession_list):
     return combined_ref_aa_seq
 
 
-def perform_blastp(ref_aa_seq, sample_seq, db_name="ref_db", output_file="blast_results.xml"):
-    with open("ref.fasta", "w") as ref_file:
-        ref_file.write(f">ref_seq\n{ref_aa_seq}\n")
-
+def perform_blastp(sample_seq, db_name, output_file="blast_results.xml"):
+    """
+    Input: sample_seq (str): sequence to compare/blast
+        db_name (str), prebuilt db by calling makeblastdb
+        output_file (str): tmp file name to store results, cleared each iteration
+    Output: 
+        a dictionary of keys including {e_value, percent_identity, alignment_length, overlap} 
+            of each alignment
+    
+    """
     with open("sample.fasta", "w") as sample_file:
         sample_file.write(f">sample_seq\n{sample_seq}\n")
-
-    # Create a BLAST database from the reference sequence
-    os.system(f"makeblastdb -in ref.fasta -dbtype prot -out {db_name}")
 
     # Run BLASTP with the sample sequence against the reference database
     blastp_cline = NcbiblastpCommandline(query="sample.fasta", db=db_name, outfmt=5, out=output_file)
     stdout, stderr = blastp_cline()
 
     # Parse the BLAST results
-    with open(output_file) as result_handle:
+    with open(output_file, "r") as result_handle:
         blast_records = NCBIXML.read(result_handle)
     
     # Extract statistics (assuming a single hit, adjust as needed)
@@ -67,22 +71,16 @@ def perform_blastp(ref_aa_seq, sample_seq, db_name="ref_db", output_file="blast_
             # print(f"Alignm len: {alignment_length}")
             # print(f"Overlap: {overlap}")
             
-            # Cleanup temporary files; move before the return statement
-            os.remove("ref.fasta")
-            os.remove("sample.fasta")
-            os.remove(f"{db_name}.phr")
-            os.remove(f"{db_name}.pin")
-            os.remove(f"{db_name}.psq")
-            os.remove(output_file)
-            
+            # Clear the output file instead of deleting to speed up
+            with open(output_file, "w") as result_file:
+                result_file.write("")  # This clears the file
+
             return {
                 "e_value": e_value,
                 "pcnt_id": percent_identity,
                 "align_len": alignment_length,
                 "overlap": overlap
             }
-
-   
 
 
 def extract_year_from_journal(text):

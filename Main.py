@@ -2,6 +2,7 @@ from Bio import SeqIO
 from Bio import Entrez
 import pandas as pd
 import ast
+import os
 
 Entrez.email = "rshafer.stanford.edu"
 pd.set_option('display.max_rows', 100)
@@ -52,6 +53,11 @@ feature_list = []
 with open(genbank_file, "r") as handle:
     count=0
     features = {}
+
+    #ref aa seq doesn't change
+    with open("ref.fasta", "w") as ref_file:
+        ref_file.write(f">ref_seq\n{ref_aa_seq}\n")
+
     for record in SeqIO.parse(handle, "genbank"):
         count +=1
         ref_data = extract_references(record.annotations, record.id)
@@ -73,9 +79,15 @@ with open(genbank_file, "r") as handle:
         features['isolate_name'] = feature_data.get('isolate_source', '')
         features['country_region'] = feature_data.get('geo_loc_name_source', '')
         features['collection_date'] = feature_data.get('collection_date_source', '')
-            
+        
         if len(sample_seq) > 30:
-            blast_data = perform_blastp(ref_aa_seq, sample_seq)
+            
+            # Create a BLAST database from the reference sequence, since ref aa is always the same
+            db_name="ref_db"
+            if not os.path.exists(f"{db_name}.phr"):  # Check if the database exists
+                os.system(f"makeblastdb -in ref.fasta -dbtype prot -out {db_name}")
+            # Perform blast
+            blast_data = perform_blastp(sample_seq, db_name)
             print(blast_data)
             features['e_value'] = blast_data['e_value']
             features['pcnt_id'] = blast_data['pcnt_id']
@@ -89,6 +101,7 @@ with open(genbank_file, "r") as handle:
         feature_list.append(features)
         print("___________________________________________________")
         print("Count:", count)
+    os.remove("ref.fasta")
 
 ## Aggregate by reference
 excluded_accessions = ['NM_010185.4', 'NM_010508.2', 'NM_134350.2', 'NM_021268.2', 'NM_009283.4', \
