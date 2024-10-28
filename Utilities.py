@@ -35,7 +35,7 @@ def extract_year_from_journal(text):
 
 def extract_year_from_date_fields(text):
     text = str(text) if text is not None else ""
-    match = re.search(r"\b\d{4}\b", text)
+    match = re.search(r"\d{4}", text)
     if match:
         return match.group()
     else:

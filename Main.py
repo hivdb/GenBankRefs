@@ -24,14 +24,14 @@ from Utilities import (extract_year_from_journal,
 
 def main():
     # S: DQ133507, M: EU037902 and L: EU044832
-    cchf_ref_accessions = ['DQ133507', 'EU037902', 'EU044832']
-    ref_aa_seq = create_ref_aa_seq(cchf_ref_accessions)
+    #cchf_ref_accessions = ['DQ133507', 'EU037902', 'EU044832']
+    #ref_aa_seq = create_ref_aa_seq(cchf_ref_accessions)
     # print("Reference sequence:", ref_aa_seq)
     db_name = "ref_db"
-    with open("ref.fasta", "w") as ref_file:
-        ref_file.write(f">ref_seq\n{ref_aa_seq}\n")
+    #with open("ref.fasta", "w") as ref_file:
+    #    ref_file.write(f">ref_seq\n{ref_aa_seq}\n")
     if (RUN_BLAST == 1):
-        os.system(f"makeblastdb -in ref.fasta -dbtype prot -out {db_name}")
+        os.system(f"makeblastdb -in CCHF_ReferenceAAs.fasta -dbtype prot -out {db_name}")
 
     def extract_references(annotations, accession):
         ref_list = annotations.get("references")

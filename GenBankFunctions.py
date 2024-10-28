@@ -20,6 +20,7 @@ def fetch_genbank_by_accession(accession):
 
 
 def create_ref_aa_seq(accession_list):
+    print("AccessionList: ", accession_list)
     #ref_files = []
     combined_ref_aa_seq = ''
     for acc in accession_list:
