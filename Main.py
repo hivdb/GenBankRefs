@@ -1,5 +1,6 @@
 from Bio import SeqIO
 from Bio import Entrez
+from datetime import datetime
 import pandas as pd
 import ast
 import os
@@ -7,27 +8,30 @@ import os
 Entrez.email = "rshafer.stanford.edu"
 pd.set_option('display.max_rows', 100)
 genbank_file = "CCHF.gb"
+timestamp = datetime.now().strftime('%m_%d')
+RUN_BLAST = 0
 
-from GenBankFunctions import (
-    extract_year_from_journal,
-    process_author_field,
-    process_accession_lists,
-    process_authors_titles,
-    fetch_genbank_by_accession,
-    create_ref_aa_seq,
-    pooled_blast,
-    perform_blastp)
+from GenBankFunctions import (create_ref_aa_seq, 
+                              pooled_blast)
+
+from DataFrameLogic import (process_accession_lists, 
+                            process_authors_titles,
+                            combine_refs_and_features)
+
+from Utilities import (extract_year_from_journal, 
+                       process_author_field)
 
 
 def main():
     # S: DQ133507, M: EU037902 and L: EU044832
     cchf_ref_accessions = ['DQ133507', 'EU037902', 'EU044832']
     ref_aa_seq = create_ref_aa_seq(cchf_ref_accessions)
-    print("Reference sequence:", ref_aa_seq)
+    # print("Reference sequence:", ref_aa_seq)
     db_name = "ref_db"
     with open("ref.fasta", "w") as ref_file:
         ref_file.write(f">ref_seq\n{ref_aa_seq}\n")
-    os.system(f"makeblastdb -in ref.fasta -dbtype prot -out {db_name}")
+    if (RUN_BLAST == 1):
+        os.system(f"makeblastdb -in ref.fasta -dbtype prot -out {db_name}")
 
     def extract_references(annotations, accession):
         ref_list = annotations.get("references")
@@ -87,13 +91,9 @@ def main():
             features['_sample_seq'] = sample_seq
             # print(features)
             feature_list.append(features)
-            # print("___________________________________________________")
-            # print("Count:", count)
-        os.remove("ref.fasta")
-
-    feature_list = pooled_blast(feature_list, db_name)
-
-    exit()
+ 
+    if RUN_BLAST == 1:
+        feature_list = pooled_blast(feature_list, db_name)
 
     ## Aggregate by reference
     excluded_accessions = ['NM_010185.4', 'NM_010508.2', 'NM_134350.2', 'NM_021268.2', 'NM_009283.4', \
@@ -114,11 +114,11 @@ def main():
     grouped_ref_df = reference_df.groupby(['authors', 'title', 'journal', 'pmid', 'year'])['accession'].apply(list).reset_index()
     grouped_ref_df['accession'] = grouped_ref_df['accession'].apply(lambda x: ', '.join(x))
     print("Number of entries following aggregation by metadata: ", len(grouped_ref_df))
-    grouped_ref_df.to_excel("CCHF_Grouped_Refs.xlsx")
+    # grouped_ref_df.to_excel("CCHF_Grouped_Refs.xlsx")
 
     merged_ref_df = process_accession_lists(grouped_ref_df)
     print("Number of entries following aggregation by accession numbers: ", len(merged_ref_df))
-    merged_ref_df.to_excel("CCHF_Merged_Accessions.xlsx")
+    # merged_ref_df.to_excel("CCHF_Merged_Accessions.xlsx")
 
     merged_ref_df = process_authors_titles(merged_ref_df)
     print("Number of entries following aggregation by metadata: ", len(merged_ref_df))
@@ -126,8 +126,12 @@ def main():
 
     #print(feature_list)
     features_df = pd.DataFrame(feature_list)
-    features_df.to_csv("CCHF_GenBankFeatures.csv", index = False)
+    features_df.to_excel("CCHF_GenBankFeatures.xlsx", index = False)
 
+    combined_df = combine_refs_and_features(merged_ref_df, features_df)
+    combined_df.to_excel("CCHF_GenBank_Combined.xlsx", index = False) 
+    #combined_df = f"{combined_df}_{timestamp}"
+    ##print_difs_from_saved_files
 
 if __name__ == '__main__':
     main()
