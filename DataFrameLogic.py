@@ -180,12 +180,12 @@ def combine_refs_and_features(ref_df, features_df):
         count += 1
         accession_string = row['accession']
         accession_list = accession_string.split(', ')
-        print("\n", index)
-        print(accession_list)
+        #print("\n", index)
+        #print(accession_list)
         features_rows = features_df[features_df['acc_num'].isin(accession_list)]
-        print("features_rows_dates: ", features_rows['record_date'], " ", features_rows['collection_date'], "\n")
+        #print("features_rows_dates: ", features_rows['record_date'], " ", features_rows['collection_date'], "\n")
         new_dict = merge_feature_rows(features_rows)
-        print(new_dict)
+        #print(new_dict)
         combined_df.at[index, 'Organisms'] = new_dict['Organisms']
         combined_df.at[index, 'RecordYears'] = new_dict['RecordYears']
         combined_df.at[index, 'Hosts'] = new_dict['Hosts']

@@ -7,7 +7,8 @@ import os
 
 Entrez.email = "rshafer.stanford.edu"
 pd.set_option('display.max_rows', 100)
-genbank_file = "CCHF.gb"
+virus_name = "Nipah"
+genbank_file = virus_name + ".gb"
 timestamp = datetime.now().strftime('%m_%d')
 RUN_BLAST = 0
 
@@ -65,7 +66,14 @@ def main():
         features = {}
 
         for record in SeqIO.parse(handle, "genbank"):
+            #print("***Annotations:", record.annotations)
+            taxonomy = record.annotations['taxonomy']
+            if len(taxonomy) == 0 or taxonomy[0] != 'Viruses': 
+                print("******Excluded sequence:", record.id, " ", taxonomy)
+                continue
             count +=1
+            #if count > 100:
+            #    break
             ref_data = extract_references(record.annotations, record.id)
             reference_list.extend(ref_data)
 
@@ -122,14 +130,15 @@ def main():
 
     merged_ref_df = process_authors_titles(merged_ref_df)
     print("Number of entries following aggregation by metadata: ", len(merged_ref_df))
-    merged_ref_df.to_excel("CCHF_Merged_Author_Titles.xlsx")
+    
+    merged_ref_df.to_excel(f"{virus_name}_Merged_Author_Titles.xlsx", index = False)
 
     #print(feature_list)
     features_df = pd.DataFrame(feature_list)
-    features_df.to_excel("CCHF_GenBankFeatures.xlsx", index = False)
+    features_df.to_excel("{virus_name}_GenBankFeatures.xlsx", index = False)
 
     combined_df = combine_refs_and_features(merged_ref_df, features_df)
-    combined_df.to_excel("CCHF_GenBank_Combined.xlsx", index = False) 
+    combined_df.to_excel(f"{virus_name}_Combined.xlsx", index = False) 
     #combined_df = f"{combined_df}_{timestamp}"
     ##print_difs_from_saved_files
 
