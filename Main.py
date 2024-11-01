@@ -5,34 +5,33 @@ import pandas as pd
 import ast
 import os
 
-Entrez.email = "rshafer.stanford.edu"
-pd.set_option('display.max_rows', 100)
-virus_name = "Nipah"
-genbank_file = virus_name + ".gb"
-timestamp = datetime.now().strftime('%m_%d')
-RUN_BLAST = 0
-
-from GenBankFunctions import (create_ref_aa_seq, 
+from GenBankFunctions import (filter_by_taxonomy, 
                               pooled_blast)
 
 from DataFrameLogic import (process_accession_lists, 
                             process_authors_titles,
-                            combine_refs_and_features)
+                            combine_refs_and_features,
+                            get_additional_host_data)
 
 from Utilities import (extract_year_from_journal, 
                        process_author_field)
 
+## CONSTANTS
+Entrez.email = "rshafer.stanford.edu"
+timestamp = datetime.now().strftime('%m_%d')
+pd.set_option('display.max_rows', 100)
+
+virus_name = "CCHF"
+genbank_file = f"ReferenceData/{virus_name}/{virus_name}.gb"
+reference_aa_file = f"ReferenceData/{virus_name}/{virus_name}_RefAAs.fasta"
+output_dir = f"OutputData/{virus_name}"
+RUN_BLAST = 1
+
 
 def main():
-    # S: DQ133507, M: EU037902 and L: EU044832
-    #cchf_ref_accessions = ['DQ133507', 'EU037902', 'EU044832']
-    #ref_aa_seq = create_ref_aa_seq(cchf_ref_accessions)
-    # print("Reference sequence:", ref_aa_seq)
     db_name = "ref_db"
-    #with open("ref.fasta", "w") as ref_file:
-    #    ref_file.write(f">ref_seq\n{ref_aa_seq}\n")
     if (RUN_BLAST == 1):
-        os.system(f"makeblastdb -in CCHF_ReferenceAAs.fasta -dbtype prot -out {db_name}")
+        os.system(f"makeblastdb -in {reference_aa_file} -dbtype prot -out {db_name}")
 
     def extract_references(annotations, accession):
         ref_list = annotations.get("references")
@@ -64,25 +63,25 @@ def main():
     with open(genbank_file, "r") as handle:
         count=0
         features = {}
-
+        excluded_seqs = []
         for record in SeqIO.parse(handle, "genbank"):
-            #print("***Annotations:", record.annotations)
+            count +=1
+
             taxonomy = record.annotations['taxonomy']
             if len(taxonomy) == 0 or taxonomy[0] != 'Viruses': 
-                print("******Excluded sequence:", record.id, " ", taxonomy)
+                excluded_seq_data = filter_by_taxonomy(record)
+                excluded_seqs.append(excluded_seq_data)
                 continue
-            count +=1
-            #if count > 100:
-            #    break
+
             ref_data = extract_references(record.annotations, record.id)
             reference_list.extend(ref_data)
 
-            feature_data = extract_features(record.features, record.id)
-
             features = {}
+            feature_data = extract_features(record.features, record.id)
             features['acc_num'] = record.id
             sample_seq  = feature_data.get('translation_CDS','')
-            features['seq_len'] = len(record.seq)
+            features['num_na'] = len(record.seq)
+            features['num_aa'] = len(sample_seq)
             features['description'] = record.description
             features['record_date'] = record.annotations['date']
             features['organism'] = record.annotations['organism']
@@ -97,18 +96,15 @@ def main():
             features['pcnt_id'] = 0
             features['align_len'] = 0
             features['_sample_seq'] = sample_seq
-            # print(features)
             feature_list.append(features)
  
     if RUN_BLAST == 1:
         feature_list = pooled_blast(feature_list, db_name)
 
+    df_excluded_seqs = pd.DataFrame(excluded_seqs)
+    print("NumExcludedSequences:", len(df_excluded_seqs))
+       
     ## Aggregate by reference
-    excluded_accessions = ['NM_010185.4', 'NM_010508.2', 'NM_134350.2', 'NM_021268.2', 'NM_009283.4', \
-                        'NM_001205313.1', 'NM_001205314.1', 'NM_001357627.1', 'NM_009283.4', \
-                        'NR_104124.3', 'NR_104125.3', 'NR_186227.2', 'NR_186228.2', 'NR_186229.2', \
-                        'NR_186230.2', 'NR_186231.2', 'NR_126359.1', \
-                        'JAHWGI010000070.1', 'JAHWGI010000979.1', 'JAHWGI010001134.1', 'JAHWGI010001142.1', 'JAHWGI010001356.1']
     reference_df = pd.DataFrame(reference_list)
     reference_df['year'] = reference_df['journal'].apply(extract_year_from_journal)
     reference_df['year'] = pd.to_numeric(reference_df['year'], errors='coerce')
@@ -116,31 +112,33 @@ def main():
     reference_df['journal'] = reference_df['journal'].str.replace(r"Submitted \(\d{2}-[A-Z]{3}-\d{4}\)", "", regex=True)
     reference_df['journal'] = reference_df['journal'].str.replace(r"(Patent).*", r"\1", regex=True)
     reference_df['authors'] = reference_df['authors'].apply(process_author_field)
-    reference_df = reference_df[~reference_df['accession'].isin (excluded_accessions)]
     print("Number of original entries: ", len(reference_df))
 
     grouped_ref_df = reference_df.groupby(['authors', 'title', 'journal', 'pmid', 'year'])['accession'].apply(list).reset_index()
     grouped_ref_df['accession'] = grouped_ref_df['accession'].apply(lambda x: ', '.join(x))
     print("Number of entries following aggregation by metadata: ", len(grouped_ref_df))
-    # grouped_ref_df.to_excel("CCHF_Grouped_Refs.xlsx")
-
-    merged_ref_df = process_accession_lists(grouped_ref_df)
-    print("Number of entries following aggregation by accession numbers: ", len(merged_ref_df))
-    # merged_ref_df.to_excel("CCHF_Merged_Accessions.xlsx")
-
-    merged_ref_df = process_authors_titles(merged_ref_df)
-    print("Number of entries following aggregation by metadata: ", len(merged_ref_df))
     
-    merged_ref_df.to_excel(f"{virus_name}_Merged_Author_Titles.xlsx", index = False)
+    merged_ref_df = process_accession_lists(grouped_ref_df)
+    print("Number of entries following aggregation by accession numbers: ", len(merged_ref_df))  
+    merged_ref_df = process_authors_titles(merged_ref_df)
+    print("Number of entries following aggregation by metadata: ", len(merged_ref_df))   
 
-    #print(feature_list)
+    #Place sequence features in a data frame
     features_df = pd.DataFrame(feature_list)
-    features_df.to_excel("{virus_name}_GenBankFeatures.xlsx", index = False)
-
+    features_df = get_additional_host_data(features_df)
+    #Combine references and features
     combined_df = combine_refs_and_features(merged_ref_df, features_df)
-    combined_df.to_excel(f"{virus_name}_Combined.xlsx", index = False) 
-    #combined_df = f"{combined_df}_{timestamp}"
-    ##print_difs_from_saved_files
+
+    #Print output files
+    output_file = os.path.join(output_dir, f"{virus_name}__GenBankFeatures_{timestamp}.xlsx")
+    features_df.to_excel(output_file, index=False)
+  
+    output_file = os.path.join(output_dir, f"{virus_name}_Combined_{timestamp}.xlsx")
+    combined_df.to_excel(output_file, index=False)
+
+    output_file = os.path.join(output_dir, f"{virus_name}_Excluded_Seqs_{timestamp}.xlsx")
+    df_excluded_seqs.to_excel(output_file, index = False)
+
 
 if __name__ == '__main__':
     main()

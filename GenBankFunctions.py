@@ -35,6 +35,17 @@ def create_ref_aa_seq(accession_list):
                     print("No translation available for this CDS feature.")
     return combined_ref_aa_seq
 
+def filter_by_taxonomy(record):
+    excluded_seq = {}
+    taxonomy = record.annotations['taxonomy']
+    excluded_seq['Accession'] = record.id
+    excluded_seq['Taxonomy'] = ', '.join(taxonomy)
+    excluded_seq['SeqLen'] = len(record.seq)
+    excluded_seq['Organism'] = record.annotations['organism']
+    excluded_seq['Description'] = record.description
+    return excluded_seq 
+
+
 
 def perform_blastp(idx, sample_seq, db_name):
     """
@@ -115,8 +126,6 @@ def pooled_blast(features_list, db_name, poolsize=20):
         ]
         feature_list = []
         for count, i in enumerate(pool.starmap(blast_sequence, parameters)):
-            #print("___________________________________________________")
-            #print("Count:", count)
             feature_list.append(i)
 
     return feature_list

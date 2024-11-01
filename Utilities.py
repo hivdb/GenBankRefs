@@ -141,8 +141,8 @@ def dict_to_sorted_string(element_counts):
 
 
 def create_binned_pcnts(percentages):
-    bins = [25, 50, 75, 90, 95, 100]
-    labels = ['25%-50%', '50%-75%', '75%-90%', '90%-95%', '95%-100%']
+    bins = [0, 25, 50, 75, 90, 95, 100]
+    labels = ['0%-25%', '25%-50%', '50%-75%', '75%-90%', '90%-95%', '95%-100%']
 
     if len(percentages) == 0:
         return ""
