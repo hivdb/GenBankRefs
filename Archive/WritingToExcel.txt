@@ -1,0 +1,46 @@
+import pandas as pd
+
+# Create a sample DataFrame
+df = pd.DataFrame({
+    'Name': ['John', 'Alice', 'Bob'],
+    'Age': [30, 25, 35],
+    'City': ['New York', 'San Francisco', 'Chicago']
+})
+
+pip install xlsxwriter
+
+# Create an ExcelWriter object
+with pd.ExcelWriter('output.xlsx', engine='xlsxwriter') as writer:
+    # Write the DataFrame to Excel
+    df.to_excel(writer, sheet_name='Sheet1', index=False)
+    
+    # Get the xlsxwriter workbook and worksheet objects
+    workbook = writer.book
+    worksheet = writer.sheets['Sheet1']
+    
+    # Set the column widths
+    worksheet.set_column('A:A', 15)  # Set width of column A to 15
+    worksheet.set_column('B:B', 10)  # Set width of column B to 10
+    worksheet.set_column('C:C', 20)  # Set width of column C to 20
+	
+	In this example:
+	We use pd.ExcelWriter() to create an Excel file named 'output.xlsx'.
+	The engine='xlsxwriter' parameter specifies that we're using the XlsxWriter engine, which allows for more formatting options1.
+	We write the DataFrame to the Excel file using df.to_excel().
+	We get the workbook and worksheet objects from the ExcelWriter.
+	We use worksheet.set_column() to set the width of each column. The first argument is the column range (e.g., 'A:A' for column A), and the second argument is the width in characters1.
+	You can also autofit the column widths based on the content:
+	
+	
+for column in df:
+    column_length = max(df[column].astype(str).map(len).max(), len(column))
+    col_idx = df.columns.get_loc(column)
+    writer.sheets['Sheet1'].set_column(col_idx, col_idx, column_length)
+	
+	
+This code calculates the maximum length of the data in each column (including the header) and sets the column width accordingly2.
+Remember to install the xlsxwriter library if you haven't already:
+
+
+
+https://www.geeksforgeeks.org/exporting-a-pandas-dataframe-to-an-excel-file/

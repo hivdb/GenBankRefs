@@ -163,7 +163,7 @@ cython_debug/
 #.idea/
 
 # Data files
-CCHF.gb
+*.gb
 blast_results.xml
 ref_db.psq
 ref_db.phr

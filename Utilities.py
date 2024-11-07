@@ -104,13 +104,13 @@ def get_pcnt_shared_accessions(stringlist1, stringlist2):
     return pcnt_shared_accessions
 
 
-def get_pcnt_shared_stems(list1, list2):
+def get_pcnt_shared_stems(list1, list2, stem_length):
     acc_num_stem_list1 = []
     acc_num_stem_list2 = []
     for acc_num in list1:
-        acc_num_stem_list1.append(acc_num[:3])
+        acc_num_stem_list1.append(acc_num[:stem_length])
     for acc_num in list2:
-        acc_num_stem_list2.append(acc_num[:3])
+        acc_num_stem_list2.append(acc_num[:stem_length])
     set_acc_num_stem1 = set(acc_num_stem_list1)
     set_acc_num_stem2 = set(acc_num_stem_list2)
     pcnt_shared_stems = len(set_acc_num_stem1 & set_acc_num_stem2) / len((set_acc_num_stem1 | set_acc_num_stem2))
@@ -143,7 +143,6 @@ def dict_to_sorted_string(element_counts):
 def create_binned_pcnts(percentages):
     bins = [0, 25, 50, 75, 90, 95, 100]
     labels = ['0%-25%', '25%-50%', '50%-75%', '75%-90%', '90%-95%', '95%-100%']
-
     if len(percentages) == 0:
         return ""
 

@@ -33,9 +33,13 @@ def compare_authors_titles(row_i, row_j):
     title_distance = Levenshtein.distance(title_i, title_j)
     max_year_dif = calc_year_dif(year_i, year_j)
     pcnt_shared_accessions = get_pcnt_shared_accessions(accessions_i, accessions_j)
-    pcnt_shared_stems = get_pcnt_shared_stems(accessions_i, accessions_j)
+    pcnt_shared_stems = get_pcnt_shared_stems(accessions_i, accessions_j, 3)
 
     if title_i != 'Direct Submission' and title_distance < 5:
+        match = 1
+    elif is_reference_genome(accessions_i[0]) or is_reference_genome(accessions_j[0]):
+        match = 0
+    elif pcnt_shared_accessions > 0.8:
         match = 1
     elif (title_i == 'Direct Submission') | (title_j == 'Direct Submission') \
         and authors_i != 'NCBI' \
@@ -64,6 +68,8 @@ def process_authors_titles(df):
         for j, row_j in df.iterrows():
             if i >= j:
                 continue
+            if (row_i['accession'] == row_j['accession']) and is_reference_genome(row_i['accession']):
+                continue
             score = compare_authors_titles(row_i, row_j)
             if score == 1:
                 close_matches.append(j)
@@ -86,33 +92,35 @@ def process_authors_titles(df):
     return list_of_new_rows
 
 
-def process_accession_lists(df):
-    accession_list = df['accession']
-    close_lists = {}
-    for i, item1 in enumerate(accession_list):
-        close_matches = []
-        for j, item2 in enumerate(accession_list):
-            if i >= j or is_reference_genome(item1[0]) == True:
-                continue
-            pcnt_shared_accessions = get_pcnt_shared_accessions(item1, item2)
-            if pcnt_shared_accessions >= 0.9:
-                close_matches.append(j)
-        if len(close_matches) >=1:
-            close_lists[i] = close_matches
+# def process_accession_lists(df):
+#     accession_list = df['accession']
+#     close_lists = {}
+#     for i, item1 in enumerate(accession_list):
+#         close_matches = []
+#         for j, item2 in enumerate(accession_list):
+#             if i >= j or is_reference_genome(item1[0]) == True:
+#                 continue
+#             pcnt_shared_accessions = get_pcnt_shared_accessions(item1, item2)
+#             if pcnt_shared_accessions >= 0.9:
+#                 close_matches.append(j)
+#         if len(close_matches) >=1:
+#             close_lists[i] = close_matches
+#     #print(close_lists)
 
-    (list_of_sets_w_shared_indexes, complete_list_of_shared_indexes) = convert_dict_to_list_of_sets(close_lists)
-    #print(f'''No with shared accessions: {len(list_of_sets_w_shared_indexes)}: {list_of_sets_w_shared_indexes}''')
-    #print(f'''To be dropped: {len(complete_list_of_shared_indexes)}: {complete_list_of_shared_indexes}''')
+#     (list_of_sets_w_shared_indexes, complete_list_of_shared_indexes) = convert_dict_to_list_of_sets(close_lists)
+#     #print(list_of_sets_w_shared_indexes)
+#     #print(f'''No with shared accessions: {len(list_of_sets_w_shared_indexes)}: {list_of_sets_w_shared_indexes}''')
+#     #print(f'''To be dropped: {len(complete_list_of_shared_indexes)}: {complete_list_of_shared_indexes}''')
 
-    list_of_new_rows = []
-    for item in list_of_sets_w_shared_indexes:
-        new_row = merge_rows(df, list(item))
-        list_of_new_rows.append(new_row)
+#     list_of_new_rows = []
+#     for item in list_of_sets_w_shared_indexes:
+#         new_row = merge_rows(df, list(item))
+#         list_of_new_rows.append(new_row)
 
-    df = df.drop(complete_list_of_shared_indexes)
-    list_of_new_rows.insert(0, df)
-    list_of_new_rows = pd.concat(list_of_new_rows, ignore_index=True)
-    return list_of_new_rows
+#     df = df.drop(complete_list_of_shared_indexes)
+#     list_of_new_rows.insert(0, df)
+#     list_of_new_rows = pd.concat(list_of_new_rows, ignore_index=True)
+#     return list_of_new_rows
 
 
 def merge_rows(df, shared_indexes):
@@ -123,18 +131,12 @@ def merge_rows(df, shared_indexes):
     pmid_list = df.loc[shared_indexes, 'pmid'].tolist()
     year_list = df.loc[shared_indexes, 'year'].tolist()
     accession_list = df.loc[shared_indexes, 'accession'].tolist()
-    new_accessions = combine_items_in_different_lists(accession_list)
-    new_years = combine_items_in_different_lists(year_list)
-    new_titles = combine_items_in_different_lists(titles_list)
-    new_authors = combine_items_in_different_lists(authors_list)
-    new_pmids = combine_items_in_different_lists(pmid_list)
-    new_journals = combine_items_in_different_lists(journal_list)
-    new_row['authors'] = new_authors
-    new_row['year'] = new_years
-    new_row['title'] = new_titles
-    new_row['pmid'] = new_pmids
-    new_row['journal'] = new_journals
-    new_row['accession'] = new_accessions
+    new_row['authors'] = combine_items_in_different_lists(authors_list)
+    new_row['year'] = combine_items_in_different_lists(year_list)
+    new_row['title'] =  combine_items_in_different_lists(titles_list)
+    new_row['pmid'] = combine_items_in_different_lists(pmid_list)
+    new_row['journal'] = combine_items_in_different_lists(journal_list)
+    new_row['accession'] =  combine_items_in_different_lists(accession_list)
     new_row_df = pd.DataFrame(new_row, index = [0])
     return new_row_df
 
@@ -200,4 +202,23 @@ def get_additional_host_data(features_df):
 
     return features_df
 
+
+def compare_output_files(saved_df, new_df):
+    saved_df = saved_df.sort_values(by='authors')
+    new_df = new_df.sort_values(by='authors')
+
+    print(f'Number of rows: Saved file:{len(saved_df)} New file:{len(new_df)}')
+    if (saved_df.columns == new_df.columns).all():
+        print("The DataFrames have the same columns in the same order.")
+    else:
+        print("The DataFrames do not have the same columns or order.")
+
+    for (index_i, row_i), (index_j, row_j) in zip(saved_df.fillna('').iterrows(), new_df.fillna('').iterrows()):
+        for col in saved_df.columns:
+            #print(row_i[col])
+            if row_i[col] == row_j[col] or (pd.isna(row_i[col]) and pd.isna(row_j[col])):
+                continue
+            else:
+                print(f'Column:{col}: {row_i[col]}\n{row_j[col]}\n')
+                input('pause')
 
