@@ -6,9 +6,9 @@
   "description": "ReferenceData/Nipah/Nipah_RefAAs.fasta",
   "number-of-letters": 6056,
   "number-of-sequences": 1,
-  "last-updated": "2024-11-07T13:58:00",
+  "last-updated": "2024-11-20T11:07:00",
   "number-of-volumes": 1,
-  "bytes-total": 43400,
+  "bytes-total": 153992,
   "bytes-to-cache": 6186,
   "files": [
     "ref_db.pdb",

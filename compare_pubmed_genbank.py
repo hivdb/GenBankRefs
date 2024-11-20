@@ -11,7 +11,8 @@ def search_access_prefix(pubmed, accession_prefix_list):
     found = pd.DataFrame()
 
     for acc_prefix in accession_prefix_list:
-        result = pubmed[pubmed['GenBank'].apply(lambda x: acc_prefix.lower() in str(x).lower())]
+        result = pubmed[pubmed['GenBank'].apply(
+            lambda x: acc_prefix.lower() in str(x).lower())]
         if not result.empty:
             found = pd.concat([found, result])
 
@@ -41,7 +42,8 @@ def main():
 
         title = row['title']
 
-        result = pubmed[pubmed['Title'].apply(lambda x: x.lower() in title.lower())]
+        result = pubmed[pubmed['Title'].apply(
+            lambda x: x.lower() in title.lower())]
 
         if not result.empty:
             matched_pubmed_indices.extend(result.index.tolist())

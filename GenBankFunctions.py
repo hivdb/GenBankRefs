@@ -15,17 +15,18 @@ Entrez.email = "rshafer.stanford.edu"
 
 def fetch_genbank_by_accession(accession):
     # Use Entrez to fetch the GenBank file using the accession number
-    handle = Entrez.efetch(db="nucleotide", id=accession, rettype="gb", retmode="text")
+    handle = Entrez.efetch(db="nucleotide", id=accession,
+                           rettype="gb", retmode="text")
     return SeqIO.read(handle, "genbank")
 
 
 def create_ref_aa_seq(accession_list):
     print("AccessionList: ", accession_list)
-    #ref_files = []
+    # ref_files = []
     combined_ref_aa_seq = ''
     for acc in accession_list:
         record = fetch_genbank_by_accession(acc)
-        #ref_files.append(record)
+        # ref_files.append(record)
         for feature in record.features:
             if feature.type == "CDS":
                 if 'translation' in feature.qualifiers:
@@ -35,6 +36,7 @@ def create_ref_aa_seq(accession_list):
                     print("No translation available for this CDS feature.")
     return combined_ref_aa_seq
 
+
 def filter_by_taxonomy(record):
     excluded_seq = {}
     taxonomy = record.annotations['taxonomy']
@@ -43,8 +45,7 @@ def filter_by_taxonomy(record):
     excluded_seq['SeqLen'] = len(record.seq)
     excluded_seq['Organism'] = record.annotations['organism']
     excluded_seq['Description'] = record.description
-    return excluded_seq 
-
+    return excluded_seq
 
 
 def perform_blastp(idx, sample_seq, db_name):
@@ -63,7 +64,8 @@ def perform_blastp(idx, sample_seq, db_name):
     output_file = f"sample{idx}.xml"
 
     # Run BLASTP with the sample sequence against the reference database
-    blastp_cline = NcbiblastpCommandline(query=f"sample{idx}.fasta", db=db_name, outfmt=5, out=output_file)
+    blastp_cline = NcbiblastpCommandline(
+        query=f"sample{idx}.fasta", db=db_name, outfmt=5, out=output_file)
     stdout, stderr = blastp_cline()
 
     # Parse the BLAST results
@@ -109,7 +111,7 @@ def blast_sequence(idx, features, db_name):
         return features
 
     blast_data = perform_blastp(idx, features['_sample_seq'], db_name)
-        # print(blast_data)
+    # print(blast_data)
     features['e_value'] = blast_data['e_value']
     features['pcnt_id'] = blast_data['pcnt_id']
     features['align_len'] = blast_data['align_len']

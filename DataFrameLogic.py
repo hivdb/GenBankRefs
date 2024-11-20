@@ -19,6 +19,7 @@ from Utilities import (get_pcnt_authors_overlap,
 
 from GenBankFunctions import is_reference_genome
 
+
 def compare_authors_titles(row_i, row_j):
     authors_i = row_i['authors']
     authors_j = row_j['authors']
@@ -32,7 +33,8 @@ def compare_authors_titles(row_i, row_j):
     pcnt_authors_overlap = get_pcnt_authors_overlap(authors_i, authors_j)
     title_distance = Levenshtein.distance(title_i, title_j)
     max_year_dif = calc_year_dif(year_i, year_j)
-    pcnt_shared_accessions = get_pcnt_shared_accessions(accessions_i, accessions_j)
+    pcnt_shared_accessions = get_pcnt_shared_accessions(
+        accessions_i, accessions_j)
     pcnt_shared_stems = get_pcnt_shared_stems(accessions_i, accessions_j, 3)
 
     if title_i != 'Direct Submission' and title_distance < 5:
@@ -42,22 +44,26 @@ def compare_authors_titles(row_i, row_j):
     elif pcnt_shared_accessions > 0.8:
         match = 1
     elif (title_i == 'Direct Submission') | (title_j == 'Direct Submission') \
-        and authors_i != 'NCBI' \
-        and pcnt_authors_overlap >= 0.75 \
-        and max_year_dif <= 1 \
-        and pcnt_shared_stems >0.75:
-            match = 1
+            and authors_i != 'NCBI' \
+            and pcnt_authors_overlap >= 0.75 \
+            and max_year_dif <= 1 \
+            and pcnt_shared_stems > 0.75:
+        match = 1
     else:
         match = 0
 
     if match == 1:
         with open('MatchingReferences.txt', 'a') as file:
-            file.write(f'Title_i:{title_i}\nTitle_j:{title_j}\nTitle_distance:{title_distance}\n')
+            file.write(
+                f'Title_i:{title_i}\nTitle_j:{title_j}\nTitle_distance:{title_distance}\n')
             file.write(f'Authors_i: {authors_i}\nAuthors_j: {authors_j}\n')
             file.write(f'Authors_overlap:{pcnt_authors_overlap}\n')
-            file.write(f'Year_i:{year_i} Year_j:{year_j} Max_year_dif:{max_year_dif}\n')
-            file.write(f'Accessions_i:{accessions_i}\nAccessions_j:{accessions_j}\n')
-            file.write(f'Pcnt_shared_accessions:{pcnt_shared_accessions} Pcnt_shared_stems:{pcnt_shared_stems}\n\n')
+            file.write(
+                f'Year_i:{year_i} Year_j:{year_j} Max_year_dif:{max_year_dif}\n')
+            file.write(
+                f'Accessions_i:{accessions_i}\nAccessions_j:{accessions_j}\n')
+            file.write(
+                f'Pcnt_shared_accessions:{pcnt_shared_accessions} Pcnt_shared_stems:{pcnt_shared_stems}\n\n')
     return match
 
 
@@ -73,13 +79,14 @@ def process_authors_titles(df):
             score = compare_authors_titles(row_i, row_j)
             if score == 1:
                 close_matches.append(j)
-            if len(close_matches) >=1:
+            if len(close_matches) >= 1:
                 close_lists[i] = close_matches
 
-    list_of_sets_w_shared_indexes, complete_list_of_shared_indexes = convert_dict_to_list_of_sets(close_lists)
-    #print("Close lists:", close_lists)
-    #print(f'''No with shared author_titles: {len(list_of_sets_w_shared_indexes)}: {list_of_sets_w_shared_indexes}''')
-    #print(f'''To be dropped: {len(complete_list_of_shared_indexes)}: {complete_list_of_shared_indexes}''')
+    list_of_sets_w_shared_indexes, complete_list_of_shared_indexes = convert_dict_to_list_of_sets(
+        close_lists)
+    # print("Close lists:", close_lists)
+    # print(f'''No with shared author_titles: {len(list_of_sets_w_shared_indexes)}: {list_of_sets_w_shared_indexes}''')
+    # print(f'''To be dropped: {len(complete_list_of_shared_indexes)}: {complete_list_of_shared_indexes}''')
 
     list_of_new_rows = []
     for item in list_of_sets_w_shared_indexes:
@@ -133,11 +140,11 @@ def merge_rows(df, shared_indexes):
     accession_list = df.loc[shared_indexes, 'accession'].tolist()
     new_row['authors'] = combine_items_in_different_lists(authors_list)
     new_row['year'] = combine_items_in_different_lists(year_list)
-    new_row['title'] =  combine_items_in_different_lists(titles_list)
+    new_row['title'] = combine_items_in_different_lists(titles_list)
     new_row['pmid'] = combine_items_in_different_lists(pmid_list)
     new_row['journal'] = combine_items_in_different_lists(journal_list)
-    new_row['accession'] =  combine_items_in_different_lists(accession_list)
-    new_row_df = pd.DataFrame(new_row, index = [0])
+    new_row['accession'] = combine_items_in_different_lists(accession_list)
+    new_row_df = pd.DataFrame(new_row, index=[0])
     return new_row_df
 
 
@@ -149,12 +156,13 @@ def merge_feature_rows(df):
     new_row['Organisms'] = dict_to_sorted_string(unique_organisms)
     df['record_year'] = df['record_date'].apply(extract_year_from_date_fields)
     unique_record_years = count_unique_elements(df['record_year'].tolist())
-    new_row['RecordYears'] =  dict_to_sorted_string(unique_record_years)
+    new_row['RecordYears'] = dict_to_sorted_string(unique_record_years)
     unique_hosts = count_unique_elements(df['host'].tolist())
-    new_row['Hosts'] =  dict_to_sorted_string(unique_hosts)
+    new_row['Hosts'] = dict_to_sorted_string(unique_hosts)
     unique_countries = count_unique_elements(df['country_region'].tolist())
     new_row['Countries'] = dict_to_sorted_string(unique_countries)
-    df['isolate_year'] = df['collection_date'].apply(extract_year_from_date_fields)
+    df['isolate_year'] = df['collection_date'].apply(
+        extract_year_from_date_fields)
     unique_isolate_years = count_unique_elements(df['isolate_year'].tolist())
     new_row['IsolateYears'] = dict_to_sorted_string(unique_isolate_years)
     unique_specimens = count_unique_elements(df['isolate_source'].tolist())
@@ -170,15 +178,16 @@ def merge_feature_rows(df):
 
 def combine_refs_and_features(ref_df, features_df):
     combined_df = ref_df.copy()
-    feature_columns = ['Organisms', 'RecordYears',  'Hosts', 'Countries', 
-                      'IsolateYears', 'Specimens', 'CDS', 'NumNA', 'NumAA', 'AlignLens', 'PcntIDs']
+    feature_columns = ['Organisms', 'RecordYears',  'Hosts', 'Countries',
+                       'IsolateYears', 'Specimens', 'CDS', 'NumNA', 'NumAA', 'AlignLens', 'PcntIDs']
     combined_df[feature_columns] = 'None'
     count = 0
     for index, row in combined_df.iterrows():
         count += 1
         accession_string = row['accession']
         accession_list = accession_string.split(', ')
-        features_rows = features_df[features_df['acc_num'].isin(accession_list)]
+        features_rows = features_df[features_df['acc_num'].isin(
+            accession_list)]
         new_dict = merge_feature_rows(features_rows)
         combined_df.at[index, 'Organisms'] = new_dict['Organisms']
         combined_df.at[index, 'RecordYears'] = new_dict['RecordYears']
@@ -195,13 +204,14 @@ def combine_refs_and_features(ref_df, features_df):
         row["accession"] = re.sub(r'\.\d+', '', row['accession'])
     return combined_df
 
+
 def get_additional_host_data(features_df):
     blood_specimen_types = ['blood', 'serum', 'plasma', 'sera']
     human_host_types = ['patient', 'human']
     for index, row in features_df.iterrows():
         if len(row['host']) == 0 and any(type in row['isolate_source'] for type in human_host_types):
             features_df.at[index, 'host'] = "Homo sapiens"
-            features_df.at[index, 'isolate_source'] = ""    
+            features_df.at[index, 'isolate_source'] = ""
         if row['host'] == 'Homo sapiens' and any(type in row['isolate_source'] for type in blood_specimen_types):
             features_df.at[index, 'host'] = "Homo sapiens (Blood)"
 
@@ -220,10 +230,9 @@ def compare_output_files(saved_df, new_df):
 
     for (index_i, row_i), (index_j, row_j) in zip(saved_df.fillna('').iterrows(), new_df.fillna('').iterrows()):
         for col in saved_df.columns:
-            #print(row_i[col])
+            # print(row_i[col])
             if row_i[col] == row_j[col] or (pd.isna(row_i[col]) and pd.isna(row_j[col])):
                 continue
             else:
                 print(f'Column:{col}: {row_i[col]}\n{row_j[col]}\n')
                 input('pause')
-
