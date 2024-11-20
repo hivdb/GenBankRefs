@@ -1,18 +1,13 @@
-from openai import OpenAI
 import pandas as pd
-from dataclasses import dataclass, asdict
-from pathlib import Path
-from tqdm import tqdm
-from time import sleep
 from collections import defaultdict
+import re
 
 
 def search_access_prefix(pubmed, accession_prefix_list):
     found = pd.DataFrame()
 
     for acc_prefix in accession_prefix_list:
-        result = pubmed[pubmed['GenBank'].apply(
-            lambda x: acc_prefix.lower() in str(x).lower())]
+        result = pubmed[pubmed['GenBank'].apply(lambda x: acc_prefix.lower() in str(x).lower())]
         if not result.empty:
             found = pd.concat([found, result])
 
@@ -20,11 +15,15 @@ def search_access_prefix(pubmed, accession_prefix_list):
 
 
 def main():
-    genbank_file = 'CCHF_Combined_10_29_saved.xlsx'
-    pubmed_file = 'ReferenceSummary_Nov16.xlsx'
+    genbank_file = 'CCHF_Combined_11_20.xlsx'
+    pubmed_file = 'ReferenceSummary_Nov19.xlsx'
 
     genbank = pd.read_excel(genbank_file)
     pubmed = pd.read_excel(pubmed_file)
+
+    pubmed = pubmed[((pubmed['Reviewer(s) Seq'] == 'Yes') & (pubmed['GPT seq (Y/N)'] == 'Yes')) | (pubmed['Resolve'] == 'Yes')]
+
+    # print(len(pubmed))
 
     genbank_match = []
     matched_pubmed_indices = []
@@ -42,8 +41,7 @@ def main():
 
         title = row['title']
 
-        result = pubmed[pubmed['Title'].apply(
-            lambda x: x.lower() in title.lower())]
+        result = pubmed[pubmed['Title'].apply(lambda x: x.lower() in title.lower())]
 
         if not result.empty:
             matched_pubmed_indices.extend(result.index.tolist())
@@ -101,6 +99,39 @@ def match_pubmed2genbank(genbank_match):
     return pubmed_match
 
 
+def split_value_count(value_count):
+
+    value_count = value_count[::-1]
+
+    count = value_count[value_count.find(')') + 1: value_count.find('(')][::-1].strip()
+    value = value_count[value_count.find('(') + 1:][::-1].strip()
+
+    return value, count
+
+
+def merge_genbank_list_columns(genbank_list, key):
+
+    column_values = [genbank[key] for genbank in genbank_list]
+    value_count_list = [
+        j.strip()
+        for i in column_values
+        for j in i.split(',')
+    ]
+    value_count_list = [
+        split_value_count(j)
+        for j in value_count_list
+    ]
+
+    result = defaultdict(int)
+    for value, count in value_count_list:
+        result[value.capitalize() if value != 'NA' else value] += int(count)
+
+    return ','.join([
+        f'{k} ({v})'
+        for k, v in result.items()
+    ])
+
+
 def combine(pubmed_match, pubmed_unmatch, genbank_unmatch):
 
     result = []
@@ -111,10 +142,17 @@ def combine(pubmed_match, pubmed_unmatch, genbank_unmatch):
             'Journal': pubmed['Journal'],
             'Year': pubmed['Year'],
             'PMID': pubmed['PMID'],
+
+            'Reviewer(s) Seq': pubmed['Reviewer(s) Seq'],
+            'GPT seq (Y/N)': pubmed['GPT seq (Y/N)'],
+            'Resolve': pubmed['Resolve'],
+            'match': 'yes',
+
             'Viruses (AI)': pubmed['Viruses'],
             'NumSeqs (AI)': pubmed['NumSeqs'],
             'Hosts (AI)': pubmed['Host'],
             'Specimen (AI)': pubmed['IsolateType'],
+
             'SampleYr (AI)': pubmed['SampleYr'],
             'Countries (AI)': pubmed['Country'],
             # 'Genes (AI)':
@@ -122,22 +160,26 @@ def combine(pubmed_match, pubmed_unmatch, genbank_unmatch):
             'CloneMethod (AI)': pubmed['CloneMethod'],
             'GenBank (AI)': pubmed['GenBank'],
 
-            'Viruses (GB)': ';'.join([genbank['Organisms'] for genbank in genbank_list]),
+            'Viruses (GB)': merge_genbank_list_columns(genbank_list, 'Organisms'),
             'NumSeqs (GB)': len([
                 i
                 for genbank in genbank_list
                 for i in genbank['accession'].split(',')
             ]),
-            'Hosts (GB)': ';'.join([genbank['Hosts'] for genbank in genbank_list]),
-            'Specimen (GB)': '',
-            'SampleYr (GB)':  ';'.join([genbank['IsolateYears'] for genbank in genbank_list]),
-            'Countries (GB)': ';'.join([genbank['Countries'] for genbank in genbank_list]),
-            # 'Genes (GB)':
+            'Hosts (GB)': merge_genbank_list_columns(genbank_list, 'Hosts'),
+
+            'Specimen (GB)': merge_genbank_list_columns(genbank_list, 'Specimens'),
+            'SampleYr (GB)':  merge_genbank_list_columns(genbank_list, 'IsolateYears'),
+            'Countries (GB)': merge_genbank_list_columns(genbank_list, 'Countries'),
+            'Genes (GB)': merge_genbank_list_columns(genbank_list, 'Gene'),
             'SeqMethod (GB)': '',
             'CloneMethod (GB)': '',
-            'GenBank (GB)': ';'.join([genbank['accession'] for genbank in genbank_list]),
-            'AlignLens (GB)': ';'.join([genbank['AlignLens'] for genbank in genbank_list]),
-            'PcntIDs (GB)': ';'.join([str(genbank['PcntIDs']) for genbank in genbank_list]),
+            'GenBank (GB)': ', '.join([i.strip().split('.')[0]
+                for genbank in genbank_list
+                for i in genbank['accession'].split(',')
+            ]),
+            'AlignLens (GB)': merge_genbank_list_columns(genbank_list, 'AlignLens'),
+            'PcntIDs (GB)': merge_genbank_list_columns(genbank_list, 'PcntIDs'),
         }
 
         result.append(row)
@@ -149,6 +191,11 @@ def combine(pubmed_match, pubmed_unmatch, genbank_unmatch):
             'Journal': pubmed['Journal'],
             'Year': pubmed['Year'],
             'PMID': pubmed['PMID'],
+
+            'Reviewer(s) Seq': pubmed['Reviewer(s) Seq'],
+            'GPT seq (Y/N)': pubmed['GPT seq (Y/N)'],
+            'Resolve': pubmed['Resolve'],
+
             'Viruses (AI)': pubmed['Viruses'],
             'NumSeqs (AI)': pubmed['NumSeqs'],
             'Hosts (AI)': pubmed['Host'],
@@ -174,13 +221,16 @@ def combine(pubmed_match, pubmed_unmatch, genbank_unmatch):
             'Viruses (GB)': genbank['Organisms'],
             'NumSeqs (GB)': numSeqs,
             'Hosts (GB)': genbank['Hosts'],
-            'Specimen (GB)': '',
+            'Specimen (GB)': genbank['Specimens'],
             'SampleYr (GB)': genbank['IsolateYears'],
             'Countries (GB)': genbank['Countries'],
             # 'Genes (GB)':
             'SeqMethod (GB)': '',
             'CloneMethod (GB)': '',
-            'GenBank (GB)': genbank['accession'],
+            'GenBank (GB)': ', '.join([
+                i.strip().split('.')[0]
+                for i in genbank['accession'].split(',')
+            ]),
             'AlignLens (GB)': genbank['AlignLens'],
             'PcntIDs (GB)': genbank['PcntIDs'],
         }
@@ -193,6 +243,12 @@ def combine(pubmed_match, pubmed_unmatch, genbank_unmatch):
         'Journal',
         'Year',
         'PMID',
+
+        'Reviewer(s) Seq',
+        'GPT seq (Y/N)',
+        'Resolve',
+        'match',
+
         'Viruses (AI)',
         'Viruses (GB)',
 
@@ -211,8 +267,8 @@ def combine(pubmed_match, pubmed_unmatch, genbank_unmatch):
         'Countries (AI)',
         'Countries (GB)',
 
-        # 'Genes (AI)':
-        # 'Genes (GB)':
+        # 'Genes (AI)',
+        'Genes (GB)',
 
         'SeqMethod (AI)',
         'SeqMethod (GB)',
