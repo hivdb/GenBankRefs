@@ -8,19 +8,22 @@ from collections import Counter
 def process_author_field(names):
     if names == '':
         return 'NCBI'
+
     names = names.replace(" and", ",")
-    name_list = names.split(", ")
+    name_list = names.split(".,")
+
     processed_names = []
     for name in name_list:
-        parts = name.split(",")
-        if len(parts) == 2:
-            last_name = parts[0]  # The last name is the first part
-            last_name = last_name.capitalize()
-            initials = parts[1]  # The initials are the second part
-            # Take only the first character of the initials
-            first_initial = initials[0]
-            processed_name = last_name + ' ' + first_initial + '.'
-            processed_names.append(processed_name)
+        parts = name.strip().split(",", 1)
+
+        last_name = parts[0]  # The last name is the first part
+        last_name = last_name.capitalize()
+        initials = parts[1]  # The initials are the second part
+        # Take only the first character of the initials
+        first_initial = initials[0]
+        processed_name = last_name + ' ' + first_initial + '.'
+        processed_names.append(processed_name)
+
     processed_names = ', '.join(processed_names)
     return (processed_names)
 
@@ -66,28 +69,31 @@ def combine_items_in_different_lists(lists):
 # In this program, each key is the index of a row and the values contain
 # one or more indexes of rows that share some property
 # The subset flag code ensures sets do not share items with one another
-def convert_dict_to_list_of_sets(dict):
+def convert_dict_to_list_of_sets(matched_indexes):
     list_of_sets = []
-    list_of_items = []
-    for key, values in dict.items():
-        key_plus_values = set()
-        key_plus_values.add(key)
-        key_plus_values.update(set(values))
-        subset_flag = False
-        for items in list_of_sets:
-            if key_plus_values.issubset(items):
-                subset_flag = True
-        if subset_flag == True:
-            continue
-        list_of_sets.append(key_plus_values)
 
-    list_of_items = [
+    for row_i, row_j_list in matched_indexes.items():
+        matched_rows = set()
+        matched_rows.add(row_i)
+        matched_rows.update(set(row_j_list))
+
+        find_same_group = False
+        for merged_indexes in list_of_sets:
+            for row in matched_rows:
+                if row in merged_indexes:
+                    find_same_group = True
+                    merged_indexes.update(matched_rows)
+
+        if not find_same_group:
+            list_of_sets.append(matched_rows)
+
+    list_of_rows = [
         j
         for i in list_of_sets
         for j in i
     ]
 
-    return (list_of_sets, list_of_items)
+    return (list_of_sets, list_of_rows)
 
 
 def get_pcnt_authors_overlap(authors1, authors2):

@@ -20,7 +20,7 @@ from Utilities import (get_pcnt_authors_overlap,
 from GenBankFunctions import is_reference_genome
 
 
-def compare_authors_titles(row_i, row_j):
+def compare_authors_titles_year_accession_overlap(row_i, row_j):
     authors_i = row_i['authors']
     authors_j = row_j['authors']
     title_i = row_i['title']
@@ -33,9 +33,13 @@ def compare_authors_titles(row_i, row_j):
     pcnt_authors_overlap = get_pcnt_authors_overlap(authors_i, authors_j)
     title_distance = Levenshtein.distance(title_i, title_j)
     max_year_dif = calc_year_dif(year_i, year_j)
+
     pcnt_shared_accessions = get_pcnt_shared_accessions(
         accessions_i, accessions_j)
     pcnt_shared_stems = get_pcnt_shared_stems(accessions_i, accessions_j, 3)
+
+    if (row_i['accession'] == row_j['accession']) and is_reference_genome(row_i['accession']):
+        match = 0
 
     if title_i != 'Direct Submission' and title_distance < 5:
         match = 1
@@ -74,26 +78,25 @@ def process_authors_titles(df):
         for j, row_j in df.iterrows():
             if i >= j:
                 continue
-            if (row_i['accession'] == row_j['accession']) and is_reference_genome(row_i['accession']):
-                continue
-            score = compare_authors_titles(row_i, row_j)
+
+            score = compare_authors_titles_year_accession_overlap(row_i, row_j)
             if score == 1:
                 close_matches.append(j)
-            if len(close_matches) >= 1:
-                close_lists[i] = close_matches
 
-    list_of_sets_w_shared_indexes, complete_list_of_shared_indexes = convert_dict_to_list_of_sets(
-        close_lists)
+        if len(close_matches) >= 1:
+            close_lists[i] = close_matches
+
+    list_of_merged_indexes, complete_list_of_merged_indexes = convert_dict_to_list_of_sets(close_lists)
     # print("Close lists:", close_lists)
     # print(f'''No with shared author_titles: {len(list_of_sets_w_shared_indexes)}: {list_of_sets_w_shared_indexes}''')
     # print(f'''To be dropped: {len(complete_list_of_shared_indexes)}: {complete_list_of_shared_indexes}''')
 
     list_of_new_rows = []
-    for item in list_of_sets_w_shared_indexes:
+    for item in list_of_merged_indexes:
         new_row = merge_rows(df, list(item))
         list_of_new_rows.append(new_row)
 
-    df = df.drop(complete_list_of_shared_indexes)
+    df = df.drop(complete_list_of_merged_indexes)
     list_of_new_rows.insert(0, df)
     list_of_new_rows = pd.concat(list_of_new_rows, ignore_index=True)
     return list_of_new_rows
@@ -130,20 +133,21 @@ def process_authors_titles(df):
 #     return list_of_new_rows
 
 
-def merge_rows(df, shared_indexes):
+def merge_rows(df, merged_indexes):
     new_row = {}
-    authors_list = df.loc[shared_indexes, 'authors'].tolist()
-    titles_list = df.loc[shared_indexes, 'title'].tolist()
-    journal_list = df.loc[shared_indexes, 'journal'].tolist()
-    pmid_list = df.loc[shared_indexes, 'pmid'].tolist()
-    year_list = df.loc[shared_indexes, 'year'].tolist()
-    accession_list = df.loc[shared_indexes, 'accession'].tolist()
+    authors_list = df.loc[merged_indexes, 'authors'].tolist()
+    titles_list = df.loc[merged_indexes, 'title'].tolist()
+    journal_list = df.loc[merged_indexes, 'journal'].tolist()
+    pmid_list = df.loc[merged_indexes, 'pmid'].tolist()
+    year_list = df.loc[merged_indexes, 'year'].tolist()
+    accession_list = df.loc[merged_indexes, 'accession'].tolist()
     new_row['authors'] = combine_items_in_different_lists(authors_list)
     new_row['year'] = combine_items_in_different_lists(year_list)
     new_row['title'] = combine_items_in_different_lists(titles_list)
     new_row['pmid'] = combine_items_in_different_lists(pmid_list)
     new_row['journal'] = combine_items_in_different_lists(journal_list)
     new_row['accession'] = combine_items_in_different_lists(accession_list)
+    new_row['merged_indexes'] = ';'.join([str(i) for i in merged_indexes])
     new_row_df = pd.DataFrame(new_row, index=[0])
     return new_row_df
 
