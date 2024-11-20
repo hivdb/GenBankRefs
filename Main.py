@@ -150,6 +150,7 @@ def main():
     # Place sequence features in a data frame
     features_df = pd.DataFrame(feature_list)
     features_df = get_additional_host_data(features_df)
+    features_df['country_region'] = features_df['country_region'].str.split(":").str[0]
     # Combine references and features
     combined_df = combine_refs_and_features(merged_ref_df, features_df)
 
