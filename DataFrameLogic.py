@@ -236,8 +236,7 @@ def translate_bio_term(features_df):
         features_df['isolate_source'] = features_df['isolate_source'].str.replace(k, v, case=False)
 
     features_df['organism'] = features_df['organism'].str.replace('Orthonairovirus haemorrhagiae', 'CCHF', case=False)
-    features_df['organism'] = features_df['organism'].str.replace('Crimean-Congo hemorrhagic fever virus', 'CCHF', case=False)
-    features_df['organism'] = features_df['organism'].str.replace('Crimean-Congo hemorrhagic fever orthonairovirus', 'CCHF', case=False)
+    features_df['organism'] = features_df['organism'].str.replace(r'.*Crimean-Congo hemorrhagic fever.*', 'CCHF', case=False, regex=True)
 
     return features_df
 
