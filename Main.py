@@ -20,7 +20,7 @@ Entrez.email = "rshafer.stanford.edu"
 timestamp = datetime.now().strftime('%m_%d')
 pd.set_option('display.max_rows', 100)
 
-VIRUS = "HBV"
+VIRUS = "CCHF"
 RUN_BLAST = 0
 genbank_file = f"ReferenceData/{VIRUS}/{VIRUS}.gb"
 reference_aa_file = f"ReferenceData/{VIRUS}/{VIRUS}_RefAAs.fasta"

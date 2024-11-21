@@ -21,6 +21,8 @@ from GenBankFunctions import is_reference_genome
 
 
 def compare_authors_titles_year_accession_overlap(row_i, row_j):
+    # !!Change the order of comparison will change the final result
+
     authors_i = row_i['authors']
     authors_j = row_j['authors']
     title_i = row_i['title']
@@ -30,63 +32,76 @@ def compare_authors_titles_year_accession_overlap(row_i, row_j):
     accessions_i = row_i['accession']
     accessions_j = row_j['accession']
 
-    match = 0
-    if row_i['year'] and row_j['year'] and abs(int(row_i['year']) - int(row_j['year'])) > 2:
-        return match
-    if row_i['pmid'] == row_j['pmid']:
-        match = 1
-        return match
-    if title_i != 'Direct Submission':
-        title_distance = Levenshtein.distance(row_i['title'], row_j['title'])
-        if title_distance < 5:
-            match = 1
-            return match
-    if is_reference_genome(row_i['accession'][0]) or is_reference_genome(row_j['accession'][0]):
-        return match
-    if row_i['title'] == 'Direct Submission' or row_j['title'] == 'Direct Submission':
-        pcnt_authors_overlap = get_pcnt_authors_overlap(
-            row_i['authors'], row_j['authors'])
-        pcnt_shared_stems = get_pcnt_shared_stems(
-            row_i['accession'], row_j['accession'], 3)
-        if authors_i != 'NCBI' \
-                and pcnt_authors_overlap >= 0.75 \
-                and pcnt_shared_stems > 0.75:
-            match = 1
-            return match
-    pcnt_shared_accessions = get_pcnt_shared_accessions(
-        accessions_i, accessions_j)
-    if pcnt_shared_accessions > 0.8:
-        match = 1
+    def log_match_reference():
+        with open('MatchingReferences.txt', 'a') as file:
+            title_distance = Levenshtein.distance(title_i, title_j)
+            max_year_dif = calc_year_dif(year_i, year_j)
+            pcnt_authors_overlap = get_pcnt_authors_overlap(authors_i, authors_j)
+            pcnt_shared_accessions = get_pcnt_shared_accessions(accessions_i, accessions_j)
+            pcnt_shared_stems = get_pcnt_shared_stems(accessions_i, accessions_j, 3)
 
-    # if match == 1:
-    #     with open('MatchingReferences.txt', 'a') as file:
-    #         file.write(f'Title_i:{title_i}\nTitle_j:{title_j}\nTitle_distance:{title_distance}\n')
-    #         file.write(f'Authors_i: {authors_i}\nAuthors_j: {authors_j}\n')
-    #         file.write(f'Authors_overlap:{pcnt_authors_overlap}\n')
-    #         file.write(f'Year_i:{year_i} Year_j:{year_j} Max_year_dif:{max_year_dif}\n')
-    #         file.write(f'Accessions_i:{accessions_i}\nAccessions_j:{accessions_j}\n')
-    #         file.write(f'Pcnt_shared_accessions:{pcnt_shared_accessions} Pcnt_shared_stems:{pcnt_shared_stems}\n\n')
-    return match
+            file.write(f'Title_i:{title_i}\nTitle_j:{title_j}\nTitle_distance:{title_distance}\n')
+            file.write(f'Authors_i: {authors_i}\nAuthors_j: {authors_j}\n')
+            file.write(f'Authors_overlap:{pcnt_authors_overlap}\n')
+            file.write(f'Year_i:{year_i} Year_j:{year_j} Max_year_dif:{max_year_dif}\n')
+            file.write(f'Accessions_i:{accessions_i}\nAccessions_j:{accessions_j}\n')
+            file.write(f'Pcnt_shared_accessions:{pcnt_shared_accessions} Pcnt_shared_stems:{pcnt_shared_stems}\n\n')
+
+    if (accessions_i == accessions_j) and is_reference_genome(accessions_i):
+        return 0
+
+    # Title
+    title_distance = Levenshtein.distance(title_i, title_j)
+    if title_i != 'Direct Submission' and title_distance < 5:
+        return 1
+
+    # Ref seq
+    if is_reference_genome(accessions_i[0]) or is_reference_genome(accessions_j[0]):
+        return 0
+
+    # PMID
+    # if row_i['pmid'] and row_j['pmid'] and row_i['pmid'] == row_j['pmid']:
+    #     match = 1
+    #     log_match_reference()
+    #     return match
+
+    # Accesion only
+    pcnt_shared_accessions = get_pcnt_shared_accessions(accessions_i, accessions_j)
+    if pcnt_shared_accessions > 0.8:
+        return 1
+
+    # Title, author, accession stem
+    max_year_dif = calc_year_dif(year_i, year_j)
+    pcnt_authors_overlap = get_pcnt_authors_overlap(authors_i, authors_j)
+    pcnt_shared_stems = get_pcnt_shared_stems(accessions_i, accessions_j, 3)
+    if (title_i == 'Direct Submission') | (title_j == 'Direct Submission') \
+            and authors_i != 'NCBI' \
+            and pcnt_authors_overlap >= 0.75 \
+            and max_year_dif <= 1 \
+            and pcnt_shared_stems > 0.75:
+        return 1
+
+    return 0
 
 
 def process_authors_titles(df):
     close_lists = {}
     for i, row_i in df.iterrows():
-        if i % 1000 == 0:
-            print(i)
+
         close_matches = []
         for j, row_j in df.iterrows():
             if i >= j:
                 continue
-            if (row_i['accession'] == row_j['accession']) and is_reference_genome(row_i['accession']):
-                continue
+
             score = compare_authors_titles_year_accession_overlap(row_i, row_j)
             if score == 1:
                 close_matches.append(j)
-            if len(close_matches) >= 1:
-                close_lists[i] = close_matches
+
+        if len(close_matches) >= 1:
+            close_lists[i] = close_matches
 
     list_of_merged_indexes, complete_list_of_merged_indexes = convert_dict_to_list_of_sets(close_lists)
+    print(len(list_of_merged_indexes), len(complete_list_of_merged_indexes))
     # print("Close lists:", close_lists)
     # print(f'''No with shared author_titles: {len(list_of_sets_w_shared_indexes)}: {list_of_sets_w_shared_indexes}''')
     # print(f'''To be dropped: {len(complete_list_of_shared_indexes)}: {complete_list_of_shared_indexes}''')
