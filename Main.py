@@ -9,6 +9,7 @@ from GenBankFunctions import (filter_by_taxonomy,
 
 from DataFrameLogic import (process_authors_titles,
                             combine_refs_and_features,
+                            translate_bio_term,
                             get_additional_host_data,
                             compare_output_files)
 
@@ -137,6 +138,7 @@ def main():
 
     # Place sequence features in a data frame
     features_df = pd.DataFrame(feature_list)
+    features_df = translate_bio_term(features_df)
     features_df = get_additional_host_data(features_df)
     features_df['country_region'] = features_df['country_region'].str.split(":").str[0]
     # Combine references and features

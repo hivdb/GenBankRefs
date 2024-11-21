@@ -101,7 +101,7 @@ def process_authors_titles(df):
             close_lists[i] = close_matches
 
     list_of_merged_indexes, complete_list_of_merged_indexes = convert_dict_to_list_of_sets(close_lists)
-    print(len(list_of_merged_indexes), len(complete_list_of_merged_indexes))
+    # print(len(list_of_merged_indexes), len(complete_list_of_merged_indexes))
     # print("Close lists:", close_lists)
     # print(f'''No with shared author_titles: {len(list_of_sets_w_shared_indexes)}: {list_of_sets_w_shared_indexes}''')
     # print(f'''To be dropped: {len(complete_list_of_shared_indexes)}: {complete_list_of_shared_indexes}''')
@@ -177,7 +177,7 @@ def merge_feature_rows(df):
 
 def combine_refs_and_features(ref_df, features_df):
     combined_df = ref_df.copy()
-    feature_columns = ['Organisms', 'RecordYears',  'Hosts', 'Countries', 'segment_source',
+    feature_columns = ['Organisms', 'RecordYears',  'Hosts', 'Countries', 'Gene',
                        'IsolateYears', 'Specimens', 'CDS', 'NumNA', 'NumAA', 'AlignLens', 'PcntIDs']
     combined_df[feature_columns] = 'None'
     count = 0
@@ -209,16 +209,96 @@ def combine_refs_and_features(ref_df, features_df):
     return combined_df
 
 
-def get_additional_host_data(features_df):
-    for index, row in features_df.iterrows():
-        human_host_types = ['patient', 'human', 'male', 'female']
-        if len(row['host']) == 0 and any(type.lower() in row['isolate_source'].lower() for type in human_host_types):
-            features_df.at[index, 'host'] = "Homo sapiens"
+def translate_bio_term(features_df):
+    name_map = {
+        'Rhipicephalus': 'tick',
+        'Hyalomma': 'tick',
+        'Dermacentor': 'tick',
+        'Haemaphysalis': 'tick',
+        'Ixodes': 'tick',
+        'Argas reflexus': 'tick',
+        'Alveonasus': 'tick',
+        'Argas persicus': 'tick',
+        'Boophilus annulatus': 'tick',
+        'nymph': 'tick',
+        'Mus musculus': 'Mouse',
+        'Rattus rattus': 'Rat',
+        'Capricornis milneedwardsii': 'Serow',
+        'Bos taurus': 'Cattle',
+        'Camelus dromedarius': 'Camel',
+        'Capra': 'Goat',
+        'Euchoreutes naso': 'Jerboa',
+        'Testudo graeca': 'Tortoise'
+    }
 
-        blood_specimen_types = ['blood', 'serum', 'plasma', 'sera']
-        if ('Homo sapiens' in row['host']) and any(type.lower() in row['isolate_source'].lower() for type in blood_specimen_types):
-            # features_df.at[index, 'host'] = "Homo sapiens (Blood)"
-            features_df.at[index, 'isolate_source'] = "blood"
+    for k, v in name_map.items():
+        features_df['host'] = features_df['host'].str.replace(k, v, case=False)
+        features_df['isolate_source'] = features_df['isolate_source'].str.replace(k, v, case=False)
+
+    features_df['organism'] = features_df['organism'].str.replace('Orthonairovirus haemorrhagiae', 'CCHF', case=False)
+    features_df['organism'] = features_df['organism'].str.replace('Crimean-Congo hemorrhagic fever virus', 'CCHF', case=False)
+    features_df['organism'] = features_df['organism'].str.replace('Crimean-Congo hemorrhagic fever orthonairovirus', 'CCHF', case=False)
+
+    return features_df
+
+
+def get_additional_host_data(features_df):
+    # This function is adapted for CCHF
+
+    blood_specimen = ['blood', 'serum', 'plasma', 'sera']
+    other_speciman = ['nasopharyngeal swab', 'brain']
+    human_host = ['patient', 'human', 'homo sapiens']
+    animal_host = [
+        'mouse', 'rat', 'sheep',
+        'camel', 'cattle', 'goat', 'serow',
+        'animal',
+        'buffalo', 'calf', 'mice', 'jerboa',
+        'tortoise']
+
+    for index, row in features_df.iterrows():
+
+        host = row['host'].lower()
+        specimen = row['isolate_source'].lower()
+
+        if not host and not specimen:
+            continue
+
+        updated_host = []
+        updated_specimen = []
+
+        if any(key in specimen for key in human_host):
+            updated_host.append("Homo sapiens")
+        if any(key in host for key in human_host):
+            updated_host.append("Homo sapiens")
+
+        for a in animal_host:
+            if a in specimen:
+                updated_host.append(a.capitalize())
+            if a in host:
+                updated_host.append(a.capitalize())
+
+        if 'tick' in specimen:
+            updated_host.append("ticks")
+        if 'tick' in host:
+            updated_host.append("ticks")
+
+        if any(key in specimen for key in blood_specimen):
+            updated_specimen.append('blood')
+        if any(key in host for key in blood_specimen):
+            updated_specimen.append('blood')
+
+        for a in other_speciman:
+            if a in specimen:
+                updated_specimen.append(a)
+            if a in host:
+                updated_specimen.append(a)
+
+        if not updated_host and not updated_specimen:
+            updated_specimen = [specimen]
+            updated_host = [host]
+
+        features_df.at[index, 'host'] = ",".join(sorted(list(set(updated_host))))
+        features_df.at[index, 'isolate_source'] = ",".join(sorted(list(set(updated_specimen))))
 
     return features_df
 
