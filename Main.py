@@ -22,7 +22,7 @@ timestamp = datetime.now().strftime('%m_%d')
 pd.set_option('display.max_rows', 100)
 
 VIRUS = "CCHF"
-RUN_BLAST = 0
+RUN_BLAST = 1
 genbank_file = f"ReferenceData/{VIRUS}/{VIRUS}.gb"
 reference_aa_file = f"ReferenceData/{VIRUS}/{VIRUS}_RefAAs.fasta"
 # comparison_file = f"OutputData/{VIRUS}/{VIRUS}_Combined_11_06a.xlsx"

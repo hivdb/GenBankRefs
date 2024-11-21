@@ -297,8 +297,10 @@ def get_additional_host_data(features_df):
             updated_specimen = [specimen]
             updated_host = [host]
 
-        features_df.at[index, 'host'] = ",".join(sorted(list(set(updated_host))))
-        features_df.at[index, 'isolate_source'] = ",".join(sorted(list(set(updated_specimen))))
+        # features_df.at[index, 'host'] = ",".join(sorted(list(set(updated_host))))
+        # features_df.at[index, 'isolate_source'] = ",".join(sorted(list(set(updated_specimen))))
+        features_df.at[index, 'host'] = updated_host[0] if updated_host else ''
+        features_df.at[index, 'isolate_source'] = updated_specimen[0] if updated_specimen else ''
 
     return features_df
 
