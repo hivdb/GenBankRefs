@@ -20,11 +20,11 @@ Entrez.email = "rshafer.stanford.edu"
 timestamp = datetime.now().strftime('%m_%d')
 pd.set_option('display.max_rows', 100)
 
-VIRUS = "CCHF"
+VIRUS = "HBV"
 RUN_BLAST = 0
 genbank_file = f"ReferenceData/{VIRUS}/{VIRUS}.gb"
 reference_aa_file = f"ReferenceData/{VIRUS}/{VIRUS}_RefAAs.fasta"
-comparison_file = f"OutputData/{VIRUS}/{VIRUS}_Combined_11_20.xlsx"
+# comparison_file = f"OutputData/{VIRUS}/{VIRUS}_Combined_11_06a.xlsx"
 output_dir = f"OutputData/{VIRUS}"
 
 
@@ -65,6 +65,8 @@ def main():
 
         for record in SeqIO.parse(handle, "genbank"):
             count += 1
+            if count % 10000 == 0:
+                print(count)
             taxonomy = record.annotations['taxonomy']
             if len(taxonomy) == 0 or taxonomy[0] != 'Viruses':
                 excluded_seq_data = filter_by_taxonomy(record)
@@ -116,16 +118,12 @@ def main():
     # Remove Submitted (date) from journal
     reference_df['journal'] = reference_df['journal'].str.replace(
         r"Submitted \(\d{2}-[A-Z]{3}-\d{4}\)", "", regex=True)
+
     reference_df['journal'] = reference_df['journal'].str.replace(
         r"(Patent).*", r"\1", regex=True)
-
     reference_df['authors'] = reference_df['authors'].apply(
         process_author_field)
     print("Number of original entries: ", len(reference_df))
-
-    # output_file = os.path.join(
-    #     output_dir, f"{VIRUS}__GenBankRefs_before_group_{timestamp}.xlsx")
-    # reference_df.to_excel(output_file, index=False)
 
     grouped_ref_df = reference_df.groupby(
         ['authors', 'title', 'journal', 'pmid', 'year'])[
@@ -134,18 +132,8 @@ def main():
         lambda x: ', '.join(x))
     print("Number of entries following aggregation by metadata: ", len(grouped_ref_df))
 
-    # output_file = os.path.join(
-    #     output_dir, f"{VIRUS}__GenBankRefs_before_merge_{timestamp}.xlsx")
-    # grouped_ref_df.to_excel(output_file)
-
-    # merged_ref_df = process_accession_lists(grouped_ref_df)
-    # print("Number of entries following aggregation by accession numbers: ", len(merged_ref_df))
     merged_ref_df = process_authors_titles(grouped_ref_df)
     print("Number of entries following aggregation by metadata: ", len(merged_ref_df))
-
-    # output_file = os.path.join(
-    #     output_dir, f"{VIRUS}__GenBankRefs_after_merge_{timestamp}.xlsx")
-    # merged_ref_df.to_excel(output_file)
 
     # Place sequence features in a data frame
     features_df = pd.DataFrame(feature_list)
@@ -155,10 +143,6 @@ def main():
     combined_df = combine_refs_and_features(merged_ref_df, features_df)
 
     # Print output files
-    output_file = os.path.join(
-        output_dir, f"{VIRUS}__GenBankRefs_{timestamp}.xlsx")
-    merged_ref_df.to_excel(output_file, index=False)
-
     output_file = os.path.join(
         output_dir, f"{VIRUS}__GenBankFeatures_{timestamp}.xlsx")
     features_df.to_excel(output_file, index=False)
@@ -172,8 +156,8 @@ def main():
     df_excluded_seqs.to_excel(output_file, index=False)
 
     # Compare output file with saved file
-    saved_combined_df = pd.read_excel(comparison_file, na_values=[''])
-    compare_output_files(saved_combined_df, combined_df)
+    # saved_combined_df = pd.read_excel(comparison_file, na_values=[''])
+    # compare_output_files(saved_combined_df, combined_df)
 
 
 if __name__ == '__main__':

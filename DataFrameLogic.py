@@ -30,61 +30,61 @@ def compare_authors_titles_year_accession_overlap(row_i, row_j):
     accessions_i = row_i['accession']
     accessions_j = row_j['accession']
 
-    pcnt_authors_overlap = get_pcnt_authors_overlap(authors_i, authors_j)
-    title_distance = Levenshtein.distance(title_i, title_j)
-    max_year_dif = calc_year_dif(year_i, year_j)
-
+    match = 0
+    if row_i['year'] and row_j['year'] and abs(int(row_i['year']) - int(row_j['year'])) > 2:
+        return match
+    if row_i['pmid'] == row_j['pmid']:
+        match = 1
+        return match
+    if title_i != 'Direct Submission':
+        title_distance = Levenshtein.distance(row_i['title'], row_j['title'])
+        if title_distance < 5:
+            match = 1
+            return match
+    if is_reference_genome(row_i['accession'][0]) or is_reference_genome(row_j['accession'][0]):
+        return match
+    if row_i['title'] == 'Direct Submission' or row_j['title'] == 'Direct Submission':
+        pcnt_authors_overlap = get_pcnt_authors_overlap(
+            row_i['authors'], row_j['authors'])
+        pcnt_shared_stems = get_pcnt_shared_stems(
+            row_i['accession'], row_j['accession'], 3)
+        if authors_i != 'NCBI' \
+                and pcnt_authors_overlap >= 0.75 \
+                and pcnt_shared_stems > 0.75:
+            match = 1
+            return match
     pcnt_shared_accessions = get_pcnt_shared_accessions(
         accessions_i, accessions_j)
-    pcnt_shared_stems = get_pcnt_shared_stems(accessions_i, accessions_j, 3)
-
-    if (row_i['accession'] == row_j['accession']) and is_reference_genome(row_i['accession']):
-        match = 0
-
-    if title_i != 'Direct Submission' and title_distance < 5:
+    if pcnt_shared_accessions > 0.8:
         match = 1
-    elif is_reference_genome(accessions_i[0]) or is_reference_genome(accessions_j[0]):
-        match = 0
-    elif pcnt_shared_accessions > 0.8:
-        match = 1
-    elif (title_i == 'Direct Submission') | (title_j == 'Direct Submission') \
-            and authors_i != 'NCBI' \
-            and pcnt_authors_overlap >= 0.75 \
-            and max_year_dif <= 1 \
-            and pcnt_shared_stems > 0.75:
-        match = 1
-    else:
-        match = 0
 
-    if match == 1:
-        with open('MatchingReferences.txt', 'a') as file:
-            file.write(
-                f'Title_i:{title_i}\nTitle_j:{title_j}\nTitle_distance:{title_distance}\n')
-            file.write(f'Authors_i: {authors_i}\nAuthors_j: {authors_j}\n')
-            file.write(f'Authors_overlap:{pcnt_authors_overlap}\n')
-            file.write(
-                f'Year_i:{year_i} Year_j:{year_j} Max_year_dif:{max_year_dif}\n')
-            file.write(
-                f'Accessions_i:{accessions_i}\nAccessions_j:{accessions_j}\n')
-            file.write(
-                f'Pcnt_shared_accessions:{pcnt_shared_accessions} Pcnt_shared_stems:{pcnt_shared_stems}\n\n')
+    # if match == 1:
+    #     with open('MatchingReferences.txt', 'a') as file:
+    #         file.write(f'Title_i:{title_i}\nTitle_j:{title_j}\nTitle_distance:{title_distance}\n')
+    #         file.write(f'Authors_i: {authors_i}\nAuthors_j: {authors_j}\n')
+    #         file.write(f'Authors_overlap:{pcnt_authors_overlap}\n')
+    #         file.write(f'Year_i:{year_i} Year_j:{year_j} Max_year_dif:{max_year_dif}\n')
+    #         file.write(f'Accessions_i:{accessions_i}\nAccessions_j:{accessions_j}\n')
+    #         file.write(f'Pcnt_shared_accessions:{pcnt_shared_accessions} Pcnt_shared_stems:{pcnt_shared_stems}\n\n')
     return match
 
 
 def process_authors_titles(df):
     close_lists = {}
     for i, row_i in df.iterrows():
+        if i % 1000 == 0:
+            print(i)
         close_matches = []
         for j, row_j in df.iterrows():
             if i >= j:
                 continue
-
+            if (row_i['accession'] == row_j['accession']) and is_reference_genome(row_i['accession']):
+                continue
             score = compare_authors_titles_year_accession_overlap(row_i, row_j)
             if score == 1:
                 close_matches.append(j)
-
-        if len(close_matches) >= 1:
-            close_lists[i] = close_matches
+            if len(close_matches) >= 1:
+                close_lists[i] = close_matches
 
     list_of_merged_indexes, complete_list_of_merged_indexes = convert_dict_to_list_of_sets(close_lists)
     # print("Close lists:", close_lists)
@@ -102,37 +102,6 @@ def process_authors_titles(df):
     return list_of_new_rows
 
 
-# def process_accession_lists(df):
-#     accession_list = df['accession']
-#     close_lists = {}
-#     for i, item1 in enumerate(accession_list):
-#         close_matches = []
-#         for j, item2 in enumerate(accession_list):
-#             if i >= j or is_reference_genome(item1[0]) == True:
-#                 continue
-#             pcnt_shared_accessions = get_pcnt_shared_accessions(item1, item2)
-#             if pcnt_shared_accessions >= 0.9:
-#                 close_matches.append(j)
-#         if len(close_matches) >=1:
-#             close_lists[i] = close_matches
-#     #print(close_lists)
-
-#     (list_of_sets_w_shared_indexes, complete_list_of_shared_indexes) = convert_dict_to_list_of_sets(close_lists)
-#     #print(list_of_sets_w_shared_indexes)
-#     #print(f'''No with shared accessions: {len(list_of_sets_w_shared_indexes)}: {list_of_sets_w_shared_indexes}''')
-#     #print(f'''To be dropped: {len(complete_list_of_shared_indexes)}: {complete_list_of_shared_indexes}''')
-
-#     list_of_new_rows = []
-#     for item in list_of_sets_w_shared_indexes:
-#         new_row = merge_rows(df, list(item))
-#         list_of_new_rows.append(new_row)
-
-#     df = df.drop(complete_list_of_shared_indexes)
-#     list_of_new_rows.insert(0, df)
-#     list_of_new_rows = pd.concat(list_of_new_rows, ignore_index=True)
-#     return list_of_new_rows
-
-
 def merge_rows(df, merged_indexes):
     new_row = {}
     authors_list = df.loc[merged_indexes, 'authors'].tolist()
@@ -147,7 +116,7 @@ def merge_rows(df, merged_indexes):
     new_row['pmid'] = combine_items_in_different_lists(pmid_list)
     new_row['journal'] = combine_items_in_different_lists(journal_list)
     new_row['accession'] = combine_items_in_different_lists(accession_list)
-    new_row['merged_indexes'] = ';'.join([str(i) for i in merged_indexes])
+    # new_row['merged_indexes'] = ';'.join([str(i) for i in merged_indexes])
     new_row_df = pd.DataFrame(new_row, index=[0])
     return new_row_df
 
@@ -251,7 +220,6 @@ def compare_output_files(saved_df, new_df):
 
     for (index_i, row_i), (index_j, row_j) in zip(saved_df.fillna('').iterrows(), new_df.fillna('').iterrows()):
         for col in saved_df.columns:
-            # print(row_i[col])
             if row_i[col] == row_j[col] or (pd.isna(row_i[col]) and pd.isna(row_j[col])):
                 continue
             else:
