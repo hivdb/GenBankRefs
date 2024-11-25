@@ -3,6 +3,7 @@ from .utils import merge_genbank_list_columns
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment
 
+
 def combine_file(pubmed_match, pubmed_unmatch, genbank_unmatch):
 
     result = []

@@ -3,7 +3,19 @@ import pandas as pd
 from collections import Counter
 
 
-def count_number(rows, key=None):
+def count_rev_sorter(value_count_list):
+    return sorted(value_count_list, key=lambda x: int(x[-1]), reverse=True)
+
+
+def alphabetical_sorter(value_count_list):
+    return sorted(value_count_list, key=lambda x: x[0])
+
+
+def int_sorter(value_count_list):
+    return sorted(value_count_list, key=lambda x: int(x[0]) if (x[0] and x[0] != 'NA') else -1)
+
+
+def count_number(rows, key=None, translater=lambda x: x, sorter=count_rev_sorter):
     if key:
         column_values = [row[key] for row in rows]
     else:
@@ -12,15 +24,16 @@ def count_number(rows, key=None):
         k if k and pd.notna(k) and pd.notnull(k) else 'NA'
         for k in column_values
     ]
+    column_values = [translater(x) for x in column_values]
     counter = dict(Counter(column_values))
 
     return ', '.join([
         f'{k} ({v})'
-        for k, v in sorted(counter.items(), key=lambda x: int(x[-1]), reverse=True)
+        for k, v in sorter(counter.items())
     ])
 
 
-def merge_genbank_list_columns(genbank_list, key, translater=lambda x: x):
+def merge_genbank_list_columns(genbank_list, key, translater=lambda x: x, sorter=count_rev_sorter):
 
     column_values = [genbank[key] for genbank in genbank_list]
     value_count_list = [
@@ -42,7 +55,7 @@ def merge_genbank_list_columns(genbank_list, key, translater=lambda x: x):
 
     return ','.join([
         f'{k} ({v})'
-        for k, v in sorted(result.items(), key=lambda x: int(x[-1]), reverse=True)
+        for k, v in sorter(result.items())
     ])
 
 
@@ -57,6 +70,17 @@ def split_value_count(value_count):
     return value, count
 
 
+def get_values_of_value_count_list(value_count_str):
+    count_list = []
+    value_list = []
+    for i in value_count_str.split(','):
+        value, count = split_value_count(i)
+        count_list.append(int(count))
+        value_list.extend([value] * int(count))
+
+    return value_list
+
+
 def split_value_by_comma(df, key):
     country_list = []
 
@@ -65,3 +89,15 @@ def split_value_by_comma(df, key):
         country_list.extend(country)
 
     return country_list
+
+
+def sum_value_count(value_count_str):
+    count_list = []
+    value_list = []
+    for i in value_count_str.split(','):
+        value, count = split_value_count(i)
+        count_list.append(int(count))
+        value_list.extend([value] * int(count))
+
+    print(sum(count_list))
+    # print(sum([int(i) for i in value_list]))

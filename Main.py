@@ -102,6 +102,7 @@ def main():
             features['_sample_seq'] = sample_seq
             feature_list.append(features)
 
+    print('Process genbank records', count)
     if RUN_BLAST == 1:
         feature_list = pooled_blast(feature_list, db_name)
 
@@ -143,6 +144,14 @@ def main():
     features_df['country_region'] = features_df['country_region'].str.split(":").str[0]
     # Combine references and features
     combined_df = combine_refs_and_features(merged_ref_df, features_df)
+
+    # acc_set = set()
+    # ref_acc_number = 0
+    # for i, r in combined_df.iterrows():
+    #     acc_set.update(set([j.strip() for j in r['accession'].split(',')]))
+    #     ref_acc_number += len([j.strip() for j in r['accession'].split(',')])
+    # print(len(acc_set), 'accession number')
+    # print(ref_acc_number, 'Ref duplicated accession number')
 
     # Print output files
     output_file = os.path.join(

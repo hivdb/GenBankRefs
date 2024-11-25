@@ -78,7 +78,7 @@ def median_year(entry):
 
 
 def translate_country(country):
-    return 'Yes' if country and country != 'NA' else 'No'
+    return 'Yes' if (country and country != 'NA') else 'No'
 
 
 def translate_gene(gene):
