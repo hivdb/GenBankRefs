@@ -4,6 +4,7 @@ from .utils import int_sorter
 from .sum_genbank import summarize_genbank_by_seq
 from .utils import split_value_by_comma
 from .utils import get_values_of_value_count_list
+from Utilities import create_binnned_year
 
 
 def summarize_combined_data(combined, genbank):
@@ -13,6 +14,10 @@ def summarize_combined_data(combined, genbank):
     publish_year = count_number([v for i, v in matches.iterrows()], 'Year', sorter=int_sorter)
     print('Publish Year')
     print(publish_year)
+    publish_year = [
+        int(v['Year']) for i, v in matches.iterrows()
+        if v['Year'] and v['Year'] != 'NA']
+    print(create_binnned_year(publish_year))
     print('=' * 40)
 
     journals = count_number([v for i, v in matches.iterrows()], 'Journal')

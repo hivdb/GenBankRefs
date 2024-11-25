@@ -15,7 +15,10 @@ def summarize_pubmed_data(df):
     publish_year = count_number([v for i, v in df.iterrows()], 'Year', sorter=int_sorter)
     print('Publish Year')
     print(publish_year)
-    # sum_value_count(publish_year)
+    publish_year = [
+        int(v['Year']) for i, v in df.iterrows()
+        if v['Year'] and v['Year'] != 'NA']
+    print(create_binnned_year(publish_year))
     print('=' * 40)
 
     journals = count_number([v for i, v in df.iterrows()], 'Journal')
