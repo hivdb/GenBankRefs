@@ -6,6 +6,8 @@ import re
 import os
 from collections import Counter
 from Bio.Blast.Applications import NcbiblastpCommandline
+from Bio.Blast.Applications import NcbiblastnCommandline
+from Bio.Blast.Applications import NcbiblastxCommandline
 from Bio.Blast import NCBIXML
 import Levenshtein
 from multiprocessing import Pool
@@ -48,7 +50,7 @@ def filter_by_taxonomy(record):
     return excluded_seq
 
 
-def perform_blastp(idx, sample_seq, db_name):
+def perform_blast(idx, query_seq, db_name, func, blast_name):
     """
     Input: sample_seq (str): sequence to compare/blast
         db_name (str), prebuilt db by calling makeblastdb
@@ -58,14 +60,15 @@ def perform_blastp(idx, sample_seq, db_name):
             of each alignment
 
     """
-    with open(f"sample{idx}.fasta", "w") as sample_file:
-        sample_file.write(f">sample_seq\n{sample_seq}\n")
+    input_file = f"/tmp/query_{idx}.fasta"
+    output_file = f"/tmp/query_{idx}.xml"
 
-    output_file = f"sample{idx}.xml"
+    with open(input_file, "w") as fd:
+        fd.write(f">query\n{query_seq}\n")
 
-    # Run BLASTP with the sample sequence against the reference database
-    blastp_cline = NcbiblastpCommandline(
-        query=f"sample{idx}.fasta", db=db_name, outfmt=5, out=output_file)
+    blastp_cline = func(
+        query=input_file,
+        db=db_name, outfmt=5, out=output_file)
     stdout, stderr = blastp_cline()
 
     # Parse the BLAST results
@@ -74,27 +77,42 @@ def perform_blastp(idx, sample_seq, db_name):
 
     # Extract statistics (assuming a single hit, adjust as needed)
     # Try blast_records.alignments[0].hsps[0]
-    result = {}
+    blast_result = []
     for alignment in blast_records.alignments:
-        for hsp in alignment.hsps:  # High-scoring segment pairs
+        # max_alignment = sorted([
+        #     (alignment.length, alignment)
+        #     for alignment in blast_records.alignments
+        # ], key=lambda x: x[0])[-1][-1]
+
+        # hsp = sorted([
+        #     (hsp.score, hsp)
+        #     for hsp in max_alignment.hsps
+        # ], key=lambda x: x[0])[-1][-1]
+
+        # print(dir(max_alignment), dir(hsp))
+        # print(idx, hsp.query, len(hsp.query), hsp.query_start, hsp.query_end)
+
+        for hsp in alignment.hsps:
+
             e_value = hsp.expect
             alignment_length = hsp.align_length
             identity = hsp.identities
             percent_identity = (identity / alignment_length) * 100
             overlap = hsp.align_length
 
-            result = {
+            blast_result.append({
+                'hit_name': alignment.hit_def,
                 "e_value": e_value,
                 "pcnt_id": percent_identity,
-                "align_len": alignment_length,
-                "overlap": overlap
-            }
-            break
+                "align_len": alignment_length * 3 if blast_name == 'blastp' else alignment_length,
+                "overlap": overlap,
+                'blast_name': blast_name,
+            })
 
-    os.remove(f"sample{idx}.fasta")
+    os.remove(input_file)
     os.remove(output_file)
 
-    return result
+    return blast_result
 
 
 def is_reference_genome(acc):
@@ -105,29 +123,54 @@ def is_reference_genome(acc):
     return False
 
 
-def blast_sequence(idx, features, db_name):
+def blast_sequence(idx, features, virus):
 
-    if len(features['_sample_seq']) <= 30:
-        return features
+    blast_result = perform_blast(
+        features['acc_num'], features['NASeq'], f"{virus}_NA_db",
+        func=NcbiblastnCommandline, blast_name='blastn')
 
-    blast_data = perform_blastp(idx, features['_sample_seq'], db_name)
-    # print(blast_data)
-    features['e_value'] = blast_data['e_value']
-    features['pcnt_id'] = blast_data['pcnt_id']
-    features['align_len'] = blast_data['align_len']
+    if len(features['AASeq']) > 30:
+        blast_result.extend(perform_blast(
+            features['acc_num'], features['AASeq'], f"{virus}_AA_db",
+            func=NcbiblastpCommandline, blast_name='blastp'))
+
+    blast_result.extend(perform_blast(
+        features['acc_num'], features['NASeq'], f"{virus}_AA_db",
+        func=NcbiblastxCommandline, blast_name='blastx'))
+
+    # if 'e_value' not in blast_data:
+    #     print(blast_data, idx, len(features['AASeq']) <= 30)
+
+    blast_data = sorted([
+            b
+            for b in blast_result
+        ], key=lambda x: int(x['align_len']), reverse=True)[0]
+
+    features['hit_name'] = blast_data.get('hit_name', '')
+    features['e_value'] = blast_data.get('e_value', '')
+    features['pcnt_id'] = blast_data.get('pcnt_id', '')
+    features['align_len'] = blast_data.get('align_len', '')
+    features['blast_name'] = blast_data.get('blast_name', '')
+
 
     return features
 
 
 def pooled_blast(features_list, db_name, poolsize=20):
 
+    # features_list = [
+    #     i
+    #     for i in features_list
+    #     if i['acc_num'] in ['FV537249.1', 'FV537248.1']
+    # ]
+
     with Pool(poolsize) as pool:
         parameters = [
             (idx, f, db_name)
             for idx, f in enumerate(features_list)
         ]
-        feature_list = []
+        alignment_result = []
         for count, i in enumerate(pool.starmap(blast_sequence, parameters)):
-            feature_list.append(i)
+            alignment_result.append(i)
 
-    return feature_list
+    return alignment_result
