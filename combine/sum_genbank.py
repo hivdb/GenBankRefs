@@ -128,6 +128,16 @@ def summarize_genbank_by_seq(df):
     print(create_binned_seq_lens(aligns))
     print('=' * 40)
 
+    num_na = [int(v['num_na']) for i, v in df.iterrows()]
+    print('NA length')
+    print(create_binned_seq_lens(num_na))
+    print('=' * 40)
+
+    num_aa = [int(v['num_aa']) for i, v in df.iterrows()]
+    print('AA length')
+    print(create_binned_seq_lens(num_aa))
+    print('=' * 40)
+
     pcnt_ident = [float(v['pcnt_id']) for i, v in df.iterrows()]
     print('PcntIDs')
     print(create_binned_pcnts(pcnt_ident))

@@ -15,7 +15,7 @@ def main():
 
     genbank_ref_file = folder / 'CCHF_Combined_11_26.xlsx'
     genbank_ref = pd.read_excel(genbank_ref_file, dtype=str).fillna('')
-    summarize_genbank_by_ref(genbank_ref)
+    # summarize_genbank_by_ref(genbank_ref)
 
     genbank_file = folder / 'CCHF__GenBankFeatures_11_26_check.xlsx'
     genbank = pd.read_excel(genbank_file, dtype=str).fillna('')
