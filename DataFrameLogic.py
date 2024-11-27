@@ -121,6 +121,7 @@ def merge_rows(df, merged_indexes):
     new_row = {}
     authors_list = df.loc[merged_indexes, 'authors'].tolist()
     titles_list = df.loc[merged_indexes, 'title'].tolist()
+    titles_list = [i for i in titles_list if i != 'Direct Submission']
     journal_list = df.loc[merged_indexes, 'journal'].tolist()
     pmid_list = df.loc[merged_indexes, 'pmid'].tolist()
     year_list = df.loc[merged_indexes, 'year'].tolist()

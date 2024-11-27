@@ -5,31 +5,37 @@ import Levenshtein
 
 def match_pm_gb(pubmed, genbank):
 
-    match_by_title = []
-    match_by_pmid = []
-    match_by_acc = []
+    match_by_title_list = []
+    match_by_pmid_list = []
+    match_by_acc_list = []
     matched_pubmed_indices = []
-    genbank_unmatch = []
+    genbank_unmatch_list = []
 
     for index, row in genbank.iterrows():
         pmid = row['pmid']
 
         result = pubmed[pubmed['PMID'] == pmid]
 
+        match_by_acc = None
+        match_by_pmid = None
+        match_by_title = None
+
         if not result.empty:
             matched_pubmed_indices.extend(result.index.tolist())
-            match_by_pmid.append([row, result])
-            continue
+            match_by_pmid = [row, result, index]
+            match_by_pmid_list.append(match_by_pmid)
+            # continue
 
         title = row['title'].replace('Direct Submission,', '').replace(', Direct Submission', '').strip()
 
+        # Pubmed title always exists
         result = pubmed[pubmed['Title'].apply(
             lambda x: Levenshtein.distance(x.lower(), title.lower()) < 5)]
 
         if not result.empty:
             matched_pubmed_indices.extend(result.index.tolist())
-            match_by_title.append([row, result])
-            continue
+            match_by_title = [row, result, index]
+            match_by_title_list.append(match_by_title)
 
         accession_list = row['accession']
         accession_prefix_list = set([
@@ -37,34 +43,34 @@ def match_pm_gb(pubmed, genbank):
             for a in accession_list.split(',')
         ])
 
-        if 'EU057975' in accession_list:
-            print(accession_prefix_list)
-
         result = search_access_prefix(pubmed, accession_prefix_list)
         if not result.empty:
             matched_pubmed_indices.extend(result.index.tolist())
-            match_by_acc.append([row, result])
-            continue
+            match_by_acc = [row, result, index]
+            match_by_acc_list.append(match_by_acc)
 
-        genbank_unmatch.append(row)
+        if match_by_acc or match_by_pmid or match_by_title:
+            pass
+        else:
+            genbank_unmatch_list.append(row)
 
-    genbank_match = match_by_title + match_by_pmid + match_by_acc
+    genbank_match_list = match_by_title_list + match_by_pmid_list + match_by_acc_list
 
-    print("Genbank match by pmid", len(match_by_pmid))
-    print("Genbank match by title", len(match_by_title))
-    print("Genbank match by acc", len(match_by_acc))
-    print('Genbank Matched:', len(genbank_match))
+    print("Genbank match by pmid", len(set(i[-1] for i in match_by_pmid_list)))
+    print("Genbank match by title", len(set(i[-1] for i in match_by_title_list)))
+    print("Genbank match by acc", len(set(i[-1] for i in match_by_acc_list)))
+    print('Genbank Matched:', len(set(i[-1] for i in genbank_match_list)))
 
-    pubmed_match = match_pubmed2genbank(genbank_match)
+    pubmed_match = match_pubmed2genbank(genbank_match_list)
 
-    print("Pubmed match by pmid", len(match_pubmed2genbank(match_by_pmid)))
-    print("Pubmed match by title", len(match_pubmed2genbank(match_by_title)))
-    print("Pubmed match by acc", len(match_pubmed2genbank(match_by_acc)))
+    print("Pubmed match by pmid", len(match_pubmed2genbank(match_by_pmid_list)))
+    print("Pubmed match by title", len(match_pubmed2genbank(match_by_title_list)))
+    print("Pubmed match by acc", len(match_pubmed2genbank(match_by_acc_list)))
     print('Pubmed Matched:', len(pubmed_match))
 
     pubmed_unmatch = pubmed.drop(index=matched_pubmed_indices)
 
-    return pubmed_match, pubmed_unmatch, genbank_unmatch
+    return pubmed_match, pubmed_unmatch, pd.DataFrame(genbank_unmatch_list)
 
 
 def search_access_prefix(pubmed, accession_prefix_list):
@@ -81,7 +87,7 @@ def search_access_prefix(pubmed, accession_prefix_list):
 
 def match_pubmed2genbank(genbank_match):
     pubmed_match = defaultdict(dict)
-    for g, pubmed_list in genbank_match:
+    for g, pubmed_list, index in genbank_match:
         for r, i in pubmed_list.iterrows():
             pubmed_match[r]['pubmed'] = i
             if 'genbank' not in pubmed_match[r]:

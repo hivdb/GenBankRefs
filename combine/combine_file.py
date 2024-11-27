@@ -82,7 +82,7 @@ def combine_file(pubmed_match, pubmed_unmatch, genbank_unmatch):
 
         result.append(row)
 
-    for genbank in genbank_unmatch:
+    for row, genbank in genbank_unmatch.iterrows():
         numSeqs = len(genbank['accession'].split(','))
         row = {
             'Authors': genbank['authors'],

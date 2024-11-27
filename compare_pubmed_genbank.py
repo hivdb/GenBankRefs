@@ -15,14 +15,13 @@ def main():
 
     genbank_ref_file = folder / 'CCHF_Combined_11_26.xlsx'
     genbank_ref = pd.read_excel(genbank_ref_file, dtype=str).fillna('')
-    # summarize_genbank_by_ref(genbank_ref)
+    summarize_genbank_by_ref(genbank_ref)
 
     genbank_file = folder / 'CCHF__GenBankFeatures_11_26_check.xlsx'
     genbank = pd.read_excel(genbank_file, dtype=str).fillna('')
     # summarize_genbank_by_seq(genbank)
 
-    summarize_genbank_full_genome(genbank_ref)
-    raise
+    # summarize_genbank_full_genome(genbank_ref)
 
     pubmed_file = folder / 'ReferenceSummary_Nov25.xlsx'
     pubmed = pd.read_excel(pubmed_file, dtype=str).fillna('')
@@ -31,7 +30,9 @@ def main():
     # summarize_pubmed_data(pubmed)
 
     pubmed_additional_ref_file_from_gb = folder / 'ReferenceSummary_Genbank_Nov20.xlsx'
-    pubmed = pd.concat([pubmed, pd.read_excel(pubmed_additional_ref_file_from_gb, dtype=str).fillna('')], ignore_index=True)
+    pubmed = pd.concat([pubmed, pd.read_excel(
+        pubmed_additional_ref_file_from_gb, dtype=str).fillna('')],
+        ignore_index=True)
 
     pubmed.to_excel(str(folder / 'Pubmed.xlsx'))
 
@@ -42,7 +43,10 @@ def main():
     # pd.DataFrame(genbank_unmatch).to_excel('genbank_unmatch.xlsx')
 
     print('Pumbed only', len(pubmed_unmatch))
+    # summarize_pubmed_data(pubmed_unmatch)
+
     print('GenBank only', len(genbank_unmatch))
+    # summarize_genbank_by_ref(genbank_unmatch)
 
     combined, columns = combine_file(
         pubmed_match, pubmed_unmatch, genbank_unmatch)

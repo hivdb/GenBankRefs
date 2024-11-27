@@ -14,10 +14,13 @@ def summarize_genbank_by_ref(df):
     print('Summarize Genbank By Ref')
 
     df['MedianPublishYear'] = df['year'].apply(median_year)
-    publish_year = count_number([v for i, v in df.iterrows()], 'MedianPublishYear', sorter=int_sorter)
+    publish_year = count_number([
+        v for i, v in df.iterrows()], 'MedianPublishYear', sorter=int_sorter)
     print('Publish Year')
     print(publish_year)
-    publish_year = [int(v['MedianPublishYear']) for i, v in df.iterrows() if v['MedianPublishYear'] and v['MedianPublishYear'] != 'NA']
+    publish_year = [
+        int(v['MedianPublishYear']) for i, v in df.iterrows()
+        if v['MedianPublishYear'] and v['MedianPublishYear'] != 'NA']
     print(create_binnned_year(publish_year))
     print('=' * 40)
 
@@ -36,6 +39,13 @@ def summarize_genbank_by_ref(df):
         [v for i, v in df.iterrows()], 'NumSeq (GB)', sorter=int_sorter)
     print('NumSeq')
     print(num_seqs)
+
+    print('Total', len(set([
+        j.strip()
+        for i, v in df.iterrows() if v['NumSeq (GB)']
+        for j in v['accession'].split(',')
+        if j.strip()
+        ])))
     print('=' * 40)
 
 

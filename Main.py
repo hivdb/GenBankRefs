@@ -26,7 +26,7 @@ timestamp = datetime.now().strftime('%m_%d')
 pd.set_option('display.max_rows', 100)
 
 VIRUS = "CCHF"
-RUN_BLAST = 0
+RUN_BLAST = 1
 genbank_file = f"ReferenceData/{VIRUS}/{VIRUS}.gb"
 reference_folder = Path(f"ReferenceData/{VIRUS}")
 reference_aa_file = f"ReferenceData/{VIRUS}/{VIRUS}_RefAAs.fasta"
@@ -128,7 +128,6 @@ def main():
 
     merged_ref_df = process_authors_titles(grouped_ref_df)
     print("Number of entries following aggregation by metadata: ", len(merged_ref_df))
-
 
     # Combine references and features
     combined_df = combine_refs_and_features(merged_ref_df, features_df)

@@ -25,7 +25,7 @@ def categorize_host_specimen(df, host_col, specimen_col):
         if 'tick' in specimen:
             updated_host.append('Ticks')
 
-        if not updated_host and host != 'NA'.lower():
+        if not updated_host and host and host != 'NA'.lower():
             updated_host.append('Other')
             # updated_host.append(host)
 
@@ -40,17 +40,11 @@ def categorize_host_specimen(df, host_col, specimen_col):
             if s in specimen:
                 updated_specimen.append(s)
 
-        if not specimen or specimen == 'NA'.lower():
-            updated_specimen.append('NA')
-
-        if not updated_specimen and specimen != 'NA'.lower():
-            updated_specimen.append('Other')
-
         if not updated_specimen:
             updated_specimen.append('NA')
 
         df.at[index, 'CleanedHost'] = ' and '.join(sorted(list(set(updated_host))))
-        df.at[index, 'CleanedSpecimen'] = updated_specimen[0]
+        df.at[index, 'CleanedSpecimen'] = ' and '.join(sorted(list(set(updated_specimen))))
 
     return df
 

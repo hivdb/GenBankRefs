@@ -7,6 +7,7 @@ from .utils import int_sorter
 from .translate_value import translate_gene
 from .translate_value import translate_country
 from Utilities import create_binnned_year
+import numpy as np
 
 
 def summarize_pubmed_data(df):
@@ -27,8 +28,9 @@ def summarize_pubmed_data(df):
     print('=' * 40)
 
     num_seq = count_number([v for i, v in df.iterrows()], 'NumSeqs', sorter=int_sorter)
-    print('NumSeq')
+    print('NumSeq By Journal')
     print(num_seq)
+    print('Total', sum([int(v['NumSeqs']) for i, v in df.iterrows() if v['NumSeqs']]))
     print('=' * 40)
 
     categorize_host_specimen(df, 'Host', 'IsolateType')
@@ -48,10 +50,17 @@ def summarize_pubmed_data(df):
     print('Median of Sample Year')
     print(year)
     year = [int(v['MedianYear']) for i, v in df.iterrows() if v['MedianYear'] and v['MedianYear'] != 'NA']
+    print('median', np.percentile(year, 25), np.percentile(year, 50), np.percentile(year, 75))
     print(create_binnned_year(year))
     print('=' * 40)
 
-    country_list = split_value_by_comma(df, 'Country')
+    # country_list = split_value_by_comma(df, 'Country')
+    country_list = []
+    for i, v in df.iterrows():
+        countries = v['Country'].split(',')
+        countries = [i.strip().capitalize() for i in countries]
+        countries = sorted(list(set(countries)))
+        country_list.append(', '.join(countries) if len(countries) < 4 else 'Multinational')
     country = count_number(country_list)
     print('Country')
     print(country)
