@@ -5,6 +5,7 @@ from combine.combine_file import combine_file, format_table
 from combine.sum_genbank import summarize_genbank_by_seq
 from combine.sum_genbank import summarize_genbank_by_ref
 from combine.sum_pubmed import summarize_pubmed_data
+from combine.sum_genbank import summarize_genbank_full_genome
 from combine.sum_combined import summarize_combined_data
 from combine.translate_value import categorize_host_specimen
 
@@ -12,13 +13,16 @@ from combine.translate_value import categorize_host_specimen
 def main():
     folder = Path('./combined')
 
-    genbank_ref_file = folder / 'CCHF_Combined_11_21.xlsx'
+    genbank_ref_file = folder / 'CCHF_Combined_11_26.xlsx'
     genbank_ref = pd.read_excel(genbank_ref_file, dtype=str).fillna('')
     # summarize_genbank_by_ref(genbank_ref)
 
-    genbank_file = folder / 'CCHF__GenBankFeatures_11_21.xlsx'
+    genbank_file = folder / 'CCHF__GenBankFeatures_11_26_check.xlsx'
     genbank = pd.read_excel(genbank_file, dtype=str).fillna('')
     # summarize_genbank_by_seq(genbank)
+
+    summarize_genbank_full_genome(genbank_ref)
+    raise
 
     pubmed_file = folder / 'ReferenceSummary_Nov25.xlsx'
     pubmed = pd.read_excel(pubmed_file, dtype=str).fillna('')

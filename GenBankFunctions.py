@@ -141,10 +141,12 @@ def blast_sequence(idx, features, virus):
     # if 'e_value' not in blast_data:
     #     print(blast_data, idx, len(features['AASeq']) <= 30)
 
-    blast_data = sorted([
+    blast_result = sorted([
             b
             for b in blast_result
-        ], key=lambda x: int(x['align_len']), reverse=True)[0]
+        ], key=lambda x: int(x['align_len']), reverse=True)
+
+    blast_data = blast_result[0]
 
     features['hit_name'] = blast_data.get('hit_name', '')
     features['e_value'] = blast_data.get('e_value', '')
@@ -152,6 +154,21 @@ def blast_sequence(idx, features, virus):
     features['align_len'] = blast_data.get('align_len', '')
     features['blast_name'] = blast_data.get('blast_name', '')
 
+    features['hit_name_list'] = ', '.join([
+        str(i['hit_name'])
+        for i in blast_result])
+    features['e_value_list'] = ', '.join([
+        str(i['e_value'])
+        for i in blast_result])
+    features['pcnt_id_list'] = ', '.join([
+        str(i['pcnt_id'])
+        for i in blast_result])
+    features['align_len_list'] = ', '.join([
+        str(i['align_len'])
+        for i in blast_result])
+    features['blast_name_list'] = ', '.join([
+        str(i['blast_name'])
+        for i in blast_result])
 
     return features
 

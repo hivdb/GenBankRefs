@@ -211,18 +211,20 @@ def combine_refs_and_features(ref_df, features_df):
 
 def translate_bio_term(features_df):
     name_map = {
-        'Rhipicephalus': 'tick',
-        'Hyalomma': 'tick',
-        'Dermacentor': 'tick',
-        'Haemaphysalis': 'tick',
-        'Ixodes': 'tick',
-        'Argas reflexus': 'tick',
-        'Alveonasus': 'tick',
-        'Argas persicus': 'tick',
-        'Boophilus annulatus': 'tick',
+        r'\bRhipicephalus\s\w+\b': 'tick',
+        r'\bHyalomma\s\w+\b': 'tick',
+        r'\bDermacentor\s\w+\b': 'tick',
+        r'Haemaphysalis\s\w+\b': 'tick',
+        r'Alveonasus\s\w+\b': 'tick',
+        r'Argas\s\w+\b': 'tick',
+        r'Boophilus\s\w+\b': 'tick',
+        r'Ixodes\s\w+\b': 'tick',
+        r'Amblyomma\s\w+\b': 'tick',
         'nymph': 'tick',
-        'Mus musculus': 'Mouse',
+
+        'Mice': 'Mouse',
         'Rattus rattus': 'Rat',
+        'Mus musculus': 'Mouse',
         'Capricornis milneedwardsii': 'Serow',
         'Bos taurus': 'Cattle',
         'Camelus dromedarius': 'Camel',
@@ -231,9 +233,11 @@ def translate_bio_term(features_df):
         'Testudo graeca': 'Tortoise'
     }
 
+    features_df['host2'] = features_df['host']
+    features_df['isolate_source2'] = features_df['isolate_source']
     for k, v in name_map.items():
-        features_df['host'] = features_df['host'].str.replace(k, v, case=False)
-        features_df['isolate_source'] = features_df['isolate_source'].str.replace(k, v, case=False)
+        features_df['host2'] = features_df['host2'].str.replace(k, v, regex=True)
+        features_df['isolate_source2'] = features_df['isolate_source2'].str.replace(k, v, regex=True)
 
     features_df['organism'] = features_df['organism'].str.replace('Orthonairovirus haemorrhagiae', 'CCHF', case=False)
     features_df['organism'] = features_df['organism'].str.replace(r'.*Crimean-Congo hemorrhagic fever.*', 'CCHF', case=False, regex=True)
@@ -248,16 +252,16 @@ def get_additional_host_data(features_df):
     other_speciman = ['nasopharyngeal swab', 'brain']
     human_host = ['patient', 'human', 'homo sapiens']
     animal_host = [
-        'mouse', 'rat', 'sheep',
-        'camel', 'cattle', 'goat', 'serow',
+        'mouse', 'rat', 'jerboa',
+        'sheep', 'camel', 'cattle', 'goat', 'serow',
+        'buffalo', 'calf',
         'animal',
-        'buffalo', 'calf', 'mice', 'jerboa',
         'tortoise']
 
     for index, row in features_df.iterrows():
 
-        host = row['host'].lower()
-        specimen = row['isolate_source'].lower()
+        host = row['host2'].lower()
+        specimen = row['isolate_source2'].lower()
 
         if not host and not specimen:
             continue
@@ -277,9 +281,9 @@ def get_additional_host_data(features_df):
                 updated_host.append(a.capitalize())
 
         if 'tick' in specimen:
-            updated_host.append("ticks")
+            updated_host.append("Ticks")
         if 'tick' in host:
-            updated_host.append("ticks")
+            updated_host.append("Ticks")
 
         if any(key in specimen for key in blood_specimen):
             updated_specimen.append('blood')
@@ -292,14 +296,19 @@ def get_additional_host_data(features_df):
             if a in host:
                 updated_specimen.append(a)
 
-        if not updated_host and not updated_specimen:
-            updated_specimen = [specimen]
-            updated_host = [host]
+        if not updated_host and host:
+            updated_host = ['Other']
+
+        if not updated_specimen and specimen:
+            # specieman other and NA are the same
+            updated_specimen = ['NA']
 
         # features_df.at[index, 'host'] = ",".join(sorted(list(set(updated_host))))
         # features_df.at[index, 'isolate_source'] = ",".join(sorted(list(set(updated_specimen))))
-        features_df.at[index, 'host'] = updated_host[0] if updated_host else ''
-        features_df.at[index, 'isolate_source'] = updated_specimen[0] if updated_specimen else ''
+        features_df.at[index, 'host2'] = ' and '.join(
+            sorted(list(set(updated_host)))) if updated_host else ''
+        features_df.at[index, 'isolate_source2'] = ' and '.join(
+            sorted(list(set(updated_specimen)))) if updated_specimen else ''
 
     return features_df
 

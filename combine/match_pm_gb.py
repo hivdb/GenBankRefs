@@ -21,7 +21,7 @@ def match_pm_gb(pubmed, genbank):
             match_by_pmid.append([row, result])
             continue
 
-        title = row['title']
+        title = row['title'].replace('Direct Submission,', '').replace(', Direct Submission', '').strip()
 
         result = pubmed[pubmed['Title'].apply(
             lambda x: Levenshtein.distance(x.lower(), title.lower()) < 5)]
@@ -37,8 +37,8 @@ def match_pm_gb(pubmed, genbank):
             for a in accession_list.split(',')
         ])
 
-        # if 'JX908640' in accession_list:
-        #     print(accession_prefix_list)
+        if 'EU057975' in accession_list:
+            print(accession_prefix_list)
 
         result = search_access_prefix(pubmed, accession_prefix_list)
         if not result.empty:

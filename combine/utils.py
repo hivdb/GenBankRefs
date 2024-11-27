@@ -27,7 +27,7 @@ def count_number(rows, key=None, translater=lambda x: x, sorter=count_rev_sorter
     column_values = [translater(x) for x in column_values]
     counter = dict(Counter(column_values))
 
-    return ', '.join([
+    return '\n'.join([
         f'{k} ({v})'
         for k, v in sorter(counter.items())
     ])
@@ -53,7 +53,7 @@ def merge_genbank_list_columns(genbank_list, key, translater=lambda x: x, sorter
             if value != 'NA' else value
         ] += int(count)
 
-    return ','.join([
+    return '\n'.join([
         f'{k} ({v})'
         for k, v in sorter(result.items())
     ])

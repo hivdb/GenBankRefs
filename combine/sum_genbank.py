@@ -1,13 +1,9 @@
 from .translate_value import median_year
 from .translate_value import translate_country
 from .translate_value import translate_gene
-from .translate_value import translate_specimen
-from .translate_value import translate_hosts
 from .utils import count_number
-from .utils import merge_genbank_list_columns
-from .utils import sum_value_count
 from .utils import int_sorter
-from .translate_value import categorize_host_specimen
+from .utils import split_value_count
 from Utilities import extract_year_from_date_fields
 from Utilities import create_binned_pcnts
 from Utilities import create_binned_seq_lens
@@ -43,16 +39,37 @@ def summarize_genbank_by_ref(df):
     print('=' * 40)
 
 
+def summarize_genbank_full_genome(df):
+
+    potential = []
+    total = 0
+    for i, row in df.iterrows():
+        count_list = []
+        value_list = []
+        for i in row['Gene'].split(','):
+            value, count = split_value_count(i)
+            count_list.append(int(count))
+            value_list.extend([value] * int(count))
+
+        if set(value_list) == {'L', 'S', 'M'} and len(set(count_list)) == 1:
+            potential.append(row)
+            total += count_list[0]
+
+    print('Full genome Ref')
+    print(len(potential))
+    print('Full genome seq')
+    print(total)
+
+
 def summarize_genbank_by_seq(df):
     print('Summarize Genbank By Seq')
 
-    categorize_host_specimen(df, 'host', 'isolate_source')
-    hosts = count_number([v for i, v in df.iterrows()], 'CleanedHost')
+    hosts = count_number([v for i, v in df.iterrows()], 'host')
     print('Host')
     print(hosts)
     print('=' * 40)
 
-    specimen = count_number([v for i, v in df.iterrows()], 'CleanedSpecimen')
+    specimen = count_number([v for i, v in df.iterrows()], 'isolate_source')
     print('Specimens')
     print(specimen)
     print('=' * 40)

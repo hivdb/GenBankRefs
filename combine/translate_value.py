@@ -14,10 +14,10 @@ def categorize_host_specimen(df, host_col, specimen_col):
             updated_host.append('Homo sapiens')
 
         for a in ['animal', 'sheep', 'cattle', 'goat', 'mouse', 'boar', 'hare',
-                  'livestock', 'cow', 'sheep', 'camel', 'monkey', 'deer',
+                  'livestock', 'cow', 'sheep', 'camel', 'monkey', 'deer', 'buffalo',
                   'rodent', 'serow']:
             if a in host:
-                updated_host.append('animal')
+                updated_host.append(a.capitalize())
 
         if 'tick' in host:
             updated_host.append('Ticks')
@@ -25,11 +25,12 @@ def categorize_host_specimen(df, host_col, specimen_col):
         if 'tick' in specimen:
             updated_host.append('Ticks')
 
-        if 'NA'.lower() == host or not host:
-            updated_host.append('NA')
+        if not updated_host and host != 'NA'.lower():
+            updated_host.append('Other')
+            # updated_host.append(host)
 
-        updated_host.append('Other')
-        updated_host.append(host)
+        if not updated_host:
+            updated_host.append('NA')
 
         for i in ['serum', 'blood', 'plasma', 'sera']:
             if i in specimen:
@@ -42,10 +43,13 @@ def categorize_host_specimen(df, host_col, specimen_col):
         if not specimen or specimen == 'NA'.lower():
             updated_specimen.append('NA')
 
-        updated_specimen.append('Other')
-        updated_specimen.append(specimen)
+        if not updated_specimen and specimen != 'NA'.lower():
+            updated_specimen.append('Other')
 
-        df.at[index, 'CleanedHost'] = updated_host[0]
+        if not updated_specimen:
+            updated_specimen.append('NA')
+
+        df.at[index, 'CleanedHost'] = ' and '.join(sorted(list(set(updated_host))))
         df.at[index, 'CleanedSpecimen'] = updated_specimen[0]
 
     return df

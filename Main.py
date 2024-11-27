@@ -26,7 +26,7 @@ timestamp = datetime.now().strftime('%m_%d')
 pd.set_option('display.max_rows', 100)
 
 VIRUS = "CCHF"
-RUN_BLAST = 1
+RUN_BLAST = 0
 genbank_file = f"ReferenceData/{VIRUS}/{VIRUS}.gb"
 reference_folder = Path(f"ReferenceData/{VIRUS}")
 reference_aa_file = f"ReferenceData/{VIRUS}/{VIRUS}_RefAAs.fasta"
@@ -72,6 +72,9 @@ def main():
 
     feature_list, reference_list, exclude_list = parse_genbank_records(genbank_file)
 
+    df_excluded_seqs = pd.DataFrame(exclude_list)
+    print("NumExcludedSequences:", len(df_excluded_seqs))
+
     print('Process genbank records', len(feature_list))
 
     output_file = os.path.join(
@@ -81,15 +84,22 @@ def main():
         feature_list = pooled_blast(feature_list, VIRUS)
         # Place sequence features in a data frame
         features_df = pd.DataFrame(feature_list)
-        features_df = translate_bio_term(features_df)
-        features_df = get_additional_host_data(features_df)
-        features_df['country_region'] = features_df['country_region'].str.split(":").str[0]
         features_df.to_excel(output_file, index=False)
     else:
-        features_df = pd.read_excel(output_file)
+        features_df = pd.read_excel(output_file).fillna('')
 
-    df_excluded_seqs = pd.DataFrame(exclude_list)
-    print("NumExcludedSequences:", len(df_excluded_seqs))
+    features_df = translate_bio_term(features_df)
+    features_df = get_additional_host_data(features_df)
+    features_df['host'] = features_df['host2']
+    features_df['isolate_source'] = features_df['isolate_source2']
+    features_df['country_region'] = features_df['country_region'].str.split(":").str[0]
+    for i, row in features_df.iterrows():
+        if str(row['segment_source']) not in SEGMENTS:
+            features_df.at[i, 'segment_source'] = row['hit_name']
+
+    output_check_file = os.path.join(
+        output_dir, f"{VIRUS}__GenBankFeatures_{timestamp}_check.xlsx")
+    features_df.to_excel(output_check_file, index=False)
 
     # Aggregate by reference
     reference_df = pd.DataFrame(reference_list)
@@ -132,7 +142,6 @@ def main():
     # print(ref_acc_number, 'Ref duplicated accession number')
 
     # Print output files
-
 
     output_file = os.path.join(
         output_dir, f"{VIRUS}_Combined_{timestamp}.xlsx")
