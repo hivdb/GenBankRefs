@@ -13,15 +13,15 @@ from combine.translate_value import categorize_host_specimen
 def main():
     folder = Path('./combined')
 
-    genbank_ref_file = folder / 'CCHF_Combined_11_26.xlsx'
+    genbank_ref_file = folder / 'CCHF_Combined_11_27.xlsx'
     genbank_ref = pd.read_excel(genbank_ref_file, dtype=str).fillna('')
     # summarize_genbank_by_ref(genbank_ref)
 
-    genbank_file = folder / 'CCHF__GenBankFeatures_11_26_check.xlsx'
+    genbank_file = folder / 'CCHF__GenBankFeatures_11_27_check.xlsx'
     genbank = pd.read_excel(genbank_file, dtype=str).fillna('')
     # summarize_genbank_by_seq(genbank)
 
-    # summarize_genbank_full_genome(genbank_ref)
+    summarize_genbank_full_genome(genbank_ref)
 
     pubmed_file = folder / 'ReferenceSummary_Nov25.xlsx'
     pubmed = pd.read_excel(pubmed_file, dtype=str).fillna('')

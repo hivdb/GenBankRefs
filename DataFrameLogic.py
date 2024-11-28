@@ -231,7 +231,9 @@ def translate_bio_term(features_df):
         'Camelus dromedarius': 'Camel',
         'Capra': 'Goat',
         'Euchoreutes naso': 'Jerboa',
-        'Testudo graeca': 'Tortoise'
+        'Testudo graeca': 'Tortoise',
+        'infected mouse brain': '',
+        'Suckling mouse brain': '',
     }
 
     features_df['host2'] = features_df['host']
@@ -250,7 +252,7 @@ def get_additional_host_data(features_df):
     # This function is adapted for CCHF
 
     blood_specimen = ['blood', 'serum', 'plasma', 'sera']
-    other_speciman = ['nasopharyngeal swab', 'brain']
+    other_speciman = ['nasopharyngeal swab']
     human_host = ['patient', 'human', 'homo sapiens']
     animal_host = [
         'mouse', 'rat', 'jerboa',
