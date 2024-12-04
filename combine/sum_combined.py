@@ -1,7 +1,7 @@
 from .utils import count_number
 from .utils import merge_genbank_list_columns
 from .utils import int_sorter
-from .sum_genbank import summarize_genbank_by_seq
+from .sum_genbank import summarize_genbank_by_seq, summarize_genbank_full_genome
 from .utils import split_value_by_comma
 from .utils import get_values_of_value_count_list
 from Utilities import create_binnned_year

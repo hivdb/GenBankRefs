@@ -63,6 +63,12 @@ def match_pm_gb(pubmed, genbank):
 
     pubmed_match = match_pubmed2genbank(genbank_match_list)
 
+    genbank_match = {}
+    for row, result, index in genbank_match_list:
+        genbank_match[index] = row
+
+    genbank_match = genbank_match.values()
+
     print("Pubmed match by pmid", len(match_pubmed2genbank(match_by_pmid_list)))
     print("Pubmed match by title", len(match_pubmed2genbank(match_by_title_list)))
     print("Pubmed match by acc", len(match_pubmed2genbank(match_by_acc_list)))
@@ -70,7 +76,7 @@ def match_pm_gb(pubmed, genbank):
 
     pubmed_unmatch = pubmed.drop(index=matched_pubmed_indices)
 
-    return pubmed_match, pubmed_unmatch, pd.DataFrame(genbank_unmatch_list)
+    return pubmed_match, pd.DataFrame(genbank_match), pubmed_unmatch, pd.DataFrame(genbank_unmatch_list)
 
 
 def search_access_prefix(pubmed, accession_prefix_list):

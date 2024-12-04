@@ -49,19 +49,20 @@ def summarize_genbank_by_ref(df):
     print('=' * 40)
 
 
-def summarize_genbank_full_genome(df):
+def summarize_genbank_full_genome(
+        df, col_name='Gene', full_gene_set={'L', 'S', 'M'}):
 
     potential = []
     total = 0
     for i, row in df.iterrows():
         count_list = []
         value_list = []
-        for i in row['Gene'].split(','):
+        for i in row[col_name].split(','):
             value, count = split_value_count(i)
             count_list.append(int(count))
             value_list.extend([value] * int(count))
 
-        if set(value_list) == {'L', 'S', 'M'} and len(set(count_list)) == 1:
+        if set(value_list) == full_gene_set and len(set(count_list)) == 1:
             potential.append(row)
             total += count_list[0]
 
