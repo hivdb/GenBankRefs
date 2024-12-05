@@ -11,6 +11,7 @@ from Bio.Blast.Applications import NcbiblastxCommandline
 from Bio.Blast import NCBIXML
 import Levenshtein
 from multiprocessing import Pool
+from pathlib import Path
 
 Entrez.email = "rshafer.stanford.edu"
 
@@ -62,6 +63,9 @@ def perform_blast(idx, query_seq, db_name, func, blast_name):
     """
     input_file = f"/tmp/query_{idx}.fasta"
     output_file = f"/tmp/query_{idx}.xml"
+
+    if not Path(db_name).exists():
+        return []
 
     with open(input_file, "w") as fd:
         fd.write(f">query\n{query_seq}\n")
@@ -146,12 +150,15 @@ def blast_sequence(idx, features, virus):
             for b in blast_result
         ], key=lambda x: int(x['align_len']), reverse=True)
 
-    blast_data = blast_result[0]
+    if not blast_result:
+        blast_data = {}
+    else:
+        blast_data = blast_result[0]
 
     features['hit_name'] = blast_data.get('hit_name', '')
     features['e_value'] = blast_data.get('e_value', '')
-    features['pcnt_id'] = blast_data.get('pcnt_id', '')
-    features['align_len'] = blast_data.get('align_len', '')
+    features['pcnt_id'] = blast_data.get('pcnt_id', 0)
+    features['align_len'] = blast_data.get('align_len', 0)
     features['blast_name'] = blast_data.get('blast_name', '')
 
     features['hit_name_list'] = ', '.join([
@@ -174,12 +181,6 @@ def blast_sequence(idx, features, virus):
 
 
 def pooled_blast(features_list, db_name, poolsize=20):
-
-    # features_list = [
-    #     i
-    #     for i in features_list
-    #     if i['acc_num'] in ['FV537249.1', 'FV537248.1']
-    # ]
 
     with Pool(poolsize) as pool:
         parameters = [

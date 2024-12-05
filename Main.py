@@ -1,7 +1,9 @@
+import importlib.util
 from Bio import SeqIO
 from Bio import Entrez
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
+import importlib
 
 from datetime import datetime
 import pandas as pd
@@ -13,8 +15,6 @@ from GenBankFunctions import (filter_by_taxonomy,
 
 from DataFrameLogic import (process_authors_titles,
                             combine_refs_and_features,
-                            translate_bio_term,
-                            get_additional_host_data,
                             compare_output_files)
 
 from Utilities import (extract_year_from_journal,
@@ -23,83 +23,32 @@ from Utilities import (extract_year_from_journal,
 # CONSTANTS
 Entrez.email = "rshafer.stanford.edu"
 timestamp = datetime.now().strftime('%m_%d')
-pd.set_option('display.max_rows', 100)
-
-VIRUS = "CCHF"
-RUN_BLAST = 0
-genbank_file = f"ReferenceData/{VIRUS}/{VIRUS}.gb"
-reference_folder = Path(f"ReferenceData/{VIRUS}")
-reference_aa_file = f"ReferenceData/{VIRUS}/{VIRUS}_RefAAs.fasta"
-# comparison_file = f"OutputData/{VIRUS}/{VIRUS}_Combined_11_06a.xlsx"
-output_dir = f"OutputData/{VIRUS}"
-SEGMENTS = ['L', 'M', 'S']
 
 
-def build_blast_db(segments):
+def main(virus_obj, run_blast=0):
+    virus_obj.build_blast_db()
 
-    db_name = f"{VIRUS}_AA_db"
-    os.system(
-        f"makeblastdb -in {reference_aa_file} -dbtype prot -out {db_name}")
-
-    aa_seqs = []
-    na_seqs = []
-    for s in segments:
-        with open(reference_folder / f'{s}.gb', "r") as handle:
-            for record in SeqIO.parse(handle, "genbank"):
-                aa_seq = [
-                    i
-                    for i in record.features
-                    if i.type == 'CDS'
-                ][0].qualifiers['translation'][0]
-                aa_seqs.append(SeqRecord(Seq(aa_seq), id=s, description=''))
-                na_seqs.append(SeqRecord(Seq(record.seq), id=s, description=''))
-
-    ref_aa_file = reference_folder / f"{VIRUS}_RefAAs.fasta"
-    with open(ref_aa_file, "w") as output_handle:
-        SeqIO.write(aa_seqs, output_handle, "fasta")
-
-    ref_na_file = reference_folder / f"{VIRUS}_RefNAs.fasta"
-    with open(ref_na_file, "w") as output_handle:
-        SeqIO.write(na_seqs, output_handle, "fasta")
-
-    db_name = f"{VIRUS}_NA_db"
-    os.system(
-        f"makeblastdb -in {ref_na_file} -dbtype nucl -out {db_name}")
-
-
-def main():
-    build_blast_db(SEGMENTS)
-
-    feature_list, reference_list, exclude_list = parse_genbank_records(genbank_file)
+    feature_list, reference_list, exclude_list = parse_genbank_records(
+        virus_obj.genbank_file)
 
     df_excluded_seqs = pd.DataFrame(exclude_list)
     print("NumExcludedSequences:", len(df_excluded_seqs))
 
     print('Process genbank records', len(feature_list))
 
-    output_file = os.path.join(
-        output_dir, f"{VIRUS}__GenBankFeatures_{timestamp}.xlsx")
-
-    if RUN_BLAST == 1:
-        feature_list = pooled_blast(feature_list, VIRUS)
+    if run_blast == 1:
+        feature_list = pooled_blast(feature_list, virus_obj.VIRUS)
         # Place sequence features in a data frame
         features_df = pd.DataFrame(feature_list)
-        features_df.to_excel(output_file, index=False)
+        features_df.to_excel(str(virus_obj.genbank_feature_file), index=False)
+    elif virus_obj.genbank_feature_file.exists():
+        features_df = pd.read_excel(str(virus_obj.genbank_feature_file)).fillna('')
     else:
-        features_df = pd.read_excel(output_file).fillna('')
+        features_df = pd.DataFrame(feature_list)
 
-    features_df = translate_bio_term(features_df)
-    features_df = get_additional_host_data(features_df)
-    features_df['host'] = features_df['host2']
-    features_df['isolate_source'] = features_df['isolate_source2']
-    features_df['country_region'] = features_df['country_region'].str.split(":").str[0]
-    for i, row in features_df.iterrows():
-        if str(row['segment_source']) not in SEGMENTS:
-            features_df.at[i, 'segment_source'] = row['hit_name']
+    features_df = virus_obj.process_feature(features_df)
 
-    output_check_file = os.path.join(
-        output_dir, f"{VIRUS}__GenBankFeatures_{timestamp}_check.xlsx")
-    features_df.to_excel(output_check_file, index=False)
+    features_df.to_excel(str(virus_obj.genbank_feature_check_file), index=False)
 
     # Aggregate by reference
     reference_df = pd.DataFrame(reference_list)
@@ -142,16 +91,12 @@ def main():
 
     # Print output files
 
-    output_file = os.path.join(
-        output_dir, f"{VIRUS}_Combined_{timestamp}.xlsx")
-    combined_df.to_excel(output_file, index=False)
+    combined_df.to_excel(str(virus_obj.combined_file), index=False)
 
-    output_file = os.path.join(
-        output_dir, f"{VIRUS}_Excluded_Seqs_{timestamp}.xlsx")
-    df_excluded_seqs.to_excel(output_file, index=False)
+    df_excluded_seqs.to_excel(str(virus_obj.exclude_seq_file), index=False)
 
     # Compare output file with saved file
-    # saved_combined_df = pd.read_excel(comparison_file, na_values=[''])
+    # saved_combined_df = pd.read_excel(str(virus_obj.comparison_file), na_values=[''])
     # compare_output_files(saved_combined_df, combined_df)
 
 
@@ -236,5 +181,33 @@ def extract_features(features, accession):
     return feature_items
 
 
+def load_virus_obj(virus):
+    virus_conf_path = f'viruses_conf/{virus}.py'
+    if not Path(virus_conf_path).exists():
+        spec = importlib.util.spec_from_file_location(
+            'viruses_conf.default', 'viruses_conf/default.py')
+    else:
+        spec = importlib.util.spec_from_file_location(
+            f'viruses_conf.{virus}', virus_conf_path)
+
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    if not Path(virus_conf_path).exists():
+        module.set_virus(virus)
+
+    return module
+
+
 if __name__ == '__main__':
-    main()
+    viruses_list = ('CCHF', 'Nipah')
+
+    import sys
+    if len(sys.argv) != 2:
+        print('Please provide virus name as the parameter, virus could be:', ', '.join(viruses_list))
+        exit(1)
+    virus = sys.argv[1]
+
+    virus_obj = load_virus_obj(virus)
+    # if virus not in viruses_list:
+    main(virus_obj, run_blast=1)

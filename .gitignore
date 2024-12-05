@@ -183,3 +183,5 @@ CCHF_GenBankFeatures.csv
 .DS_Store
 combined
 ~$*.xlsx
+
+log.txt
