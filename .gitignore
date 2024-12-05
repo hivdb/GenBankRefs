@@ -185,3 +185,4 @@ combined
 ~$*.xlsx
 
 log.txt
+*.db
