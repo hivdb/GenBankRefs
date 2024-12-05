@@ -1,112 +1,60 @@
+import importlib.util
 from Bio import SeqIO
 from Bio import Entrez
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
+import importlib
+
 from datetime import datetime
 import pandas as pd
 import os
+from pathlib import Path
 
 from GenBankFunctions import (filter_by_taxonomy,
                               pooled_blast)
 
 from DataFrameLogic import (process_authors_titles,
                             combine_refs_and_features,
-                            translate_bio_term,
-                            get_additional_host_data,
                             compare_output_files)
 
 from Utilities import (extract_year_from_journal,
                        process_author_field)
 
+import database
+
+
 # CONSTANTS
 Entrez.email = "rshafer.stanford.edu"
 timestamp = datetime.now().strftime('%m_%d')
-pd.set_option('display.max_rows', 100)
-
-VIRUS = "CCHF"
-RUN_BLAST = 1
-genbank_file = f"ReferenceData/{VIRUS}/{VIRUS}.gb"
-reference_aa_file = f"ReferenceData/{VIRUS}/{VIRUS}_RefAAs.fasta"
-# comparison_file = f"OutputData/{VIRUS}/{VIRUS}_Combined_11_06a.xlsx"
-output_dir = f"OutputData/{VIRUS}"
 
 
-def main():
-    db_name = "ref_db"
-    if (RUN_BLAST == 1):
-        os.system(
-            f"makeblastdb -in {reference_aa_file} -dbtype prot -out {db_name}")
+def main(virus_obj, run_blast=0):
+    virus_obj.build_blast_db()
 
-    def extract_references(annotations, accession):
-        ref_list = annotations.get("references")
-        ref_data = []
-        for ref in ref_list:
-            ref_items = {}
-            ref_items["accession"] = accession
-            ref_items["authors"] = ref.authors
-            ref_items["title"] = ref.title
-            ref_items["journal"] = ref.journal
-            ref_items["pmid"] = ref.pubmed_id
-            ref_data.append(ref_items)
-        return ref_data
+    feature_list, reference_list, exclude_list = parse_genbank_records(
+        virus_obj.genbank_file)
 
-    def extract_features(features, accession):
-        feature_items = {}
-        feature_items["accession"] = accession
-        for feature in features:
-            for key, value in feature.qualifiers.items():
-                key = key + '_' + feature.type
-                feature_items[key] = value[0]
-                # print(f"Key {key}: value {value}\n")
-        return feature_items
-
-    reference_list = []
-    feature_list = []
-    excluded_seqs = []
-    count = 0
-    with open(genbank_file, "r") as handle:
-
-        for record in SeqIO.parse(handle, "genbank"):
-            count += 1
-            if count % 10000 == 0:
-                print(count)
-            taxonomy = record.annotations['taxonomy']
-            if len(taxonomy) == 0 or taxonomy[0] != 'Viruses':
-                excluded_seq_data = filter_by_taxonomy(record)
-                excluded_seqs.append(excluded_seq_data)
-                continue
-
-            ref_data = extract_references(record.annotations, record.id)
-            reference_list.extend(ref_data)
-
-            features = {}
-            feature_data = extract_features(record.features, record.id)
-            features['acc_num'] = record.id
-            sample_seq = feature_data.get('translation_CDS', '')
-            features['num_na'] = len(record.seq)
-            features['num_aa'] = len(sample_seq)
-            features['description'] = record.description
-            features['record_date'] = record.annotations['date']
-            features['organism'] = record.annotations['organism']
-            features['segment_source'] = feature_data.get('segment_source', '')
-            features['cds'] = feature_data.get('product_CDS', '')
-            features['host'] = feature_data.get('host_source', '')
-            features['isolate_source'] = feature_data.get(
-                'isolation_source_source', '')
-            features['isolate_name'] = feature_data.get('isolate_source', '')
-            features['country_region'] = feature_data.get(
-                'geo_loc_name_source', '')
-            features['collection_date'] = feature_data.get(
-                'collection_date_source', '')
-            features['e_value'] = 999
-            features['pcnt_id'] = 0
-            features['align_len'] = 0
-            features['_sample_seq'] = sample_seq
-            feature_list.append(features)
-
-    if RUN_BLAST == 1:
-        feature_list = pooled_blast(feature_list, db_name)
-
-    df_excluded_seqs = pd.DataFrame(excluded_seqs)
+    df_excluded_seqs = pd.DataFrame(exclude_list)
     print("NumExcludedSequences:", len(df_excluded_seqs))
+
+    print('Process genbank records', len(feature_list))
+
+    if run_blast == 1:
+        feature_list = pooled_blast(feature_list, virus_obj.VIRUS)
+        # Place sequence features in a data frame
+        features_df = pd.DataFrame(feature_list)
+        features_df.to_excel(str(virus_obj.genbank_feature_file), index=False)
+    elif virus_obj.genbank_feature_file.exists():
+        features_df = pd.read_excel(str(virus_obj.genbank_feature_file)).fillna('')
+    else:
+        features_df = pd.DataFrame(feature_list)
+
+    features_df = virus_obj.process_feature(features_df)
+
+    features_df.to_excel(str(virus_obj.genbank_feature_check_file), index=False)
+
+    database.dump_table(virus_obj.DB_FILE, 'features', features_df)
+    # print(database.load_table(virus_obj.DB_FILE, 'features'))
 
     # Aggregate by reference
     reference_df = pd.DataFrame(reference_list)
@@ -136,31 +84,138 @@ def main():
     merged_ref_df = process_authors_titles(grouped_ref_df)
     print("Number of entries following aggregation by metadata: ", len(merged_ref_df))
 
-    # Place sequence features in a data frame
-    features_df = pd.DataFrame(feature_list)
-    features_df = translate_bio_term(features_df)
-    features_df = get_additional_host_data(features_df)
-    features_df['country_region'] = features_df['country_region'].str.split(":").str[0]
+    database.dump_table(virus_obj.DB_FILE, 'References', merged_ref_df)
+
     # Combine references and features
     combined_df = combine_refs_and_features(merged_ref_df, features_df)
 
+    # acc_set = set()
+    # ref_acc_number = 0
+    # for i, r in combined_df.iterrows():
+    #     acc_set.update(set([j.strip() for j in r['accession'].split(',')]))
+    #     ref_acc_number += len([j.strip() for j in r['accession'].split(',')])
+    # print(len(acc_set), 'accession number')
+    # print(ref_acc_number, 'Ref duplicated accession number')
+
     # Print output files
-    output_file = os.path.join(
-        output_dir, f"{VIRUS}__GenBankFeatures_{timestamp}.xlsx")
-    features_df.to_excel(output_file, index=False)
 
-    output_file = os.path.join(
-        output_dir, f"{VIRUS}_Combined_{timestamp}.xlsx")
-    combined_df.to_excel(output_file, index=False)
+    combined_df.to_excel(str(virus_obj.combined_file), index=False)
 
-    output_file = os.path.join(
-        output_dir, f"{VIRUS}_Excluded_Seqs_{timestamp}.xlsx")
-    df_excluded_seqs.to_excel(output_file, index=False)
+    df_excluded_seqs.to_excel(str(virus_obj.exclude_seq_file), index=False)
 
     # Compare output file with saved file
-    # saved_combined_df = pd.read_excel(comparison_file, na_values=[''])
+    # saved_combined_df = pd.read_excel(str(virus_obj.comparison_file), na_values=[''])
     # compare_output_files(saved_combined_df, combined_df)
 
 
+def parse_genbank_records(genbank_file):
+    reference_list = []
+    feature_list = []
+    excluded_list = []
+    total_record = 0
+    with open(genbank_file, "r") as handle:
+        for record in SeqIO.parse(handle, "genbank"):
+
+            total_record += 1
+            if total_record % 10000 == 0:
+                print(total_record)
+
+            taxonomy = record.annotations['taxonomy']
+            if len(taxonomy) == 0 or taxonomy[0] != 'Viruses':
+                excluded_seq_data = filter_by_taxonomy(record)
+                excluded_list.append(excluded_seq_data)
+                continue
+
+            ref_data = extract_references(record.annotations, record.id)
+            reference_list.extend(ref_data)
+
+            features = {}
+            feature_data = extract_features(record.features, record.id)
+            features['acc_num'] = record.id
+
+            features['description'] = record.description
+            features['record_date'] = record.annotations['date']
+            features['organism'] = record.annotations['organism']
+            features['segment_source'] = feature_data.get('segment_source', '')
+            features['cds'] = feature_data.get('product_CDS', '')
+            features['host'] = feature_data.get('host_source', '')
+            features['isolate_source'] = feature_data.get(
+                'isolation_source_source', '')
+            features['isolate_name'] = feature_data.get('isolate_source', '')
+            features['country_region'] = feature_data.get(
+                'geo_loc_name_source', '')
+            features['collection_date'] = feature_data.get(
+                'collection_date_source', '')
+
+            sample_seq = feature_data.get('translation_CDS', '')
+            features['num_na'] = len(record.seq)
+            features['num_aa'] = len(sample_seq)
+            features['AASeq'] = sample_seq
+            features['NASeq'] = record.seq
+
+            features['hit_name'] = ''
+            features['e_value'] = 999
+            features['pcnt_id'] = 0
+            features['align_len'] = 0
+            features['blast_name'] = ''
+
+            feature_list.append(features)
+
+    return feature_list, reference_list, excluded_list
+
+
+def extract_references(annotations, accession):
+    ref_list = annotations.get("references")
+    ref_data = []
+    for ref in ref_list:
+        ref_items = {}
+        ref_items["accession"] = accession
+        ref_items["authors"] = ref.authors
+        ref_items["title"] = ref.title
+        ref_items["journal"] = ref.journal
+        ref_items["pmid"] = ref.pubmed_id
+        ref_data.append(ref_items)
+    return ref_data
+
+
+def extract_features(features, accession):
+    feature_items = {}
+    feature_items["accession"] = accession
+    for feature in features:
+        for key, value in feature.qualifiers.items():
+            key = key + '_' + feature.type
+            feature_items[key] = value[0]
+            # print(f"Key {key}: value {value}\n")
+    return feature_items
+
+
+def load_virus_obj(virus):
+    virus_conf_path = f'viruses_conf/{virus}.py'
+    if not Path(virus_conf_path).exists():
+        spec = importlib.util.spec_from_file_location(
+            'viruses_conf.default', 'viruses_conf/default.py')
+    else:
+        spec = importlib.util.spec_from_file_location(
+            f'viruses_conf.{virus}', virus_conf_path)
+
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    if not Path(virus_conf_path).exists():
+        module.set_virus(virus)
+
+    return module
+
+
 if __name__ == '__main__':
-    main()
+    viruses_list = ('CCHF', 'Nipah')
+
+    import sys
+    if len(sys.argv) != 2:
+        print('Please provide virus name as the parameter, virus could be:', ', '.join(viruses_list))
+        exit(1)
+    virus = sys.argv[1]
+
+    virus_obj = load_virus_obj(virus)
+    # if virus not in viruses_list:
+    main(virus_obj, run_blast=0)

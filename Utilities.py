@@ -188,3 +188,28 @@ def create_binned_seq_lens(numbers):
     result_str = ", ".join(
         [f"{label} ({count})" for label, count in non_zero_counts.items()])
     return result_str
+
+
+def create_binnned_year(years):
+
+    min_year = min(years)
+    max_year = max(years)
+
+    min_year = min_year // 10 * 10
+    max_year = (max_year // 10 + (1 if (max_year % 10) else 0)) * 10 + 1
+
+    bins = range(min_year, max_year, 10)
+    labels = [f"{start}-{start+9}" for start in range(min_year, max_year - 1, 10)]
+
+    binned = pd.cut(
+        years,
+        bins=bins,
+        labels=labels,
+        right=False,
+        include_lowest=True)
+    counts = binned.value_counts().reindex(labels, fill_value=0)
+    non_zero_counts = {label: count for label,
+                       count in counts.items() if count > 0}
+    result_str = ", ".join(
+        [f"{label} ({count})" for label, count in non_zero_counts.items()])
+    return result_str

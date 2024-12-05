@@ -121,6 +121,7 @@ def merge_rows(df, merged_indexes):
     new_row = {}
     authors_list = df.loc[merged_indexes, 'authors'].tolist()
     titles_list = df.loc[merged_indexes, 'title'].tolist()
+    titles_list = [i for i in titles_list if i != 'Direct Submission']
     journal_list = df.loc[merged_indexes, 'journal'].tolist()
     pmid_list = df.loc[merged_indexes, 'pmid'].tolist()
     year_list = df.loc[merged_indexes, 'year'].tolist()
@@ -207,101 +208,6 @@ def combine_refs_and_features(ref_df, features_df):
         # remove .x after accession ID
         row["accession"] = re.sub(r'\.\d+', '', row['accession'])
     return combined_df
-
-
-def translate_bio_term(features_df):
-    name_map = {
-        'Rhipicephalus': 'tick',
-        'Hyalomma': 'tick',
-        'Dermacentor': 'tick',
-        'Haemaphysalis': 'tick',
-        'Ixodes': 'tick',
-        'Argas reflexus': 'tick',
-        'Alveonasus': 'tick',
-        'Argas persicus': 'tick',
-        'Boophilus annulatus': 'tick',
-        'nymph': 'tick',
-        'Mus musculus': 'Mouse',
-        'Rattus rattus': 'Rat',
-        'Capricornis milneedwardsii': 'Serow',
-        'Bos taurus': 'Cattle',
-        'Camelus dromedarius': 'Camel',
-        'Capra': 'Goat',
-        'Euchoreutes naso': 'Jerboa',
-        'Testudo graeca': 'Tortoise'
-    }
-
-    for k, v in name_map.items():
-        features_df['host'] = features_df['host'].str.replace(k, v, case=False)
-        features_df['isolate_source'] = features_df['isolate_source'].str.replace(k, v, case=False)
-
-    features_df['organism'] = features_df['organism'].str.replace('Orthonairovirus haemorrhagiae', 'CCHF', case=False)
-    features_df['organism'] = features_df['organism'].str.replace(r'.*Crimean-Congo hemorrhagic fever.*', 'CCHF', case=False, regex=True)
-
-    return features_df
-
-
-def get_additional_host_data(features_df):
-    # This function is adapted for CCHF
-
-    blood_specimen = ['blood', 'serum', 'plasma', 'sera']
-    other_speciman = ['nasopharyngeal swab', 'brain']
-    human_host = ['patient', 'human', 'homo sapiens']
-    animal_host = [
-        'mouse', 'rat', 'sheep',
-        'camel', 'cattle', 'goat', 'serow',
-        'animal',
-        'buffalo', 'calf', 'mice', 'jerboa',
-        'tortoise']
-
-    for index, row in features_df.iterrows():
-
-        host = row['host'].lower()
-        specimen = row['isolate_source'].lower()
-
-        if not host and not specimen:
-            continue
-
-        updated_host = []
-        updated_specimen = []
-
-        if any(key in specimen for key in human_host):
-            updated_host.append("Homo sapiens")
-        if any(key in host for key in human_host):
-            updated_host.append("Homo sapiens")
-
-        for a in animal_host:
-            if a in specimen:
-                updated_host.append(a.capitalize())
-            if a in host:
-                updated_host.append(a.capitalize())
-
-        if 'tick' in specimen:
-            updated_host.append("ticks")
-        if 'tick' in host:
-            updated_host.append("ticks")
-
-        if any(key in specimen for key in blood_specimen):
-            updated_specimen.append('blood')
-        if any(key in host for key in blood_specimen):
-            updated_specimen.append('blood')
-
-        for a in other_speciman:
-            if a in specimen:
-                updated_specimen.append(a)
-            if a in host:
-                updated_specimen.append(a)
-
-        if not updated_host and not updated_specimen:
-            updated_specimen = [specimen]
-            updated_host = [host]
-
-        # features_df.at[index, 'host'] = ",".join(sorted(list(set(updated_host))))
-        # features_df.at[index, 'isolate_source'] = ",".join(sorted(list(set(updated_specimen))))
-        features_df.at[index, 'host'] = updated_host[0] if updated_host else ''
-        features_df.at[index, 'isolate_source'] = updated_specimen[0] if updated_specimen else ''
-
-    return features_df
 
 
 def compare_output_files(saved_df, new_df):

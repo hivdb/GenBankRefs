@@ -165,12 +165,24 @@ cython_debug/
 # Data files
 *.gb
 blast_results.xml
-ref_db.psq
-ref_db.phr
-ref_db.pin
-ref_db.pjs
+
+*_db.?db
+*_db.?hr
+*_db.?in
+*_db.?js
+*_db.?ot
+*_db.?sq
+*_db.?tf
+*_db.?to
+
+
 ref.fasta
 sample.fasta
 CCHF_GenBankFeatures.csv
 
 .DS_Store
+combined
+~$*.xlsx
+
+log.txt
+*.db
