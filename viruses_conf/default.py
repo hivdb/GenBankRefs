@@ -14,6 +14,7 @@ combined_file = None
 exclude_seq_file = None
 comparison_file = None
 timestamp = datetime.now().strftime('%m_%d')
+DB_FILE = None
 
 
 def set_virus(virus_name):
@@ -25,9 +26,11 @@ def set_virus(virus_name):
     global combined_file
     global exclude_seq_file
     global comparison_file
+    global DB_FILE
     VIRUS = virus_name
 
     output_dir = Path(f"OutputData/{VIRUS}")
+    DB_File = output_dir / f"{VIRUS}.db"
     genbank_file = f"ReferenceData/{VIRUS}/{VIRUS}.gb"
     genbank_feature_file = output_dir / f"{VIRUS}__GenBankFeatures_{timestamp}.xlsx"
     genbank_feature_check_file = output_dir / f"{VIRUS}__GenBankFeatures_{timestamp}_check.xlsx"

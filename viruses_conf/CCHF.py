@@ -17,6 +17,7 @@ genbank_feature_check_file = output_dir / f"{VIRUS}__GenBankFeatures_{timestamp}
 combined_file = output_dir / f"{VIRUS}_Combined_{timestamp}.xlsx"
 exclude_seq_file = output_dir / f"{VIRUS}_Excluded_Seqs_{timestamp}.xlsx"
 comparison_file = output_dir / f"{VIRUS}_Combined_11_06a.xlsx"
+DB_FILE = output_dir / f"{VIRUS}.db"
 
 
 def build_blast_db():

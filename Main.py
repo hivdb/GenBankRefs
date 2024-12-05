@@ -20,6 +20,9 @@ from DataFrameLogic import (process_authors_titles,
 from Utilities import (extract_year_from_journal,
                        process_author_field)
 
+import database
+
+
 # CONSTANTS
 Entrez.email = "rshafer.stanford.edu"
 timestamp = datetime.now().strftime('%m_%d')
@@ -50,6 +53,9 @@ def main(virus_obj, run_blast=0):
 
     features_df.to_excel(str(virus_obj.genbank_feature_check_file), index=False)
 
+    database.dump_table(virus_obj.DB_FILE, 'features', features_df)
+    # print(database.load_table(virus_obj.DB_FILE, 'features'))
+
     # Aggregate by reference
     reference_df = pd.DataFrame(reference_list)
     reference_df['year'] = reference_df['journal'].apply(
@@ -77,6 +83,8 @@ def main(virus_obj, run_blast=0):
 
     merged_ref_df = process_authors_titles(grouped_ref_df)
     print("Number of entries following aggregation by metadata: ", len(merged_ref_df))
+
+    database.dump_table(virus_obj.DB_FILE, 'References', merged_ref_df)
 
     # Combine references and features
     combined_df = combine_refs_and_features(merged_ref_df, features_df)
@@ -210,4 +218,4 @@ if __name__ == '__main__':
 
     virus_obj = load_virus_obj(virus)
     # if virus not in viruses_list:
-    main(virus_obj, run_blast=1)
+    main(virus_obj, run_blast=0)
