@@ -56,6 +56,7 @@ def build_blast_db():
         f"makeblastdb -in {ref_na_file} -dbtype nucl -out {db_name}")
 
 
+# Provides directions for cleaning the information in the feature table
 def process_feature(features_df):
     features_df = translate_bio_term(features_df)
     features_df = get_additional_host_data(features_df)

@@ -4,6 +4,7 @@ from Bio import Entrez
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 import importlib
+import database
 
 from datetime import datetime
 import pandas as pd
@@ -19,40 +20,90 @@ from DataFrameLogic import (process_authors_titles,
 from Utilities import (extract_year_from_journal,
                        process_author_field)
 
-import database
-
+# Silences the warnings that occur when empty cells are replaced with 'NA'
 pd.set_option('future.no_silent_downcasting', True)
-
-
-# CONSTANTS
 Entrez.email = "rshafer.stanford.edu"
 timestamp = datetime.now().strftime('%m_%d')
 
+# This is called by the main function to allow users to select the virus
+def select_virus():
+    viruses_list = (
+        ('Orthonairovirus haemorrhagiae', 'CCHF'),
+        ('Henipavirus nipahense', 'Nipah'),
+    )
+    for index, (cname, name) in enumerate(viruses_list):
+        print(f"{index + 1}.", cname, f"({name})")
 
-def main(virus_obj, run_blast=0):
+    virus_id = input('Please select a virus by ID:')
+    assert virus_id.isdigit(), 'Virus not found'
+    assert int(virus_id) <= len(viruses_list), 'Virus not found'
+
+    return viruses_list[int(virus_id) - 1][-1]
+
+# This is called by the main function to allow users to determine whether 
+# BLAST is run
+def select_run_blast(default=None):
+    if default is not None:
+        return default
+
+    result = input('Run blast? [y/n]')
+    result = result.lower()
+    assert (result in ['y', 'n']), "Please use y/n"
+
+    return 1 if result == 'y' else 0
+
+def load_virus_obj(virus):
+    virus_conf_path = f'viruses_conf/{virus}.py'
+    if not Path(virus_conf_path).exists():
+        spec = importlib.util.spec_from_file_location(
+            'viruses_conf.default', 'viruses_conf/default.py')
+    else:
+        spec = importlib.util.spec_from_file_location(
+            f'viruses_conf.{virus}', virus_conf_path)
+
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    if not Path(virus_conf_path).exists():
+        module.set_virus(virus)
+
+    return module
+
+
+def main():
+    virus = select_virus()
+    virus_obj = load_virus_obj(virus)
+    run_blast = select_run_blast()
+
     virus_obj.build_blast_db()
 
     feature_list, reference_list, exclude_list = parse_genbank_records(
         virus_obj.genbank_file)
 
     df_excluded_seqs = pd.DataFrame(exclude_list)
-    print("NumExcludedSequences:", len(df_excluded_seqs))
-
-    print('Process genbank records', len(feature_list))
+    print("Number of excluded sequences:", len(df_excluded_seqs))
+    print('Number of genbank records', len(feature_list))
 
     if run_blast == 1:
         feature_list = pooled_blast(feature_list, virus_obj.VIRUS)
-        # Place sequence features in a data frame
         features_df = pd.DataFrame(feature_list)
         features_df.to_excel(str(virus_obj.genbank_feature_file), index=False)
         features_df = pd.read_excel(str(virus_obj.genbank_feature_file)).fillna('')
+    
+    # genbank_feature_file is created either using blast or without blast
+    # depending on the user input
+    # This statement loads the existing genbank feature file which may or may not
+    # include blast data. This makes it possible to avoid re-running BLAST
     elif virus_obj.genbank_feature_file.exists():
         features_df = pd.read_excel(str(virus_obj.genbank_feature_file)).fillna('')
+    
+    # This statement creates features_df without running BLAST
     else:
         features_df = pd.DataFrame(feature_list)
         features_df.to_excel(str(virus_obj.genbank_feature_file), index=False)
         features_df = pd.read_excel(str(virus_obj.genbank_feature_file)).fillna('')
 
+    # This uses data in the imported virus module to clean data in the feature table
     features_df = virus_obj.process_feature(features_df)
 
     features_df.to_excel(str(virus_obj.genbank_feature_check_file), index=False)
@@ -83,10 +134,10 @@ def main(virus_obj, run_blast=0):
             'accession'].apply(list).reset_index()
     grouped_ref_df['accession'] = grouped_ref_df['accession'].apply(
         lambda x: ', '.join(x))
-    print("Number of entries following aggregation by metadata: ", len(grouped_ref_df))
+    print("Number of entries following aggregation by exact matches: ", len(grouped_ref_df))
 
     merged_ref_df = process_authors_titles(grouped_ref_df)
-    print("Number of entries following aggregation by metadata: ", len(merged_ref_df))
+    print("Number of entries following aggregation by similarity: ", len(merged_ref_df))
 
     database.dump_table(virus_obj.DB_FILE, 'Refs', merged_ref_df)
     # print(database.load_table(virus_obj.DB_FILE, 'Refs'))
@@ -184,53 +235,5 @@ def extract_features(features, accession):
     return feature_items
 
 
-def load_virus_obj(virus):
-    virus_conf_path = f'viruses_conf/{virus}.py'
-    if not Path(virus_conf_path).exists():
-        spec = importlib.util.spec_from_file_location(
-            'viruses_conf.default', 'viruses_conf/default.py')
-    else:
-        spec = importlib.util.spec_from_file_location(
-            f'viruses_conf.{virus}', virus_conf_path)
-
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-
-    if not Path(virus_conf_path).exists():
-        module.set_virus(virus)
-
-    return module
-
-
-def select_virus():
-    viruses_list = (
-        ('Orthonairovirus haemorrhagiae', 'CCHF'),
-        ('Henipavirus nipahense', 'Nipah'),
-    )
-    for index, (cname, name) in enumerate(viruses_list):
-        print(f"{index + 1}.", cname, f"({name})")
-
-    virus_id = input('Please select a virus by ID:')
-    assert virus_id.isdigit(), 'Virus not found'
-    assert int(virus_id) <= len(viruses_list), 'Virus not found'
-
-    return viruses_list[int(virus_id) - 1][-1]
-
-
-def select_run_blast(default=None):
-    if default is not None:
-        return default
-
-    result = input('Run blast? [y/n]')
-    result = result.lower()
-    assert (result in ['y', 'n']), "Please use y/n"
-
-    return 1 if result == 'y' else 0
-
-
 if __name__ == '__main__':
-    virus = select_virus()
-
-    virus_obj = load_virus_obj(virus)
-    run_blast = select_run_blast()
-    main(virus_obj, run_blast=run_blast)
+    main()
