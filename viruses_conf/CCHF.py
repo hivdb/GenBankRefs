@@ -12,8 +12,10 @@ timestamp = datetime.now().strftime('%m_%d')
 
 output_dir = Path(f"OutputData/{VIRUS}")
 genbank_file = f"ReferenceData/{VIRUS}/{VIRUS}.gb"
-genbank_feature_file = output_dir / f"{VIRUS}__GenBankFeatures_{timestamp}.xlsx"
-genbank_feature_check_file = output_dir / f"{VIRUS}__GenBankFeatures_{timestamp}_check.xlsx"
+genbank_feature_file = output_dir / \
+    f"{VIRUS}__GenBankFeatures_{timestamp}.xlsx"
+genbank_feature_check_file = output_dir / \
+    f"{VIRUS}__GenBankFeatures_{timestamp}_check.xlsx"
 combined_file = output_dir / f"{VIRUS}_Combined_{timestamp}.xlsx"
 exclude_seq_file = output_dir / f"{VIRUS}_Excluded_Seqs_{timestamp}.xlsx"
 comparison_file = output_dir / f"{VIRUS}_Combined_11_06a.xlsx"
@@ -41,7 +43,8 @@ def build_blast_db():
                     if i.type == 'CDS'
                 ][0].qualifiers['translation'][0]
                 aa_seqs.append(SeqRecord(Seq(aa_seq), id=s, description=''))
-                na_seqs.append(SeqRecord(Seq(record.seq), id=s, description=''))
+                na_seqs.append(
+                    SeqRecord(Seq(record.seq), id=s, description=''))
 
     ref_aa_file = reference_folder / f"{VIRUS}_RefAAs.fasta"
     with open(ref_aa_file, "w") as output_handle:
@@ -63,7 +66,8 @@ def process_feature(features_df):
     features_df['host'] = features_df['host2']
     features_df['isolate_source'] = features_df['isolate_source2']
 
-    features_df['country_region'] = features_df['country_region'].str.split(":").str[0]
+    features_df['country_region'] = features_df['country_region'].str.split(
+        ":").str[0]
     for i, row in features_df.iterrows():
         if str(row['segment_source']) not in SEGMENTS:
             features_df.at[i, 'segment_source'] = row['hit_name']
@@ -100,11 +104,15 @@ def translate_bio_term(features_df):
     features_df['host2'] = features_df['host']
     features_df['isolate_source2'] = features_df['isolate_source']
     for k, v in name_map.items():
-        features_df['host2'] = features_df['host2'].str.replace(k, v, regex=True)
-        features_df['isolate_source2'] = features_df['isolate_source2'].str.replace(k, v, regex=True)
+        features_df['host2'] = features_df['host2'].str.replace(
+            k, v, regex=True)
+        features_df['isolate_source2'] = features_df['isolate_source2'].str.replace(
+            k, v, regex=True)
 
-    features_df['organism'] = features_df['organism'].str.replace('Orthonairovirus haemorrhagiae', 'CCHF', case=False)
-    features_df['organism'] = features_df['organism'].str.replace(r'.*Crimean-Congo hemorrhagic fever.*', 'CCHF', case=False, regex=True)
+    features_df['organism'] = features_df['organism'].str.replace(
+        'Orthonairovirus haemorrhagiae', 'CCHF', case=False)
+    features_df['organism'] = features_df['organism'].str.replace(
+        r'.*Crimean-Congo hemorrhagic fever.*', 'CCHF', case=False, regex=True)
 
     return features_df
 

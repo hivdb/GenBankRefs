@@ -26,6 +26,8 @@ Entrez.email = "rshafer.stanford.edu"
 timestamp = datetime.now().strftime('%m_%d')
 
 # This is called by the main function to allow users to select the virus
+
+
 def select_virus():
     viruses_list = (
         ('Orthonairovirus haemorrhagiae', 'CCHF'),
@@ -40,8 +42,10 @@ def select_virus():
 
     return viruses_list[int(virus_id) - 1][-1]
 
-# This is called by the main function to allow users to determine whether 
+# This is called by the main function to allow users to determine whether
 # BLAST is run
+
+
 def select_run_blast(default=None):
     if default is not None:
         return default
@@ -51,6 +55,7 @@ def select_run_blast(default=None):
     assert (result in ['y', 'n']), "Please use y/n"
 
     return 1 if result == 'y' else 0
+
 
 def load_virus_obj(virus):
     virus_conf_path = f'viruses_conf/{virus}.py'
@@ -88,25 +93,29 @@ def main():
         feature_list = pooled_blast(feature_list, virus_obj.VIRUS)
         features_df = pd.DataFrame(feature_list)
         features_df.to_excel(str(virus_obj.genbank_feature_file), index=False)
-        features_df = pd.read_excel(str(virus_obj.genbank_feature_file)).fillna('')
-    
+        features_df = pd.read_excel(
+            str(virus_obj.genbank_feature_file)).fillna('')
+
     # genbank_feature_file is created either using blast or without blast
     # depending on the user input
     # This statement loads the existing genbank feature file which may or may not
     # include blast data. This makes it possible to avoid re-running BLAST
     elif virus_obj.genbank_feature_file.exists():
-        features_df = pd.read_excel(str(virus_obj.genbank_feature_file)).fillna('')
-    
+        features_df = pd.read_excel(
+            str(virus_obj.genbank_feature_file)).fillna('')
+
     # This statement creates features_df without running BLAST
     else:
         features_df = pd.DataFrame(feature_list)
         features_df.to_excel(str(virus_obj.genbank_feature_file), index=False)
-        features_df = pd.read_excel(str(virus_obj.genbank_feature_file)).fillna('')
+        features_df = pd.read_excel(
+            str(virus_obj.genbank_feature_file)).fillna('')
 
     # This uses data in the imported virus module to clean data in the feature table
     features_df = virus_obj.process_feature(features_df)
 
-    features_df.to_excel(str(virus_obj.genbank_feature_check_file), index=False)
+    features_df.to_excel(
+        str(virus_obj.genbank_feature_check_file), index=False)
 
     database.dump_table(virus_obj.DB_FILE, 'features', features_df)
     # print(database.load_table(virus_obj.DB_FILE, 'features'))
@@ -134,10 +143,12 @@ def main():
             'accession'].apply(list).reset_index()
     grouped_ref_df['accession'] = grouped_ref_df['accession'].apply(
         lambda x: ', '.join(x))
-    print("Number of entries following aggregation by exact matches: ", len(grouped_ref_df))
+    print("Number of entries following aggregation by exact matches: ",
+          len(grouped_ref_df))
 
     merged_ref_df = process_authors_titles(grouped_ref_df)
-    print("Number of entries following aggregation by similarity: ", len(merged_ref_df))
+    print("Number of entries following aggregation by similarity: ",
+          len(merged_ref_df))
 
     database.dump_table(virus_obj.DB_FILE, 'Refs', merged_ref_df)
     # print(database.load_table(virus_obj.DB_FILE, 'Refs'))
