@@ -64,7 +64,13 @@ def perform_blast(idx, query_seq, db_name, func, blast_name):
     input_file = f"/tmp/query_{idx}.fasta"
     output_file = f"/tmp/query_{idx}.xml"
 
-    if not Path(db_name).exists():
+    find_db = False
+    for i in Path('.').resolve().iterdir():
+        if i.stem == db_name:
+            find_db = True
+            break
+
+    if not find_db:
         return []
 
     with open(input_file, "w") as fd:

@@ -3,10 +3,21 @@ import sqlite3
 from functools import reduce
 
 
-def dump_table(db_file, table_name, table):
+def dump_table(db_file, table_name, table, index=False):
     conn = sqlite3.connect(str(db_file))
 
-    table.to_sql(table_name, conn, if_exists='replace', index=False)
+    if index:
+        table.to_sql(
+            table_name,
+            conn,
+            if_exists='replace',
+            index_label='ID')
+    else:
+        table.to_sql(
+            table_name,
+            conn,
+            if_exists='replace',
+            index=False)
 
 
 def load_table(db_file, table_name):

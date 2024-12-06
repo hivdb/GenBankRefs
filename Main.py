@@ -7,7 +7,6 @@ import importlib
 
 from datetime import datetime
 import pandas as pd
-import os
 from pathlib import Path
 
 from GenBankFunctions import (filter_by_taxonomy,
@@ -21,6 +20,8 @@ from Utilities import (extract_year_from_journal,
                        process_author_field)
 
 import database
+
+pd.set_option('future.no_silent_downcasting', True)
 
 
 # CONSTANTS
@@ -44,10 +45,13 @@ def main(virus_obj, run_blast=0):
         # Place sequence features in a data frame
         features_df = pd.DataFrame(feature_list)
         features_df.to_excel(str(virus_obj.genbank_feature_file), index=False)
+        features_df = pd.read_excel(str(virus_obj.genbank_feature_file)).fillna('')
     elif virus_obj.genbank_feature_file.exists():
         features_df = pd.read_excel(str(virus_obj.genbank_feature_file)).fillna('')
     else:
         features_df = pd.DataFrame(feature_list)
+        features_df.to_excel(str(virus_obj.genbank_feature_file), index=False)
+        features_df = pd.read_excel(str(virus_obj.genbank_feature_file)).fillna('')
 
     features_df = virus_obj.process_feature(features_df)
 
@@ -84,20 +88,11 @@ def main(virus_obj, run_blast=0):
     merged_ref_df = process_authors_titles(grouped_ref_df)
     print("Number of entries following aggregation by metadata: ", len(merged_ref_df))
 
-    database.dump_table(virus_obj.DB_FILE, 'References', merged_ref_df)
+    database.dump_table(virus_obj.DB_FILE, 'Refs', merged_ref_df)
+    # print(database.load_table(virus_obj.DB_FILE, 'Refs'))
 
     # Combine references and features
     combined_df = combine_refs_and_features(merged_ref_df, features_df)
-
-    # acc_set = set()
-    # ref_acc_number = 0
-    # for i, r in combined_df.iterrows():
-    #     acc_set.update(set([j.strip() for j in r['accession'].split(',')]))
-    #     ref_acc_number += len([j.strip() for j in r['accession'].split(',')])
-    # print(len(acc_set), 'accession number')
-    # print(ref_acc_number, 'Ref duplicated accession number')
-
-    # Print output files
 
     combined_df.to_excel(str(virus_obj.combined_file), index=False)
 
@@ -207,15 +202,35 @@ def load_virus_obj(virus):
     return module
 
 
-if __name__ == '__main__':
-    viruses_list = ('CCHF', 'Nipah')
+def select_virus():
+    viruses_list = (
+        ('Orthonairovirus haemorrhagiae', 'CCHF'),
+        ('Henipavirus nipahense', 'Nipah'),
+    )
+    for index, (cname, name) in enumerate(viruses_list):
+        print(f"{index + 1}.", cname, f"({name})")
 
-    import sys
-    if len(sys.argv) != 2:
-        print('Please provide virus name as the parameter, virus could be:', ', '.join(viruses_list))
-        exit(1)
-    virus = sys.argv[1]
+    virus_id = input('Please select a virus by ID:')
+    assert virus_id.isdigit(), 'Virus not found'
+    assert int(virus_id) <= len(viruses_list), 'Virus not found'
+
+    return viruses_list[int(virus_id) - 1][-1]
+
+
+def select_run_blast(default=None):
+    if default is not None:
+        return default
+
+    result = input('Run blast? [y/n]')
+    result = result.lower()
+    assert (result in ['y', 'n']), "Please use y/n"
+
+    return 1 if result == 'y' else 0
+
+
+if __name__ == '__main__':
+    virus = select_virus()
 
     virus_obj = load_virus_obj(virus)
-    # if virus not in viruses_list:
-    main(virus_obj, run_blast=0)
+    run_blast = select_run_blast()
+    main(virus_obj, run_blast=run_blast)

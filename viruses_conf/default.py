@@ -30,7 +30,7 @@ def set_virus(virus_name):
     VIRUS = virus_name
 
     output_dir = Path(f"OutputData/{VIRUS}")
-    DB_File = output_dir / f"{VIRUS}.db"
+    DB_FILE = output_dir / f"{VIRUS}.db"
     genbank_file = f"ReferenceData/{VIRUS}/{VIRUS}.gb"
     genbank_feature_file = output_dir / f"{VIRUS}__GenBankFeatures_{timestamp}.xlsx"
     genbank_feature_check_file = output_dir / f"{VIRUS}__GenBankFeatures_{timestamp}_check.xlsx"
