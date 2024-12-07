@@ -36,7 +36,7 @@ def select_virus():
     for index, (cname, name) in enumerate(viruses_list):
         print(f"{index + 1}.", cname, f"({name})")
 
-    virus_id = input('Please select a virus by ID:')
+    virus_id = input('Please select a virus by ID: ')
     assert virus_id.isdigit(), 'Virus not found'
     assert int(virus_id) <= len(viruses_list), 'Virus not found'
 
@@ -50,9 +50,9 @@ def select_run_blast(default=None):
     if default is not None:
         return default
 
-    result = input('Run blast? [y/n]')
+    result = input('Run blast? [y/n]: ')
     result = result.lower()
-    assert (result in ['y', 'n']), "Please use y/n"
+    assert (result in ['y', 'n']), "Please use y/n."
 
     return 1 if result == 'y' else 0
 

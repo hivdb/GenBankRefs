@@ -48,33 +48,6 @@ def build_blast_db():
     os.system(
         f"makeblastdb -in {reference_aa_file} -dbtype prot -out {db_name}")
 
-    # reference_folder = Path(f"ReferenceData/{VIRUS}")
-
-    # aa_seqs = []
-    # na_seqs = []
-    # for s in genes:
-    #     with open(reference_folder / f'{s}.gb', "r") as handle:
-    #         for record in SeqIO.parse(handle, "genbank"):
-    #             aa_seq = [
-    #                 i
-    #                 for i in record.features
-    #                 if i.type == 'CDS'
-    #             ][0].qualifiers['translation'][0]
-    #             aa_seqs.append(SeqRecord(Seq(aa_seq), id=s, description=''))
-    #             na_seqs.append(SeqRecord(Seq(record.seq), id=s, description=''))
-
-    # ref_aa_file = reference_folder / f"{VIRUS}_RefAAs.fasta"
-    # with open(ref_aa_file, "w") as output_handle:
-    #     SeqIO.write(aa_seqs, output_handle, "fasta")
-
-    # ref_na_file = reference_folder / f"{VIRUS}_RefNAs.fasta"
-    # with open(ref_na_file, "w") as output_handle:
-    #     SeqIO.write(na_seqs, output_handle, "fasta")
-
-    # db_name = f"{VIRUS}_NA_db"
-    # os.system(
-    #     f"makeblastdb -in {ref_na_file} -dbtype nucl -out {db_name}")
-
 
 def process_feature(features_df):
 

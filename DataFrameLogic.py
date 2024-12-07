@@ -164,6 +164,9 @@ def merge_feature_rows(df):
     new_row['Specimens'] = dict_to_sorted_string(unique_specimens)
 
     unique_gene = count_unique_elements(df['segment_source'].tolist())
+    new_row['SegmentSource'] = dict_to_sorted_string(unique_gene)
+
+    unique_gene = count_unique_elements(df['genes'].tolist())
     new_row['Gene'] = dict_to_sorted_string(unique_gene)
 
     unique_cds = count_unique_elements(df['cds'].tolist())

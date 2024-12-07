@@ -6,8 +6,8 @@ from pathlib import Path
 from datetime import datetime
 
 
-VIRUS = 'CCHF'
-SEGMENTS = ['L', 'M', 'S']
+VIRUS = 'Nipah'
+GENES = ['N', 'P', 'M', 'F', 'G', 'L']
 timestamp = datetime.now().strftime('%m_%d')
 
 output_dir = Path(f"OutputData/{VIRUS}")
@@ -29,17 +29,29 @@ def build_blast_db():
 
     aa_seqs = []
     na_seqs = []
-    for s in SEGMENTS:
-        with open(reference_folder / f'{s}.gb', "r") as handle:
-            for record in SeqIO.parse(handle, "genbank"):
-                aa_seq = [
-                    i
-                    for i in record.features
-                    if i.type == 'CDS'
-                ][0].qualifiers['translation'][0]
-                aa_seqs.append(SeqRecord(Seq(aa_seq), id=s, description=''))
+    with open(reference_folder / 'NC_002728.gb', "r") as handle:
+        for record in SeqIO.parse(handle, "genbank"):
+            na_seqs.append(
+                SeqRecord(record.seq, id='genome', description=''))
+            gene_seq = [
+                i
+                for i in record.features
+                if i.type == 'CDS'
+            ]
+            for aa in gene_seq:
+                gene = None
+                if 'gene' in aa.qualifiers:
+                    gene = aa.qualifiers['gene'][0].upper()
+                else:
+                    gene = aa.qualifiers['product'][0].split(' ')[0].upper()
+
+                if gene not in GENES:
+                    continue
+
+                aa_seqs.append(
+                    SeqRecord(Seq(aa.qualifiers['translation'][0]), id=gene, description=''))
                 na_seqs.append(
-                    SeqRecord(Seq(record.seq), id=s, description=''))
+                    SeqRecord(Seq(aa.location.extract(record.seq)), id=gene, description=''))
 
     ref_aa_file = reference_folder / f"{VIRUS}_RefAAs.fasta"
     with open(ref_aa_file, "w") as output_handle:
@@ -57,7 +69,6 @@ def build_blast_db():
         f"makeblastdb -in {ref_na_file} -dbtype nucl -out {db_name}")
 
 
-# Provides directions for cleaning the information in the feature table
 def process_feature(features_df):
     features_df = translate_bio_term(features_df)
     features_df = get_additional_host_data(features_df)
@@ -67,38 +78,48 @@ def process_feature(features_df):
     features_df['country_region'] = features_df['country_region'].str.split(
         ":").str[0]
 
-    features_df['genes'] = features_df['segment_source']
+    features_df['cds'] = features_df['cds'].apply(translate_cds_name)
+
+    features_df['genes'] = features_df['cds']
     for i, row in features_df.iterrows():
-        if str(row['genes']) not in SEGMENTS:
+        if str(row['genes']) not in GENES:
             features_df.at[i, 'genes'] = row['hit_name']
+
+        if int(row['num_na']) > 17000:
+            features_df.at[i, 'genes'] = 'genome'
 
     return features_df
 
 
-def translate_bio_term(features_df):
+def translate_cds_name(cds):
+    cds = cds.replace('protein', '').strip()
     name_map = {
-        r'\bRhipicephalus\s\w+\b': 'tick',
-        r'\bHyalomma\s\w+\b': 'tick',
-        r'\bDermacentor\s\w+\b': 'tick',
-        r'Haemaphysalis\s\w+\b': 'tick',
-        r'Alveonasus\s\w+\b': 'tick',
-        r'Argas\s\w+\b': 'tick',
-        r'Boophilus\s\w+\b': 'tick',
-        r'Ixodes\s\w+\b': 'tick',
-        r'Amblyomma\s\w+\b': 'tick',
-        'nymph': 'tick',
+        'RNA-directed RNA polymerase': 'L',
+        'nucleocapsid': 'N',
+        'polymerase': 'L',
+        'fusion': 'F',
+        'phosphoprotein': 'P',
+        'large polymerase': 'L',
+        'glycoprotein': 'G',
+        'matrix': 'M',
+        'nucleoprotein': 'N',
+        'RNA polymerase': 'L'
+    }
 
-        'Mice': 'Mouse',
-        'Rattus rattus': 'Rat',
-        'Mus musculus': 'Mouse',
-        'Capricornis milneedwardsii': 'Serow',
-        'Bos taurus': 'Cattle',
-        'Camelus dromedarius': 'Camel',
-        'Capra': 'Goat',
-        'Euchoreutes naso': 'Jerboa',
-        'Testudo graeca': 'Tortoise',
-        'infected mouse brain': '',
-        'Suckling mouse brain': '',
+    for k, v in name_map.items():
+        cds = cds.replace(k, v)
+
+    return cds
+
+
+def translate_bio_term(features_df):
+
+    name_map = {
+        r'Pteropus\s\w+\b': 'bat',
+        'Homo sapiens; male': 'Homo sapiens',
+        'Sus scrofa domesticus': 'Pig',
+        'Canis lupus familiaris': 'Dog',
+        'Sus scrofa (pig)': 'Pig',
     }
 
     features_df['host2'] = features_df['host']
@@ -110,23 +131,30 @@ def translate_bio_term(features_df):
             k, v, regex=True)
 
     features_df['organism'] = features_df['organism'].str.replace(
-        'Orthonairovirus haemorrhagiae', 'CCHF', case=False)
-    features_df['organism'] = features_df['organism'].str.replace(
-        r'.*Crimean-Congo hemorrhagic fever.*', 'CCHF', case=False, regex=True)
+        'Henipavirus nipahense', 'Nipah', case=False)
 
     return features_df
 
 
 def get_additional_host_data(features_df):
     blood_specimen = ['blood', 'serum', 'plasma', 'sera']
-    other_speciman = ['nasopharyngeal swab']
+    other_speciman = [
+        'brain',
+        'breast milk',
+        'csf',
+        'heart',
+        'intestine',
+        'kidney',
+        'liver',
+        'spleen',
+        'lung',
+        'oropharyngeal swab',
+        'urine',
+        'throat swab',
+        ]
     human_host = ['patient', 'human', 'homo sapiens']
     animal_host = [
-        'mouse', 'rat', 'jerboa',
-        'sheep', 'camel', 'cattle', 'goat', 'serow',
-        'buffalo', 'calf',
-        'animal',
-        'tortoise']
+        'bat', 'pig', 'dog']
 
     for index, row in features_df.iterrows():
 
@@ -150,11 +178,6 @@ def get_additional_host_data(features_df):
             if a in host:
                 updated_host.append(a.capitalize())
 
-        if 'tick' in specimen:
-            updated_host.append("Ticks")
-        if 'tick' in host:
-            updated_host.append("Ticks")
-
         if any(key in specimen for key in blood_specimen):
             updated_specimen.append('blood')
         if any(key in host for key in blood_specimen):
@@ -176,8 +199,8 @@ def get_additional_host_data(features_df):
         # features_df.at[index, 'host'] = ",".join(sorted(list(set(updated_host))))
         # features_df.at[index, 'isolate_source'] = ",".join(sorted(list(set(updated_specimen))))
         features_df.at[index, 'host2'] = ' and '.join(
-            sorted(list(set(updated_host)))) if updated_host else ''
+            sorted(list(set(updated_host)))) if updated_host else 'NA'
         features_df.at[index, 'isolate_source2'] = ' and '.join(
-            sorted(list(set(updated_specimen)))) if updated_specimen else ''
+            sorted(list(set(updated_specimen)))) if updated_specimen else 'NA'
 
     return features_df

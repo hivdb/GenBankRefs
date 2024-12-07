@@ -118,7 +118,7 @@ def summarize_genbank_by_seq(df):
     print('=' * 40)
 
     genes = count_number(
-        [v for i, v in df.iterrows()], 'segment_source',
+        [v for i, v in df.iterrows()], 'genes',
         translater=translate_gene)
     print('Genes')
     print(genes)
