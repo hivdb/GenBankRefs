@@ -19,6 +19,7 @@ from DataFrameLogic import (process_authors_titles,
 
 from Utilities import (extract_year_from_journal,
                        process_author_field)
+from compare_pubmed_genbank import compare_pubmed_genbank
 
 # Silences the warnings that occur when empty cells are replaced with 'NA'
 pd.set_option('future.no_silent_downcasting', True)
@@ -163,6 +164,9 @@ def main():
     # Compare output file with saved file
     # saved_combined_df = pd.read_excel(str(virus_obj.comparison_file), na_values=[''])
     # compare_output_files(saved_combined_df, combined_df)
+
+    compare_pubmed_genbank(virus_obj)
+
 
 
 def parse_genbank_records(genbank_file):

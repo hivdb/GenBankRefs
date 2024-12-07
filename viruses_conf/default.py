@@ -16,6 +16,8 @@ comparison_file = None
 timestamp = datetime.now().strftime('%m_%d')
 DB_FILE = None
 
+pubmed_folder = None
+
 
 def set_virus(virus_name):
     global VIRUS
@@ -27,6 +29,7 @@ def set_virus(virus_name):
     global exclude_seq_file
     global comparison_file
     global DB_FILE
+    global pubmed_folder
     VIRUS = virus_name
 
     output_dir = Path(f"OutputData/{VIRUS}")
@@ -37,6 +40,8 @@ def set_virus(virus_name):
     combined_file = output_dir / f"{VIRUS}_Combined_{timestamp}.xlsx"
     exclude_seq_file = output_dir / f"{VIRUS}_Excluded_Seqs_{timestamp}.xlsx"
     comparison_file = output_dir / f"{VIRUS}_Combined_11_06a.xlsx"
+
+    pubmed_folder = Path(f"Pubmed/{VIRUS}")
 
 
 def build_blast_db():

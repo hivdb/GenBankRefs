@@ -21,6 +21,8 @@ exclude_seq_file = output_dir / f"{VIRUS}_Excluded_Seqs_{timestamp}.xlsx"
 comparison_file = output_dir / f"{VIRUS}_Combined_11_06a.xlsx"
 DB_FILE = output_dir / f"{VIRUS}.db"
 
+pubmed_folder = Path(f"Pubmed/{VIRUS}")
+
 
 def build_blast_db():
     db_name = f"{VIRUS}_AA_db"
