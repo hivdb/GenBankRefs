@@ -118,9 +118,6 @@ def main():
     features_df.to_excel(
         str(virus_obj.genbank_feature_check_file), index=False)
 
-    database.dump_table(virus_obj.DB_FILE, 'features', features_df)
-    # print(database.load_table(virus_obj.DB_FILE, 'features'))
-
     # Aggregate by reference
     reference_df = pd.DataFrame(reference_list)
     reference_df['year'] = reference_df['journal'].apply(
@@ -151,9 +148,6 @@ def main():
     print("Number of entries following aggregation by similarity: ",
           len(merged_ref_df))
 
-    database.dump_table(virus_obj.DB_FILE, 'Refs', merged_ref_df)
-    # print(database.load_table(virus_obj.DB_FILE, 'Refs'))
-
     # Combine references and features
     combined_df = combine_refs_and_features(merged_ref_df, features_df)
 
@@ -167,6 +161,34 @@ def main():
 
     compare_pubmed_genbank(virus_obj)
 
+    create_database(virus_obj, merged_ref_df, features_df)
+
+
+def create_database(virus_obj, merged_ref_df, features_df):
+
+    database.dump_table(virus_obj.DB_FILE, 'tblReferences', merged_ref_df)
+
+    database.dump_table(virus_obj.DB_FILE, 'tblFeatures', features_df)
+
+    # print(database.load_table(virus_obj.DB_FILE, 'tblFeatures'))
+    # print(database.load_table(virus_obj.DB_FILE, 'tblReferences'))
+    merged_ref_df['RefID'] = merged_ref_df.index + 1
+
+    create_ref_link(virus_obj, merged_ref_df)
+
+
+def create_ref_link(virus_obj, ref):
+    ref_link = []
+    for i, row in ref.iterrows():
+        accessions = row['accession']
+        accessions = [i.strip() for i in accessions.split(',') if i.strip()]
+        for acc in accessions:
+            ref_link.append({
+                'RefID': row['RefID'],
+                'accession': acc
+            })
+
+    database.dump_table(virus_obj.DB_FILE, 'tblRefLink', pd.DataFrame(ref_link))
 
 
 def parse_genbank_records(genbank_file):
