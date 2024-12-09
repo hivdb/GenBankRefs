@@ -166,13 +166,13 @@ def main():
 
 def create_database(virus_obj, merged_ref_df, features_df):
 
+    merged_ref_df['RefID'] = merged_ref_df.index + 1
     database.dump_table(virus_obj.DB_FILE, 'tblReferences', merged_ref_df)
 
     database.dump_table(virus_obj.DB_FILE, 'tblFeatures', features_df)
 
     # print(database.load_table(virus_obj.DB_FILE, 'tblFeatures'))
     # print(database.load_table(virus_obj.DB_FILE, 'tblReferences'))
-    merged_ref_df['RefID'] = merged_ref_df.index + 1
 
     create_ref_link(virus_obj, merged_ref_df)
 
