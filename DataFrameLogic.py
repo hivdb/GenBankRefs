@@ -13,7 +13,6 @@ from Utilities import (get_pcnt_authors_overlap,
                        dict_to_sorted_string,
                        convert_dict_to_list_of_sets,
                        combine_items_in_different_lists,
-                       extract_year_from_date_fields,
                        create_binned_seq_lens,
                        create_binned_pcnts)
 
@@ -145,7 +144,6 @@ def merge_feature_rows(df):
     unique_organisms = count_unique_elements(df['organism'].tolist())
     new_row['Organisms'] = dict_to_sorted_string(unique_organisms)
 
-    df['record_year'] = df['record_date'].apply(extract_year_from_date_fields)
     unique_record_years = count_unique_elements(df['record_year'].tolist())
     new_row['RecordYears'] = dict_to_sorted_string(unique_record_years)
 
@@ -155,8 +153,6 @@ def merge_feature_rows(df):
     unique_countries = count_unique_elements(df['country_region'].tolist())
     new_row['Countries'] = dict_to_sorted_string(unique_countries)
 
-    df['isolate_year'] = df['collection_date'].apply(
-        extract_year_from_date_fields)
     unique_isolate_years = count_unique_elements(df['isolate_year'].tolist())
     new_row['IsolateYears'] = dict_to_sorted_string(unique_isolate_years)
 

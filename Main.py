@@ -18,6 +18,7 @@ from DataFrameLogic import (process_authors_titles,
                             compare_output_files)
 
 from Utilities import (extract_year_from_journal,
+                       extract_year_from_date_fields,
                        process_author_field)
 from compare_pubmed_genbank import compare_pubmed_genbank
 
@@ -115,6 +116,9 @@ def main():
     # This uses data in the imported virus module to clean data in the feature table
     features_df = virus_obj.process_feature(features_df)
 
+    features_df['record_year'] = features_df['record_date'].apply(extract_year_from_date_fields)
+    features_df['isolate_year'] = features_df['collection_date'].apply(extract_year_from_date_fields)
+
     features_df.to_excel(
         str(virus_obj.genbank_feature_check_file), index=False)
 
@@ -145,6 +149,7 @@ def main():
           len(grouped_ref_df))
 
     merged_ref_df = process_authors_titles(grouped_ref_df)
+    merged_ref_df['SetID'] = merged_ref_df.index + 1
     print("Number of entries following aggregation by similarity: ",
           len(merged_ref_df))
 
@@ -159,22 +164,94 @@ def main():
     # saved_combined_df = pd.read_excel(str(virus_obj.comparison_file), na_values=[''])
     # compare_output_files(saved_combined_df, combined_df)
 
-    compare_pubmed_genbank(virus_obj)
+    pubmed, pubmed_genbank = compare_pubmed_genbank(virus_obj)
 
-    create_database(virus_obj, merged_ref_df, features_df)
+    create_database(
+        virus_obj, merged_ref_df, features_df, pubmed, pubmed_genbank)
 
 
-def create_database(virus_obj, merged_ref_df, features_df):
+def create_database(virus_obj, merged_ref_df, features_df, pubmed, pubmed_genbank):
+    virus_obj.DB_FILE.unlink(missing_ok=True)
 
-    merged_ref_df['RefID'] = merged_ref_df.index + 1
-    database.dump_table(virus_obj.DB_FILE, 'tblReferences', merged_ref_df)
+    merged_ref_df['Authors'] = merged_ref_df['authors']
+    merged_ref_df['Title'] = merged_ref_df['title']
+    merged_ref_df['Journal'] = merged_ref_df['journal']
+    merged_ref_df['PMID'] = merged_ref_df['pmid']
+    merged_ref_df['Year'] = merged_ref_df['year']
 
-    database.dump_table(virus_obj.DB_FILE, 'tblFeatures', features_df)
-
-    # print(database.load_table(virus_obj.DB_FILE, 'tblFeatures'))
-    # print(database.load_table(virus_obj.DB_FILE, 'tblReferences'))
+    tblSubmissionSet = merged_ref_df[[
+        'SetID', 'Authors', 'Title', 'Journal', 'PMID', 'Year']]
+    database.dump_table(virus_obj.DB_FILE, 'tblSubmissionSet', tblSubmissionSet)
 
     create_ref_link(virus_obj, merged_ref_df)
+
+    features_df['Accession'] = features_df['acc_num']
+    features_df['Country'] = features_df['country_region']
+    features_df['Description'] = features_df['description']
+    features_df['RecordYear'] = features_df['record_year']
+    features_df['IsolateYear'] = features_df['isolate_year']
+    features_df['Host'] = features_df['host']
+    features_df['Specimen'] = features_df['isolate_source']
+    features_df['IsolateName'] = features_df['isolate_name']
+    features_df['Virus'] = features_df['organism']
+
+    tblIsolates = features_df[[
+        'Accession', 'Country', 'Description', 'RecordYear',
+        'IsolateYear', 'Host', 'Specimen', 'IsolateName', 'Virus']]
+    database.dump_table(virus_obj.DB_FILE, 'tblIsolates', tblIsolates)
+
+    features_df['Genes'] = features_df['genes']
+    features_df['NumNA'] = features_df['num_na']
+    features_df['NumAA'] = features_df['num_aa']
+    features_df['PcntMatch'] = features_df['pcnt_id']
+    features_df['HSPLength'] = features_df['align_len']
+    tblSequences = features_df[[
+        'Accession', 'Genes', 'AASeq', 'NASeq', 'NumAA', 'NumNA',
+        'PcntMatch', 'HSPLength',
+    ]]
+    database.dump_table(virus_obj.DB_FILE, 'tblSequences', tblSequences)
+
+    tblLitReferences = pubmed[[
+        'RefID',
+        'Authors',
+        'Title',
+        'Journal',
+        'PMID',
+        'Year'
+    ]]
+    database.dump_table(virus_obj.DB_FILE, 'tblLitReferences', tblLitReferences)
+
+    tblLitTextReview = pubmed[[
+        'RefID',
+        'Viruses',
+        'NumSeqs',
+        'Host',
+        'SampleYr',
+        'Country',
+        'GenBank',
+        'SeqMethod',
+        'CloneMethod',
+        'IsolateType',
+        'Gene'
+    ]]
+    database.dump_table(virus_obj.DB_FILE, 'tblLitTextReview', tblLitTextReview)
+
+    tblLitSubmitLink = []
+    for pubmed, genbank_list in pubmed_genbank:
+        for g in genbank_list:
+            tblLitSubmitLink.append((pubmed['RefID'], g['SetID']))
+
+    tblLitSubmitLink = list(set(tblLitSubmitLink))
+    tblLitSubmitLink = [
+        {
+            'RefID': i,
+            'SetID': j
+        }
+        for i, j in tblLitSubmitLink
+    ]
+
+    database.dump_table(
+        virus_obj.DB_FILE, 'tblLitSubmitLink', pd.DataFrame(tblLitSubmitLink))
 
 
 def create_ref_link(virus_obj, ref):
@@ -184,7 +261,7 @@ def create_ref_link(virus_obj, ref):
         accessions = [i.strip() for i in accessions.split(',') if i.strip()]
         for acc in accessions:
             ref_link.append({
-                'RefID': row['RefID'],
+                'SetID': row['SetID'],
                 'accession': acc
             })
 
