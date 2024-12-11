@@ -270,6 +270,8 @@ def create_ref_link(virus_obj, ref):
 def parse_genbank_records(genbank_file):
     reference_list = []
     feature_list = []
+    gene_list = []
+
     excluded_list = []
     total_record = 0
     with open(genbank_file, "r") as handle:
@@ -289,12 +291,16 @@ def parse_genbank_records(genbank_file):
             reference_list.extend(ref_data)
 
             features = {}
-            feature_data = extract_features(record.features, record.id)
             features['Accession'] = record.id
 
             features['Description'] = record.description
             features['record_date'] = record.annotations['date']
             features['organism'] = record.annotations['organism']
+
+            print(record.features)
+            raise
+
+            feature_data = extract_features(record.features, record.id)
             features['segment_source'] = feature_data.get('segment_source', '')
             features['cds'] = feature_data.get('product_CDS', '')
             features['Host'] = feature_data.get('host_source', '')
