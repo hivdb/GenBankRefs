@@ -110,6 +110,17 @@ def perform_blast(idx, query_seq, db_name, func, blast_name):
             percent_identity = (identity / alignment_length) * 100
             overlap = hsp.align_length
 
+            if blast_name == 'blastn':
+                NA_start = hsp.sbjct_start
+                NA_stop = hsp.sbjct_end
+                AA_start = ((NA_start - 1) // 3) + 1
+                AA_stop = (NA_stop // 3)
+            else:
+                AA_start = hsp.sbjct_start
+                AA_stop = hsp.sbjct_end
+                NA_start = (AA_start - 1) * 3 + 1
+                NA_stop = AA_stop * 3
+
             blast_result.append({
                 'hit_name': alignment.hit_def,
                 "e_value": e_value,
@@ -117,6 +128,10 @@ def perform_blast(idx, query_seq, db_name, func, blast_name):
                 "align_len": alignment_length * 3 if blast_name == 'blastp' else alignment_length,
                 "overlap": overlap,
                 'blast_name': blast_name,
+                'AA_start': AA_start,
+                'AA_stop': AA_stop,
+                'NA_start': NA_start,
+                'NA_stop': NA_stop,
             })
 
     os.remove(input_file)
@@ -171,6 +186,10 @@ def blast_sequence(idx, features, blast_aa_db_path, blast_na_db_path):
     features['pcnt_id'] = blast_data.get('pcnt_id', 0)
     features['align_len'] = blast_data.get('align_len', 0)
     features['blast_name'] = blast_data.get('blast_name', '')
+    features['NA_start'] = blast_data.get('NA_start', '')
+    features['NA_stop'] = blast_data.get('NA_stop', '')
+    features['AA_start'] = blast_data.get('AA_start', '')
+    features['AA_stop'] = blast_data.get('AA_stop', '')
 
     features['hit_name_list'] = ', '.join([
         str(i['hit_name'])

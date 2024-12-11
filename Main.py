@@ -317,6 +317,10 @@ def parse_genbank_records(genbank_file):
             features['pcnt_id'] = 0
             features['align_len'] = 0
             features['blast_name'] = ''
+            features['AA_start'] = ''
+            features['AA_stop'] = ''
+            features['NA_start'] = ''
+            features['NA_stop'] = ''
 
             feature_list.append(features)
 
