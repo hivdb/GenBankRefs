@@ -60,6 +60,13 @@ def select_run_blast(default=None):
 
 
 def load_virus_obj(virus):
+    """
+        virus_conf folder contains specific configuration (virus config) for a virus.
+        If this file doesn't exist, the default.py file will be used.
+
+        A virus config contains the input and output file path, and functions
+        for cleaning the data or functions for running blast.
+    """
     virus_conf_path = f'viruses_conf/{virus}.py'
     if not Path(virus_conf_path).exists():
         spec = importlib.util.spec_from_file_location(
@@ -164,8 +171,16 @@ def main():
     # saved_combined_df = pd.read_excel(str(virus_obj.comparison_file), na_values=[''])
     # compare_output_files(saved_combined_df, combined_df)
 
+    # The virus_obj contains links to pubmed tables, genbank tables
+    # compare_pubmed_genbank function will load these tables to pandas dataframes internally
+    # the return values are: pubmed (the pubmed data file), pubmed_genbank (Pubmed and GenBank matches)
     pubmed, pubmed_genbank = compare_pubmed_genbank(virus_obj)
 
+    # Create database using tables:
+    #   GenBank Submission Set
+    #   GenBank Features
+    #   Pubmed literatures
+    #   Pubmed GenBank Matches
     create_database(
         virus_obj, merged_ref_df, features_df, pubmed, pubmed_genbank)
 

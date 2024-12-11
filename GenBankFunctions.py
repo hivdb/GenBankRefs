@@ -134,6 +134,11 @@ def is_reference_genome(acc):
 
 
 def blast_sequence(idx, features, virus):
+    """
+        Try blastn, blastp, blastx for detecting the genes or segments of an isolate
+        This function will decide the best blast result by alignment length of nucleic acid,
+        if it's using blastp, the alignment length will be multiplied by 3.
+    """
 
     blast_result = perform_blast(
         features['acc_num'], features['NASeq'], f"{virus}_NA_db",
@@ -187,6 +192,13 @@ def blast_sequence(idx, features, virus):
 
 
 def pooled_blast(features_list, db_name, poolsize=20):
+    """
+        For speeding up blast running, using multiprocessing method
+        Input:
+            features_list: a list of items, for each one contains NA or AA sequences
+            db_name: blast database name
+            poolsize: depending on how many cores the CPU has, you can adjust this number for running multiple blast program.
+    """
 
     with Pool(poolsize) as pool:
         parameters = [
