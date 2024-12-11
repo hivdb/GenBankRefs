@@ -4,7 +4,6 @@ from .translate_value import translate_gene
 from .utils import count_number
 from .utils import int_sorter
 from .utils import split_value_count
-from Utilities import extract_year_from_date_fields
 from Utilities import create_binned_pcnts
 from Utilities import create_binned_seq_lens
 from Utilities import create_binnned_year
@@ -13,7 +12,7 @@ from Utilities import create_binnned_year
 def summarize_genbank_by_ref(df):
     print('Summarize Genbank By Ref')
 
-    df['MedianPublishYear'] = df['year'].apply(median_year)
+    df['MedianPublishYear'] = df['Year'].apply(median_year)
     publish_year = count_number([
         v for i, v in df.iterrows()], 'MedianPublishYear', sorter=int_sorter)
     print('Publish Year')
@@ -25,11 +24,11 @@ def summarize_genbank_by_ref(df):
     print('=' * 40)
 
     # Journal information not included
-    # journal_values = [row['journal'].split(',')[0].strip()
-    #                   for _, row in df.iterrows() if 'journal' in row and pd.notnull(row['journal'])]
+    # journal_values = [row['Journal'].split(',')[0].strip()
+    #                   for _, row in df.iterrows() if 'Journal' in row and pd.notnull(row['Journal'])]
     # cleaned_entries = [remove_parenthesis(entry) for entry in journal_values]
-    # journals = count_number([{'journal': value}
-    #                         for value in cleaned_entries], 'journal')
+    # journals = count_number([{'Journal': value}
+    #                         for value in cleaned_entries], 'Journal')
     # print('Journals')
     # print(journals)
     # print('=' * 40)
@@ -75,7 +74,7 @@ def summarize_genbank_full_genome(
 def summarize_genbank_by_seq(df):
     print('Summarize Genbank By Seq')
 
-    hosts = count_number([v for i, v in df.iterrows()], 'host')
+    hosts = count_number([v for i, v in df.iterrows()], 'Host')
     print('Host')
     print(hosts)
     print('=' * 40)
@@ -85,40 +84,37 @@ def summarize_genbank_by_seq(df):
     print(specimen)
     print('=' * 40)
 
-    df['record_year'] = df['record_date'].apply(extract_year_from_date_fields)
     year = count_number(
-        [v for i, v in df.iterrows()], 'record_year', sorter=int_sorter)
+        [v for i, v in df.iterrows()], 'RecordYear', sorter=int_sorter)
     print('RecordYears')
     print(year)
-    year = [int(v['record_year']) for i, v in df.iterrows() if v['record_year']]
+    year = [int(v['RecordYear']) for i, v in df.iterrows() if v['RecordYear']]
     print(create_binnned_year(year))
     print('=' * 40)
 
-    df['isolate_year'] = df['collection_date'].apply(
-        extract_year_from_date_fields)
     year = count_number(
-        [v for i, v in df.iterrows()], 'isolate_year', sorter=int_sorter)
+        [v for i, v in df.iterrows()], 'IsolateYear', sorter=int_sorter)
     print('Sample Years')
     print(year)
-    year = [int(v['isolate_year']) for i, v in df.iterrows() if v['isolate_year'] and v['isolate_year'] != 'NA']
+    year = [int(v['IsolateYear']) for i, v in df.iterrows() if v['IsolateYear'] and v['IsolateYear'] != 'NA']
     print(create_binnned_year(year))
     print('=' * 40)
 
     country = count_number(
-        [v for i, v in df.iterrows()], 'country_region')
+        [v for i, v in df.iterrows()], 'Country')
     print('Countries')
     print(country)
     print('=' * 40)
 
     country = count_number(
-        [v for i, v in df.iterrows()], 'country_region',
+        [v for i, v in df.iterrows()], 'Country',
         translater=translate_country)
     print('Countries W/WO')
     print(country)
     print('=' * 40)
 
     genes = count_number(
-        [v for i, v in df.iterrows()], 'genes',
+        [v for i, v in df.iterrows()], 'Genes',
         translater=translate_gene)
     print('Genes')
     print(genes)
@@ -129,12 +125,12 @@ def summarize_genbank_by_seq(df):
     print(create_binned_seq_lens(aligns))
     print('=' * 40)
 
-    num_na = [int(v['num_na']) for i, v in df.iterrows()]
+    num_na = [int(v['NumNA']) for i, v in df.iterrows()]
     print('NA length')
     print(create_binned_seq_lens(num_na))
     print('=' * 40)
 
-    num_aa = [int(v['num_aa']) for i, v in df.iterrows()]
+    num_aa = [int(v['NumAA']) for i, v in df.iterrows()]
     print('AA length')
     print(create_binned_seq_lens(num_aa))
     print('=' * 40)

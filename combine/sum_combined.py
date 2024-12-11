@@ -40,8 +40,8 @@ def summarize_combined_data(combined, genbank):
     print('NumSeq', num_seq)
     print('=' * 40)
 
-    genbank['acc_num'] = genbank['acc_num'].apply(lambda x: x.strip().split('.')[0])
-    genbank = genbank[genbank['acc_num'].isin(list(accessions))]
+    genbank['Accession'] = genbank['Accession'].apply(lambda x: x.strip().split('.')[0])
+    genbank = genbank[genbank['Accession'].isin(list(accessions))]
 
     summarize_genbank_by_seq(genbank)
 

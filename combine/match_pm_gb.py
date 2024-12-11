@@ -12,7 +12,7 @@ def match_pm_gb(pubmed, genbank):
     genbank_unmatch_list = []
 
     for index, row in genbank.iterrows():
-        pmid = row['pmid']
+        pmid = row['PMID']
 
         result = pubmed[pubmed['PMID'] == pmid]
 
@@ -26,7 +26,7 @@ def match_pm_gb(pubmed, genbank):
             match_by_pmid_list.append(match_by_pmid)
             # continue
 
-        title = row['title'].replace('Direct Submission,', '').replace(', Direct Submission', '').strip()
+        title = row['Title'].replace('Direct Submission,', '').replace(', Direct Submission', '').strip()
 
         # Pubmed title always exists
         result = pubmed[pubmed['Title'].apply(

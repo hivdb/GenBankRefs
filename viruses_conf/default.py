@@ -7,7 +7,11 @@ from datetime import datetime
 
 VIRUS = None
 output_dir = None
+reference_folder = None
 genbank_file = None
+
+BLAST_NA_DB_PATH = None
+BLAST_AA_DB_PATH = None
 genbank_feature_file = None
 genbank_feature_check_file = None
 combined_file = None
@@ -30,11 +34,19 @@ def set_virus(virus_name):
     global comparison_file
     global DB_FILE
     global pubmed_folder
+    global reference_folder
+    global BLAST_NA_DB_PATH
+    global BLAST_AA_DB_PATH
     VIRUS = virus_name
 
     output_dir = Path(f"OutputData/{VIRUS}")
+    reference_folder = Path(f"ReferenceData/{VIRUS}")
+
+    BLAST_NA_DB_PATH = reference_folder / f"blast/{VIRUS}_NA_db"
+    BLAST_AA_DB_PATH = reference_folder / f"blast/{VIRUS}_AA_db"
+
     DB_FILE = output_dir / f"{VIRUS}.db"
-    genbank_file = f"ReferenceData/{VIRUS}/{VIRUS}.gb"
+    genbank_file = reference_folder / f"{VIRUS}.gb"
     genbank_feature_file = output_dir / f"{VIRUS}__GenBankFeatures_{timestamp}.xlsx"
     genbank_feature_check_file = output_dir / f"{VIRUS}__GenBankFeatures_{timestamp}_check.xlsx"
     combined_file = output_dir / f"{VIRUS}_Combined_{timestamp}.xlsx"
@@ -46,16 +58,14 @@ def set_virus(virus_name):
 
 def build_blast_db():
 
-    db_name = f"{VIRUS}_AA_db"
-
-    reference_aa_file = f"ReferenceData/{VIRUS}/{VIRUS}_RefAAs.fasta"
+    reference_aa_file = reference_folder f"/{VIRUS}_RefAAs.fasta"
 
     os.system(
-        f"makeblastdb -in {reference_aa_file} -dbtype prot -out {db_name}")
+        f"makeblastdb -in {reference_aa_file} -dbtype prot -out {BLAST_AA_DB_PATH}")
 
 
 def process_feature(features_df):
 
-    features_df['country_region'] = features_df['country_region'].str.split(":").str[0]
+    features_df['Country'] = features_df['country_region'].str.split(":").str[0]
 
     return features_df

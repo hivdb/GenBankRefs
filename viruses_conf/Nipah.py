@@ -11,7 +11,13 @@ GENES = ['N', 'P', 'M', 'F', 'G', 'L']
 timestamp = datetime.now().strftime('%m_%d')
 
 output_dir = Path(f"OutputData/{VIRUS}")
-genbank_file = f"ReferenceData/{VIRUS}/{VIRUS}.gb"
+reference_folder = Path(f"ReferenceData/{VIRUS}")
+
+genbank_file = reference_folder / f"{VIRUS}.gb"
+
+BLAST_NA_DB_PATH = reference_folder / f"blast/{VIRUS}_NA_db"
+BLAST_AA_DB_PATH = reference_folder / f"blast/{VIRUS}_AA_db"
+
 genbank_feature_file = output_dir / \
     f"{VIRUS}__GenBankFeatures_{timestamp}.xlsx"
 genbank_feature_check_file = output_dir / \
@@ -28,10 +34,6 @@ pubmed_genbank_combined = pubmed_folder / f"{VIRUS}_P_G_Combined_{timestamp}.xls
 
 
 def build_blast_db():
-    db_name = f"{VIRUS}_AA_db"
-
-    reference_folder = Path(f"ReferenceData/{VIRUS}")
-
     aa_seqs = []
     na_seqs = []
     with open(reference_folder / 'NC_002728.gb', "r") as handle:
@@ -63,35 +65,34 @@ def build_blast_db():
         SeqIO.write(aa_seqs, output_handle, "fasta")
 
     os.system(
-        f"makeblastdb -in {ref_aa_file} -dbtype prot -out {db_name}")
+        f"makeblastdb -in {ref_aa_file} -dbtype prot -out {BLAST_AA_DB_PATH}")
 
     ref_na_file = reference_folder / f"{VIRUS}_RefNAs.fasta"
     with open(ref_na_file, "w") as output_handle:
         SeqIO.write(na_seqs, output_handle, "fasta")
 
-    db_name = f"{VIRUS}_NA_db"
     os.system(
-        f"makeblastdb -in {ref_na_file} -dbtype nucl -out {db_name}")
+        f"makeblastdb -in {ref_na_file} -dbtype nucl -out {BLAST_NA_DB_PATH}")
 
 
 def process_feature(features_df):
     features_df = translate_bio_term(features_df)
     features_df = get_additional_host_data(features_df)
-    features_df['host'] = features_df['host2']
+    features_df['Host'] = features_df['Host2']
     features_df['isolate_source'] = features_df['isolate_source2']
 
-    features_df['country_region'] = features_df['country_region'].str.split(
+    features_df['Country'] = features_df['country_region'].str.split(
         ":").str[0]
 
     features_df['cds'] = features_df['cds'].apply(translate_cds_name)
 
-    features_df['genes'] = features_df['cds']
+    features_df['Genes'] = features_df['cds']
     for i, row in features_df.iterrows():
-        if str(row['genes']) not in GENES:
-            features_df.at[i, 'genes'] = row['hit_name']
+        if str(row['Genes']) not in GENES:
+            features_df.at[i, 'Genes'] = row['hit_name']
 
-        if int(row['num_na']) > 17000:
-            features_df.at[i, 'genes'] = 'genome'
+        if int(row['NumNA']) > 17000:
+            features_df.at[i, 'Genes'] = 'genome'
 
     return features_df
 
@@ -127,10 +128,10 @@ def translate_bio_term(features_df):
         'Sus scrofa (pig)': 'Pig',
     }
 
-    features_df['host2'] = features_df['host']
+    features_df['Host2'] = features_df['Host']
     features_df['isolate_source2'] = features_df['isolate_source']
     for k, v in name_map.items():
-        features_df['host2'] = features_df['host2'].str.replace(
+        features_df['Host2'] = features_df['Host2'].str.replace(
             k, v, regex=True)
         features_df['isolate_source2'] = features_df['isolate_source2'].str.replace(
             k, v, regex=True)
@@ -163,7 +164,7 @@ def get_additional_host_data(features_df):
 
     for index, row in features_df.iterrows():
 
-        host = row['host2'].lower()
+        host = row['Host2'].lower()
         specimen = row['isolate_source2'].lower()
 
         if not host and not specimen:
@@ -201,9 +202,9 @@ def get_additional_host_data(features_df):
             # specieman other and NA are the same
             updated_specimen = ['NA']
 
-        # features_df.at[index, 'host'] = ",".join(sorted(list(set(updated_host))))
+        # features_df.at[index, 'Host'] = ",".join(sorted(list(set(updated_host))))
         # features_df.at[index, 'isolate_source'] = ",".join(sorted(list(set(updated_specimen))))
-        features_df.at[index, 'host2'] = ' and '.join(
+        features_df.at[index, 'Host2'] = ' and '.join(
             sorted(list(set(updated_host)))) if updated_host else 'NA'
         features_df.at[index, 'isolate_source2'] = ' and '.join(
             sorted(list(set(updated_specimen)))) if updated_specimen else 'NA'

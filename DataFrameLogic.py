@@ -22,12 +22,12 @@ from GenBankFunctions import is_reference_genome
 def compare_authors_titles_year_accession_overlap(row_i, row_j):
     # !!Change the order of comparison will change the final result
 
-    authors_i = row_i['authors']
-    authors_j = row_j['authors']
-    title_i = row_i['title']
-    title_j = row_j['title']
-    year_i = str(row_i['year'])
-    year_j = str(row_j['year'])
+    authors_i = row_i['Authors']
+    authors_j = row_j['Authors']
+    title_i = row_i['Title']
+    title_j = row_j['Title']
+    year_i = str(row_i['Year'])
+    year_j = str(row_j['Year'])
     accessions_i = row_i['accession']
     accessions_j = row_j['accession']
 
@@ -58,8 +58,7 @@ def compare_authors_titles_year_accession_overlap(row_i, row_j):
     if is_reference_genome(accessions_i[0]) or is_reference_genome(accessions_j[0]):
         return 0
 
-    # PMID
-    # if row_i['pmid'] and row_j['pmid'] and row_i['pmid'] == row_j['pmid']:
+    # if row_i['PMID'] and row_j['PMID'] and row_i['PMID'] == row_j['PMID']:
     #     match = 1
     #     log_match_reference()
     #     return match
@@ -118,18 +117,18 @@ def process_authors_titles(df):
 
 def merge_rows(df, merged_indexes):
     new_row = {}
-    authors_list = df.loc[merged_indexes, 'authors'].tolist()
-    titles_list = df.loc[merged_indexes, 'title'].tolist()
+    authors_list = df.loc[merged_indexes, 'Authors'].tolist()
+    titles_list = df.loc[merged_indexes, 'Title'].tolist()
     titles_list = [i for i in titles_list if i != 'Direct Submission']
-    journal_list = df.loc[merged_indexes, 'journal'].tolist()
-    pmid_list = df.loc[merged_indexes, 'pmid'].tolist()
-    year_list = df.loc[merged_indexes, 'year'].tolist()
+    journal_list = df.loc[merged_indexes, 'Journal'].tolist()
+    pmid_list = df.loc[merged_indexes, 'PMID'].tolist()
+    year_list = df.loc[merged_indexes, 'Year'].tolist()
     accession_list = df.loc[merged_indexes, 'accession'].tolist()
-    new_row['authors'] = combine_items_in_different_lists(authors_list)
-    new_row['year'] = combine_items_in_different_lists(year_list)
-    new_row['title'] = combine_items_in_different_lists(titles_list)
-    new_row['pmid'] = combine_items_in_different_lists(pmid_list)
-    new_row['journal'] = combine_items_in_different_lists(journal_list)
+    new_row['Authors'] = combine_items_in_different_lists(authors_list)
+    new_row['Year'] = combine_items_in_different_lists(year_list)
+    new_row['Title'] = combine_items_in_different_lists(titles_list)
+    new_row['PMID'] = combine_items_in_different_lists(pmid_list)
+    new_row['Journal'] = combine_items_in_different_lists(journal_list)
     new_row['accession'] = combine_items_in_different_lists(accession_list)
     # new_row['merged_indexes'] = ';'.join([str(i) for i in merged_indexes])
     new_row_df = pd.DataFrame(new_row, index=[0])
@@ -144,16 +143,16 @@ def merge_feature_rows(df):
     unique_organisms = count_unique_elements(df['organism'].tolist())
     new_row['Organisms'] = dict_to_sorted_string(unique_organisms)
 
-    unique_record_years = count_unique_elements(df['record_year'].tolist())
+    unique_record_years = count_unique_elements(df['RecordYear'].tolist())
     new_row['RecordYears'] = dict_to_sorted_string(unique_record_years)
 
-    unique_hosts = count_unique_elements(df['host'].tolist())
+    unique_hosts = count_unique_elements(df['Host'].tolist())
     new_row['Hosts'] = dict_to_sorted_string(unique_hosts)
 
-    unique_countries = count_unique_elements(df['country_region'].tolist())
+    unique_countries = count_unique_elements(df['Country'].tolist())
     new_row['Countries'] = dict_to_sorted_string(unique_countries)
 
-    unique_isolate_years = count_unique_elements(df['isolate_year'].tolist())
+    unique_isolate_years = count_unique_elements(df['IsolateYear'].tolist())
     new_row['IsolateYears'] = dict_to_sorted_string(unique_isolate_years)
 
     unique_specimens = count_unique_elements(df['isolate_source'].tolist())
@@ -162,14 +161,14 @@ def merge_feature_rows(df):
     unique_gene = count_unique_elements(df['segment_source'].tolist())
     new_row['SegmentSource'] = dict_to_sorted_string(unique_gene)
 
-    unique_gene = count_unique_elements(df['genes'].tolist())
+    unique_gene = count_unique_elements(df['Genes'].tolist())
     new_row['Gene'] = dict_to_sorted_string(unique_gene)
 
     unique_cds = count_unique_elements(df['cds'].tolist())
     new_row['CDS'] = dict_to_sorted_string(unique_cds)
 
-    new_row['NumNA'] = create_binned_seq_lens(df['num_na'].tolist())
-    new_row['NumAA'] = create_binned_seq_lens(df['num_aa'].tolist())
+    new_row['NumNA'] = create_binned_seq_lens(df['NumNA'].tolist())
+    new_row['NumAA'] = create_binned_seq_lens(df['NumAA'].tolist())
     new_row['AlignLens'] = create_binned_seq_lens(df['align_len'].tolist())
     new_row['PcntIDs'] = create_binned_pcnts(df['pcnt_id'].tolist())
     return new_row
@@ -187,7 +186,7 @@ def combine_refs_and_features(ref_df, features_df):
 
         accession_list = accession_string.split(',')
         accession_list = [i.strip() for i in accession_list]
-        features_rows = features_df[features_df['acc_num'].isin(
+        features_rows = features_df[features_df['Accession'].isin(
             accession_list)]
 
         new_dict = merge_feature_rows(features_rows)
@@ -210,8 +209,8 @@ def combine_refs_and_features(ref_df, features_df):
 
 
 def compare_output_files(saved_df, new_df):
-    saved_df = saved_df.sort_values(by='authors')
-    new_df = new_df.sort_values(by='authors')
+    saved_df = saved_df.sort_values(by='Authors')
+    new_df = new_df.sort_values(by='Authors')
 
     print(f'Number of rows: Saved file:{len(saved_df)} New file:{len(new_df)}')
     if (saved_df.columns == new_df.columns).all():

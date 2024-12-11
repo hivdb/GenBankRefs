@@ -65,8 +65,8 @@ def perform_blast(idx, query_seq, db_name, func, blast_name):
     output_file = f"/tmp/query_{idx}.xml"
 
     find_db = False
-    for i in Path('.').resolve().iterdir():
-        if i.stem == db_name:
+    for i in Path(db_name.parent).resolve().iterdir():
+        if i.stem == db_name.stem:
             find_db = True
             break
 
@@ -133,7 +133,7 @@ def is_reference_genome(acc):
     return False
 
 
-def blast_sequence(idx, features, virus):
+def blast_sequence(idx, features, blast_aa_db_path, blast_na_db_path):
     """
         Try blastn, blastp, blastx for detecting the genes or segments of an isolate
         This function will decide the best blast result by alignment length of nucleic acid,
@@ -141,16 +141,16 @@ def blast_sequence(idx, features, virus):
     """
 
     blast_result = perform_blast(
-        features['acc_num'], features['NASeq'], f"{virus}_NA_db",
+        features['Accession'], features['NASeq'], blast_na_db_path,
         func=NcbiblastnCommandline, blast_name='blastn')
 
     if len(features['AASeq']) > 30:
         blast_result.extend(perform_blast(
-            features['acc_num'], features['AASeq'], f"{virus}_AA_db",
+            features['Accession'], features['AASeq'], blast_aa_db_path,
             func=NcbiblastpCommandline, blast_name='blastp'))
 
     blast_result.extend(perform_blast(
-        features['acc_num'], features['NASeq'], f"{virus}_AA_db",
+        features['Accession'], features['NASeq'], blast_aa_db_path,
         func=NcbiblastxCommandline, blast_name='blastx'))
 
     # if 'e_value' not in blast_data:
@@ -191,7 +191,7 @@ def blast_sequence(idx, features, virus):
     return features
 
 
-def pooled_blast(features_list, db_name, poolsize=20):
+def pooled_blast(features_list, virus_obj, poolsize=20):
     """
         For speeding up blast running, using multiprocessing method
         Input:
@@ -202,7 +202,7 @@ def pooled_blast(features_list, db_name, poolsize=20):
 
     with Pool(poolsize) as pool:
         parameters = [
-            (idx, f, db_name)
+            (idx, f, virus_obj.BLAST_AA_DB_PATH, virus_obj.BLAST_NA_DB_PATH)
             for idx, f in enumerate(features_list)
         ]
         alignment_result = []
