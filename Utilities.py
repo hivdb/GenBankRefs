@@ -3,6 +3,33 @@ import numpy as np
 import re
 import os
 from collections import Counter
+import logging
+
+
+def get_logger(logging_file):
+    logger = logging.getLogger('logger')
+    logger.setLevel(logging.DEBUG)
+
+    formatter = logging.Formatter('%(message)s')
+
+    file_handler = logging.FileHandler(logging_file)
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+
+    # console_handler = logging.StreamHandler()
+    # console_handler.setLevel(logging.DEBUG)
+    # console_handler.setFormatter(formatter)
+    # logger.addHandler(console_handler)
+
+    fd = open(logging_file, 'w')
+
+    class SimpleLogger:
+
+        def info(self, *args, **kargs):
+            print(*args, **kargs, file=fd)
+
+    return SimpleLogger()
 
 
 def process_author_field(names):

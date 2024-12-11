@@ -79,10 +79,6 @@ def translate_country(country):
     return 'Yes' if (country and country != 'NA') else 'No'
 
 
-def translate_gene(gene):
-    return gene if gene in ['L', 'S', 'M'] else ('NA' if not gene or gene == 'NA' else 'Other')
-
-
 def translate_specimen(specimen):
     specimen = specimen.lower()
     for i in ['serum', 'blood', 'plasma', 'sera']:

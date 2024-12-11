@@ -3,7 +3,7 @@ from collections import defaultdict
 import Levenshtein
 
 
-def match_pm_gb(pubmed, genbank):
+def match_pm_gb(pubmed, genbank, logger):
 
     match_by_title_list = []
     match_by_pmid_list = []
@@ -56,10 +56,10 @@ def match_pm_gb(pubmed, genbank):
 
     genbank_match_list = match_by_title_list + match_by_pmid_list + match_by_acc_list
 
-    print("Genbank match by pmid", len(set(i[-1] for i in match_by_pmid_list)))
-    print("Genbank match by title", len(set(i[-1] for i in match_by_title_list)))
-    print("Genbank match by acc", len(set(i[-1] for i in match_by_acc_list)))
-    print('Genbank Matched:', len(set(i[-1] for i in genbank_match_list)))
+    logger.info("Genbank match by pmid", len(set(i[-1] for i in match_by_pmid_list)))
+    logger.info("Genbank match by title", len(set(i[-1] for i in match_by_title_list)))
+    logger.info("Genbank match by acc", len(set(i[-1] for i in match_by_acc_list)))
+    logger.info('Genbank Matched:', len(set(i[-1] for i in genbank_match_list)))
 
     pubmed_match = match_pubmed2genbank(genbank_match_list)
 
@@ -69,10 +69,10 @@ def match_pm_gb(pubmed, genbank):
 
     genbank_match = genbank_match.values()
 
-    print("Pubmed match by pmid", len(match_pubmed2genbank(match_by_pmid_list)))
-    print("Pubmed match by title", len(match_pubmed2genbank(match_by_title_list)))
-    print("Pubmed match by acc", len(match_pubmed2genbank(match_by_acc_list)))
-    print('Pubmed Matched:', len(pubmed_match))
+    logger.info("Pubmed match by pmid", len(match_pubmed2genbank(match_by_pmid_list)))
+    logger.info("Pubmed match by title", len(match_pubmed2genbank(match_by_title_list)))
+    logger.info("Pubmed match by acc", len(match_pubmed2genbank(match_by_acc_list)))
+    logger.info('Pubmed Matched:', len(pubmed_match))
 
     pubmed_unmatch = pubmed.drop(index=matched_pubmed_indices)
 

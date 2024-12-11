@@ -4,6 +4,7 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from pathlib import Path
 from datetime import datetime
+from Utilities import get_logger
 
 
 VIRUS = 'Nipah'
@@ -31,6 +32,9 @@ pubmed_folder = Path(f"Pubmed/{VIRUS}")
 pubmed_file = pubmed_folder / "ReferenceSummary_Dec11.xlsx"
 pubmed_additional_from_gb = None
 pubmed_genbank_combined = pubmed_folder / f"{VIRUS}_P_G_Combined_{timestamp}.xlsx"
+
+logging_file = output_dir / f'{VIRUS}_summary.txt'
+logger = get_logger(logging_file)
 
 
 def build_blast_db():
@@ -210,3 +214,7 @@ def get_additional_host_data(features_df):
             sorted(list(set(updated_specimen)))) if updated_specimen else 'NA'
 
     return features_df
+
+
+def translate_gene(gene):
+    return gene if gene in GENES else ('NA' if not gene or gene == 'NA' else 'Other')

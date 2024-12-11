@@ -12,7 +12,7 @@ from combine.translate_value import categorize_host_specimen
 def compare_pubmed_genbank(virus_obj):
 
     if not virus_obj.pubmed_folder.exists():
-        print('Pubmed file not found')
+        virus_obj.logger.info('Pubmed file not found')
         return
 
     summrize = input('Summarize tables? [y/n]')
@@ -22,14 +22,17 @@ def compare_pubmed_genbank(virus_obj):
     genbank_ref = pd.read_excel(genbank_ref_file, dtype=str).fillna('')
 
     if summrize:
-        summarize_genbank_by_ref(genbank_ref)
+        summarize_genbank_by_ref(genbank_ref, virus_obj.logger)
 
     genbank_file = virus_obj.genbank_feature_check_file
     genbank = pd.read_excel(genbank_file, dtype=str).fillna('')
 
+    genbank['Genes'] = genbank['Genes'].apply(virus_obj.translate_gene)
+
     if summrize:
-        summarize_genbank_by_seq(genbank)
-        summarize_genbank_full_genome(genbank_ref)
+        summarize_genbank_by_seq(genbank, virus_obj.logger)
+        summarize_genbank_full_genome(
+            genbank_ref, virus_obj.logger, full_gene_set=virus_obj.GENES)
 
     pubmed_file = virus_obj.pubmed_file
     pubmed = pd.read_excel(pubmed_file, dtype=str).fillna('')
@@ -42,35 +45,37 @@ def compare_pubmed_genbank(virus_obj):
         )
     ]
 
-    print('#Pubmed Ref', len(pubmed))
+    virus_obj.logger.info('#Pubmed Ref', len(pubmed))
 
     if summrize:
-        summarize_pubmed_data(pubmed)
+        summarize_pubmed_data(pubmed, virus_obj.logger)
 
     if virus_obj.pubmed_additional_from_gb:
         pubmed = pd.concat([pubmed, pd.read_excel(
             virus_obj.pubmed_additional_from_gb, dtype=str).fillna('')],
             ignore_index=True)
-        print('#Pubmed Ref with additional GenBank PMID', len(pubmed))
+        virus_obj.logger.info('#Pubmed Ref with additional GenBank PMID', len(pubmed))
+
+    pubmed['Gene'] = pubmed['Gene'].apply(virus_obj.translate_gene)
 
     pubmed['RefID'] = pubmed.index + 1
     pubmed.to_excel(str(virus_obj.pubmed_folder / 'Pubmed.xlsx'), index=False)
 
     pubmed_match, genbank_match, pubmed_unmatch, genbank_unmatch = match_pm_gb(
-        pubmed, genbank_ref)
+        pubmed, genbank_ref, virus_obj.logger)
 
     # pubmed_unmatch.to_excel('pubmed_unmatch.xlsx')
     # pd.DataFrame(genbank_unmatch).to_excel('genbank_unmatch.xlsx')
 
-    print('Pumbed only', len(pubmed_unmatch))
+    virus_obj.logger.info('Pumbed only', len(pubmed_unmatch))
 
     if summrize:
-        summarize_pubmed_data(pubmed_unmatch)
+        summarize_pubmed_data(pubmed_unmatch, virus_obj.logger)
 
-    print('GenBank only', len(genbank_unmatch))
+    virus_obj.logger.info('GenBank only', len(genbank_unmatch))
 
     if summrize:
-        summarize_genbank_by_ref(genbank_unmatch)
+        summarize_genbank_by_ref(genbank_unmatch, virus_obj.logger)
 
     combined, columns = combine_file(
         pubmed_match, pubmed_unmatch, genbank_unmatch)
@@ -85,8 +90,8 @@ def compare_pubmed_genbank(virus_obj):
     format_table(str(virus_obj.pubmed_genbank_combined))
 
     if summrize:
-        summarize_combined_data(combined, genbank)
-        summarize_genbank_full_genome(genbank_match)
+        summarize_combined_data(combined, genbank, virus_obj.logger)
+        summarize_genbank_full_genome(genbank_match, virus_obj.logger, virus_obj.GENES)
 
     return pubmed, pubmed_match
 

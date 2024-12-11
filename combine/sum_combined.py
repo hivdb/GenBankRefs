@@ -7,29 +7,29 @@ from .utils import get_values_of_value_count_list
 from Utilities import create_binnned_year
 
 
-def summarize_combined_data(combined, genbank):
-    print('Matched')
+def summarize_combined_data(combined, genbank, logger):
+    logger.info('Matched')
     matches = combined[(combined['match'] == 'Yes')]
 
     publish_year = count_number([v for i, v in matches.iterrows()], 'Year', sorter=int_sorter)
-    print('Publish Year')
-    print(publish_year)
+    logger.info('Publish Year')
+    logger.info(publish_year)
     publish_year = [
         int(v['Year']) for i, v in matches.iterrows()
         if v['Year'] and v['Year'] != 'NA']
-    print(create_binnned_year(publish_year))
-    print('=' * 40)
+    logger.info(create_binnned_year(publish_year))
+    logger.info('=' * 40)
 
     journals = count_number([v for i, v in matches.iterrows()], 'Journal')
-    print('Journals')
-    print(journals)
-    print('=' * 40)
+    logger.info('Journals')
+    logger.info(journals)
+    logger.info('=' * 40)
 
     methods = count_number(
         [v for i, v in matches.iterrows()], 'SeqMethod (PM)')
-    print('Seq method')
-    print(methods)
-    print('=' * 40)
+    logger.info('Seq method')
+    logger.info(methods)
+    logger.info('=' * 40)
 
     accessions = set([
         j.strip()
@@ -37,28 +37,28 @@ def summarize_combined_data(combined, genbank):
         for j in v['GenBank (GB)'].split(',')
         ])
     num_seq = len(accessions)
-    print('NumSeq', num_seq)
-    print('=' * 40)
+    logger.info('NumSeq', num_seq)
+    logger.info('=' * 40)
 
     genbank['Accession'] = genbank['Accession'].apply(lambda x: x.strip().split('.')[0])
     genbank = genbank[genbank['Accession'].isin(list(accessions))]
 
-    summarize_genbank_by_seq(genbank)
+    summarize_genbank_by_seq(genbank, logger)
 
-    print('Similar virus')
-    print(summarize_similarity(combined, 'Viruses'))
+    logger.info('Similar virus')
+    logger.info(summarize_similarity(combined, 'Viruses'))
 
-    print('Similar hosts')
-    print(summarize_similarity(combined, 'Hosts'))
+    logger.info('Similar hosts')
+    logger.info(summarize_similarity(combined, 'Hosts'))
 
-    print('Similar Specimens')
-    print(summarize_similarity(combined, 'Specimen'))
+    logger.info('Similar Specimens')
+    logger.info(summarize_similarity(combined, 'Specimen'))
 
-    print('Similar countries')
-    print(summarize_similarity(combined, 'Countries'))
+    logger.info('Similar countries')
+    logger.info(summarize_similarity(combined, 'Countries'))
 
-    print('Similar Genes')
-    print(summarize_similarity(combined, 'Genes'))
+    logger.info('Similar Genes')
+    logger.info(summarize_similarity(combined, 'Genes'))
 
 
 def summarize_similarity(df, col_name):
@@ -76,4 +76,3 @@ def summarize_similarity(df, col_name):
             count += 1
 
     return count
-
