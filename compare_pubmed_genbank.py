@@ -47,11 +47,12 @@ def compare_pubmed_genbank(virus_obj):
     if summrize:
         summarize_pubmed_data(pubmed)
 
-    pubmed = pd.concat([pubmed, pd.read_excel(
-        virus_obj.pubmed_additional_from_gb, dtype=str).fillna('')],
-        ignore_index=True)
+    if virus_obj.pubmed_additional_from_gb:
+        pubmed = pd.concat([pubmed, pd.read_excel(
+            virus_obj.pubmed_additional_from_gb, dtype=str).fillna('')],
+            ignore_index=True)
+        print('#Pubmed Ref with additional GenBank PMID', len(pubmed))
 
-    print('#Pubmed Ref with additional GenBank PMID', len(pubmed))
     pubmed['RefID'] = pubmed.index + 1
     pubmed.to_excel(str(virus_obj.pubmed_folder / 'Pubmed.xlsx'), index=False)
 

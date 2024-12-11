@@ -17,7 +17,7 @@ def combine_file(pubmed_match, pubmed_unmatch, genbank_unmatch):
 
             'Reviewer(s) Seq': pubmed['Reviewer(s) Seq'],
             'GPT seq (Y/N)': pubmed['GPT seq (Y/N)'],
-            'Resolve': pubmed['Resolve'],
+            'Resolve Title': pubmed['Resolve Title'],
             'match': 'Yes',
 
             'Viruses (PM)': pubmed['Viruses'],
@@ -66,7 +66,7 @@ def combine_file(pubmed_match, pubmed_unmatch, genbank_unmatch):
 
             'Reviewer(s) Seq': pubmed['Reviewer(s) Seq'],
             'GPT seq (Y/N)': pubmed['GPT seq (Y/N)'],
-            'Resolve': pubmed['Resolve'],
+            'Resolve Title': pubmed['Resolve Title'],
 
             'Viruses (PM)': pubmed['Viruses'],
             'NumSeqs (PM)': pubmed['NumSeqs'],
@@ -118,7 +118,7 @@ def combine_file(pubmed_match, pubmed_unmatch, genbank_unmatch):
 
         'Reviewer(s) Seq',
         'GPT seq (Y/N)',
-        'Resolve',
+        'Resolve Title',
         'match',
 
         'Viruses (PM)',
