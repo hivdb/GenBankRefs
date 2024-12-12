@@ -24,6 +24,9 @@ genbank_feature_file = output_dir / \
     f"{VIRUS}__GenBankFeatures_{timestamp}.xlsx"
 genbank_feature_check_file = output_dir / \
     f"{VIRUS}__GenBankFeatures_{timestamp}_check.xlsx"
+genbank_gene_file = output_dir / \
+    f"{VIRUS}__GenBankGenes_{timestamp}.xlsx"
+
 combined_file = output_dir / f"{VIRUS}_Combined_{timestamp}.xlsx"
 exclude_seq_file = output_dir / f"{VIRUS}_Excluded_Seqs_{timestamp}.xlsx"
 comparison_file = output_dir / f"{VIRUS}_Combined_11_06a.xlsx"
@@ -80,11 +83,17 @@ def process_feature(features_df):
         ":").str[0]
 
     features_df['Genes'] = features_df['segment_source']
-    for i, row in features_df.iterrows():
-        if str(row['Genes']) not in SEGMENTS:
-            features_df.at[i, 'Genes'] = row['hit_name']
 
     return features_df
+
+
+def process_gene_list(gene_df):
+
+    for i, row in gene_df.iterrows():
+        if str(row['Gene']) not in GENES:
+            gene_df.at[i, 'Gene'] = row['hit_name']
+
+    return gene_df
 
 
 def translate_bio_term(features_df):

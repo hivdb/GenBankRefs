@@ -1,17 +1,12 @@
 from Bio import SeqIO
 from Bio import Entrez
-import pandas as pd
-import numpy as np
-import re
-import os
-from collections import Counter
 from Bio.Blast.Applications import NcbiblastpCommandline
 from Bio.Blast.Applications import NcbiblastnCommandline
 from Bio.Blast.Applications import NcbiblastxCommandline
 from Bio.Blast import NCBIXML
-import Levenshtein
 from multiprocessing import Pool
 from pathlib import Path
+from xml.parsers.expat import ExpatError
 
 Entrez.email = "rshafer.stanford.edu"
 
@@ -51,7 +46,7 @@ def filter_by_taxonomy(record):
     return excluded_seq
 
 
-def perform_blast(idx, query_seq, db_name, func, blast_name):
+def perform_blast(acc, order, query_seq, db_name, func, blast_name):
     """
     Input: sample_seq (str): sequence to compare/blast
         db_name (str), prebuilt db by calling makeblastdb
@@ -61,8 +56,8 @@ def perform_blast(idx, query_seq, db_name, func, blast_name):
             of each alignment
 
     """
-    input_file = f"/tmp/query_{idx}.fasta"
-    output_file = f"/tmp/query_{idx}.xml"
+    input_file = f"/tmp/query_{acc}_{order}.fasta"
+    output_file = f"/tmp/query_{acc}_{order}.xml"
 
     find_db = False
     for i in Path(db_name.parent).resolve().iterdir():
@@ -73,6 +68,9 @@ def perform_blast(idx, query_seq, db_name, func, blast_name):
     if not find_db:
         return []
 
+    if not query_seq.strip():
+        return []
+
     with open(input_file, "w") as fd:
         fd.write(f">query\n{query_seq}\n")
 
@@ -81,9 +79,15 @@ def perform_blast(idx, query_seq, db_name, func, blast_name):
         db=db_name, outfmt=5, out=output_file)
     stdout, stderr = blastp_cline()
 
+    if not Path(output_file).exists():
+        return []
+
     # Parse the BLAST results
     with open(output_file, "r") as result_handle:
-        blast_records = NCBIXML.read(result_handle)
+        try:
+            blast_records = NCBIXML.read(result_handle)
+        except (ExpatError, ValueError):
+            return []
 
     # Extract statistics (assuming a single hit, adjust as needed)
     # Try blast_records.alignments[0].hsps[0]
@@ -134,8 +138,8 @@ def perform_blast(idx, query_seq, db_name, func, blast_name):
                 'NA_stop': NA_stop,
             })
 
-    os.remove(input_file)
-    os.remove(output_file)
+    Path(input_file).unlink(missing_ok=True)
+    Path(output_file).unlink(missing_ok=True)
 
     return blast_result
 
@@ -156,16 +160,19 @@ def blast_sequence(idx, features, blast_aa_db_path, blast_na_db_path):
     """
 
     blast_result = perform_blast(
-        features['Accession'], features['NASeq'], blast_na_db_path,
+        features['Accession'], features['Order'],
+        features['NASeq'], blast_na_db_path,
         func=NcbiblastnCommandline, blast_name='blastn')
 
     if len(features['AASeq']) > 30:
         blast_result.extend(perform_blast(
-            features['Accession'], features['AASeq'], blast_aa_db_path,
+            features['Accession'], features['Order'],
+            features['AASeq'], blast_aa_db_path,
             func=NcbiblastpCommandline, blast_name='blastp'))
 
     blast_result.extend(perform_blast(
-        features['Accession'], features['NASeq'], blast_aa_db_path,
+        features['Accession'], features['Order'],
+        features['NASeq'], blast_aa_db_path,
         func=NcbiblastxCommandline, blast_name='blastx'))
 
     # if 'e_value' not in blast_data:

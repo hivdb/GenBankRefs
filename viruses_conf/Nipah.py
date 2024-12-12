@@ -23,6 +23,9 @@ genbank_feature_file = output_dir / \
     f"{VIRUS}__GenBankFeatures_{timestamp}.xlsx"
 genbank_feature_check_file = output_dir / \
     f"{VIRUS}__GenBankFeatures_{timestamp}_check.xlsx"
+genbank_gene_file = output_dir / \
+    f"{VIRUS}__GenBankGenes_{timestamp}.xlsx"
+
 combined_file = output_dir / f"{VIRUS}_Combined_{timestamp}.xlsx"
 exclude_seq_file = output_dir / f"{VIRUS}_Excluded_Seqs_{timestamp}.xlsx"
 comparison_file = output_dir / f"{VIRUS}_Combined_11_06a.xlsx"
@@ -88,17 +91,23 @@ def process_feature(features_df):
     features_df['Country'] = features_df['country_region'].str.split(
         ":").str[0]
 
-    features_df['cds'] = features_df['cds'].apply(translate_cds_name)
-
-    features_df['Genes'] = features_df['cds']
+    features_df['Genes'] = features_df['segment_source']
     for i, row in features_df.iterrows():
-        if str(row['Genes']) not in GENES:
-            features_df.at[i, 'Genes'] = row['hit_name']
-
-        if int(row['NumNA']) > 17000:
+        if int(row['SeqLength']) > 17000:
             features_df.at[i, 'Genes'] = 'genome'
 
     return features_df
+
+
+def process_gene_list(gene_df):
+
+    gene_df['Gene'] = gene_df['Gene'].apply(translate_cds_name)
+
+    for i, row in gene_df.iterrows():
+        if str(row['Gene']) not in GENES:
+            gene_df.at[i, 'Gene'] = row['hit_name']
+
+    return gene_df
 
 
 def translate_cds_name(cds):

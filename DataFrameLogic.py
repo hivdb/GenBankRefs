@@ -167,10 +167,10 @@ def merge_feature_rows(df):
     unique_cds = count_unique_elements(df['cds'].tolist())
     new_row['CDS'] = dict_to_sorted_string(unique_cds)
 
-    new_row['NumNA'] = create_binned_seq_lens(df['NumNA'].tolist())
-    new_row['NumAA'] = create_binned_seq_lens(df['NumAA'].tolist())
-    new_row['AlignLens'] = create_binned_seq_lens(df['align_len'].tolist())
-    new_row['PcntIDs'] = create_binned_pcnts(df['pcnt_id'].tolist())
+    # new_row['NumNA'] = create_binned_seq_lens(df['NumNA'].tolist())
+    # new_row['NumAA'] = create_binned_seq_lens(df['NumAA'].tolist())
+    # new_row['AlignLens'] = create_binned_seq_lens(df['align_len'].tolist())
+    # new_row['PcntIDs'] = create_binned_pcnts(df['pcnt_id'].tolist())
     return new_row
 
 
@@ -199,10 +199,10 @@ def combine_refs_and_features(ref_df, features_df):
         combined_df.at[index, 'Specimens'] = new_dict['Specimens']
         combined_df.at[index, 'Gene'] = new_dict['Gene']
         combined_df.at[index, 'CDS'] = new_dict['CDS']
-        combined_df.at[index, 'NumNA'] = new_dict['NumNA']
-        combined_df.at[index, 'NumAA'] = new_dict['NumAA']
-        combined_df.at[index, 'AlignLens'] = new_dict['AlignLens']
-        combined_df.at[index, 'PcntIDs'] = new_dict['PcntIDs']
+        # combined_df.at[index, 'NumNA'] = new_dict['NumNA']
+        # combined_df.at[index, 'NumAA'] = new_dict['NumAA']
+        # combined_df.at[index, 'AlignLens'] = new_dict['AlignLens']
+        # combined_df.at[index, 'PcntIDs'] = new_dict['PcntIDs']
         # remove .x after accession ID
         row["accession"] = re.sub(r'\.\d+', '', row['accession'])
     return combined_df

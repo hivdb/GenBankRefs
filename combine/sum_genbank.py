@@ -118,24 +118,24 @@ def summarize_genbank_by_seq(df, logger):
     logger.info(genes)
     logger.info('=' * 40)
 
-    aligns = [int(v['align_len']) for i, v in df.iterrows()]
-    logger.info('AlignLens')
-    logger.info(create_binned_seq_lens(aligns))
-    logger.info('=' * 40)
+    # aligns = [int(v['align_len']) for i, v in df.iterrows()]
+    # logger.info('AlignLens')
+    # logger.info(create_binned_seq_lens(aligns))
+    # logger.info('=' * 40)
 
-    num_na = [int(v['NumNA']) for i, v in df.iterrows()]
-    logger.info('NA length')
-    logger.info(create_binned_seq_lens(num_na))
-    logger.info('=' * 40)
+    # num_na = [int(v['NumNA']) for i, v in df.iterrows()]
+    # logger.info('NA length')
+    # logger.info(create_binned_seq_lens(num_na))
+    # logger.info('=' * 40)
 
-    num_aa = [int(v['NumAA']) for i, v in df.iterrows()]
-    logger.info('AA length')
-    logger.info(create_binned_seq_lens(num_aa))
-    logger.info('=' * 40)
+    # num_aa = [int(v['NumAA']) for i, v in df.iterrows()]
+    # logger.info('AA length')
+    # logger.info(create_binned_seq_lens(num_aa))
+    # logger.info('=' * 40)
 
-    pcnt_ident = [float(v['pcnt_id']) for i, v in df.iterrows()]
-    logger.info('PcntIDs')
-    logger.info(create_binned_pcnts(pcnt_ident))
-    logger.info('=' * 40)
+    # pcnt_ident = [float(v['pcnt_id']) for i, v in df.iterrows()]
+    # logger.info('PcntIDs')
+    # logger.info(create_binned_pcnts(pcnt_ident))
+    # logger.info('=' * 40)
 
     logger.info('\n\n', '*' * 40, '\n\n')

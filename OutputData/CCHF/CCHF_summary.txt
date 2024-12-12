@@ -259,21 +259,11 @@ Yes (4633)
 No (103)
 ========================================
 Genes
-S (2182)
-M (1380)
-L (1174)
-========================================
-AlignLens
-<30 (2), 30-100 (19), 100-500 (2392), 500-1000 (1009), 1000-3000 (550), 3000-5000 (76), 5000-10000 (366), >10000 (322)
-========================================
-NA length
-30-100 (3), 100-500 (2338), 500-1000 (1045), 1000-3000 (567), 3000-5000 (58), 5000-10000 (397), >10000 (328)
-========================================
-AA length
-<30 (71), 30-100 (451), 100-500 (3429), 500-1000 (19), 1000-3000 (446), 3000-5000 (320)
-========================================
-PcntIDs
-0%-25% (51), 25%-50% (43), 50%-75% (47), 75%-90% (2270), 90%-95% (1859), 95%-100% (466)
+S (1571)
+M (1286)
+L (1131)
+NA (722)
+Other (26)
 ========================================
 
 
@@ -284,12 +274,12 @@ Full genome Ref
 0
 Full genome seq
 0
-#Pubmed Ref 196
+#Pubmed Ref 193
 PubMed
 Publish Year
 1992 (1)
 1996 (1)
-1997 (2)
+1997 (1)
 2001 (1)
 2002 (8)
 2003 (2)
@@ -300,11 +290,11 @@ Publish Year
 2009 (5)
 2010 (8)
 2011 (7)
-2012 (9)
+2012 (8)
 2013 (13)
 2014 (11)
 2015 (5)
-2016 (15)
+2016 (14)
 2017 (13)
 2018 (9)
 2019 (7)
@@ -313,12 +303,12 @@ Publish Year
 2022 (9)
 2023 (9)
 2024 (6)
-1990-1999 (4), 2000-2009 (43), 2010-2019 (97), 2020-2029 (52)
+1990-1999 (3), 2000-2009 (43), 2010-2019 (95), 2020-2029 (52)
 ========================================
 Journals
 Emerg Infect Dis (22)
 PLoS Negl Trop Dis (13)
-Vector Borne Zoonotic Dis (10)
+Vector Borne Zoonotic Dis (9)
 J Gen Virol (8)
 J Med Virol (8)
 Ticks Tick Borne Dis (7)
@@ -342,7 +332,6 @@ Sci Rep (3)
 J Arthropod Borne Dis (3)
 Mol Gen Mikrobiol Virusol (3)
 Transbound Emerg Dis (3)
-J Med Entomol (2)
 Virus Genes (2)
 Virol J (2)
 BMC Infect Dis (2)
@@ -361,7 +350,7 @@ Eur J Clin Microbiol Infect Dis (1)
 Dokl Biochem Biophys (1)
 Trans R Soc Trop Med Hyg (1)
 Scand J Infect Dis (1)
-Trop Anim Health Prod (1)
+J Med Entomol (1)
 Trop Med Int Health (1)
 Virusdisease (1)
 Parasitol Res (1)
@@ -377,7 +366,7 @@ Front Cell Infect Microbiol (1)
 Front Microbiol (1)
 ========================================
 NumSeq By Journal
-NA (18)
+NA (17)
 1 (39)
 2 (24)
 3 (18)
@@ -399,7 +388,7 @@ NA (18)
 19 (1)
 20 (3)
 21 (1)
-22 (3)
+22 (2)
 23 (3)
 26 (1)
 27 (3)
@@ -416,11 +405,10 @@ NA (18)
 70 (1)
 89 (1)
 105 (1)
-143 (1)
 282 (1)
 500 (1)
 814 (1)
-Total 3628
+Total 3463
 ========================================
 Host
 Homo sapiens (68)
@@ -428,18 +416,18 @@ Ticks (26)
 Homo sapiens and Ticks (23)
 Sheep and Ticks (6)
 NA (5)
-Cattle and Ticks (5)
 Other (4)
-Goat and Sheep and Ticks (4)
+Cattle and Ticks (4)
 Camel and Ticks (4)
 Livestock and Ticks (4)
-Cattle and Goat and Ticks (3)
 Goat and Homo sapiens and Sheep and Ticks (3)
+Goat and Sheep and Ticks (3)
 Animal and Ticks (2)
 Cattle and Goat and Sheep and Ticks (2)
 Animal and Homo sapiens (2)
 Homo sapiens and Livestock and Ticks (2)
 Cattle and Goat and Livestock and Sheep and Ticks (2)
+Cattle and Goat and Ticks (2)
 Cattle and Sheep and Ticks (2)
 Homo sapiens and Rodent and Ticks (1)
 Homo sapiens and Sheep and Ticks (1)
@@ -472,8 +460,8 @@ Homo sapiens and Rodent (1)
 Rodent and Sheep and Ticks (1)
 ========================================
 Specimen
-NA (97)
-blood (88)
+NA (95)
+blood (87)
 brain (7)
 blood and spleen (2)
 spleen (1)
@@ -493,7 +481,7 @@ NA (15)
 1980 (1)
 1981 (1)
 1982 (1)
-1990 (4)
+1990 (3)
 1992 (3)
 1993 (3)
 1994 (2)
@@ -507,8 +495,8 @@ NA (15)
 2006 (3)
 2007 (6)
 2008 (9)
-2009 (7)
-2010 (8)
+2009 (6)
+2010 (7)
 2011 (2)
 2012 (15)
 2013 (4)
@@ -521,11 +509,11 @@ NA (15)
 2020 (7)
 2021 (5)
 2022 (4)
-median 2002.0 2012.0 2016.0
-1960-1969 (1), 1970-1979 (11), 1980-1989 (3), 1990-1999 (16), 2000-2009 (47), 2010-2019 (87), 2020-2029 (16)
+median 2002.5 2012.0 2016.0
+1960-1969 (1), 1970-1979 (11), 1980-1989 (3), 1990-1999 (15), 2000-2009 (46), 2010-2019 (86), 2020-2029 (16)
 ========================================
 Country
-Turkey (23)
+Turkey (22)
 Iran (19)
 China (16)
 Multinational (15)
@@ -539,7 +527,6 @@ Greece (6)
 Uganda (5)
 Albania (4)
 India (4)
-Senegal (3)
 Tajikistan (3)
 Afghanistan (3)
 Sudan (3)
@@ -547,6 +534,7 @@ Uae (2)
 Nigeria (2)
 Kazakhstan (2)
 Kenya (2)
+Senegal (2)
 Mauritania (2)
 China, Pakistan (1)
 Soamalia, Usa (1)
@@ -566,7 +554,6 @@ namibia (1)
 Afghanistan, Pakistan (1)
 Algeria (1)
 Japan (1)
-Ethiopia, Somalia, Unknown (1)
 Namibia, South africa, Turkey (1)
 South russia (1)
 Crimea (1)
@@ -584,19 +571,19 @@ Ghana (1)
 Hungary (1)
 ========================================
 Country W/WO
-Yes (188)
+Yes (185)
 No (8)
 ========================================
 Gene
-S (160)
+S (159)
 M (86)
 L (76)
-NA (13)
+NA (11)
 non-CCHF (1)
 ========================================
 Seq method
-Sanger (102)
-NA (51)
+Sanger (101)
+NA (49)
 NGS (43)
 ========================================
 
@@ -604,7 +591,7 @@ NGS (43)
  **************************************** 
 
 
-#Pubmed Ref with additional GenBank PMID 216
+#Pubmed Ref with additional GenBank PMID 213
 Genbank match by pmid 116
 Genbank match by title 90
 Genbank match by acc 220
@@ -613,21 +600,20 @@ Pubmed match by pmid 113
 Pubmed match by title 90
 Pubmed match by acc 165
 Pubmed Matched: 175
-Pumbed only 41
+Pumbed only 38
 PubMed
 Publish Year
-1997 (1)
 2001 (1)
 2002 (1)
 2005 (1)
 2006 (1)
 2009 (1)
 2010 (2)
-2012 (5)
+2012 (4)
 2013 (3)
 2014 (1)
 2015 (1)
-2016 (3)
+2016 (2)
 2017 (1)
 2018 (2)
 2019 (1)
@@ -636,11 +622,11 @@ Publish Year
 2022 (5)
 2023 (4)
 2024 (2)
-1990-1999 (1), 2000-2009 (5), 2010-2019 (19), 2020-2029 (16)
+2000-2009 (5), 2010-2019 (17), 2020-2029 (16)
 ========================================
 Journals
-Vector Borne Zoonotic Dis (5)
 Emerg Infect Dis (5)
+Vector Borne Zoonotic Dis (4)
 PLoS Negl Trop Dis (3)
 Sci Rep (2)
 Transbound Emerg Dis (2)
@@ -648,10 +634,8 @@ Emerg Microbes Infect (2)
 Parasit Vectors (2)
 Viruses (2)
 Zhonghua Liu Xing Bing Xue Za Zhi (2)
-J Med Entomol (1)
 Trans R Soc Trop Med Hyg (1)
 Euro Surveill (1)
-Trop Anim Health Prod (1)
 Clin Microbiol Infect (1)
 J Gen Virol (1)
 J Clin Virol (1)
@@ -666,7 +650,7 @@ Vopr Virusol (1)
 Zhonghua Shi Yan He Lin Chuang Bing Du Xue Za Zhi (1)
 ========================================
 NumSeq By Journal
-NA (9)
+NA (8)
 1 (7)
 2 (3)
 3 (5)
@@ -678,29 +662,27 @@ NA (9)
 9 (1)
 12 (1)
 20 (1)
-22 (1)
 30 (1)
 36 (1)
 39 (2)
-143 (1)
 500 (1)
-Total 918
+Total 753
 ========================================
 Host
 Ticks (11)
 Homo sapiens (10)
-Cattle and Goat and Ticks (2)
-Goat and Sheep and Ticks (2)
-Cattle and Ticks (2)
 Animal and Homo sapiens (1)
+Goat and Sheep and Ticks (1)
 Deer and Ticks (1)
 Animal and Homo sapiens and Ticks (1)
 NA (1)
 Livestock and Ticks (1)
 Sheep and Ticks (1)
+Cattle and Ticks (1)
 Camel and Cattle and Ticks (1)
 Goat and Homo sapiens and Sheep and Ticks (1)
 Other (1)
+Cattle and Goat and Ticks (1)
 Livestock and Rodent and Sheep (1)
 Homo sapiens and Livestock and Ticks (1)
 Homo sapiens and Ticks (1)
@@ -708,8 +690,8 @@ Homo sapiens and Rodent (1)
 Rodent and Sheep and Ticks (1)
 ========================================
 Specimen
-NA (22)
-blood (17)
+NA (20)
+blood (16)
 blood and spleen (1)
 brain (1)
 ========================================
@@ -717,13 +699,12 @@ Median of Sample Year
 NA (6)
 1970 (1)
 1979 (1)
-1990 (1)
 2000 (1)
 2004 (1)
 2005 (2)
 2008 (3)
-2009 (3)
-2010 (2)
+2009 (2)
+2010 (1)
 2011 (1)
 2012 (2)
 2014 (1)
@@ -734,19 +715,19 @@ NA (6)
 2020 (2)
 2021 (1)
 2022 (2)
-median 2008.0 2012.0 2018.0
-1970-1979 (2), 1990-1999 (1), 2000-2009 (10), 2010-2019 (17), 2020-2029 (5)
+median 2008.0 2015.0 2018.0
+1970-1979 (2), 2000-2009 (9), 2010-2019 (16), 2020-2029 (5)
 ========================================
 Country
 China (4)
-Senegal (3)
 Pakistan (3)
 Iran (3)
 Spain (3)
-Turkey (3)
 NA (2)
 Multinational (2)
+Turkey (2)
 Kenya (2)
+Senegal (2)
 Mauritania (2)
 Russia (2)
 Uganda (2)
@@ -754,7 +735,6 @@ Albania (1)
 India (1)
 Greece (1)
 Afghanistan, Pakistan (1)
-Ethiopia, Somalia, Unknown (1)
 Mongolia (1)
 Italy (1)
 Balkan peninsula (1)
@@ -762,20 +742,20 @@ Sanegal (1)
 Hungary (1)
 ========================================
 Country W/WO
-Yes (39)
+Yes (36)
 No (2)
 ========================================
 Gene
 Other (16)
-S (12)
-NA (10)
+S (11)
+NA (8)
 L (2)
 M (1)
 ========================================
 Seq method
 NGS (15)
-Sanger (14)
-NA (12)
+Sanger (13)
+NA (10)
 ========================================
 
 
@@ -1093,21 +1073,11 @@ Yes (3462)
 No (60)
 ========================================
 Genes
-S (1684)
-M (982)
-L (856)
-========================================
-AlignLens
-<30 (1), 30-100 (15), 100-500 (1738), 500-1000 (662), 1000-3000 (464), 3000-5000 (70), 5000-10000 (297), >10000 (275)
-========================================
-NA length
-100-500 (1693), 500-1000 (696), 1000-3000 (475), 3000-5000 (56), 5000-10000 (324), >10000 (278)
-========================================
-AA length
-<30 (43), 30-100 (409), 100-500 (2403), 500-1000 (14), 1000-3000 (377), 3000-5000 (276)
-========================================
-PcntIDs
-0%-25% (48), 25%-50% (42), 50%-75% (37), 75%-90% (1692), 90%-95% (1322), 95%-100% (381)
+S (1166)
+M (905)
+L (819)
+NA (606)
+Other (26)
 ========================================
 
 
@@ -1123,7 +1093,7 @@ Similar Specimens
 Similar countries
 110
 Similar Genes
-68
+35
 Full genome Ref
 0
 Full genome seq
