@@ -35,7 +35,8 @@ DB_FILE = output_dir / f"{VIRUS}.db"
 pubmed_folder = Path(f"Pubmed/{VIRUS}")
 pubmed_file = pubmed_folder / "ReferenceSummary_Dec11.xlsx"
 pubmed_additional_from_gb = pubmed_folder / "ReferenceSummary_Genbank_Dec11.xlsx"
-pubmed_genbank_combined = pubmed_folder / f"{VIRUS}_P_G_Combined_{timestamp}.xlsx"
+
+pubmed_genbank_combined = output_dir / f"{VIRUS}_P_G_Combined_{timestamp}.xlsx"
 
 logging_file = output_dir / f'{VIRUS}_summary.txt'
 logger = get_logger(logging_file)

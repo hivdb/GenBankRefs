@@ -313,94 +313,102 @@ def parse_genbank_records(genbank_file):
                 excluded_list.append(excluded_seq_data)
                 continue
 
-            ref_data = extract_references(record.annotations, record.id)
-            reference_list.extend(ref_data)
-
-            features = {}
-            features['Accession'] = record.id
-
-            features['Description'] = record.description
-            features['record_date'] = record.annotations['date']
-            features['organism'] = record.annotations['organism']
-
-            feature_data = extract_features(record.features, record.id)
-            features['segment_source'] = feature_data.get('segment_source', '')
-            features['Host'] = feature_data.get('host_source', '')
-            features['isolate_source'] = feature_data.get(
-                'isolation_source_source', '')
-            features['IsolateName'] = feature_data.get('isolate_source', '')
-            features['country_region'] = feature_data.get(
-                'geo_loc_name_source', '')
-            features['collection_date'] = feature_data.get(
-                'collection_date_source', '')
-
-            features['Seq'] = str(record.seq)
-            features['SeqLength'] = len(record.seq)
-
+            refs, features, genes = process_one_record(record)
+            reference_list.extend(refs)
             feature_list.append(features)
-
-            gene_seq = [
-                i
-                for i in record.features
-                if i.type == 'CDS'
-            ]
-
-            cds_names = []
-            for idx, aa in enumerate(gene_seq):
-                gene_name = None
-                if 'gene' in aa.qualifiers:
-                    gene_name = aa.qualifiers['gene'][0].upper()
-                elif 'product' in aa.qualifiers:
-                    gene_name = aa.qualifiers['product'][0].split(' ')[0].upper()
-
-                cds_names.append(gene_name)
-
-                if 'translation' in aa.qualifiers:
-                    aa_seq = str(aa.qualifiers['translation'][0])
-                    na_seq = str(aa.location.extract(record.seq))
-                    gene_list.append({
-                        'Accession': record.id,
-                        'Gene': gene_name,
-                        'Original_Gene': gene_name,
-                        'Order': idx + 1,
-                        'NumNA': len(na_seq),
-                        'NumAA': len(aa_seq),
-                        'AASeq': aa_seq,
-                        'AA_start': '',
-                        'AA_stop': '',
-                        'NASeq': na_seq,
-                        'NA_start': '',
-                        'NA_stop': '',
-                    })
-
-            if not gene_list:
-                aa_seq = ''
-                na_seq = str(record.seq)
-
-                gene_list.append({
-                    'Accession': record.id,
-                    'Gene': '',
-                    'Original_Gene': 'isolate',
-                    'NumNA': len(na_seq),
-                    'NumAA': len(aa_seq),
-                    'AASeq': aa_seq,
-                    'AA_start': '',
-                    'AA_stop': '',
-                    'NASeq': na_seq,
-                    'NA_start': '',
-                    'NA_stop': '',
-                })
-
-            features['cds'] = ', '.join(cds_names)
-
-            for gene in gene_list:
-                gene['hit_name'] = ''
-                gene['e_value'] = 999
-                gene['pcnt_id'] = 0
-                gene['align_len'] = 0
-                gene['blast_name'] = ''
+            gene_list.extend(genes)
 
     return feature_list, reference_list, gene_list, excluded_list
+
+
+def process_one_record(record):
+    refs = extract_references(record.annotations, record.id)
+
+    features = {}
+    features['Accession'] = record.id
+
+    features['Description'] = record.description
+    features['record_date'] = record.annotations['date']
+    features['organism'] = record.annotations['organism']
+
+    feature_data = extract_features(record.features, record.id)
+    features['segment_source'] = feature_data.get('segment_source', '')
+    features['Host'] = feature_data.get('host_source', '')
+    features['isolate_source'] = feature_data.get(
+        'isolation_source_source', '')
+    features['IsolateName'] = feature_data.get('isolate_source', '')
+    features['country_region'] = feature_data.get(
+        'geo_loc_name_source', '')
+    features['collection_date'] = feature_data.get(
+        'collection_date_source', '')
+
+    features['Seq'] = str(record.seq)
+    features['SeqLength'] = len(record.seq)
+
+    gene_seq = [
+        i
+        for i in record.features
+        if i.type == 'CDS'
+    ]
+
+    cds_names = []
+    genes = []
+    for idx, aa in enumerate(gene_seq):
+        gene_name = None
+        if 'gene' in aa.qualifiers:
+            gene_name = aa.qualifiers['gene'][0].upper()
+        elif 'product' in aa.qualifiers:
+            gene_name = aa.qualifiers['product'][0].split(' ')[0].upper()
+
+        cds_names.append(gene_name)
+
+        if 'translation' in aa.qualifiers:
+            aa_seq = str(aa.qualifiers['translation'][0])
+            na_seq = str(aa.location.extract(record.seq))
+            genes.append({
+                'Accession': record.id,
+                'Gene': gene_name,
+                'Original_Gene': gene_name,
+                'Order': idx + 1,
+                'NumNA': len(na_seq),
+                'NumAA': len(aa_seq),
+                'AASeq': aa_seq,
+                'AA_start': '',
+                'AA_stop': '',
+                'NASeq': na_seq,
+                'NA_start': '',
+                'NA_stop': '',
+            })
+
+    if not genes:
+        aa_seq = ''
+        na_seq = str(record.seq)
+
+        genes.append({
+            'Accession': record.id,
+            'Gene': '',
+            'Original_Gene': 'isolate',
+            'Order': 1,
+            'NumNA': len(na_seq),
+            'NumAA': len(aa_seq),
+            'AASeq': aa_seq,
+            'AA_start': '',
+            'AA_stop': '',
+            'NASeq': na_seq,
+            'NA_start': '',
+            'NA_stop': '',
+        })
+
+    features['cds'] = ', '.join(cds_names)
+
+    for gene in genes:
+        gene['hit_name'] = ''
+        gene['e_value'] = 999
+        gene['pcnt_id'] = 0
+        gene['align_len'] = 0
+        gene['blast_name'] = ''
+
+    return refs, features, genes
 
 
 def extract_references(annotations, accession):

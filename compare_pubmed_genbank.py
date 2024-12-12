@@ -18,21 +18,22 @@ def compare_pubmed_genbank(virus_obj):
     summrize = input('Summarize tables? [y/n]')
     summrize = summrize == 'y'
 
-    genbank_ref_file = virus_obj.combined_file
-    genbank_ref = pd.read_excel(genbank_ref_file, dtype=str).fillna('')
+    genbank_ref = pd.read_excel(virus_obj.combined_file, dtype=str).fillna('')
 
     if summrize:
         summarize_genbank_by_ref(genbank_ref, virus_obj.logger)
 
-    genbank_file = virus_obj.genbank_feature_check_file
-    genbank = pd.read_excel(genbank_file, dtype=str).fillna('')
+    genbank_feature = pd.read_excel(
+        virus_obj.genbank_feature_check_file, dtype=str).fillna('')
+    genbank_feature['Genes'] = genbank_feature['Genes'].apply(
+        virus_obj.translate_gene)
 
-    genbank['Genes'] = genbank['Genes'].apply(virus_obj.translate_gene)
-
-    genbank_genes = pd.read_excel(virus_obj.genbank_gene_file, dtype=str).fillna('')
+    genbank_genes = pd.read_excel(
+        virus_obj.genbank_gene_file, dtype=str).fillna('')
 
     if summrize:
-        summarize_genbank_by_seq(genbank, genbank_genes, virus_obj.logger)
+        summarize_genbank_by_seq(
+            genbank_feature, genbank_genes, virus_obj.logger)
         summarize_genbank_full_genome(
             genbank_ref, virus_obj.logger, full_gene_set=virus_obj.GENES)
 
@@ -92,8 +93,10 @@ def compare_pubmed_genbank(virus_obj):
     format_table(str(virus_obj.pubmed_genbank_combined))
 
     if summrize:
-        summarize_combined_data(combined, genbank, genbank_genes, virus_obj.logger)
-        summarize_genbank_full_genome(genbank_match, virus_obj.logger, virus_obj.GENES)
+        summarize_combined_data(
+            combined, genbank_feature, genbank_genes, virus_obj.logger)
+        summarize_genbank_full_genome(
+            genbank_match, virus_obj.logger, virus_obj.GENES)
 
     return pubmed, pubmed_match
 
