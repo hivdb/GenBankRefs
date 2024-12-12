@@ -26,28 +26,29 @@ def match_pm_gb(pubmed, genbank, logger):
             match_by_pmid_list.append(match_by_pmid)
             # continue
 
-        title = row['Title'].replace('Direct Submission,', '').replace(', Direct Submission', '').strip()
+        else:
+            title = row['Title'].replace('Direct Submission,', '').replace(', Direct Submission', '').strip()
 
-        # Pubmed title always exists
-        result = pubmed[pubmed['Title'].apply(
-            lambda x: Levenshtein.distance(x.lower(), title.lower()) < 5)]
+            # Pubmed title always exists
+            result = pubmed[pubmed['Title'].apply(
+                lambda x: Levenshtein.distance(x.lower(), title.lower()) < 5)]
 
-        if not result.empty:
-            matched_pubmed_indices.extend(result.index.tolist())
-            match_by_title = [row, result, index]
-            match_by_title_list.append(match_by_title)
+            if not result.empty:
+                matched_pubmed_indices.extend(result.index.tolist())
+                match_by_title = [row, result, index]
+                match_by_title_list.append(match_by_title)
+            else:
+                accession_list = row['accession']
+                accession_prefix_list = set([
+                    a.strip()[:6]
+                    for a in accession_list.split(',')
+                ])
 
-        accession_list = row['accession']
-        accession_prefix_list = set([
-            a.strip()[:6]
-            for a in accession_list.split(',')
-        ])
-
-        result = search_access_prefix(pubmed, accession_prefix_list)
-        if not result.empty:
-            matched_pubmed_indices.extend(result.index.tolist())
-            match_by_acc = [row, result, index]
-            match_by_acc_list.append(match_by_acc)
+                result = search_access_prefix(pubmed, accession_prefix_list)
+                if not result.empty:
+                    matched_pubmed_indices.extend(result.index.tolist())
+                    match_by_acc = [row, result, index]
+                    match_by_acc_list.append(match_by_acc)
 
         if match_by_acc or match_by_pmid or match_by_title:
             pass
