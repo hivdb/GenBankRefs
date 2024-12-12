@@ -84,21 +84,7 @@ def load_virus_obj(virus):
     return module
 
 
-def main():
-    virus = select_virus()
-    virus_obj = load_virus_obj(virus)
-    run_blast = select_run_blast()
-
-    virus_obj.build_blast_db()
-
-    feature_list, reference_list, gene_list, exclude_list = parse_genbank_records(
-        virus_obj.genbank_file)
-
-    df_excluded_seqs = pd.DataFrame(exclude_list)
-    print("Number of excluded sequences:", len(df_excluded_seqs))
-    print('Number of genbank records', len(feature_list))
-    print("Number of Genes", len(gene_list))
-
+def process_feature_df(feature_list, virus_obj):
     features_df = pd.DataFrame(feature_list)
     # This uses data in the imported virus module to clean data in the feature table
     features_df = virus_obj.process_feature(features_df)
@@ -113,6 +99,10 @@ def main():
     features_df = pd.read_excel(
             str(virus_obj.genbank_feature_check_file)).fillna('')
 
+    return features_df
+
+
+def process_genes_df(gene_list, run_blast, virus_obj):
     if run_blast == 1:
         gene_list = pooled_blast(gene_list, virus_obj)
         gene_df = pd.DataFrame(gene_list)
@@ -137,6 +127,28 @@ def main():
 
     gene_df = virus_obj.process_gene_list(gene_df)
     gene_df.to_excel(str(virus_obj.genbank_gene_file), index=False)
+
+    return gene_df
+
+
+def main():
+    virus = select_virus()
+    virus_obj = load_virus_obj(virus)
+    run_blast = select_run_blast()
+
+    virus_obj.build_blast_db()
+
+    feature_list, reference_list, gene_list, exclude_list = parse_genbank_records(
+        virus_obj.genbank_file)
+
+    df_excluded_seqs = pd.DataFrame(exclude_list)
+    print("Number of excluded sequences:", len(df_excluded_seqs))
+    print('Number of genbank records', len(feature_list))
+    print("Number of Genes", len(gene_list))
+
+    features_df = process_feature_df(feature_list, virus_obj)
+
+    genes_df = process_genes_df(gene_list, run_blast, virus_obj)
 
     # Aggregate by reference
     reference_df = pd.DataFrame(reference_list)
@@ -170,7 +182,8 @@ def main():
           len(merged_ref_df))
 
     # Combine references and features
-    combined_df = combine_refs_and_features(merged_ref_df, features_df)
+    combined_df = combine_refs_and_features(
+        merged_ref_df, features_df, genes_df)
 
     combined_df.to_excel(str(virus_obj.combined_file), index=False)
 
@@ -191,10 +204,10 @@ def main():
     #   Pubmed literatures
     #   Pubmed GenBank Matches
     create_database(
-        virus_obj, merged_ref_df, features_df, gene_df, pubmed, pubmed_genbank)
+        virus_obj, merged_ref_df, features_df, genes_df, pubmed, pubmed_genbank)
 
 
-def create_database(virus_obj, merged_ref_df, features_df, gene_df, pubmed, pubmed_genbank):
+def create_database(virus_obj, merged_ref_df, features_df, genes_df, pubmed, pubmed_genbank):
     virus_obj.DB_FILE.unlink(missing_ok=True)
 
     tblSubmissionSet = merged_ref_df[[
@@ -211,9 +224,9 @@ def create_database(virus_obj, merged_ref_df, features_df, gene_df, pubmed, pubm
         'IsolateYear', 'Host', 'Specimen', 'IsolateName', 'Virus']]
     database.dump_table(virus_obj.DB_FILE, 'tblIsolates', tblIsolates)
 
-    gene_df['PcntMatch'] = gene_df['pcnt_id']
-    gene_df['HSPLength'] = gene_df['align_len']
-    tblSequences = gene_df[[
+    genes_df['PcntMatch'] = genes_df['pcnt_id']
+    genes_df['HSPLength'] = genes_df['align_len']
+    tblSequences = genes_df[[
         'Accession', 'Gene',
         'AASeq', 'NumAA', 'AA_start', 'AA_stop',
         'NASeq', 'NumNA', 'NA_start', 'NA_stop',
@@ -244,7 +257,9 @@ def create_database(virus_obj, merged_ref_df, features_df, gene_df, pubmed, pubm
         'IsolateType',
         'Gene'
     ]]
-    database.dump_table(virus_obj.DB_FILE, 'tblLitTextReview', tblLitTextReview)
+    database.dump_table(
+        virus_obj.DB_FILE,
+        'tblLitTextReview', tblLitTextReview)
 
     tblLitSubmitLink = []
     for pubmed, genbank_list in pubmed_genbank:
@@ -346,11 +361,16 @@ def parse_genbank_records(genbank_file):
                     gene_list.append({
                         'Accession': record.id,
                         'Gene': gene_name,
+                        'Original_Gene': gene_name,
                         'Order': idx + 1,
                         'NumNA': len(na_seq),
                         'NumAA': len(aa_seq),
                         'AASeq': aa_seq,
-                        'NASeq': na_seq
+                        'AA_start': '',
+                        'AA_stop': '',
+                        'NASeq': na_seq,
+                        'NA_start': '',
+                        'NA_stop': '',
                     })
 
             if not gene_list:
@@ -360,10 +380,15 @@ def parse_genbank_records(genbank_file):
                 gene_list.append({
                     'Accession': record.id,
                     'Gene': '',
+                    'Original_Gene': 'isolate',
                     'NumNA': len(na_seq),
                     'NumAA': len(aa_seq),
                     'AASeq': aa_seq,
-                    'NASeq': na_seq
+                    'AA_start': '',
+                    'AA_stop': '',
+                    'NASeq': na_seq,
+                    'NA_start': '',
+                    'NA_stop': '',
                 })
 
             features['cds'] = ', '.join(cds_names)
@@ -374,10 +399,6 @@ def parse_genbank_records(genbank_file):
                 gene['pcnt_id'] = 0
                 gene['align_len'] = 0
                 gene['blast_name'] = ''
-                gene['AA_start'] = ''
-                gene['AA_stop'] = ''
-                gene['NA_start'] = ''
-                gene['NA_stop'] = ''
 
     return feature_list, reference_list, gene_list, excluded_list
 

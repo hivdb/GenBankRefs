@@ -29,8 +29,10 @@ def compare_pubmed_genbank(virus_obj):
 
     genbank['Genes'] = genbank['Genes'].apply(virus_obj.translate_gene)
 
+    genbank_genes = pd.read_excel(virus_obj.genbank_gene_file, dtype=str).fillna('')
+
     if summrize:
-        summarize_genbank_by_seq(genbank, virus_obj.logger)
+        summarize_genbank_by_seq(genbank, genbank_genes, virus_obj.logger)
         summarize_genbank_full_genome(
             genbank_ref, virus_obj.logger, full_gene_set=virus_obj.GENES)
 
@@ -90,7 +92,7 @@ def compare_pubmed_genbank(virus_obj):
     format_table(str(virus_obj.pubmed_genbank_combined))
 
     if summrize:
-        summarize_combined_data(combined, genbank, virus_obj.logger)
+        summarize_combined_data(combined, genbank, genbank_genes, virus_obj.logger)
         summarize_genbank_full_genome(genbank_match, virus_obj.logger, virus_obj.GENES)
 
     return pubmed, pubmed_match

@@ -50,8 +50,8 @@ def combine_file(pubmed_match, pubmed_unmatch, genbank_unmatch):
                                        for genbank in genbank_list
                                        for i in genbank['accession'].split(',')
                                        ]),
-            # 'AlignLens (GB)': merge_genbank_list_columns(genbank_list, 'AlignLens'),
-            # 'PcntIDs (GB)': merge_genbank_list_columns(genbank_list, 'PcntIDs'),
+            'AlignLens (GB)': merge_genbank_list_columns(genbank_list, 'AlignLens'),
+            'PcntIDs (GB)': merge_genbank_list_columns(genbank_list, 'PcntIDs'),
         }
 
         result.append(row)

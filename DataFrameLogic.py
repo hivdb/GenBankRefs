@@ -135,7 +135,7 @@ def merge_rows(df, merged_indexes):
     return new_row_df
 
 
-def merge_feature_rows(df):
+def merge_feature_rows(df, genes_df):
     df = df.copy()
     df = df.replace("", "NA")
     new_row = {}
@@ -167,17 +167,19 @@ def merge_feature_rows(df):
     unique_cds = count_unique_elements(df['cds'].tolist())
     new_row['CDS'] = dict_to_sorted_string(unique_cds)
 
-    # new_row['NumNA'] = create_binned_seq_lens(df['NumNA'].tolist())
-    # new_row['NumAA'] = create_binned_seq_lens(df['NumAA'].tolist())
-    # new_row['AlignLens'] = create_binned_seq_lens(df['align_len'].tolist())
-    # new_row['PcntIDs'] = create_binned_pcnts(df['pcnt_id'].tolist())
+    new_row['NumNA'] = create_binned_seq_lens(genes_df['NumNA'].tolist())
+    new_row['NumAA'] = create_binned_seq_lens(genes_df['NumAA'].tolist())
+    new_row['AlignLens'] = create_binned_seq_lens(genes_df['align_len'].tolist())
+    new_row['PcntIDs'] = create_binned_pcnts(genes_df['pcnt_id'].tolist())
     return new_row
 
 
-def combine_refs_and_features(ref_df, features_df):
+def combine_refs_and_features(ref_df, features_df, genes_df):
     combined_df = ref_df.copy()
-    feature_columns = ['Organisms', 'RecordYears',  'Hosts', 'Countries', 'Gene',
-                       'IsolateYears', 'Specimens', 'CDS', 'NumNA', 'NumAA', 'AlignLens', 'PcntIDs']
+    feature_columns = [
+        'Organisms', 'RecordYears',  'Hosts', 'Countries', 'Gene',
+        'IsolateYears', 'Specimens', 'CDS', 'NumNA', 'NumAA',
+        'AlignLens', 'PcntIDs']
     combined_df[feature_columns] = 'None'
     count = 0
     for index, row in combined_df.iterrows():
@@ -189,7 +191,9 @@ def combine_refs_and_features(ref_df, features_df):
         features_rows = features_df[features_df['Accession'].isin(
             accession_list)]
 
-        new_dict = merge_feature_rows(features_rows)
+        genes_row = genes_df[genes_df['Accession'].isin(accession_list)]
+
+        new_dict = merge_feature_rows(features_rows, genes_row)
 
         combined_df.at[index, 'Organisms'] = new_dict['Organisms']
         combined_df.at[index, 'RecordYears'] = new_dict['RecordYears']
@@ -199,10 +203,10 @@ def combine_refs_and_features(ref_df, features_df):
         combined_df.at[index, 'Specimens'] = new_dict['Specimens']
         combined_df.at[index, 'Gene'] = new_dict['Gene']
         combined_df.at[index, 'CDS'] = new_dict['CDS']
-        # combined_df.at[index, 'NumNA'] = new_dict['NumNA']
-        # combined_df.at[index, 'NumAA'] = new_dict['NumAA']
-        # combined_df.at[index, 'AlignLens'] = new_dict['AlignLens']
-        # combined_df.at[index, 'PcntIDs'] = new_dict['PcntIDs']
+        combined_df.at[index, 'NumNA'] = new_dict['NumNA']
+        combined_df.at[index, 'NumAA'] = new_dict['NumAA']
+        combined_df.at[index, 'AlignLens'] = new_dict['AlignLens']
+        combined_df.at[index, 'PcntIDs'] = new_dict['PcntIDs']
         # remove .x after accession ID
         row["accession"] = re.sub(r'\.\d+', '', row['accession'])
     return combined_df

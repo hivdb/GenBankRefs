@@ -7,7 +7,7 @@ from .utils import get_values_of_value_count_list
 from Utilities import create_binnned_year
 
 
-def summarize_combined_data(combined, genbank, logger):
+def summarize_combined_data(combined, genbank, genes, logger):
     logger.info('Matched')
     matches = combined[(combined['match'] == 'Yes')]
 
@@ -43,7 +43,9 @@ def summarize_combined_data(combined, genbank, logger):
     genbank['Accession'] = genbank['Accession'].apply(lambda x: x.strip().split('.')[0])
     genbank = genbank[genbank['Accession'].isin(list(accessions))]
 
-    summarize_genbank_by_seq(genbank, logger)
+    genes = genes[genes['Accession'].isin(list(accessions))]
+
+    summarize_genbank_by_seq(genbank, genes, logger)
 
     logger.info('Similar virus')
     logger.info(summarize_similarity(combined, 'Viruses'))
