@@ -27,6 +27,7 @@ genbank_gene_file = output_dir / \
     f"{VIRUS}__GenBankGenes_{timestamp}.xlsx"
 
 combined_file = output_dir / f"{VIRUS}_Combined_{timestamp}.xlsx"
+ref_file = output_dir / f"{VIRUS}_Ref_{timestamp}.xlsx"
 exclude_seq_file = output_dir / f"{VIRUS}_Excluded_Seqs_{timestamp}.xlsx"
 comparison_file = output_dir / f"{VIRUS}_Combined_11_06a.xlsx"
 merged_ref_file = output_dir / f"{VIRUS}_Merged_Ref_{timestamp}.xlsx"

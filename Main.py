@@ -177,9 +177,8 @@ def main():
         lambda x: ', '.join(x))
     print("Number of entries following aggregation by exact matches: ",
           len(grouped_ref_df))
+    # grouped_ref_df.to_excel(virus_obj.ref_file)
 
-    # #change name later
-    # grouped_ref_df.to_excel("OutputData/Nipah_ref_before_merge.xlsx")
     #merge rows that are dups
     merged_ref_df = merge_by_author_title_acc(grouped_ref_df)
     merged_ref_df['SetID'] = merged_ref_df.index + 1

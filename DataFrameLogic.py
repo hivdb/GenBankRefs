@@ -34,7 +34,7 @@ def compare_authors_titles_year_accession_overlap(row_i, row_j):
 
     accessions_i = [s.strip() for s in accessions_i if not is_reference_genome(s) and s.strip()]
     accessions_j = [s.strip() for s in accessions_j if not is_reference_genome(s) and s.strip()]
-    
+
 
     def log_match_reference():
         with open('MatchingReferences.txt', 'a') as file:
@@ -51,7 +51,7 @@ def compare_authors_titles_year_accession_overlap(row_i, row_j):
             file.write(f'Accessions_i:{accessions_i}\nAccessions_j:{accessions_j}\n')
             file.write(f'Pcnt_shared_accessions:{pcnt_shared_accessions} Pcnt_shared_stems:{pcnt_shared_stems}\n\n')
 
-    
+
     #PMID
     if row_i['PMID'] and row_j['PMID']:
         if row_i['PMID'] == row_j['PMID']:
@@ -62,12 +62,12 @@ def compare_authors_titles_year_accession_overlap(row_i, row_j):
     # Accession
     if accessions_i and accessions_j and (set(accessions_i).issubset(set(accessions_j)) or set(accessions_j).issubset(set(accessions_i))):
         return 1
-    
+
     # Accession only
     pcnt_shared_accessions = get_pcnt_shared_accessions(accessions_i, accessions_j)
     if pcnt_shared_accessions > 0.8:
         return 1
-    
+
     # Title - when both not Direct Submission
     title_distance = Levenshtein.distance(title_i, title_j)
     if title_i != 'Direct Submission' and (title_j != 'Direct Submission') and title_distance < 5:
@@ -75,11 +75,11 @@ def compare_authors_titles_year_accession_overlap(row_i, row_j):
 
     if (title_i != 'Direct Submission') and (title_j != 'Direct Submission'):
         return 0
-    
+
     # if any author not NCBI (empty), skip comparison
     if authors_i or authors_j or (authors_i != 'NCBI' or authors_j != 'NCBI'):
         return 0
-    
+
     # Title, author, accession stem
     max_year_dif = calc_year_dif(year_i, year_j)
     pcnt_authors_overlap = get_pcnt_authors_overlap(authors_i, authors_j)
@@ -108,7 +108,7 @@ def merge_by_author_title_acc(df):
             close_lists[i] = close_matches
 
     list_of_merged_indexes, complete_list_of_merged_indexes = convert_dict_to_list_of_sets(close_lists)
-    print(list_of_merged_indexes, len(complete_list_of_merged_indexes))
+    # print(list_of_merged_indexes, len(complete_list_of_merged_indexes))
     # print("Close lists:", close_lists)
     # print(f'''No with shared author_titles: {len(list_of_sets_w_shared_indexes)}: {list_of_sets_w_shared_indexes}''')
     # print(f'''To be dropped: {len(complete_list_of_shared_indexes)}: {complete_list_of_shared_indexes}''')
