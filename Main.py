@@ -181,6 +181,8 @@ def main():
     print("Number of entries following aggregation by similarity: ",
           len(merged_ref_df))
 
+    merged_ref_df.to_excel(str(virus_obj.merged_ref_file), index=False)
+
     # Combine references and features
     combined_df = combine_refs_and_features(
         merged_ref_df, features_df, genes_df)

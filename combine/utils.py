@@ -33,32 +33,6 @@ def count_number(rows, key=None, translater=lambda x: x, sorter=count_rev_sorter
     ])
 
 
-def merge_genbank_list_columns(genbank_list, key, translater=lambda x: x, sorter=count_rev_sorter):
-
-    column_values = [genbank[key] for genbank in genbank_list]
-    value_count_list = [
-        j.strip()
-        for i in column_values
-        for j in i.split(',')
-    ]
-    value_count_list = [
-        split_value_count(j)
-        for j in value_count_list
-    ]
-
-    result = defaultdict(int)
-    for value, count in value_count_list:
-        result[
-            translater(value)
-            if value != 'NA' else value
-        ] += int(count)
-
-    return '\n'.join([
-        f'{k} ({v})'
-        for k, v in sorter(result.items())
-    ])
-
-
 def split_value_count(value_count):
 
     value_count = value_count[::-1]

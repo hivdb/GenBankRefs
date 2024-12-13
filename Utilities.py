@@ -180,6 +180,9 @@ def dict_to_sorted_string(element_counts):
 
 def create_binned_pcnts(percentages):
     bins = [0, 25, 50, 75, 90, 95, 100]
+
+    percentages = [float(p) for p in percentages]
+
     labels = ['0%-25%', '25%-50%', '50%-75%', '75%-90%', '90%-95%', '95%-100%']
     if len(percentages) == 0:
         return ""
@@ -198,6 +201,8 @@ def create_binned_seq_lens(numbers):
     # print("Numbers:", numbers)
     if len(numbers) == 0:
         return ""
+
+    numbers = [int(n) for n in numbers]
 
     unique_counts = pd.Series(numbers).value_counts().to_dict()
     if len(unique_counts) < 6:

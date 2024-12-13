@@ -1,13 +1,11 @@
 from .utils import count_number
-from .utils import merge_genbank_list_columns
 from .utils import int_sorter
-from .sum_genbank import summarize_genbank_by_seq, summarize_genbank_full_genome
-from .utils import split_value_by_comma
+from .sum_genbank import summarize_genbank_by_seq
 from .utils import get_values_of_value_count_list
 from Utilities import create_binnned_year
 
 
-def summarize_combined_data(combined, genbank, genes, logger):
+def summarize_combined_data(combined, features, genes, logger):
     logger.info('Matched')
     matches = combined[(combined['match'] == 'Yes')]
 
@@ -40,12 +38,13 @@ def summarize_combined_data(combined, genbank, genes, logger):
     logger.info('NumSeq', num_seq)
     logger.info('=' * 40)
 
-    genbank['Accession'] = genbank['Accession'].apply(lambda x: x.strip().split('.')[0])
-    genbank = genbank[genbank['Accession'].isin(list(accessions))]
+    # TODO: do it at beginning
+    # features['Accession'] = features['Accession'].apply(lambda x: x.strip().split('.')[0])
+    features = features[features['Accession'].isin(list(accessions))]
 
     genes = genes[genes['Accession'].isin(list(accessions))]
 
-    summarize_genbank_by_seq(genbank, genes, logger)
+    summarize_genbank_by_seq(features, genes, logger)
 
     logger.info('Similar virus')
     logger.info(summarize_similarity(combined, 'Viruses'))

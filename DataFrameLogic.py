@@ -149,6 +149,12 @@ def merge_feature_rows(df, genes_df):
     unique_hosts = count_unique_elements(df['Host'].tolist())
     new_row['Hosts'] = dict_to_sorted_string(unique_hosts)
 
+    unique_specimens = count_unique_elements(df['isolate_source'].tolist())
+    new_row['Specimens'] = dict_to_sorted_string(unique_specimens)
+
+    unique_gene = count_unique_elements(df['segment_source'].tolist())
+    new_row['SegmentSource'] = dict_to_sorted_string(unique_gene)
+
     unique_countries = count_unique_elements(df['Country'].tolist())
     new_row['Countries'] = dict_to_sorted_string(unique_countries)
 
@@ -163,9 +169,6 @@ def merge_feature_rows(df, genes_df):
 
     unique_gene = count_unique_elements(df['Genes'].tolist())
     new_row['Gene'] = dict_to_sorted_string(unique_gene)
-
-    unique_cds = count_unique_elements(df['cds'].tolist())
-    new_row['CDS'] = dict_to_sorted_string(unique_cds)
 
     new_row['NumNA'] = create_binned_seq_lens(genes_df['NumNA'].tolist())
     new_row['NumAA'] = create_binned_seq_lens(genes_df['NumAA'].tolist())
@@ -202,7 +205,6 @@ def combine_refs_and_features(ref_df, features_df, genes_df):
         combined_df.at[index, 'IsolateYears'] = new_dict['IsolateYears']
         combined_df.at[index, 'Specimens'] = new_dict['Specimens']
         combined_df.at[index, 'Gene'] = new_dict['Gene']
-        combined_df.at[index, 'CDS'] = new_dict['CDS']
         combined_df.at[index, 'NumNA'] = new_dict['NumNA']
         combined_df.at[index, 'NumAA'] = new_dict['NumAA']
         combined_df.at[index, 'AlignLens'] = new_dict['AlignLens']

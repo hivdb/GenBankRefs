@@ -1,13 +1,29 @@
 import pandas as pd
-from .utils import merge_genbank_list_columns
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment
+from DataFrameLogic import merge_feature_rows
 
 
-def combine_file(pubmed_match, pubmed_unmatch, genbank_unmatch):
+def combine_file(
+        pubmed_match, pubmed_unmatch, genbank_unmatch,
+        features_df, genes_df
+        ):
 
     result = []
     for pubmed, genbank_list in pubmed_match:
+        accessions = set([
+             j.strip()
+             for i in genbank_list
+             for j in i['accession'].split(',')
+        ])
+
+        features = features_df[features_df['Accession'].isin(
+            accessions)]
+
+        genes = genes_df[genes_df['Accession'].isin(accessions)]
+
+        features_stat = merge_feature_rows(features, genes)
+
         row = {
             'Authors': pubmed['Authors'],
             'Title': pubmed['Title'],
@@ -32,26 +48,20 @@ def combine_file(pubmed_match, pubmed_unmatch, genbank_unmatch):
             'CloneMethod (PM)': pubmed['CloneMethod'],
             'GenBank (PM)': pubmed['GenBank'],
 
-            'Viruses (GB)': merge_genbank_list_columns(genbank_list, 'Organisms'),
-            'NumSeqs (GB)': len([
-                i
-                for genbank in genbank_list
-                for i in genbank['accession'].split(',')
-            ]),
-            'Hosts (GB)': merge_genbank_list_columns(genbank_list, 'Hosts'),
+            'Viruses (GB)': features_stat['Organisms'],
+            'NumSeqs (GB)': len(accessions),
+            'Hosts (GB)': features_stat['Hosts'],
 
-            'Specimen (GB)': merge_genbank_list_columns(genbank_list, 'Specimens'),
-            'SampleYr (GB)':  merge_genbank_list_columns(genbank_list, 'IsolateYears'),
-            'Countries (GB)': merge_genbank_list_columns(genbank_list, 'Countries'),
-            'Genes (GB)': merge_genbank_list_columns(genbank_list, 'Gene'),
+            'Specimen (GB)': features_stat['Specimens'],
+            'SampleYr (GB)':  features_stat['IsolateYears'],
+            'Countries (GB)': features_stat['Countries'],
+
+            'Genes (GB)': features_stat['Gene'],
             'SeqMethod (GB)': '',
             'CloneMethod (GB)': '',
-            'GenBank (GB)': ', '.join([i.strip().split('.')[0]
-                                       for genbank in genbank_list
-                                       for i in genbank['accession'].split(',')
-                                       ]),
-            'AlignLens (GB)': merge_genbank_list_columns(genbank_list, 'AlignLens'),
-            'PcntIDs (GB)': merge_genbank_list_columns(genbank_list, 'PcntIDs'),
+            'GenBank (GB)': ', '.join(sorted(list(accessions))),
+            'AlignLens (GB)': features_stat['AlignLens'],
+            'PcntIDs (GB)': features_stat['PcntIDs'],
         }
 
         result.append(row)
@@ -83,28 +93,36 @@ def combine_file(pubmed_match, pubmed_unmatch, genbank_unmatch):
         result.append(row)
 
     for row, genbank in genbank_unmatch.iterrows():
-        numSeqs = len(genbank['accession'].split(','))
+
+        accessions = set(genbank['accession'].split(','))
+        features = features_df[features_df['Accession'].isin(
+            accessions)]
+
+        genes = genes_df[genes_df['Accession'].isin(accessions)]
+
+        features_stat = merge_feature_rows(features, genes)
+
         row = {
             'Authors': genbank['Authors'],
             'Title': genbank['Title'],
             'Journal': genbank['Journal'],
             'Year': genbank['Year'],
             'PMID': genbank['PMID'],
-            'Viruses (GB)': genbank['Organisms'],
-            'NumSeqs (GB)': numSeqs,
-            'Hosts (GB)': genbank['Hosts'],
-            'Specimen (GB)': genbank['Specimens'],
-            'SampleYr (GB)': genbank['IsolateYears'],
-            'Countries (GB)': genbank['Countries'],
-            'Genes (GB)': genbank['Gene'],
+            'Viruses (GB)': features_stat['Organisms'],
+            'NumSeqs (GB)': len(accessions),
+            'Hosts (GB)': features_stat['Hosts'],
+            'Specimen (GB)': features_stat['Specimens'],
+            'SampleYr (GB)': features_stat['IsolateYears'],
+            'Countries (GB)': features_stat['Countries'],
+            'Genes (GB)': features_stat['Gene'],
             'SeqMethod (GB)': '',
             'CloneMethod (GB)': '',
             'GenBank (GB)': ', '.join([
                 i.strip().split('.')[0]
-                for i in genbank['accession'].split(',')
+                for i in accessions
             ]),
-            'AlignLens (GB)': genbank['AlignLens'],
-            'PcntIDs (GB)': genbank['PcntIDs'],
+            'AlignLens (GB)': features_stat['AlignLens'],
+            'PcntIDs (GB)': features_stat['PcntIDs'],
         }
 
         result.append(row)

@@ -18,7 +18,7 @@ def compare_pubmed_genbank(virus_obj):
     summrize = input('Summarize tables? [y/n]')
     summrize = summrize == 'y'
 
-    genbank_ref = pd.read_excel(virus_obj.combined_file, dtype=str).fillna('')
+    genbank_ref = pd.read_excel(virus_obj.merged_ref_file, dtype=str).fillna('')
 
     if summrize:
         summarize_genbank_by_ref(genbank_ref, virus_obj.logger)
@@ -35,7 +35,7 @@ def compare_pubmed_genbank(virus_obj):
         summarize_genbank_by_seq(
             genbank_feature, genbank_genes, virus_obj.logger)
         summarize_genbank_full_genome(
-            genbank_ref, virus_obj.logger, full_gene_set=virus_obj.GENES)
+            genbank_ref, genbank_feature, virus_obj.logger, full_gene_set=virus_obj.GENES)
 
     pubmed_file = virus_obj.pubmed_file
     pubmed = pd.read_excel(pubmed_file, dtype=str).fillna('')
@@ -81,8 +81,10 @@ def compare_pubmed_genbank(virus_obj):
         summarize_genbank_by_ref(genbank_unmatch, virus_obj.logger)
 
     combined, columns = combine_file(
-        pubmed_match, pubmed_unmatch, genbank_unmatch)
+        pubmed_match, pubmed_unmatch, genbank_unmatch,
+        genbank_feature, genbank_genes)
 
+    # TODO, this function should be used on pubmed before combine
     combined = categorize_host_specimen(
         combined, 'Hosts (PM)', 'Specimen (PM)')
     combined['Hosts (PM)'] = combined['CleanedHost']
@@ -96,7 +98,7 @@ def compare_pubmed_genbank(virus_obj):
         summarize_combined_data(
             combined, genbank_feature, genbank_genes, virus_obj.logger)
         summarize_genbank_full_genome(
-            genbank_match, virus_obj.logger, virus_obj.GENES)
+            genbank_match, genbank_feature, virus_obj.logger, virus_obj.GENES)
 
     return pubmed, pubmed_match
 

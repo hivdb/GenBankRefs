@@ -2,10 +2,10 @@ from .translate_value import median_year
 from .translate_value import translate_country
 from .utils import count_number
 from .utils import int_sorter
-from .utils import split_value_count
 from Utilities import create_binned_pcnts
 from Utilities import create_binned_seq_lens
 from Utilities import create_binnned_year
+from collections import defaultdict
 
 
 def summarize_genbank_by_ref(df, logger):
@@ -48,26 +48,41 @@ def summarize_genbank_by_ref(df, logger):
 
 
 def summarize_genbank_full_genome(
-        df, logger, full_gene_set, col_name='Gene'):
+        ref_df, features_df, logger, full_gene_set, col_name='Gene'):
 
-    potential = []
-    total = 0
-    for i, row in df.iterrows():
-        count_list = []
-        value_list = []
-        for i in row[col_name].split(','):
-            value, count = split_value_count(i)
-            count_list.append(int(count))
-            value_list.extend([value] * int(count))
+    num_ref = 0
+    num_seq = 0
+    for i, row in ref_df.iterrows():
+        accessions = set([
+            a.strip()
+            for a in row['accession'].split(',')
+        ])
 
-        if set(value_list) == full_gene_set and len(set(count_list)) == 1:
-            potential.append(row)
-            total += count_list[0]
+        features = features_df[
+            features_df['Accession'].isin(accessions)]
+
+        gene_count = defaultdict(int)
+        for gene_list in features['Genes']:
+            for gene in gene_list.split(','):
+                gene = gene.strip()
+                gene_count[gene] += 1
+
+        genome = 0
+        if 'genome' in gene_count:
+            genome += gene_count['genome']
+            del gene_count['genome']
+
+        if set(gene_count.keys()) == full_gene_set:
+            genome += min(gene_count.values())
+
+        if genome:
+            num_seq += genome
+            num_ref += 1
 
     logger.info('Full genome Ref')
-    logger.info(len(potential))
+    logger.info(num_ref)
     logger.info('Full genome seq')
-    logger.info(total)
+    logger.info(num_seq)
 
 
 def summarize_genbank_by_seq(df, genes_df, logger):
