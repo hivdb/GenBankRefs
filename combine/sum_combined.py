@@ -38,8 +38,6 @@ def summarize_combined_data(combined, features, genes, logger):
     logger.info('NumSeq', num_seq)
     logger.info('=' * 40)
 
-    # TODO: do it at beginning
-    # features['Accession'] = features['Accession'].apply(lambda x: x.strip().split('.')[0])
     features = features[features['Accession'].isin(list(accessions))]
 
     genes = genes[genes['Accession'].isin(list(accessions))]

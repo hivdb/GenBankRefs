@@ -1,0 +1,243 @@
+from Bio import SeqIO
+import pandas as pd
+
+from GenBankFunctions import filter_by_taxonomy
+from GenBankFunctions import pooled_blast
+
+from Utilities import extract_year_from_date_fields
+from Utilities import extract_year_from_journal
+from Utilities import process_author_field
+
+
+# This is called by the main function to allow users to determine whether
+# BLAST is run
+def select_run_blast(default=None):
+    if default is not None:
+        return default
+
+    result = input('Run blast? [y/n]: ')
+    result = result.lower()
+    assert (result in ['y', 'n']), "Please use y/n."
+
+    return 1 if result == 'y' else 0
+
+
+def parse_genbank_records(genbank_file):
+    reference_list = []
+    feature_list = []
+    gene_list = []
+    excluded_list = []
+
+    # total_record = 0
+
+    with open(genbank_file, "r") as handle:
+        for record in SeqIO.parse(handle, "genbank"):
+
+            # total_record += 1
+            # if total_record % 10000 == 0:
+            #     print(total_record)
+
+            taxonomy = record.annotations['taxonomy']
+            if len(taxonomy) == 0 or taxonomy[0] != 'Viruses':
+                excluded_seq_data = filter_by_taxonomy(record)
+                excluded_list.append(excluded_seq_data)
+                continue
+
+            refs, features, genes = process_one_record(record)
+            reference_list.extend(refs)
+            feature_list.append(features)
+            gene_list.extend(genes)
+
+    return (
+        reference_list,
+        feature_list,
+        gene_list,
+        excluded_list)
+
+
+def process_one_record(record):
+
+    accession = record.id.split('.', -1)[0]
+
+    refs = extract_references(record.annotations, accession)
+
+    features = {}
+    features['Accession'] = accession
+
+    features['Description'] = record.description
+    features['record_date'] = record.annotations['date']
+    features['organism'] = record.annotations['organism']
+
+    feature_data = extract_features(record.features, accession)
+    features['segment_source'] = feature_data.get('segment_source', '')
+    features['Host'] = feature_data.get('host_source', '')
+    features['isolate_source'] = feature_data.get(
+        'isolation_source_source', '')
+    features['IsolateName'] = feature_data.get('isolate_source', '')
+    features['country_region'] = feature_data.get(
+        'geo_loc_name_source', '')
+    features['collection_date'] = feature_data.get(
+        'collection_date_source', '')
+
+    features['Seq'] = str(record.seq)
+    features['SeqLength'] = len(record.seq)
+
+    gene_seq = [
+        i
+        for i in record.features
+        if i.type == 'CDS'
+    ]
+
+    cds_names = []
+    genes = []
+    for idx, aa in enumerate(gene_seq):
+        gene_name = None
+        if 'gene' in aa.qualifiers:
+            gene_name = aa.qualifiers['gene'][0].upper()
+        elif 'product' in aa.qualifiers:
+            gene_name = aa.qualifiers['product'][0].split(' ')[0].upper()
+
+        cds_names.append(gene_name)
+
+        if 'translation' in aa.qualifiers:
+            aa_seq = str(aa.qualifiers['translation'][0])
+            na_seq = str(aa.location.extract(record.seq))
+            genes.append({
+                'Accession': accession,
+                'Gene': gene_name,
+                'Original_Gene': gene_name,
+                'Order': idx + 1,
+                'NumNA': len(na_seq),
+                'NumAA': len(aa_seq),
+                'AASeq': aa_seq,
+                'AA_start': '',
+                'AA_stop': '',
+                'NASeq': na_seq,
+                'NA_start': '',
+                'NA_stop': '',
+            })
+
+    if not genes:
+        aa_seq = ''
+        na_seq = str(record.seq)
+
+        genes.append({
+            'Accession': accession,
+            'Gene': '',
+            'Original_Gene': 'isolate',
+            'Order': 1,
+            'NumNA': len(na_seq),
+            'NumAA': len(aa_seq),
+            'AASeq': aa_seq,
+            'AA_start': '',
+            'AA_stop': '',
+            'NASeq': na_seq,
+            'NA_start': '',
+            'NA_stop': '',
+        })
+
+    features['cds'] = ', '.join(cds_names)
+    features['NumSubSeqs'] = len(cds_names)
+
+    for gene in genes:
+        gene['hit_name'] = ''
+        gene['e_value'] = 999
+        gene['pcnt_id'] = 0
+        gene['align_len'] = 0
+        gene['blast_name'] = ''
+
+    return refs, features, genes
+
+
+def extract_references(annotations, accession):
+    ref_list = annotations.get("references")
+    ref_data = []
+    for ref in ref_list:
+        ref_items = {}
+        ref_items['accession'] = accession
+        ref_items['Authors'] = ref.authors
+        ref_items['Title'] = ref.title
+        ref_items['Journal'] = ref.journal
+        ref_items['PMID'] = ref.pubmed_id
+        ref_data.append(ref_items)
+    return ref_data
+
+
+def extract_features(features, accession):
+    feature_items = {}
+    feature_items["accession"] = accession
+    for feature in features:
+        for key, value in feature.qualifiers.items():
+            key = key + '_' + feature.type
+            feature_items[key] = value[0]
+            # print(f"Key {key}: value {value}\n")
+    return feature_items
+
+
+def process_references(references):
+    references = pd.DataFrame(references)
+    references['Year'] = references['Journal'].apply(
+        extract_year_from_journal)
+
+    references['Year'] = pd.to_numeric(
+        references['Year'], errors='coerce')
+    references['Year'] = references['Year'].apply(
+        lambda x: '' if pd.isna(x) else int(x))
+
+    # Remove Submitted (date) from journal
+    references['Journal'] = references['Journal'].str.replace(
+        r"Submitted \(\d{2}-[A-Z]{3}-\d{4}\)", "", regex=True)
+
+    references['Journal'] = references['Journal'].str.replace(
+        r"(Patent).*", r"\1", regex=True)
+    references['Authors'] = references['Authors'].apply(
+        process_author_field)
+
+    return references
+
+
+def process_features(feature_list, virus_obj):
+    features_df = pd.DataFrame(feature_list)
+    # This uses data in the imported virus module to clean data in the feature table
+    features_df = virus_obj.process_feature(features_df)
+
+    features_df['RecordYear'] = features_df['record_date'].apply(
+        extract_year_from_date_fields)
+    features_df['IsolateYear'] = features_df['collection_date'].apply(
+        extract_year_from_date_fields)
+
+    features_df.to_excel(
+        str(virus_obj.genbank_feature_check_file), index=False)
+    features_df = pd.read_excel(
+        str(virus_obj.genbank_feature_check_file)).fillna('')
+
+    return features_df
+
+
+def process_genes(gene_list, run_blast, virus_obj):
+    if run_blast == 1:
+        gene_list = pooled_blast(gene_list, virus_obj)
+        gene_df = pd.DataFrame(gene_list)
+        gene_df.to_excel(str(virus_obj.genbank_gene_file), index=False)
+        gene_df = pd.read_excel(
+            str(virus_obj.genbank_gene_file)).fillna('')
+
+    # genbank_gene_file is created either using blast or without blast
+    # depending on the user input
+    # This statement loads the existing genbank feature file which may or may not
+    # include blast data. This makes it possible to avoid re-running BLAST
+    elif virus_obj.genbank_gene_file.exists():
+        gene_df = pd.read_excel(
+            str(virus_obj.genbank_gene_file)).fillna('')
+
+    # This statement creates features_df without running BLAST
+    else:
+        gene_df = pd.DataFrame(gene_list)
+        gene_df.to_excel(str(virus_obj.genbank_gene_file), index=False)
+        gene_df = pd.read_excel(
+            str(virus_obj.genbank_gene_file)).fillna('')
+
+    gene_df = virus_obj.process_gene_list(gene_df)
+    gene_df.to_excel(str(virus_obj.genbank_gene_file), index=False)
+
+    return gene_df

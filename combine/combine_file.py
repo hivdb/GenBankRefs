@@ -60,6 +60,7 @@ def combine_file(
             'SeqMethod (GB)': '',
             'CloneMethod (GB)': '',
             'GenBank (GB)': ', '.join(sorted(list(accessions))),
+            'NumSubSeqs': features_stat['NumSubSeqs'],
             'AlignLens (GB)': features_stat['AlignLens'],
             'PcntIDs (GB)': features_stat['PcntIDs'],
         }
@@ -117,10 +118,8 @@ def combine_file(
             'Genes (GB)': features_stat['Gene'],
             'SeqMethod (GB)': '',
             'CloneMethod (GB)': '',
-            'GenBank (GB)': ', '.join([
-                i.strip().split('.')[0]
-                for i in accessions
-            ]),
+            'GenBank (GB)': ', '.join(sorted(list(accessions))),
+            'NumSubSeqs': features_stat['NumSubSeqs'],
             'AlignLens (GB)': features_stat['AlignLens'],
             'PcntIDs (GB)': features_stat['PcntIDs'],
         }
@@ -169,6 +168,7 @@ def combine_file(
         'GenBank (PM)',
         'GenBank (GB)',
 
+        'NumSubSeqs',
         'AlignLens (GB)',
         'PcntIDs (GB)',
     ]

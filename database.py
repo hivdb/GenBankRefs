@@ -3,6 +3,114 @@ import sqlite3
 from functools import reduce
 
 
+def create_database(
+        virus_obj,
+        references, features, genes,
+        pubmed, pubmed_genbank):
+
+    virus_obj.DB_FILE.unlink(missing_ok=True)
+
+    # GenBank Tables
+    tblGBReferences = references[[
+        'RefID', 'Authors', 'Title', 'Journal', 'PMID', 'Year']]
+    dump_table(virus_obj.DB_FILE,
+               'tblGBReference', tblGBReferences)
+
+    create_ref_link(virus_obj, references)
+
+    features['Specimen'] = features['isolate_source']
+    features['Virus'] = features['organism']
+
+    tblIsolates = features[[
+        'Accession', 'Country', 'Description', 'RecordYear',
+        'IsolateYear', 'Host', 'Specimen', 'IsolateName', 'Virus']]
+    dump_table(
+        virus_obj.DB_FILE,
+        'tblIsolates', tblIsolates)
+
+    genes['PcntMatch'] = genes['pcnt_id']
+    genes['HSPLength'] = genes['align_len']
+
+    tblSequences = genes[[
+        'Accession', 'Gene',
+        'AASeq', 'NumAA', 'AA_start', 'AA_stop',
+        'NASeq', 'NumNA', 'NA_start', 'NA_stop',
+        'PcntMatch', 'HSPLength',
+    ]]
+    dump_table(
+        virus_obj.DB_FILE,
+        'tblSequences',
+        tblSequences)
+
+    # PubMed Tables
+    tblLiteratures = pubmed[[
+        'LitID',
+        'Authors',
+        'Title',
+        'Journal',
+        'PMID',
+        'Year'
+    ]]
+    dump_table(
+        virus_obj.DB_FILE,
+        'tblLiteratures', tblLiteratures)
+
+    tblLitTextReview = pubmed[[
+        'LitID',
+        'Viruses',
+        'NumSeqs',
+        'Host',
+        'SampleYr',
+        'Country',
+        'GenBank',
+        'SeqMethod',
+        'CloneMethod',
+        'IsolateType',
+        'Gene'
+    ]]
+    dump_table(
+        virus_obj.DB_FILE,
+        'tblLitTextReview',
+        tblLitTextReview)
+
+    tblLitRefLink = []
+    for pubmed, genbank_list in pubmed_genbank:
+        for g in genbank_list:
+            tblLitRefLink.append((pubmed['LitID'], g['RefID']))
+
+    tblLitRefLink = list(set(tblLitRefLink))
+    tblLitRefLink = [
+        {
+            'LitID': i,
+            'RefID': j
+        }
+        for i, j in tblLitRefLink
+    ]
+
+    dump_table(
+        virus_obj.DB_FILE,
+        'tblLitRefLink',
+        pd.DataFrame(tblLitRefLink))
+
+
+def create_ref_link(virus_obj, ref):
+    ref_link = []
+    for i, row in ref.iterrows():
+        accessions = row['accession']
+        accessions = [
+            i.strip() for i in accessions.split(',') if i.strip()]
+        for acc in accessions:
+            ref_link.append({
+                'RefID': row['RefID'],
+                'accession': acc
+            })
+
+    dump_table(
+        virus_obj.DB_FILE,
+        'tblRefLink',
+        pd.DataFrame(ref_link))
+
+
 def dump_table(db_file, table_name, table, index=False):
     conn = sqlite3.connect(str(db_file))
 

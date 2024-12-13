@@ -38,6 +38,7 @@ def create_ref_aa_seq(accession_list):
 def filter_by_taxonomy(record):
     excluded_seq = {}
     taxonomy = record.annotations['taxonomy']
+    print(taxonomy)
     excluded_seq['Accession'] = record.id
     excluded_seq['Taxonomy'] = ', '.join(taxonomy)
     excluded_seq['SeqLen'] = len(record.seq)

@@ -60,8 +60,12 @@ def compare_pubmed_genbank(virus_obj):
         virus_obj.logger.info('#Pubmed Ref with additional GenBank PMID', len(pubmed))
 
     pubmed['Gene'] = pubmed['Gene'].apply(virus_obj.translate_gene)
+    pubmed = categorize_host_specimen(
+        pubmed, 'Host', 'IsolateType')
+    pubmed['Hosts (PM)'] = pubmed['CleanedHost']
+    pubmed['Specimen (PM)'] = pubmed['CleanedSpecimen']
 
-    pubmed['RefID'] = pubmed.index + 1
+    pubmed['LitID'] = pubmed.index + 1
     pubmed.to_excel(str(virus_obj.pubmed_folder / 'Pubmed.xlsx'), index=False)
 
     pubmed_match, genbank_match, pubmed_unmatch, genbank_unmatch = match_pm_gb(
@@ -83,12 +87,6 @@ def compare_pubmed_genbank(virus_obj):
     combined, columns = combine_file(
         pubmed_match, pubmed_unmatch, genbank_unmatch,
         genbank_feature, genbank_genes)
-
-    # TODO, this function should be used on pubmed before combine
-    combined = categorize_host_specimen(
-        combined, 'Hosts (PM)', 'Specimen (PM)')
-    combined['Hosts (PM)'] = combined['CleanedHost']
-    combined['Specimen (PM)'] = combined['CleanedSpecimen']
 
     combined.to_excel(str(virus_obj.pubmed_genbank_combined),
                       index=False, columns=columns)
