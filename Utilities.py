@@ -100,6 +100,8 @@ def convert_dict_to_list_of_sets(matched_indexes):
     list_of_sets = []
 
     for row_i, row_j_list in matched_indexes.items():
+        if row_i in {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 61, 62, 70, 74, 80, 81}:
+            print(row_i, row_j_list)
         matched_rows = set()
         matched_rows.add(row_i)
         matched_rows.update(set(row_j_list))
@@ -124,6 +126,8 @@ def convert_dict_to_list_of_sets(matched_indexes):
 
 
 def get_pcnt_authors_overlap(authors1, authors2):
+    if len(authors1) == 0 or len(authors2) == 0:
+        return 0
     set1 = set(authors1.split(', '))
     set2 = set(authors2.split(', '))
     shared_set = set1 & set2
@@ -132,15 +136,17 @@ def get_pcnt_authors_overlap(authors1, authors2):
     return pcnt
 
 
-def get_pcnt_shared_accessions(stringlist1, stringlist2):
-    list1 = stringlist1.split(', ')
-    list2 = stringlist2.split(', ')
+def get_pcnt_shared_accessions(list1, list2):
+    if len(list1) == 0 or len(list2) == 0:
+        return 0
     pcnt_shared_accessions = len(set(list1) & set(
         list2)) / len(set(list1) | set(list2))
     return pcnt_shared_accessions
 
 
 def get_pcnt_shared_stems(list1, list2, stem_length):
+    if len(list1) == 0 or len(list2) == 0:
+        return 0
     acc_num_stem_list1 = []
     acc_num_stem_list2 = []
     for acc_num in list1:

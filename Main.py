@@ -13,7 +13,7 @@ from pathlib import Path
 from GenBankFunctions import (filter_by_taxonomy,
                               pooled_blast)
 
-from DataFrameLogic import (process_authors_titles,
+from DataFrameLogic import (merge_by_author_title_acc,
                             combine_refs_and_features,
                             compare_output_files)
 
@@ -106,6 +106,8 @@ def process_genes_df(gene_list, run_blast, virus_obj):
     if run_blast == 1:
         gene_list = pooled_blast(gene_list, virus_obj)
         gene_df = pd.DataFrame(gene_list)
+        # create NumGenes column
+        gene_df['NumGene'] = gene_df['align_len_list'].apply(lambda x: len(x.split(',')))
         gene_df.to_excel(str(virus_obj.genbank_gene_file), index=False)
         gene_df = pd.read_excel(
             str(virus_obj.genbank_gene_file)).fillna('')
@@ -176,7 +178,10 @@ def main():
     print("Number of entries following aggregation by exact matches: ",
           len(grouped_ref_df))
 
-    merged_ref_df = process_authors_titles(grouped_ref_df)
+    # #change name later
+    # grouped_ref_df.to_excel("OutputData/Nipah_ref_before_merge.xlsx")
+    #merge rows that are dups
+    merged_ref_df = merge_by_author_title_acc(grouped_ref_df)
     merged_ref_df['SetID'] = merged_ref_df.index + 1
     print("Number of entries following aggregation by similarity: ",
           len(merged_ref_df))
