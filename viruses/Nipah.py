@@ -2,51 +2,39 @@ import os
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-from pathlib import Path
-from datetime import datetime
-from Utilities import get_logger
+from .virus import Virus
 
 
-VIRUS = 'Nipah'
-GENES = ['N', 'P', 'M', 'F', 'G', 'L']
-timestamp = datetime.now().strftime('%m_%d')
+class Nipah(Virus):
 
-output_dir = Path(f"OutputData/{VIRUS}")
-reference_folder = Path(f"ReferenceData/{VIRUS}")
+    @property
+    def GENES(self):
+        return ['N', 'P', 'M', 'F', 'G', 'L']
 
-genbank_file = reference_folder / f"{VIRUS}.gb"
+    @property
+    def pubmed_file(self):
+        return self.pubmed_folder / "ReferenceSummary_Dec11.xlsx"
 
-BLAST_NA_DB_PATH = reference_folder / f"blast/{VIRUS}_NA_db"
-BLAST_AA_DB_PATH = reference_folder / f"blast/{VIRUS}_AA_db"
+    def build_blast_db(self):
+        build_blast_db(self)
 
-genbank_feature_file = output_dir / \
-    f"{VIRUS}__GenBankFeatures_{timestamp}.xlsx"
-genbank_feature_check_file = output_dir / \
-    f"{VIRUS}__GenBankFeatures_{timestamp}_check.xlsx"
-genbank_gene_file = output_dir / \
-    f"{VIRUS}__GenBankGenes_{timestamp}.xlsx"
+    def process_feature(self, features_df):
+        return process_feature(features_df)
 
-combined_file = output_dir / f"{VIRUS}_Combined_{timestamp}.xlsx"
-ref_file = output_dir / f"{VIRUS}_Ref_{timestamp}.xlsx"
-exclude_seq_file = output_dir / f"{VIRUS}_Excluded_Seqs_{timestamp}.xlsx"
-comparison_file = output_dir / f"{VIRUS}_Combined_11_06a.xlsx"
-merged_ref_file = output_dir / f"{VIRUS}_Merged_Ref_{timestamp}.xlsx"
-DB_FILE = output_dir / f"{VIRUS}.db"
+    def process_gene_list(self, gene_df):
+        return process_gene_list(self, gene_df)
 
-pubmed_folder = Path(f"Pubmed/{VIRUS}")
-pubmed_file = pubmed_folder / "ReferenceSummary_Dec11.xlsx"
-pubmed_additional_from_gb = None
-
-pubmed_genbank_combined = output_dir / f"{VIRUS}_P_G_Combined_{timestamp}.xlsx"
-
-logging_file = output_dir / f'{VIRUS}_summary.txt'
-logger = get_logger(logging_file)
+    def translate_gene(self, gene):
+        return translate_gene(self, gene)
 
 
-def build_blast_db():
+Nipah("Nipah")
+
+
+def build_blast_db(virus):
     aa_seqs = []
     na_seqs = []
-    with open(reference_folder / 'NC_002728.gb', "r") as handle:
+    with open(virus.reference_folder / 'NC_002728.gb', "r") as handle:
         for record in SeqIO.parse(handle, "genbank"):
             na_seqs.append(
                 SeqRecord(record.seq, id='genome', description=''))
@@ -62,7 +50,7 @@ def build_blast_db():
                 else:
                     gene = aa.qualifiers['product'][0].split(' ')[0].upper()
 
-                if gene not in GENES:
+                if gene not in virus.GENES:
                     continue
 
                 aa_seqs.append(
@@ -70,19 +58,21 @@ def build_blast_db():
                 na_seqs.append(
                     SeqRecord(Seq(aa.location.extract(record.seq)), id=gene, description=''))
 
-    ref_aa_file = reference_folder / f"{VIRUS}_RefAAs.fasta"
+    ref_aa_file = virus.reference_folder / f"{virus.name}_RefAAs.fasta"
     with open(ref_aa_file, "w") as output_handle:
         SeqIO.write(aa_seqs, output_handle, "fasta")
 
     os.system(
-        f"makeblastdb -in {ref_aa_file} -dbtype prot -out {BLAST_AA_DB_PATH}")
+        f"makeblastdb -in {ref_aa_file} -dbtype "
+        f"prot -out {virus.BLAST_AA_DB_PATH}")
 
-    ref_na_file = reference_folder / f"{VIRUS}_RefNAs.fasta"
+    ref_na_file = virus.reference_folder / f"{virus.name}_RefNAs.fasta"
     with open(ref_na_file, "w") as output_handle:
         SeqIO.write(na_seqs, output_handle, "fasta")
 
     os.system(
-        f"makeblastdb -in {ref_na_file} -dbtype nucl -out {BLAST_NA_DB_PATH}")
+        f"makeblastdb -in {ref_na_file} -dbtype "
+        f"nucl -out {virus.BLAST_NA_DB_PATH}")
 
 
 def process_feature(features_df):
@@ -100,38 +90,6 @@ def process_feature(features_df):
             features_df.at[i, 'Genes'] = 'genome'
 
     return features_df
-
-
-def process_gene_list(gene_df):
-
-    gene_df['Gene'] = gene_df['Gene'].apply(translate_cds_name)
-
-    for i, row in gene_df.iterrows():
-        if str(row['Gene']) not in GENES:
-            gene_df.at[i, 'Gene'] = row['hit_name']
-
-    return gene_df
-
-
-def translate_cds_name(cds):
-    cds = cds.replace('protein', '').strip()
-    name_map = {
-        'RNA-directed RNA polymerase': 'L',
-        'nucleocapsid': 'N',
-        'polymerase': 'L',
-        'fusion': 'F',
-        'phosphoprotein': 'P',
-        'large polymerase': 'L',
-        'glycoprotein': 'G',
-        'matrix': 'M',
-        'nucleoprotein': 'N',
-        'RNA polymerase': 'L'
-    }
-
-    for k, v in name_map.items():
-        cds = cds.replace(k, v)
-
-    return cds
 
 
 def translate_bio_term(features_df):
@@ -228,5 +186,37 @@ def get_additional_host_data(features_df):
     return features_df
 
 
-def translate_gene(gene):
-    return gene if gene in GENES else ('NA' if not gene or gene == 'NA' else 'Other')
+def process_gene_list(virus, gene_df):
+
+    gene_df['Gene'] = gene_df['Gene'].apply(translate_cds_name)
+
+    for i, row in gene_df.iterrows():
+        if str(row['Gene']) not in virus.GENES:
+            gene_df.at[i, 'Gene'] = row['hit_name']
+
+    return gene_df
+
+
+def translate_cds_name(cds):
+    cds = cds.replace('protein', '').strip()
+    name_map = {
+        'RNA-directed RNA polymerase': 'L',
+        'nucleocapsid': 'N',
+        'polymerase': 'L',
+        'fusion': 'F',
+        'phosphoprotein': 'P',
+        'large polymerase': 'L',
+        'glycoprotein': 'G',
+        'matrix': 'M',
+        'nucleoprotein': 'N',
+        'RNA polymerase': 'L'
+    }
+
+    for k, v in name_map.items():
+        cds = cds.replace(k, v)
+
+    return cds
+
+
+def translate_gene(virus, gene):
+    return gene if gene in virus.GENES else ('NA' if not gene or gene == 'NA' else 'Other')

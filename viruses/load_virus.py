@@ -1,6 +1,4 @@
-import importlib.util
-import importlib
-from pathlib import Path
+from .virus import Virus
 
 
 # This is called by the main function to allow users to select the virus
@@ -22,23 +20,9 @@ def select_virus():
 def load_virus_obj(virus):
     """
         virus_conf folder contains specific configuration (virus config) for a virus.
-        If this file doesn't exist, the default.py file will be used.
+        If this file doesn't exist, the default virus will be used.
 
         A virus config contains the input and output file path, and functions
         for cleaning the data or functions for running blast.
     """
-    virus_conf_path = f'viruses/{virus}.py'
-    if not Path(virus_conf_path).exists():
-        spec = importlib.util.spec_from_file_location(
-            'viruses.default', 'viruses/default.py')
-    else:
-        spec = importlib.util.spec_from_file_location(
-            f'viruses.{virus}', virus_conf_path)
-
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-
-    if not Path(virus_conf_path).exists():
-        module.set_virus(virus)
-
-    return module
+    return Virus.get_virus(virus)

@@ -2,54 +2,53 @@ import os
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-from pathlib import Path
-from datetime import datetime
-from Utilities import get_logger
+from .virus import Virus
 
 
-VIRUS = 'CCHF'
-SEGMENTS = ['L', 'M', 'S']
-GENES = SEGMENTS
-timestamp = datetime.now().strftime('%m_%d')
+class CCHF(Virus):
 
-output_dir = Path(f"OutputData/{VIRUS}")
-reference_folder = Path(f"ReferenceData/{VIRUS}")
+    @property
+    def SEGMENTS(self):
+        return ['L', 'M', 'S']
 
-genbank_file = reference_folder / f"{VIRUS}.gb"
+    @property
+    def GENES(self):
+        return self.SEGMENTS
 
-BLAST_NA_DB_PATH = reference_folder / f"blast/{VIRUS}_NA_db"
-BLAST_AA_DB_PATH = reference_folder / f"blast/{VIRUS}_AA_db"
+    @property
+    def comparison_file(self):
+        return self.output_dir / f"{self.name}_Combined_11_06a.xlsx"
 
-genbank_feature_file = output_dir / \
-    f"{VIRUS}__GenBankFeatures_{timestamp}.xlsx"
-genbank_feature_check_file = output_dir / \
-    f"{VIRUS}__GenBankFeatures_{timestamp}_check.xlsx"
-genbank_gene_file = output_dir / \
-    f"{VIRUS}__GenBankGenes_{timestamp}.xlsx"
+    @property
+    def pubmed_file(self):
+        return self.pubmed_folder / "ReferenceSummary_Dec11.xlsx"
 
-combined_file = output_dir / f"{VIRUS}_Combined_{timestamp}.xlsx"
-exclude_seq_file = output_dir / f"{VIRUS}_Excluded_Seqs_{timestamp}.xlsx"
-ref_file = output_dir / f"{VIRUS}_Ref_{timestamp}.xlsx"
-merged_ref_file = output_dir / f"{VIRUS}_Merged_Ref_{timestamp}.xlsx"
-comparison_file = output_dir / f"{VIRUS}_Combined_11_06a.xlsx"
-DB_FILE = output_dir / f"{VIRUS}.db"
+    @property
+    def pubmed_additional_from_gb(self):
+        return self.pubmed_folder / "ReferenceSummary_Genbank_Dec11.xlsx"
 
-pubmed_folder = Path(f"Pubmed/{VIRUS}")
-pubmed_file = pubmed_folder / "ReferenceSummary_Dec11.xlsx"
-pubmed_additional_from_gb = pubmed_folder / "ReferenceSummary_Genbank_Dec11.xlsx"
+    def build_blast_db(self):
+        build_blast_db(self)
 
-pubmed_genbank_combined = output_dir / f"{VIRUS}_P_G_Combined_{timestamp}.xlsx"
+    def process_feature(self, features_df):
+        return process_feature(features_df)
 
-logging_file = output_dir / f'{VIRUS}_summary.txt'
-logger = get_logger(logging_file)
+    def process_gene_list(self, gene_df):
+        return process_gene_list(self, gene_df)
+
+    def translate_gene(self, gene):
+        return translate_gene(self, gene)
 
 
-def build_blast_db():
+CCHF("CCHF")
+
+
+def build_blast_db(virus):
 
     aa_seqs = []
     na_seqs = []
-    for s in SEGMENTS:
-        with open(reference_folder / f'{s}.gb', "r") as handle:
+    for s in virus.SEGMENTS:
+        with open(virus.reference_folder / f'{s}.gb', "r") as handle:
             for record in SeqIO.parse(handle, "genbank"):
                 aa_seq = [
                     i
@@ -60,19 +59,21 @@ def build_blast_db():
                 na_seqs.append(
                     SeqRecord(Seq(record.seq), id=s, description=''))
 
-    ref_aa_file = reference_folder / f"{VIRUS}_RefAAs.fasta"
+    ref_aa_file = virus.reference_folder / f"{virus.name}_RefAAs.fasta"
     with open(ref_aa_file, "w") as output_handle:
         SeqIO.write(aa_seqs, output_handle, "fasta")
 
     os.system(
-        f"makeblastdb -in {ref_aa_file} -dbtype prot -out {BLAST_AA_DB_PATH}")
+        f"makeblastdb -in {ref_aa_file} -dbtype "
+        f"prot -out {virus.BLAST_AA_DB_PATH}")
 
-    ref_na_file = reference_folder / f"{VIRUS}_RefNAs.fasta"
+    ref_na_file = virus.reference_folder / f"{virus.name}_RefNAs.fasta"
     with open(ref_na_file, "w") as output_handle:
         SeqIO.write(na_seqs, output_handle, "fasta")
 
     os.system(
-        f"makeblastdb -in {ref_na_file} -dbtype nucl -out {BLAST_NA_DB_PATH}")
+        f"makeblastdb -in {ref_na_file} -dbtype "
+        f"nucl -out {virus.BLAST_NA_DB_PATH}")
 
 
 # Provides directions for cleaning the information in the feature table
@@ -88,15 +89,6 @@ def process_feature(features_df):
     features_df['Genes'] = features_df['segment_source']
 
     return features_df
-
-
-def process_gene_list(gene_df):
-
-    for i, row in gene_df.iterrows():
-        if str(row['Gene']) not in GENES:
-            gene_df.at[i, 'Gene'] = row['hit_name']
-
-    return gene_df
 
 
 def translate_bio_term(features_df):
@@ -207,5 +199,14 @@ def get_additional_host_data(features_df):
     return features_df
 
 
-def translate_gene(gene):
-    return gene if gene in SEGMENTS else ('NA' if not gene or gene == 'NA' else 'Other')
+def process_gene_list(virus, gene_df):
+
+    for i, row in gene_df.iterrows():
+        if str(row['Gene']) not in virus.GENES:
+            gene_df.at[i, 'Gene'] = row['hit_name']
+
+    return gene_df
+
+
+def translate_gene(virus, gene):
+    return gene if gene in virus.SEGMENTS else ('NA' if not gene or gene == 'NA' else 'Other')
