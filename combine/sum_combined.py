@@ -3,6 +3,7 @@ from .utils import int_sorter
 from .sum_genbank import summarize_genbank_by_seq
 from .utils import get_values_of_value_count_list
 from Utilities import create_binnned_year
+import re
 
 
 def summarize_combined_data(combined, features, genes, logger):
@@ -43,6 +44,24 @@ def summarize_combined_data(combined, features, genes, logger):
     genes = genes[genes['Accession'].isin(list(accessions))]
 
     summarize_genbank_by_seq(features, genes, logger)
+
+    logger.info('Pubmed Supplement GenBank')
+    for name in ['Hosts', 'Specimen', 'SampleYr', 'Countries', 'Genes', 'SeqMethod']:
+
+        count = 0
+        for idx, row in combined[combined['match'] == 'Yes'].iterrows():
+            p_value = row[f"{name} (PM)"]
+            g_value = row[f"{name} (GB)"]
+            g_value = re.sub(r"\s\(\d+\)", "", g_value)
+
+            p_value = [p for p in p_value.split(',') if p.strip() and p.strip().upper() != 'NA']
+            g_value = [g for g in g_value.split(',') if g.strip() and g.strip().upper() != 'NA']
+
+            if p_value and not g_value:
+                count += 1
+
+        logger.info(name, count)
+
 
     logger.info('Similar virus')
     logger.info(summarize_similarity(combined, 'Viruses'))

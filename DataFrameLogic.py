@@ -30,7 +30,7 @@ def aggregate_references(references, virus_obj):
     print("Number of entries following aggregation by exact matches: ",
           len(grouped_ref))
 
-    grouped_ref.to_excel(virus_obj.ref_file)
+    grouped_ref.to_excel(virus_obj.genbank_ref_file)
 
     # merge rows that are dups
     merged_ref = merge_by_author_title_acc(grouped_ref)

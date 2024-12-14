@@ -52,7 +52,6 @@ def main():
 
     references = aggregate_references(references, virus_obj)
 
-    print('combined')
     # Combine references and features
     combined_df = combine_refs_and_features(references, features, genes)
     combined_df.to_excel(str(virus_obj.combined_file), index=False)

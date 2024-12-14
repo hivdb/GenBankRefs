@@ -51,7 +51,7 @@ def summarize_genbank_full_genome(
         ref_df, features_df, logger, full_gene_set, col_name='Gene'):
 
     num_ref = 0
-    num_seq = 0
+    # num_seq = 0
     for i, row in ref_df.iterrows():
         accessions = set([
             a.strip()
@@ -72,17 +72,17 @@ def summarize_genbank_full_genome(
             genome += gene_count['genome']
             del gene_count['genome']
 
-        if set(gene_count.keys()) == full_gene_set:
+        if set(gene_count.keys()) == set(full_gene_set):
             genome += min(gene_count.values())
 
         if genome:
-            num_seq += genome
+            # num_seq += genome
             num_ref += 1
 
     logger.info('Full genome Ref')
     logger.info(num_ref)
-    logger.info('Full genome seq')
-    logger.info(num_seq)
+    # logger.info('Full genome seq')
+    # logger.info(num_seq)
 
 
 def summarize_genbank_by_seq(df, genes_df, logger):

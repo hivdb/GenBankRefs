@@ -92,6 +92,8 @@ def create_database(
         'tblLitRefLink',
         pd.DataFrame(tblLitRefLink))
 
+    creat_views(virus_obj.DB_FILE)
+
 
 def create_ref_link(virus_obj, ref):
     ref_link = []
@@ -102,13 +104,25 @@ def create_ref_link(virus_obj, ref):
         for acc in accessions:
             ref_link.append({
                 'RefID': row['RefID'],
-                'accession': acc
+                'Accession': acc
             })
 
     dump_table(
         virus_obj.DB_FILE,
         'tblRefLink',
         pd.DataFrame(ref_link))
+
+
+def creat_views(db_file):
+
+    vReferenceRecord = """
+        CREATE VIEW vReferenceRecord AS
+        SELECT a.*
+        FROM tblGBReference a, tblRefLink b, tblIsolates c
+        WHERE a.RefID = b.RefID
+        AND b.Accession = c.Accession;
+    """
+    run_create_view(db_file, vReferenceRecord)
 
 
 def dump_table(db_file, table_name, table, index=False):
@@ -126,6 +140,16 @@ def dump_table(db_file, table_name, table, index=False):
             conn,
             if_exists='replace',
             index=False)
+
+
+def run_create_view(db_file, sql):
+    conn = sqlite3.connect(str(db_file))
+
+    cursor = conn.cursor()
+
+    cursor.execute(sql)
+    conn.commit()
+    conn.close()
 
 
 def load_table(db_file, table_name):
