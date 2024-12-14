@@ -38,9 +38,9 @@ def main():
     print("Number of excluded records:", len(excludes))
     excludes.to_excel(str(virus_obj.exclude_seq_file), index=False)
 
-    print("Number of GenBank References", len(references))
-    print('Number of GenBank records', len(features))
-    print("Number of Genes", len(genes))
+    print("Number of GenBank References:", len(references))
+    print('Number of GenBank records:', len(features))
+    print("Number of Genes:", len(genes))
 
     features = process_features(features, virus_obj)
 

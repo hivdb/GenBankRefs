@@ -19,6 +19,7 @@ def select_run_blast(default=None):
     result = result.lower()
     assert (result in ['y', 'n']), "Please use y/n."
 
+    print('\n')
     return 1 if result == 'y' else 0
 
 

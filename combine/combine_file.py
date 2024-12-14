@@ -39,10 +39,11 @@ def combine_file(
             'Viruses (PM)': pubmed['Viruses'],
             'NumSeqs (PM)': pubmed['NumSeqs'],
             'Hosts (PM)': pubmed['Host'],
-            'Specimen (PM)': pubmed['IsolateType'],
+            'Specimen (PM)': pubmed['Specimen'],
 
             'SampleYr (PM)': pubmed['SampleYr'],
             'Countries (PM)': pubmed['Country'],
+
             'Genes (PM)': pubmed['Gene'],
             'SeqMethod (PM)': pubmed['SeqMethod'],
             'CloneMethod (PM)': pubmed['CloneMethod'],
@@ -51,8 +52,8 @@ def combine_file(
             'Viruses (GB)': features_stat['Organisms'],
             'NumSeqs (GB)': len(accessions),
             'Hosts (GB)': features_stat['Hosts'],
-
             'Specimen (GB)': features_stat['Specimens'],
+
             'SampleYr (GB)':  features_stat['IsolateYears'],
             'Countries (GB)': features_stat['Countries'],
 
@@ -60,6 +61,7 @@ def combine_file(
             'SeqMethod (GB)': '',
             'CloneMethod (GB)': '',
             'GenBank (GB)': ', '.join(sorted(list(accessions))),
+
             'NumSubSeqs': features_stat['NumSubSeqs'],
             'AlignLens (GB)': features_stat['AlignLens'],
             'PcntIDs (GB)': features_stat['PcntIDs'],
@@ -82,7 +84,7 @@ def combine_file(
             'Viruses (PM)': pubmed['Viruses'],
             'NumSeqs (PM)': pubmed['NumSeqs'],
             'Hosts (PM)': pubmed['Host'],
-            'Specimen (PM)': pubmed['IsolateType'],
+            'Specimen (PM)': pubmed['Specimen'],
             'SampleYr (PM)': pubmed['SampleYr'],
             'Countries (PM)': pubmed['Country'],
             'Genes (PM)': pubmed['Gene'],

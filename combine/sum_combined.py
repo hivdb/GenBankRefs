@@ -7,28 +7,33 @@ import re
 
 
 def summarize_combined_data(combined, features, genes, logger):
-    logger.info('Matched')
+    logger.info('Summarize PubMed GenBank Match')
+    logger.info('=' * 80)
+
     matches = combined[(combined['match'] == 'Yes')]
 
-    publish_year = count_number([v for i, v in matches.iterrows()], 'Year', sorter=int_sorter)
+    publish_year = count_number([
+        v for i, v in matches.iterrows()], 'Year', sorter=int_sorter)
     logger.info('Publish Year')
     logger.info(publish_year)
+
+    logger.info('*' * 80)
     publish_year = [
         int(v['Year']) for i, v in matches.iterrows()
         if v['Year'] and v['Year'] != 'NA']
     logger.info(create_binnned_year(publish_year))
-    logger.info('=' * 40)
+    logger.info('=' * 80)
 
-    journals = count_number([v for i, v in matches.iterrows()], 'Journal')
-    logger.info('Journals')
-    logger.info(journals)
-    logger.info('=' * 40)
+    # journals = count_number([v for i, v in matches.iterrows()], 'Journal')
+    # logger.info('Journals')
+    # logger.info(journals)
+    # logger.info('=' * 80)
 
     methods = count_number(
         [v for i, v in matches.iterrows()], 'SeqMethod (PM)')
     logger.info('Seq method')
     logger.info(methods)
-    logger.info('=' * 40)
+    logger.info('=' * 80)
 
     accessions = set([
         j.strip()
@@ -36,13 +41,14 @@ def summarize_combined_data(combined, features, genes, logger):
         for j in v['GenBank (GB)'].split(',')
         ])
     num_seq = len(accessions)
-    logger.info('NumSeq', num_seq)
-    logger.info('=' * 40)
+    logger.info('After matching, NumSeq from GenBank:', num_seq)
+    logger.info('=' * 80)
 
     features = features[features['Accession'].isin(list(accessions))]
 
     genes = genes[genes['Accession'].isin(list(accessions))]
 
+    logger.info('Matched pubmed genbank:')
     summarize_genbank_by_seq(features, genes, logger)
 
     logger.info('Pubmed Supplement GenBank')
@@ -62,21 +68,20 @@ def summarize_combined_data(combined, features, genes, logger):
 
         logger.info(name, count)
 
+    # logger.info('Similar virus')
+    # logger.info(summarize_similarity(combined, 'Viruses'))
 
-    logger.info('Similar virus')
-    logger.info(summarize_similarity(combined, 'Viruses'))
+    # logger.info('Similar hosts')
+    # logger.info(summarize_similarity(combined, 'Hosts'))
 
-    logger.info('Similar hosts')
-    logger.info(summarize_similarity(combined, 'Hosts'))
+    # logger.info('Similar Specimens')
+    # logger.info(summarize_similarity(combined, 'Specimen'))
 
-    logger.info('Similar Specimens')
-    logger.info(summarize_similarity(combined, 'Specimen'))
+    # logger.info('Similar countries')
+    # logger.info(summarize_similarity(combined, 'Countries'))
 
-    logger.info('Similar countries')
-    logger.info(summarize_similarity(combined, 'Countries'))
-
-    logger.info('Similar Genes')
-    logger.info(summarize_similarity(combined, 'Genes'))
+    # logger.info('Similar Genes')
+    # logger.info(summarize_similarity(combined, 'Genes'))
 
 
 def summarize_similarity(df, col_name):

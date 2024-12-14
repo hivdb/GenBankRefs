@@ -1,86 +1,80 @@
 Summarize Genbank By Ref
 Publish Year
-NA (6)
 1992 (1)
 1994 (2)
 1996 (2)
-1997 (2)
+1997 (1)
 1998 (2)
-2001 (7)
-2002 (8)
-2003 (15)
-2004 (13)
-2005 (18)
-2006 (13)
-2007 (2)
-2008 (15)
-2009 (5)
-2010 (18)
-2011 (7)
-2012 (18)
-2013 (8)
-2014 (16)
-2015 (16)
-2016 (23)
-2017 (14)
-2018 (18)
-2019 (13)
-2020 (10)
-2021 (12)
-2022 (18)
-2023 (14)
-2024 (12)
-1990-1999 (9), 2000-2009 (96), 2010-2019 (151), 2020-2029 (66)
+2001 (6)
+2002 (9)
+2003 (6)
+2004 (9)
+2005 (14)
+2006 (11)
+2007 (4)
+2008 (12)
+2009 (4)
+2010 (17)
+2011 (5)
+2012 (17)
+2013 (6)
+2014 (17)
+2015 (17)
+2016 (24)
+2017 (12)
+2018 (19)
+2019 (12)
+2020 (12)
+2021 (13)
+2022 (20)
+2023 (15)
+2024 (13)
+1990-1999 (8), 2000-2009 (75), 2010-2019 (146), 2020-2029 (73)
 ========================================
 NumSeq
-1 (78)
-2 (52)
-3 (54)
-4 (17)
+1 (66)
+2 (37)
+3 (53)
+4 (11)
 5 (10)
-6 (17)
-7 (4)
-8 (8)
-9 (9)
-10 (4)
-11 (8)
-12 (3)
+6 (19)
+7 (6)
+8 (9)
+9 (11)
+10 (2)
+11 (12)
+12 (6)
 13 (3)
 14 (4)
-15 (8)
+15 (7)
 16 (1)
 17 (2)
-18 (4)
-20 (1)
+18 (3)
 21 (3)
+22 (1)
 23 (1)
-24 (2)
+24 (1)
 25 (1)
-27 (1)
-29 (2)
-30 (2)
-33 (1)
-35 (1)
+26 (1)
+27 (4)
+29 (1)
+30 (1)
+35 (2)
 36 (2)
 39 (1)
-40 (1)
-42 (1)
+40 (2)
+42 (2)
 44 (1)
 45 (1)
-47 (1)
 48 (1)
-50 (1)
+50 (2)
 52 (1)
-55 (1)
-58 (1)
-60 (3)
-62 (2)
-69 (2)
-79 (1)
+57 (1)
+60 (2)
+69 (1)
 104 (1)
-123 (1)
-134 (1)
-165 (1)
+123 (2)
+134 (2)
 694 (1)
 1299 (1)
 Total 4848
@@ -288,10 +282,8 @@ PcntIDs
 
 
 Full genome Ref
-0
-Full genome seq
-0
-#Pubmed Ref 193
+67
+#Pubmed Literatures 193
 PubMed
 Publish Year
 1992 (1)
@@ -608,16 +600,16 @@ NGS (43)
  **************************************** 
 
 
-#Pubmed Ref with additional GenBank PMID 213
-Genbank match by pmid 112
-Genbank match by title 86
-Genbank match by acc 215
-Genbank Matched: 223
-Pubmed match by pmid 109
-Pubmed match by title 86
+#Pubmed Literature with additional Literature from GenBank Only 213
+Genbank match by pmid 109
+Genbank match by title 80
+Genbank match by acc 181
+Genbank match total 189
+Pubmed match by pmid 107
+Pubmed match by title 80
 Pubmed match by acc 164
-Pubmed Matched: 172
-Pumbed only 41
+Pubmed match total 172
+Pumbed only Literatures 41
 PubMed
 Publish Year
 2001 (1)
@@ -789,63 +781,61 @@ NA (9)
  **************************************** 
 
 
-GenBank only 105
+GenBank only References 113
 Summarize Genbank By Ref
 Publish Year
-NA (2)
 1994 (1)
 1997 (1)
 2001 (3)
 2002 (1)
 2003 (2)
 2004 (2)
-2005 (8)
+2005 (9)
 2006 (5)
 2007 (2)
 2008 (4)
 2009 (2)
-2010 (1)
-2011 (2)
-2012 (9)
+2011 (1)
+2012 (10)
 2013 (1)
 2014 (2)
 2015 (2)
-2016 (8)
+2016 (10)
 2017 (1)
-2018 (7)
+2018 (8)
 2019 (4)
-2020 (3)
-2021 (4)
-2022 (8)
-2023 (8)
-2024 (12)
-1990-1999 (2), 2000-2009 (29), 2010-2019 (37), 2020-2029 (35)
+2020 (4)
+2021 (5)
+2022 (10)
+2023 (10)
+2024 (13)
+1990-1999 (2), 2000-2009 (30), 2010-2019 (39), 2020-2029 (42)
 ========================================
 NumSeq
-1 (34)
-2 (13)
-3 (18)
+1 (37)
+2 (10)
+3 (20)
 4 (4)
 5 (4)
-6 (4)
-8 (3)
+6 (6)
+7 (1)
+8 (4)
 9 (2)
-10 (3)
-11 (3)
+10 (2)
+11 (6)
 12 (2)
 15 (3)
 17 (1)
-18 (1)
 21 (2)
-30 (1)
-33 (1)
+22 (1)
 35 (1)
-42 (1)
+40 (1)
+42 (2)
 50 (1)
 60 (1)
 69 (1)
 694 (1)
-Total 1432
+Total 1508
 ========================================
 Matched
 Publish Year
@@ -888,31 +878,30 @@ Infect Genet Evol (6)
 Virology (5)
 Int J Infect Dis (5)
 Virus Res (5)
-Genome Announc (4)
 Am J Trop Med Hyg (4)
-J Clin Microbiol (4)
+Genome Announc (4)
 Jpn J Infect Dis (4)
+J Clin Microbiol (4)
 Virol Sin (4)
-J Virol (3)
 BMC Infect Dis (3)
 Viruses (3)
 Epidemiol Infect (3)
 J Arthropod Borne Dis (3)
+J Virol (3)
 Parasit Vectors (3)
 PLoS One (3)
 Antiviral Res (3)
 Mol Gen Mikrobiol Virusol (3)
-J Virol Methods (2)
 J Med Entomol (2)
-Vet Parasitol (2)
 Virol J (2)
 Heliyon (2)
 Virus Genes (2)
 Transbound Emerg Dis (2)
+Vet Parasitol (2)
 Microorganisms (2)
+J Virol Methods (2)
 Euro Surveill (2)
 J Vector Borne Dis (2)
-Dokl Biochem Biophys (1)
 Pathogens (1)
 Front Microbiol (1)
 Diagn Microbiol Infect Dis (1)
@@ -922,27 +911,28 @@ Eur J Clin Microbiol Infect Dis (1)
 Clin Microbiol Infect (1)
 Scand J Infect Dis (1)
 Acta Trop (1)
-Biomed Res Int (1)
 Vopr Virusol (1)
+Biomed Res Int (1)
+Dokl Biochem Biophys (1)
 Parasitol Res (1)
 Saudi J Biol Sci (1)
 Front Cell Infect Microbiol (1)
-Zhonghua Shi Yan He Lin Chuang Bing Du Xue Za Zhi (1)
+Acta Microbiol Immunol Hung (1)
 Virusdisease (1)
 Trop Biomed (1)
-Acta Microbiol Immunol Hung (1)
+Zhonghua Shi Yan He Lin Chuang Bing Du Xue Za Zhi (1)
 ========================================
 Seq method
 Sanger (99)
 NA (41)
 NGS (32)
 ========================================
-NumSeq 3425
+NumSeq 3343
 ========================================
 Summarize Genbank By Seq
 Host
-Homo sapiens (2460)
-Ticks (675)
+Homo sapiens (2381)
+Ticks (672)
 NA (205)
 Cattle and Ticks (14)
 Camel and Ticks (11)
@@ -962,8 +952,8 @@ Tortoise (1)
 Calf and Homo sapiens and Rat and Ticks (1)
 ========================================
 Specimens
-blood (1794)
-NA (1631)
+blood (1715)
+NA (1628)
 ========================================
 RecordYears
 1993 (1)
@@ -989,12 +979,12 @@ RecordYears
 2017 (167)
 2018 (86)
 2019 (30)
-2020 (277)
+2020 (195)
 2021 (82)
 2022 (35)
 2023 (195)
 2024 (107)
-1990-1999 (11), 2000-2009 (95), 2010-2019 (2623), 2020-2029 (696)
+1990-1999 (11), 2000-2009 (95), 2010-2019 (2623), 2020-2029 (614)
 ========================================
 Sample Years
 NA (278)
@@ -1036,27 +1026,27 @@ NA (278)
 2007 (172)
 2008 (223)
 2009 (222)
-2010 (124)
-2011 (190)
+2010 (121)
+2011 (150)
 2012 (523)
-2013 (353)
-2014 (275)
-2015 (199)
-2016 (47)
-2017 (84)
-2018 (82)
+2013 (350)
+2014 (272)
+2015 (190)
+2016 (38)
+2017 (75)
+2018 (76)
 2019 (243)
 2020 (25)
 2021 (23)
 2022 (9)
-1950-1959 (9), 1960-1969 (44), 1970-1979 (15), 1980-1989 (116), 1990-1999 (33), 2000-2009 (753), 2010-2019 (2120), 2020-2029 (57)
+1950-1959 (9), 1960-1969 (44), 1970-1979 (15), 1980-1989 (116), 1990-1999 (33), 2000-2009 (753), 2010-2019 (2038), 2020-2029 (57)
 ========================================
 Countries
 Russia (1488)
 Turkey (454)
 Kosovo (214)
-Pakistan (213)
-India (213)
+Pakistan (181)
+India (171)
 Iran (134)
 South Africa (130)
 China (106)
@@ -1071,7 +1061,6 @@ Oman (19)
 Nigeria (17)
 Kazakhstan (16)
 Namibia (16)
-Afghanistan (14)
 Zambia (13)
 Sudan (13)
 Albania (11)
@@ -1081,6 +1070,7 @@ Turkmenistan (8)
 Uzbekistan (7)
 Ghana (6)
 USA (6)
+Afghanistan (6)
 Democratic Republic of the Congo (5)
 Yugoslavia (4)
 Saudi Arabia (3)
@@ -1095,44 +1085,49 @@ Cameroon (1)
 Morocco (1)
 ========================================
 Countries W/WO
-Yes (3371)
+Yes (3289)
 No (54)
 ========================================
 Genes
-S (1156)
-M (896)
-L (762)
-NA (594)
+S (1104)
+M (884)
+L (750)
+NA (588)
 Other (17)
 ========================================
 AlignLens
-30-100 (8), 100-500 (1686), 500-1000 (659), 1000-3000 (444), 3000-5000 (68), 5000-10000 (296), >10000 (264)
+30-100 (8), 100-500 (1646), 500-1000 (659), 1000-3000 (430), 3000-5000 (66), 5000-10000 (284), >10000 (250)
 ========================================
 NA length
-100-500 (1688), 500-1000 (662), 1000-3000 (446), 3000-5000 (48), 5000-10000 (316), >10000 (265)
+100-500 (1648), 500-1000 (662), 1000-3000 (432), 3000-5000 (48), 5000-10000 (302), >10000 (251)
 ========================================
 AA length
-<30 (43), 30-100 (409), 100-500 (2346), 1000-3000 (362), 3000-5000 (265)
+<30 (43), 30-100 (369), 100-500 (2332), 1000-3000 (348), 3000-5000 (251)
 ========================================
 PcntIDs
-0%-25% (7), 25%-50% (6), 50%-75% (23), 75%-90% (1601), 90%-95% (1311), 95%-100% (477)
+0%-25% (7), 25%-50% (6), 50%-75% (23), 75%-90% (1568), 90%-95% (1308), 95%-100% (431)
 ========================================
 
 
  **************************************** 
 
 
+Pubmed Supplement GenBank
+Hosts 22
+Specimen 108
+SampleYr 38
+Countries 8
+Genes 46
+SeqMethod 131
 Similar virus
 172
 Similar hosts
-91
+88
 Similar Specimens
-187
+5
 Similar countries
 145
 Similar Genes
-64
+62
 Full genome Ref
-0
-Full genome seq
-0
+42

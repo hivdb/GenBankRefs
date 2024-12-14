@@ -1,54 +1,6 @@
 from statistics import median
 
 
-def categorize_host_specimen(df, host_col, specimen_col):
-
-    for index, row in df.iterrows():
-        host = row[host_col].lower()
-        specimen = row[specimen_col].lower()
-
-        updated_host = []
-        updated_specimen = []
-
-        if 'homo sapiens' in host:
-            updated_host.append('Homo sapiens')
-
-        for a in ['animal', 'sheep', 'cattle', 'goat', 'mouse', 'boar', 'hare',
-                  'livestock', 'cow', 'sheep', 'camel', 'monkey', 'deer', 'buffalo',
-                  'rodent', 'serow']:
-            if a in host:
-                updated_host.append(a.capitalize())
-
-        if 'tick' in host:
-            updated_host.append('Ticks')
-
-        if 'tick' in specimen:
-            updated_host.append('Ticks')
-
-        if not updated_host and host and host != 'NA'.lower():
-            updated_host.append('Other')
-            # updated_host.append(host)
-
-        if not updated_host:
-            updated_host.append('NA')
-
-        for i in ['serum', 'blood', 'plasma', 'sera']:
-            if i in specimen:
-                updated_specimen.append('blood')
-
-        for s in ['brain', 'spleen', 'nasal swab']:
-            if s in specimen:
-                updated_specimen.append(s)
-
-        if not updated_specimen:
-            updated_specimen.append('NA')
-
-        df.at[index, 'CleanedHost'] = ' and '.join(sorted(list(set(updated_host))))
-        df.at[index, 'CleanedSpecimen'] = ' and '.join(sorted(list(set(updated_specimen))))
-
-    return df
-
-
 def median_year(entry):
 
     year_list = entry.split(',')
@@ -77,42 +29,3 @@ def median_year(entry):
 
 def translate_country(country):
     return 'Yes' if (country and country != 'NA') else 'No'
-
-
-def translate_specimen(specimen):
-    specimen = specimen.lower()
-    for i in ['serum', 'blood', 'plasma', 'sera']:
-        if i in specimen:
-            return 'blood'
-
-    for s in ['brain', 'spleen', 'nasal swab']:
-        if s in specimen:
-            return s
-
-    if not specimen or specimen == 'NA'.lower():
-        return 'NA'
-
-    return 'Other'
-
-
-def translate_hosts(host):
-    # Genbank pre process already did some translation,
-    # here only use the processed one host result, and aggregate to some categories
-    host = host.lower()
-    if 'homo sapiens' in host:
-        return 'Homo sapiens'
-
-    for a in [
-            'animal', 'sheep', 'cattle', 'goat', 'mouse', 'boar', 'hare',
-            'livestock', 'cow', 'sheep', 'camel', 'monkey', 'deer',
-            'rodent', 'serow']:
-        if a in host:
-            return 'animal'
-
-    if 'tick' in host:
-        return 'Ticks'
-
-    if 'NA'.lower() == host or not host:
-        return 'NA'
-
-    return 'Other'

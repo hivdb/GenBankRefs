@@ -3,6 +3,8 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from .virus import Virus
+import subprocess
+from functools import partial
 
 
 class CCHF(Virus):
@@ -39,6 +41,10 @@ class CCHF(Virus):
     def translate_gene(self, gene):
         return translate_gene(self, gene)
 
+    def process_pubmed(self, pubmed):
+        pubmed['Gene'] = pubmed['Gene'].apply(partial(translate_gene, self))
+        return categorize_host_specimen(self, pubmed)
+
 
 CCHF("CCHF")
 
@@ -63,17 +69,27 @@ def build_blast_db(virus):
     with open(ref_aa_file, "w") as output_handle:
         SeqIO.write(aa_seqs, output_handle, "fasta")
 
-    os.system(
+    subprocess.run(
         f"makeblastdb -in {ref_aa_file} -dbtype "
-        f"prot -out {virus.BLAST_AA_DB_PATH}")
+        f"prot -out {virus.BLAST_AA_DB_PATH}",
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        shell=True
+    )
 
     ref_na_file = virus.reference_folder / f"{virus.name}_RefNAs.fasta"
     with open(ref_na_file, "w") as output_handle:
         SeqIO.write(na_seqs, output_handle, "fasta")
 
-    os.system(
+    subprocess.run(
         f"makeblastdb -in {ref_na_file} -dbtype "
-        f"nucl -out {virus.BLAST_NA_DB_PATH}")
+        f"nucl -out {virus.BLAST_NA_DB_PATH}",
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        shell=True
+    )
 
 
 # Provides directions for cleaning the information in the feature table
@@ -210,3 +226,56 @@ def process_gene_list(virus, gene_df):
 
 def translate_gene(virus, gene):
     return gene if gene in virus.SEGMENTS else ('NA' if not gene or gene == 'NA' else 'Other')
+
+
+def categorize_host_specimen(self, pubmed):
+
+    for index, row in pubmed.iterrows():
+        host = row['Host'].lower()
+        specimen = row['IsolateType'].lower()
+
+        updated_host = []
+        updated_specimen = []
+
+        if 'homo sapiens' in host:
+            updated_host.append('Homo sapiens')
+
+        for a in ['animal', 'sheep', 'cattle', 'goat', 'mouse', 'boar', 'hare',
+                  'livestock', 'cow', 'sheep', 'camel', 'monkey', 'deer', 'buffalo',
+                  'rodent', 'serow']:
+            if a in host:
+                updated_host.append(a.capitalize())
+
+        if 'tick' in host:
+            updated_host.append('Ticks')
+
+        if 'tick' in specimen:
+            updated_host.append('Ticks')
+
+        if not updated_host and host and host != 'NA'.lower():
+            updated_host.append('Other')
+            # updated_host.append(host)
+
+        if not updated_host:
+            updated_host.append('NA')
+
+        for i in ['serum', 'blood', 'plasma', 'sera']:
+            if i in specimen:
+                updated_specimen.append('blood')
+
+        for s in ['brain', 'spleen', 'nasal swab']:
+            if s in specimen:
+                updated_specimen.append(s)
+
+        if not updated_specimen:
+            updated_specimen.append('NA')
+
+        pubmed.at[index, 'CleanedHost'] = ' and '.join(
+            sorted(list(set(updated_host))))
+        pubmed.at[index, 'CleanedSpecimen'] = ' and '.join(
+            sorted(list(set(updated_specimen))))
+
+        pubmed['Host'] = pubmed['CleanedHost']
+        pubmed['Specimen'] = pubmed['CleanedSpecimen']
+
+    return pubmed

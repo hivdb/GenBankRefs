@@ -14,6 +14,7 @@ def select_virus():
     assert virus_id.isdigit(), 'Virus not found'
     assert int(virus_id) <= len(viruses_list), 'Virus not found'
 
+    print('\n')
     return viruses_list[int(virus_id) - 1][-1]
 
 

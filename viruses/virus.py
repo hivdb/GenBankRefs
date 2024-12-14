@@ -5,6 +5,7 @@ from Bio.SeqRecord import SeqRecord
 from pathlib import Path
 from datetime import datetime
 from Utilities import get_logger
+import subprocess
 
 
 timestamp = datetime.now().strftime('%m_%d')
@@ -106,12 +107,22 @@ class Virus:
         return self.output_dir / f"{self.name}_P_G_Combined_{timestamp}.xlsx"
 
     @property
-    def logging_file(self):
-        return self.output_dir / f'{self.name}_summary.txt'
+    def genbank_logger(self):
+        if not getattr(self, '_genbank_logger', None):
+            self._genbank_logger = get_logger(self.output_dir / f'{self.name}_genbank.txt')
+        return self._genbank_logger
 
     @property
-    def logger(self):
-        return get_logger(self.logging_file)
+    def pubmed_logger(self):
+        if not getattr(self, '_pubmed_logger', None):
+            self._pubmed_logger = get_logger(self.output_dir / f'{self.name}_pubmed.txt')
+        return self._pubmed_logger
+
+    @property
+    def pm_gb_logger(self):
+        if not getattr(self, '_pm_gb_logger', None):
+            self._pm_gb_logger = get_logger(self.output_dir / f'{self.name}_compare.txt')
+        return self._pm_gb_logger
 
     def build_blast_db(self):
         build_blast_db(self)
@@ -133,9 +144,14 @@ def build_blast_db(virus):
 
     reference_aa_file = virus.reference_folder / f"{virus.name}_RefAAs.fasta"
 
-    os.system(
+    subprocess.run(
         f"makeblastdb -in {reference_aa_file} "
-        f"-dbtype prot -out {virus.BLAST_AA_DB_PATH}")
+        f"-dbtype prot -out {virus.BLAST_AA_DB_PATH}",
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        shell=True
+    )
 
 
 def process_feature(features_df):
