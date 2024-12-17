@@ -97,7 +97,10 @@ def process_one_record(record):
             gene_name = aa.qualifiers['gene'][0].upper()
         elif 'product' in aa.qualifiers:
             gene_name = aa.qualifiers['product'][0].split(' ')[0].upper()
+        elif 'note' in aa.qualifiers:
+            gene_name = aa.qualifiers['note'][0].upper()
 
+        # TODO, this many need check translation exists.
         cds_names.append(gene_name)
 
         if 'translation' in aa.qualifiers:

@@ -12,7 +12,7 @@ def compare_pubmed_genbank(virus_obj):
 
     if not virus_obj.pubmed_folder.exists():
         print('Pubmed file not found')
-        return
+        return None, None
 
     summrize = input('Summarize tables? [y/n]')
     summrize = summrize == 'y'
