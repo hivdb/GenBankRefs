@@ -56,9 +56,11 @@ def process_author_field(names):
 
 
 def extract_year_from_journal(text):
-    match = re.search(r'\((\d{4})\)', text)
-    if match:
-        return match.group(1)
+    # Match the last (xxxx), because in the middle it can mean page number
+    matches = re.findall(r'\((\d{4})\)', text)
+    if matches:
+        return matches[-1]
+
     match = re.search(r'\d{2}-[A-Z]{3}-(\d{4})', text)
     if match:
         return match.group(1)
