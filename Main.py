@@ -65,7 +65,7 @@ def main():
     # the return values are: pubmed (the pubmed data file), pubmed_genbank (Pubmed and GenBank matches)
     literature, lit_ref_match = compare_pubmed_genbank(virus_obj)
 
-    if not (literature and lit_ref_match):
+    if literature.empty or not lit_ref_match:
         return
 
     # Create database using tables:
