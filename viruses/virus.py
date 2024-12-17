@@ -63,6 +63,10 @@ class Virus:
         return self.output_dir / f"{self.name}_Excluded_Seqs_{timestamp}.xlsx"
 
     @property
+    def genbank_raw_ref_file(self):
+        return self.output_dir / f"{self.name}_Raw_Ref_{timestamp}.xlsx"
+
+    @property
     def genbank_ref_file(self):
         return self.output_dir / f"{self.name}_Ref_{timestamp}.xlsx"
 

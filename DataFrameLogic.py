@@ -20,6 +20,9 @@ from GenBankFunctions import is_reference_genome
 
 
 def aggregate_references(references, virus_obj):
+
+    # references.to_excel(virus_obj.genbank_raw_ref_file)
+
     # Aggregation
     grouped_ref = references.groupby(
         ['Authors', 'Title', 'Journal', 'PMID', 'Year'])[
