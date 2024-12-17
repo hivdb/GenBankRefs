@@ -39,11 +39,11 @@ def compare_pubmed_genbank(virus_obj):
     pubmed_file = virus_obj.pubmed_file
     pubmed = pd.read_excel(pubmed_file, dtype=str).fillna('')
     pubmed = pubmed[
-        (pubmed['Resolve Title'] != 'Unlikely') &
-        (pubmed['Resolve Seq'] != 'No') &
+        (pubmed['Resolve Title'].str.lower() != 'unlikely') &
+        (pubmed['Resolve Seq'].str.lower() != 'no') &
         (
-            (pubmed['Reviewer(s) Seq'] == 'Yes') |
-            (pubmed['GPT seq (Y/N)'] == 'Yes')
+            (pubmed['Reviewer(s) Seq'].str.lower() == 'yes') |
+            (pubmed['GPT seq (Y/N)'].str.lower() == 'yes')
         )
     ]
 

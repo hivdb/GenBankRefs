@@ -64,15 +64,41 @@ def merge_by_author_title_acc(df):
             close_lists[i] = close_matches
 
     list_of_merged_indexes, complete_list_of_merged_indexes = convert_dict_to_list_of_sets(close_lists)
+    # print(close_lists)
+    # for i in list_of_merged_indexes:
+    #     if 39 in i:
+    #         print(i)
     # print(list_of_merged_indexes, len(complete_list_of_merged_indexes))
     # print("Close lists:", close_lists)
     # print(f'''No with shared author_titles: {len(list_of_sets_w_shared_indexes)}: {list_of_sets_w_shared_indexes}''')
     # print(f'''To be dropped: {len(complete_list_of_shared_indexes)}: {complete_list_of_shared_indexes}''')
 
     list_of_new_rows = []
-    for item in list_of_merged_indexes:
-        new_row = merge_rows(df, list(item))
-        list_of_new_rows.append(new_row)
+    for indexes in list_of_merged_indexes:
+        indexes = list(indexes)
+        rows = df.loc[indexes]
+
+        indexes_with_pmid = [
+            i
+            for i, row in rows.iterrows()
+            if row['PMID'].strip()
+        ]
+
+        if len(indexes_with_pmid) < 2:
+            new_row = merge_rows(df, indexes)
+            list_of_new_rows.append(new_row)
+        else:
+            print(indexes_with_pmid, indexes)
+            first_index = indexes_with_pmid[0]
+            new_indexes = [first_index] + [
+                _i
+                for _i in indexes
+                if _i not in indexes_with_pmid
+            ]
+            new_row = merge_rows(df, new_indexes)
+            list_of_new_rows.append(new_row)
+
+            list_of_new_rows.append(df.loc[indexes_with_pmid[1:]])
 
     df = df.drop(complete_list_of_merged_indexes)
     list_of_new_rows.insert(0, df)
@@ -174,8 +200,7 @@ def merge_rows(df, merged_indexes):
     new_row['Journal'] = combine_items_in_different_lists(journal_list)
     new_row['accession'] = combine_items_in_different_lists(accession_list)
     # new_row['merged_indexes'] = ';'.join([str(i) for i in merged_indexes])
-    new_row_df = pd.DataFrame(new_row, index=[0])
-    return new_row_df
+    return pd.DataFrame([new_row])
 
 
 def merge_feature_rows(df, genes_df):
@@ -234,7 +259,6 @@ def combine_refs_and_features(ref_df, features_df, genes_df):
     for index, row in combined_df.iterrows():
         count += 1
         accession_string = row['accession']
-
         accession_list = accession_string.split(',')
         accession_list = [i.strip() for i in accession_list]
         features_rows = features_df[features_df['Accession'].isin(

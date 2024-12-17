@@ -78,19 +78,19 @@ def extract_year_from_date_fields(text):
 
 # Each list is a string in which items are separated by ', '
 def combine_items_in_different_lists(lists):
-    unique_dict = {}
-    for string in lists:
-        if isinstance(string, int):
-            string = str(string)
-        items = string.split(', ')
-        for item in items:
-            unique_dict[item] = 1
-    list_unique_items = list(unique_dict.keys())
-    list_unique_items = sorted(list_unique_items)
-    unique_items = ', '.join(list_unique_items)
-    if unique_items.startswith(","):
-        unique_items = unique_items[1:]
-    unique_items = unique_items.strip()
+    unique_value = set()
+    for value in lists:
+        if isinstance(value, str):
+            items = [
+                i.strip()
+                for i in value.split(',')
+                if i.strip()
+            ]
+            for item in items:
+                unique_value.add(item)
+        else:
+            unique_value.add(str(value))
+    unique_items = ', '.join(sorted(list(unique_value)))
     return unique_items
 
 

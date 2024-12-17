@@ -23,7 +23,7 @@ class Lassa(Virus):
 
     @property
     def pubmed_file(self):
-        return None
+        return self.pubmed_folder / "Reference_Summary_Dec17.xlsx"
 
     @property
     def pubmed_additional_from_gb(self):
