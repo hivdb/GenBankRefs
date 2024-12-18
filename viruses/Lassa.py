@@ -39,7 +39,7 @@ class Lassa(Virus):
         return process_gene_list(self, gene_df)
 
     def process_pubmed(self, pubmed):
-        pubmed['Gene'] = pubmed['Gene'].apply(partial(translate_pubmed_genes, self))
+        # pubmed['Gene'] = pubmed['Gene'].apply(partial(translate_pubmed_genes, self))
         return categorize_host_specimen(self, pubmed)
 
 
