@@ -22,8 +22,6 @@ def compare_pubmed_genbank(virus_obj):
 
     genbank_feature = pd.read_excel(
         virus_obj.genbank_feature_check_file, dtype=str).fillna('')
-    genbank_feature['Genes'] = genbank_feature['Genes'].apply(
-        virus_obj.translate_gene)
 
     genbank_genes = pd.read_excel(
         virus_obj.genbank_gene_file, dtype=str).fillna('')
@@ -60,7 +58,8 @@ def compare_pubmed_genbank(virus_obj):
         additional_pubmed = virus_obj.process_pubmed(additional_pubmed)
         pubmed = pd.concat([pubmed, additional_pubmed], ignore_index=True)
         print(
-            '#Pubmed Literature with additional Literature from GenBank Only', len(pubmed))
+            'Pubmed Literature with additional Literature from GenBank Only:',
+            len(pubmed))
 
     # IF inlude additional PMID from GenBank
     # if summrize:

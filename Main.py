@@ -10,7 +10,7 @@ from genbank_records import select_run_blast
 from genbank_records import parse_genbank_records
 from genbank_records import process_references
 from genbank_records import process_features
-from genbank_records import process_genes
+from genbank_records import process_gene_list
 
 from DataFrameLogic import aggregate_references
 from DataFrameLogic import combine_refs_and_features
@@ -42,9 +42,9 @@ def main():
     print('Number of GenBank records:', len(features))
     print("Number of Genes:", len(genes))
 
-    features = process_features(features, virus_obj)
+    genes = process_gene_list(genes, run_blast, virus_obj)
 
-    genes = process_genes(genes, run_blast, virus_obj)
+    features = process_features(features, genes, virus_obj)
 
     references = process_references(references)
 

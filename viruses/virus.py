@@ -76,11 +76,11 @@ class Virus:
 
     @property
     def genbank_feature_file(self):
-        return self.output_dir / f"{self.name}_Merged_Ref_{timestamp}.xlsx"
+        return self.output_dir / f"{self.name}_GenBankFeatures_{timestamp}.xlsx"
 
     @property
     def genbank_feature_check_file(self):
-        return self.output_dir / f"{self.name}__GenBankFeatures_{timestamp}.xlsx"
+        return self.output_dir / f"{self.name}__GenBankFeatures_check_{timestamp}.xlsx"
 
     @property
     def genbank_gene_file(self):
@@ -131,14 +131,27 @@ class Virus:
     def build_blast_db(self):
         build_blast_db(self)
 
-    def process_feature(self, features_df):
-        return process_feature(features_df)
+    def process_features(self, features_df, genes):
+        features_df = self._process_features(features_df)
+
+        features_df['Country'] = features_df[
+            'country_region'].str.split(":").str[0]
+
+        for i, row in features_df.iterrows():
+            if row.get('Genes') == 'genome':
+                continue
+
+            g_list = genes[genes['Accession'] == row['Accession']]
+            features_df.loc[i, 'Genes'] = ', '.join(
+                sorted(list(set(g_list['Gene'].tolist()))))
+
+        return features_df
+
+    def _process_features(self, features_df):
+        return features_df
 
     def process_gene_list(self, gene_df):
         return gene_df
-
-    def translate_gene(self, gene):
-        return gene
 
 
 Virus('default')
@@ -156,11 +169,3 @@ def build_blast_db(virus):
         text=True,
         shell=True
     )
-
-
-def process_feature(features_df):
-
-    features_df['Country'] = features_df[
-        'country_region'].str.split(":").str[0]
-
-    return features_df

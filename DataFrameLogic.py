@@ -88,7 +88,6 @@ def merge_by_author_title_acc(df):
             new_row = merge_rows(df, indexes)
             list_of_new_rows.append(new_row)
         else:
-            print(indexes_with_pmid, indexes)
             first_index = indexes_with_pmid[0]
             new_indexes = [first_index] + [
                 _i
@@ -220,8 +219,8 @@ def merge_feature_rows(df, genes_df):
     unique_specimens = count_unique_elements(df['isolate_source'].tolist())
     new_row['Specimens'] = dict_to_sorted_string(unique_specimens)
 
-    unique_gene = count_unique_elements(df['segment_source'].tolist())
-    new_row['SegmentSource'] = dict_to_sorted_string(unique_gene)
+    unique_gene = count_unique_elements(df['Genes'].tolist())
+    new_row['Genes'] = dict_to_sorted_string(unique_gene)
 
     unique_countries = count_unique_elements(df['Country'].tolist())
     new_row['Countries'] = dict_to_sorted_string(unique_countries)
@@ -231,9 +230,6 @@ def merge_feature_rows(df, genes_df):
 
     unique_specimens = count_unique_elements(df['isolate_source'].tolist())
     new_row['Specimens'] = dict_to_sorted_string(unique_specimens)
-
-    unique_gene = count_unique_elements(df['segment_source'].tolist())
-    new_row['SegmentSource'] = dict_to_sorted_string(unique_gene)
 
     unique_gene = count_unique_elements(df['Genes'].tolist())
     new_row['Gene'] = dict_to_sorted_string(unique_gene)
@@ -252,7 +248,7 @@ def combine_refs_and_features(ref_df, features_df, genes_df):
     combined_df = ref_df.copy()
     feature_columns = [
         'Organisms', 'RecordYears',  'Hosts', 'Countries', 'Gene',
-        'IsolateYears', 'Specimens', 'CDS', 'NumNA', 'NumAA',
+        'IsolateYears', 'Specimens', 'NumNA', 'NumAA',
         'AlignLens', 'PcntIDs']
     combined_df[feature_columns] = 'None'
     count = 0

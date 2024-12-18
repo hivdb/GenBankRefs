@@ -96,9 +96,11 @@ def process_one_record(record):
         if 'gene' in aa.qualifiers:
             gene_name = aa.qualifiers['gene'][0].upper()
         elif 'product' in aa.qualifiers:
-            gene_name = aa.qualifiers['product'][0].split(' ')[0].upper()
+            gene_name = aa.qualifiers[
+                'product'][0].upper().replace(' PROTEIN', '').strip()
         elif 'note' in aa.qualifiers:
-            gene_name = aa.qualifiers['note'][0].upper()
+            gene_name = aa.qualifiers[
+                'note'][0].upper().replace(' PROTEIN', '').strip()
 
         # TODO, this many need check translation exists.
         cds_names.append(gene_name)
@@ -109,7 +111,7 @@ def process_one_record(record):
             genes.append({
                 'Accession': accession,
                 'Gene': gene_name,
-                'Original_Gene': gene_name,
+                'CDS_NAME': gene_name,
                 'Order': idx + 1,
                 'NumNA': len(na_seq),
                 'NumAA': len(aa_seq),
@@ -128,7 +130,7 @@ def process_one_record(record):
         genes.append({
             'Accession': accession,
             'Gene': '',
-            'Original_Gene': 'isolate',
+            'CDS_NAME': 'isolate',
             'Order': 1,
             'NumNA': len(na_seq),
             'NumAA': len(aa_seq),
@@ -200,10 +202,10 @@ def process_references(references):
     return references
 
 
-def process_features(feature_list, virus_obj):
+def process_features(feature_list, genes, virus_obj):
     features_df = pd.DataFrame(feature_list)
     # This uses data in the imported virus module to clean data in the feature table
-    features_df = virus_obj.process_feature(features_df)
+    features_df = virus_obj.process_features(features_df, genes)
 
     features_df['RecordYear'] = features_df['record_date'].apply(
         extract_year_from_date_fields)
@@ -218,7 +220,7 @@ def process_features(feature_list, virus_obj):
     return features_df
 
 
-def process_genes(gene_list, run_blast, virus_obj):
+def process_gene_list(gene_list, run_blast, virus_obj):
     if run_blast == 1:
         gene_list = pooled_blast(gene_list, virus_obj)
         gene_df = pd.DataFrame(gene_list)

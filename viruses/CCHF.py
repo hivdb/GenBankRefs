@@ -32,17 +32,14 @@ class CCHF(Virus):
     def build_blast_db(self):
         build_blast_db(self)
 
-    def process_feature(self, features_df):
-        return process_feature(features_df)
+    def _process_features(self, features_df):
+        return process_features(features_df)
 
     def process_gene_list(self, gene_df):
         return process_gene_list(self, gene_df)
 
-    def translate_gene(self, gene):
-        return translate_gene(self, gene)
-
     def process_pubmed(self, pubmed):
-        pubmed['Gene'] = pubmed['Gene'].apply(partial(translate_gene, self))
+        pubmed['Gene'] = pubmed['Gene'].apply(partial(translate_pubmed_genes, self))
         return categorize_host_specimen(self, pubmed)
 
 
@@ -56,6 +53,7 @@ def build_blast_db(virus):
     for s in virus.SEGMENTS:
         with open(virus.reference_folder / f'{s}.gb', "r") as handle:
             for record in SeqIO.parse(handle, "genbank"):
+                # TODO, support all genes, also support segments
                 aa_seq = [
                     i
                     for i in record.features
@@ -93,16 +91,11 @@ def build_blast_db(virus):
 
 
 # Provides directions for cleaning the information in the feature table
-def process_feature(features_df):
+def process_features(features_df):
     features_df = translate_bio_term(features_df)
     features_df = get_additional_host_data(features_df)
     features_df['Host'] = features_df['Host2']
     features_df['isolate_source'] = features_df['isolate_source2']
-
-    features_df['Country'] = features_df['country_region'].str.split(
-        ":").str[0]
-
-    features_df['Genes'] = features_df['segment_source']
 
     return features_df
 
@@ -216,6 +209,7 @@ def get_additional_host_data(features_df):
 
 
 def process_gene_list(virus, gene_df):
+    gene_df['Gene'] = gene_df['CDS_NAME']
 
     for i, row in gene_df.iterrows():
         if str(row['Gene']) not in virus.GENES:
@@ -224,7 +218,7 @@ def process_gene_list(virus, gene_df):
     return gene_df
 
 
-def translate_gene(virus, gene):
+def translate_pubmed_genes(virus, gene):
     return gene if gene in virus.SEGMENTS else ('NA' if not gene or gene == 'NA' else 'Other')
 
 

@@ -20,17 +20,14 @@ class Nipah(Virus):
     def build_blast_db(self):
         build_blast_db(self)
 
-    def process_feature(self, features_df):
-        return process_feature(features_df)
+    def _process_features(self, features_df):
+        return process_features(features_df)
 
     def process_gene_list(self, gene_df):
         return process_gene_list(self, gene_df)
 
-    def translate_gene(self, gene):
-        return translate_gene(self, gene)
-
     def process_pubmed(self, pubmed):
-        pubmed['Gene'] = pubmed['Gene'].apply(partial(translate_gene, self))
+        pubmed['Gene'] = pubmed['Gene'].apply(partial(translate_pubmed_genes, self))
         return categorize_host_specimen(self, pubmed)
 
 
@@ -54,9 +51,14 @@ def build_blast_db(virus):
                 if 'gene' in aa.qualifiers:
                     gene = aa.qualifiers['gene'][0].upper()
                 else:
-                    gene = aa.qualifiers['product'][0].split(' ')[0].upper()
+                    gene = aa.qualifiers[
+                        'product'][0].upper().replace(' PROTEIN', '').strip()
+
+                if gene == 'P PHOSPHOPROTEIN':
+                    gene = 'P'
 
                 if gene not in virus.GENES:
+                    # print(gene)
                     continue
 
                 aa_seqs.append(
@@ -91,16 +93,12 @@ def build_blast_db(virus):
     )
 
 
-def process_feature(features_df):
+def process_features(features_df):
     features_df = translate_bio_term(features_df)
     features_df = get_additional_host_data(features_df)
     features_df['Host'] = features_df['Host2']
     features_df['isolate_source'] = features_df['isolate_source2']
 
-    features_df['Country'] = features_df['country_region'].str.split(
-        ":").str[0]
-
-    features_df['Genes'] = features_df['segment_source']
     for i, row in features_df.iterrows():
         if int(row['SeqLength']) > 17000:
             features_df.at[i, 'Genes'] = 'genome'
@@ -204,7 +202,7 @@ def get_additional_host_data(features_df):
 
 def process_gene_list(virus, gene_df):
 
-    gene_df['Gene'] = gene_df['Gene'].apply(translate_cds_name)
+    gene_df['Gene'] = gene_df['CDS_NAME'].apply(translate_cds_name)
 
     for i, row in gene_df.iterrows():
         if str(row['Gene']) not in virus.GENES:
@@ -214,27 +212,52 @@ def process_gene_list(virus, gene_df):
 
 
 def translate_cds_name(cds):
-    cds = cds.replace('protein', '').strip()
     name_map = {
         'RNA-directed RNA polymerase': 'L',
-        'nucleocapsid': 'N',
-        'polymerase': 'L',
-        'fusion': 'F',
-        'phosphoprotein': 'P',
+        'POLYMERASE': 'L',
         'large polymerase': 'L',
-        'glycoprotein': 'G',
-        'matrix': 'M',
-        'nucleoprotein': 'N',
-        'RNA polymerase': 'L'
+        'RNA polymerase': 'L',
+        'L': 'L',
+
+        'N': 'N',
+        'NUCLEOCAPSID': 'N',
+        'NUCLEOPROTEIN': 'N',
+
+        'FUSION': 'F',
+        'F': 'F',
+
+        'GLYCOPROTEIN': 'G',
+        'G': 'G',
+        'ATTACHMENT GLYCOPROTEIN': 'G',
+
+        'MATRIX': 'M',
+        'M': 'M',
+
+        'P': 'P',
+        'P/V/M/C': 'P',
+        'P/V/C': 'P',
+        'P/V/W/C': 'P',
+        'V': 'P',
+        'W': 'P',
+        'C': 'P',
+        'P PHOSPHOPROTEIN': 'P',
+        'PHOSPHOPROTEIN': 'P',
+
     }
 
-    for k, v in name_map.items():
-        cds = cds.replace(k, v)
+    for v in name_map.values():
+        assert (v in Virus.get_virus('Nipah').GENES)
 
-    return cds
+    if cds in name_map:
+        return name_map[cds]
+    elif cds == 'isolate':
+        return ''
+    else:
+        print(cds)
+        return ''
 
 
-def translate_gene(virus, gene):
+def translate_pubmed_genes(virus, gene):
     return gene if gene in virus.GENES else ('NA' if not gene or gene == 'NA' else 'Other')
 
 
