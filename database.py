@@ -32,7 +32,7 @@ def create_database(
     genes['HSPLength'] = genes['align_len']
 
     tblSequences = genes[[
-        'Accession', 'Gene',
+        'Accession', 'Gene', 'CDS_NAME',
         'AASeq', 'NumAA', 'AA_start', 'AA_stop',
         'NASeq', 'NumNA', 'NA_start', 'NA_stop',
         'PcntMatch', 'HSPLength',
@@ -123,6 +123,21 @@ def creat_views(db_file):
         AND b.Accession = c.Accession;
     """
     run_create_view(db_file, vReferenceRecord)
+
+    vLitAccessionLink = """
+        CREATE VIEW vLitAccessionLink AS
+        SELECT
+            distinct a.*
+        FROM
+            tblIsolates a,
+            tblRefLink b,
+            tblLitRefLink c
+        WHERE
+            a.Accession = b.Accession
+            AND
+            b.RefID = c.RefID;
+    """
+    run_create_view(db_file, vLitAccessionLink)
 
 
 def dump_table(db_file, table_name, table, index=False):
