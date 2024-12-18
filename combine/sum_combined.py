@@ -10,6 +10,15 @@ def summarize_combined_data(combined, features, genes, logger):
     logger.info('Summarize PubMed GenBank Match')
     logger.info('=' * 80)
 
+    genbank_only_pubmed = combined[
+        (combined['match'] != 'Yes') &
+        (combined['Reviewer(s) Seq'] == '') &
+        (combined['PMID'] != '')
+        ]
+    print('GenBank only PMID:', len(genbank_only_pubmed))
+
+    logger.info('=' * 80)
+
     matches = combined[(combined['match'] == 'Yes')]
 
     publish_year = count_number([

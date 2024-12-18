@@ -15,7 +15,7 @@ class Nipah(Virus):
 
     @property
     def pubmed_file(self):
-        return self.pubmed_folder / "ReferenceSummary_Dec11.xlsx"
+        return self.pubmed_folder / "ReferenceSummary_Dec18.xlsx"
 
     def build_blast_db(self):
         build_blast_db(self)
