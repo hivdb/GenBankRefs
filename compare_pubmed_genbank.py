@@ -66,7 +66,7 @@ def compare_pubmed_genbank(virus_obj):
     #     summarize_pubmed(pubmed, virus_obj.pubmed_logger)
 
     pubmed['LitID'] = pubmed.index + 1
-    pubmed.to_excel(str(virus_obj.pubmed_folder / 'Pubmed.xlsx'), index=False)
+    pubmed.to_excel(str(virus_obj.output_dir / 'Pubmed.xlsx'), index=False)
 
     pubmed_match, genbank_match, pubmed_unmatch, genbank_unmatch = match_pm_gb(
         pubmed, genbank_ref, virus_obj.pm_gb_logger)

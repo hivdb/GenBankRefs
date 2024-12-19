@@ -27,7 +27,7 @@ class CCHF(Virus):
 
     @property
     def pubmed_additional_from_gb(self):
-        return self.pubmed_folder / "ReferenceSummary_Genbank_Dec11.xlsx"
+        return self.pubmed_folder / "ReferenceSummary_Genbank_Dec18.xlsx"
 
     def build_blast_db(self):
         build_blast_db(self)
