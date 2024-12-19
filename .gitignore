@@ -186,3 +186,10 @@ combined
 
 log.txt
 *.db
+ReferenceData/HBV/HBV.gb
+ReferenceData/CCHF/CCHF.gb.v2.gb
+ReferenceData/Lassa/Lgene_ref.gb
+ReferenceData/Lassa/NC_004296.gb
+ReferenceData/Lassa/NC_004297.gb
+ReferenceData/Lassa/Sgene_ref.gb
+ReferenceData/Nipah/Nipah.gb.v2.gb
