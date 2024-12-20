@@ -1,11 +1,70 @@
-from .utils import count_number
-from .utils import split_value_by_comma
-from .translate_value import median_year
-from .utils import int_sorter
+from Utilities import count_number
+from Utilities import split_value_by_comma
+from Utilities import median_year
+from Utilities import int_sorter
 from Utilities import create_binnned_year
 import numpy as np
 import pandas as pd
 from collections import defaultdict
+
+
+def summarize_pubmed(pubmed_file, virus_obj):
+
+    if not pubmed_file.exists():
+        print('Pubmed file not found')
+        return pd.DataFrame()
+
+    pubmed = pd.read_excel(pubmed_file, dtype=str).fillna('')
+
+    summarize_pubmed_reviewer_gpt(pubmed, virus_obj.get_logger('pubmed_workflow'))
+
+    likely = pubmed[
+        (
+            (pubmed['Reviewer1  (Y/N)'].str.lower().isin(('likely', 'unsure')))
+            |
+            (pubmed['GPT (Y/N)'].str.lower().isin(('likely', 'unsure')))
+        ) &
+        (pubmed['Resolve Seq'].str.lower() != 'no') &
+        (
+            (pubmed['Reviewer(s) Seq'].str.lower() == 'yes') |
+            (pubmed['GPT seq (Y/N)'].str.lower() == 'yes')
+        )
+    ]
+
+    both_unlikely = pubmed[
+        (
+            (pubmed['Reviewer1  (Y/N)'].str.lower() == 'unlikely') &
+            (pubmed['GPT (Y/N)'].str.lower() == 'unlikely')
+        )
+    ]
+
+    pubmed = pd.concat([likely, both_unlikely])
+    logger = virus_obj.get_logger('pubmed_workflow')
+    logger.info('Pubmed Literatures:', len(pubmed))
+    logger.info('Pubmed Literatures, likely:', len(likely))
+    logger.info('Pubmed Literatures, both unlikely', len(both_unlikely))
+    pubmed = virus_obj.process_pubmed(pubmed)
+
+    virus_obj.get_logger('pubmed').report(summarize_pubmed_data(pubmed))
+
+    if virus_obj.pubmed_additional_from_gb:
+        additional_pubmed = pd.read_excel(
+            virus_obj.pubmed_additional_from_gb, dtype=str).fillna('')
+
+        additional_pubmed = virus_obj.process_pubmed(additional_pubmed)
+        pubmed = pd.concat([pubmed, additional_pubmed], ignore_index=True)
+        logger.info(
+            'Pubmed Literature with additional Literature from GenBank Only:',
+            len(pubmed))
+
+    # IF inlude additional PMID from GenBank
+    # if summrize:
+    #     summarize_pubmed_data(pubmed, virus_obj.get_logger('pubmed_from_GB'))
+
+    pubmed['LitID'] = pubmed.index + 1
+    pubmed.to_excel(str(virus_obj.output_dir / 'Pubmed.xlsx'), index=False)
+
+    return pubmed
 
 
 def recursive_defaultdict():
@@ -263,7 +322,7 @@ def basic_summary(logger, summary, prefix=[]):
             basic_summary(logger, v, prefix + [k])
 
 
-def summarize_pubmed(df, logger):
+def summarize_pubmed_data(df):
     summarize_report = []
 
     section = ["Summarize PubMed"]
@@ -327,7 +386,7 @@ def summarize_pubmed(df, logger):
 
     # section = ["Country W/WO"]
     # country = count_number(
-    #     [v for i, v in df.iterrows()], 'Country', translater=translate_country)
+    #     [v for i, v in df.iterrows()], 'Country', translater=with_country)
     # section.append(country)
     # summarize_report.append(section)
 
@@ -345,14 +404,4 @@ def summarize_pubmed(df, logger):
     section = ["End of Report"]
     summarize_report.append(section)
 
-    for section in summarize_report:
-        for pid, part in enumerate(section):
-            if isinstance(part, tuple):
-                logger.info(*part)
-            elif isinstance(part, list):
-                logger.info(*part)
-            else:
-                logger.info(part)
-            if pid < len(section) - 1:
-                logger.info('-' * 80)
-        logger.info('=' * 80)
+    return summarize_report

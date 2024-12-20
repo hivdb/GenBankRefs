@@ -1,14 +1,32 @@
-from .translate_value import median_year
-from .translate_value import translate_country
-from .utils import count_number
-from .utils import int_sorter
+from Utilities import median_year
+from Utilities import with_country
+from Utilities import count_number
+from Utilities import int_sorter
 from Utilities import create_binned_pcnts
 from Utilities import create_binned_seq_lens
 from Utilities import create_binnned_year
 from collections import defaultdict
 
 
-def summarize_genbank_by_ref(df, logger):
+def summarize_genbank(genbank_ref, genbank_feature, genbank_genes, virus_obj):
+    genbank_ref = genbank_ref.fillna('')
+
+    genbank_feature = genbank_feature.fillna('')
+
+    genbank_genes = genbank_genes.fillna('')
+
+    logger = virus_obj.get_logger('genbank')
+    logger.report(summarize_genbank_by_ref(genbank_ref))
+
+    logger.report(summarize_genbank_by_seq(
+        genbank_feature, genbank_genes))
+
+    logger.report(summarize_genbank_full_genome(
+        genbank_ref, genbank_feature,
+        full_gene_set=virus_obj.GENES))
+
+
+def summarize_genbank_by_ref(df):
     summarize_report = []
 
     section = ['Summarize Genbank By Ref']
@@ -54,20 +72,10 @@ def summarize_genbank_by_ref(df, logger):
     section = ["End of Report"]
     summarize_report.append(section)
 
-    for section in summarize_report:
-        for pid, part in enumerate(section):
-            if isinstance(part, tuple):
-                logger.info(*part)
-            elif isinstance(part, list):
-                logger.info(*part)
-            else:
-                logger.info(part)
-            if pid < len(section) - 1:
-                logger.info('-' * 80)
-        logger.info('=' * 80)
+    return summarize_report
 
 
-def summarize_genbank_by_seq(df, genes_df, logger):
+def summarize_genbank_by_seq(df, genes_df):
     summarize_report = []
 
     section = ['Summarize Genbank By Seq']
@@ -110,7 +118,7 @@ def summarize_genbank_by_seq(df, genes_df, logger):
     section = ['Countries W/WO']
     country = count_number(
         [v for i, v in df.iterrows()], 'Country',
-        translater=translate_country)
+        translater=with_country)
     section.append(country)
     section.append('=' * 40)
 
@@ -143,21 +151,11 @@ def summarize_genbank_by_seq(df, genes_df, logger):
     section = ['End of report']
     summarize_report.append(section)
 
-    for section in summarize_report:
-        for pid, part in enumerate(section):
-            if isinstance(part, tuple):
-                logger.info(*part)
-            elif isinstance(part, list):
-                logger.info(*part)
-            else:
-                logger.info(part)
-            if pid < len(section) - 1:
-                logger.info('-' * 80)
-        logger.info('=' * 80)
+    return summarize_report
 
 
 def summarize_genbank_full_genome(
-        ref_df, features_df, logger, full_gene_set):
+        ref_df, features_df, full_gene_set):
 
     summarize_report = []
 
@@ -193,7 +191,8 @@ def summarize_genbank_full_genome(
             # num_seq += genome
             num_ref += 1
 
-    section.append(['Number of References with Full genome:', num_ref])
+    section = ['Number of References with Full genome:']
+    section.append(num_ref)
     # section.append('Number of full genome seq', num_seq)
 
     summarize_report.append(section)
@@ -201,14 +200,4 @@ def summarize_genbank_full_genome(
     section = ['End of report']
     summarize_report.append(section)
 
-    for section in summarize_report:
-        for pid, part in enumerate(section):
-            if isinstance(part, tuple):
-                logger.info(*part)
-            elif isinstance(part, list):
-                logger.info(*part)
-            else:
-                logger.info(part)
-            if pid < len(section) - 1:
-                logger.info('-' * 80)
-        logger.info('=' * 80)
+    return summarize_report

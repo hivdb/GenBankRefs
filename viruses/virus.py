@@ -110,23 +110,12 @@ class Virus:
     def pubmed_genbank_combined(self):
         return self.output_dir / f"{self.name}_P_G_Combined_{timestamp}.xlsx"
 
-    @property
-    def genbank_logger(self):
-        if not getattr(self, '_genbank_logger', None):
-            self._genbank_logger = get_logger(self.output_dir / f'{self.name}_genbank.txt')
-        return self._genbank_logger
-
-    @property
-    def pubmed_logger(self):
-        if not getattr(self, '_pubmed_logger', None):
-            self._pubmed_logger = get_logger(self.output_dir / f'{self.name}_pubmed.txt')
-        return self._pubmed_logger
-
-    @property
-    def pm_gb_logger(self):
-        if not getattr(self, '_pm_gb_logger', None):
-            self._pm_gb_logger = get_logger(self.output_dir / f'{self.name}_compare.txt')
-        return self._pm_gb_logger
+    def get_logger(self, logger_name):
+        logger_file = f'{self.name}_datalog_{logger_name}.txt'
+        if not getattr(self, logger_file, None):
+            setattr(self, logger_file, get_logger(
+                self.output_dir / logger_file))
+        return getattr(self, logger_file)
 
     def build_blast_db(self):
         build_blast_db(self)

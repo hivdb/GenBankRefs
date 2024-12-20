@@ -1,8 +1,6 @@
 from Bio import Entrez
 import pandas as pd
 
-from compare_pubmed_genbank import compare_pubmed_genbank
-
 from viruses.load_virus import load_virus_obj
 from viruses.load_virus import select_virus
 
@@ -15,8 +13,11 @@ from genbank_records import process_gene_list
 from DataFrameLogic import aggregate_references
 from DataFrameLogic import combine_refs_and_features
 
-from database import create_database
+from summarize_genbank import summarize_genbank
+from summarize_pubmed import summarize_pubmed
+from match_pubmed_GB import match_pubmed_GB
 
+from database import create_database
 
 # Silences the warnings that occur when empty cells are replaced with 'NA'
 pd.set_option('future.no_silent_downcasting', True)
@@ -58,10 +59,16 @@ def main():
     # saved_combined_df = pd.read_excel(str(virus_obj.comparison_file), na_values=[''])
     # compare_output_files(saved_combined_df, combined_df)
 
+    summarize_genbank(references, features, genes, virus_obj)
+    pubmed = summarize_pubmed(virus_obj.pubmed_file, virus_obj)
+
+    if pubmed.empty:
+        return
+
     # The virus_obj contains links to pubmed tables, genbank tables
-    # compare_pubmed_genbank function will load these tables to pandas dataframes internally
     # the return values are: pubmed (the pubmed data file), pubmed_genbank (Pubmed and GenBank matches)
-    literature, lit_ref_match = compare_pubmed_genbank(virus_obj)
+    literature, lit_ref_match = match_pubmed_GB(pubmed, references, features, genes, virus_obj)
+
 
     if literature.empty or not lit_ref_match:
         return
