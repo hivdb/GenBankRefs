@@ -109,10 +109,8 @@ Summarize Genbank By Seq
 Host
 --------------------------------------------------------------------------------
 Homo sapiens (1223)
-Mouse (890)
+Rodent (904)
 NA (139)
-Rodent (10)
-Rat (4)
 Goat (3)
 Lizard (2)
 Other (2)

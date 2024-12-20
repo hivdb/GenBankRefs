@@ -117,14 +117,14 @@ def process_features(features_df):
 
 def translate_bio_term(features_df):
     name_map = {
-        'Mastomys natalensis': 'mouse',
-        'Mastomys erythroleucus': 'mouse',
-        'Lophuromys sikapusi': 'rat',
-        'Cavia porcellus (guinea pig)': 'guinea pig',
-        'Mus baoulei': 'mouse',
-        'Mastomys': 'mouse',
+        'Mastomys natalensis': 'rodent',
+        'Mastomys erythroleucus': 'rodent',
+        'Lophuromys sikapusi': 'rodent',
+        'Cavia porcellus (guinea pig)': 'rodent',
+        'Mus baoulei': 'rodent',
+        'Mastomys': 'rodent',
         'Hylomyscus pamfi': 'rodent',
-        'Rattus norvegicus': 'rat',
+        'Rattus norvegicus': 'rodent',
         'Mastomys sp.': 'rodent',
         'Mastomys sp': 'rodent',
         'Rodents': 'rodent',
