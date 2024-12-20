@@ -304,4 +304,4 @@ Full text with seq:
 ================================================================================
 Pubmed Literatures: 34
 Pubmed Literatures, likely: 33
-Pubmed Literatures, both unlikely 1
+Pubmed Literatures, both unlikely: 1

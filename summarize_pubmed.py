@@ -42,7 +42,7 @@ def summarize_pubmed(pubmed_file, virus_obj):
     logger = virus_obj.get_logger('pubmed_workflow')
     logger.info('Pubmed Literatures:', len(pubmed))
     logger.info('Pubmed Literatures, likely:', len(likely))
-    logger.info('Pubmed Literatures, both unlikely', len(both_unlikely))
+    logger.info('Pubmed Literatures, both unlikely:', len(both_unlikely))
     pubmed = virus_obj.process_pubmed(pubmed)
 
     virus_obj.get_logger('pubmed').report(summarize_pubmed_data(pubmed))
@@ -326,6 +326,10 @@ def summarize_pubmed_data(df):
     summarize_report = []
 
     section = ["Summarize PubMed"]
+    summarize_report.append(section)
+
+    section = ['# Sequences']
+    section.append(sum([int(v['NumSeqs']) if v['NumSeqs'] else 0 for i, v in df.iterrows()]))
     summarize_report.append(section)
 
     section = ["Publish Year"]

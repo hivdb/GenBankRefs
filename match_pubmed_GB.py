@@ -113,6 +113,7 @@ def match(pubmed, genbank, logger):
     logger.info("Genbank match by title:", len(set(i[-1] for i in match_by_title_list)))
     logger.info("Genbank match by acc:", len(set(i[-1] for i in match_by_acc_list)))
     logger.info('Genbank match total:', len(set(i[-1] for i in genbank_match_list)))
+    logger.info('-' * 80)
 
     pubmed_match = match_pubmed2genbank(genbank_match_list)
 
@@ -190,10 +191,10 @@ def summarize_combined_data(combined, features, genes, logger):
     section.append(create_binnned_year(publish_year))
     summarize_report.append(section)
 
-    section = ['Journals']
-    journals = count_number([v for i, v in matches.iterrows()], 'Journal')
-    section.append(journals)
-    summarize_report.append(section)
+    # section = ['Journals']
+    # journals = count_number([v for i, v in matches.iterrows()], 'Journal')
+    # section.append(journals)
+    # summarize_report.append(section)
 
     section = ['Seq method']
     methods = count_number(

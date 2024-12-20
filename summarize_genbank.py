@@ -101,8 +101,10 @@ def summarize_genbank_by_seq(df, genes_df):
     summarize_report.append(section)
 
     section = ['Sample Years']
-    year = count_number(
-        [v for i, v in df.iterrows()], 'IsolateYear', sorter=int_sorter)
+    year = count_number([
+        int(v['IsolateYear'])
+        if v['IsolateYear'] else '' for i, v in df.iterrows()],
+        sorter=int_sorter)
     section.append(year)
 
     year = [int(v['IsolateYear']) for i, v in df.iterrows() if v['IsolateYear'] and v['IsolateYear'] != 'NA']

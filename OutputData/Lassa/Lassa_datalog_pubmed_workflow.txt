@@ -304,5 +304,5 @@ Full text with seq:
 ================================================================================
 Pubmed Literatures: 75
 Pubmed Literatures, likely: 66
-Pubmed Literatures, both unlikely 9
+Pubmed Literatures, both unlikely: 9
 Pubmed Literature with additional Literature from GenBank Only: 78

@@ -274,7 +274,9 @@ def alphabetical_sorter(value_count_list):
 
 
 def int_sorter(value_count_list):
-    return sorted(value_count_list, key=lambda x: int(x[0]) if (x[0] and x[0] != 'NA') else -1)
+    return sorted(
+        value_count_list,
+        key=lambda x: int(x[0]) if (x[0] and x[0] != 'NA') else -1)
 
 
 def count_number(rows, key=None, translater=lambda x: x, sorter=count_rev_sorter):
