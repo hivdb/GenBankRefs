@@ -84,7 +84,7 @@ class Virus:
 
     @property
     def genbank_gene_file(self):
-        return self.output_dir / f"{self.name}__GenBankGenes_{timestamp}.xlsx"
+        return self.output_dir / f"{self.name}__GenBankGenes.xlsx"
 
     @property
     def combined_file(self):

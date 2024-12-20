@@ -24,7 +24,7 @@ def select_virus():
 
 def load_virus_obj(virus):
     """
-        virus_conf folder contains specific configuration (virus config) for a virus.
+        viruses folder contains specific configuration (virus config) for a virus.
         If this file doesn't exist, the default virus will be used.
 
         A virus config contains the input and output file path, and functions

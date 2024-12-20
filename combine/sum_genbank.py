@@ -9,23 +9,23 @@ from collections import defaultdict
 
 
 def summarize_genbank_by_ref(df, logger):
-    logger.info('Summarize Genbank By Ref')
-    logger.info('=' * 80)
+    summarize_report = []
+
+    section = ['Summarize Genbank By Ref']
+    summarize_report.append(section)
 
     df['MedianPublishYear'] = df['Year'].apply(median_year)
     publish_year = count_number([
         v for i, v in df.iterrows()], 'MedianPublishYear', sorter=int_sorter)
-    logger.info('Publish Year')
-    logger.info(publish_year)
-
-    logger.info('*' * 80)
+    section = ['Publish Year']
+    section.append(publish_year)
 
     publish_year = [
         int(v['MedianPublishYear']) for i, v in df.iterrows()
         if v['MedianPublishYear'] and v['MedianPublishYear'] != 'NA']
-    logger.info(create_binnned_year(publish_year))
+    section.append(create_binnned_year(publish_year))
 
-    logger.info('=' * 80)
+    summarize_report.append(section)
 
     # Journal information not included
     # journal_values = [row['Journal'].split(',')[0].strip()
@@ -33,113 +33,136 @@ def summarize_genbank_by_ref(df, logger):
     # cleaned_entries = [remove_parenthesis(entry) for entry in journal_values]
     # journals = count_number([{'Journal': value}
     #                         for value in cleaned_entries], 'Journal')
-    # logger.info('Journals')
-    # logger.info(journals)
+    # section = ['Journals']
+    # section.append(journals)
 
+    section = ['References Num Isolates (Sequences)']
     df['NumSeq (GB)'] = df['accession'].apply(lambda x: len(x.split(',')))
     num_seqs = count_number(
         [v for i, v in df.iterrows()], 'NumSeq (GB)', sorter=int_sorter)
-    logger.info('References Num Isolates (Sequences)')
-    logger.info(num_seqs)
+    section.append(num_seqs)
 
-    logger.info('*' * 80)
+    section.append((
+        'Total', len(set([
+            j.strip()
+            for i, v in df.iterrows() if v['NumSeq (GB)']
+            for j in v['accession'].split(',')
+            if j.strip()
+        ]))))
+    summarize_report.append(section)
 
-    logger.info('Total', len(set([
-        j.strip()
-        for i, v in df.iterrows() if v['NumSeq (GB)']
-        for j in v['accession'].split(',')
-        if j.strip()
-        ])))
+    section = ["End of Report"]
+    summarize_report.append(section)
 
-    logger.info('=' * 80)
-    logger.info('# End of section')
-    logger.info('=' * 80)
+    for section in summarize_report:
+        for pid, part in enumerate(section):
+            if isinstance(part, tuple):
+                logger.info(*part)
+            elif isinstance(part, list):
+                logger.info(*part)
+            else:
+                logger.info(part)
+            if pid < len(section) - 1:
+                logger.info('-' * 80)
+        logger.info('=' * 80)
 
 
 def summarize_genbank_by_seq(df, genes_df, logger):
-    logger.info('Summarize Genbank By Seq')
+    summarize_report = []
 
-    logger.info('=' * 80)
+    section = ['Summarize Genbank By Seq']
+    summarize_report.append(section)
 
+    section = ['Host']
     hosts = count_number([v for i, v in df.iterrows()], 'Host')
-    logger.info('Host')
-    logger.info(hosts)
-    logger.info('=' * 80)
+    section.append(hosts)
+    summarize_report.append(section)
 
+    section = ['Specimens']
     specimen = count_number([v for i, v in df.iterrows()], 'isolate_source')
-    logger.info('Specimens')
-    logger.info(specimen)
-    logger.info('=' * 80)
+    section.append(specimen)
+    summarize_report.append(section)
 
+    section = ['RecordYears']
     year = count_number(
         [v for i, v in df.iterrows()], 'RecordYear', sorter=int_sorter)
-    logger.info('RecordYears')
-    logger.info(year)
-
-    logger.info('*' * 80)
+    section.append(year)
 
     year = [int(v['RecordYear']) for i, v in df.iterrows() if v['RecordYear']]
-    logger.info(create_binnned_year(year))
-    logger.info('=' * 80)
+    section.append(create_binnned_year(year))
+    summarize_report.append(section)
 
+    section = ['Sample Years']
     year = count_number(
         [v for i, v in df.iterrows()], 'IsolateYear', sorter=int_sorter)
-    logger.info('Sample Years')
-    logger.info(year)
-    logger.info('*' * 80)
+    section.append(year)
 
     year = [int(v['IsolateYear']) for i, v in df.iterrows() if v['IsolateYear'] and v['IsolateYear'] != 'NA']
-    logger.info(create_binnned_year(year))
-    logger.info('=' * 80)
+    section.append(create_binnned_year(year))
+    summarize_report.append(section)
 
+    section = ['Countries']
     country = count_number(
         [v for i, v in df.iterrows()], 'Country')
-    logger.info('Countries')
-    logger.info(country)
-    logger.info('=' * 80)
+    section.append(country)
+    summarize_report.append(section)
 
-    # country = count_number(
-    #     [v for i, v in df.iterrows()], 'Country',
-    #     translater=translate_country)
-    # logger.info('Countries W/WO')
-    # logger.info(country)
-    # logger.info('=' * 40)
+    section = ['Countries W/WO']
+    country = count_number(
+        [v for i, v in df.iterrows()], 'Country',
+        translater=translate_country)
+    section.append(country)
+    section.append('=' * 40)
 
+    section = ['Genes']
     genes = count_number(
         [v for i, v in df.iterrows()], 'Genes')
-    logger.info('Genes')
-    logger.info(genes)
-    logger.info('=' * 80)
+    section.append(genes)
+    summarize_report.append(section)
 
+    section = ['AlignLens']
     aligns = [int(v['align_len']) for i, v in genes_df.iterrows()]
-    logger.info('AlignLens')
-    logger.info(create_binned_seq_lens(aligns))
-    logger.info('=' * 80)
+    section.append(create_binned_seq_lens(aligns))
+    summarize_report.append(section)
 
+    section = ['NA length']
     num_na = [int(v['NumNA']) for i, v in genes_df.iterrows()]
-    logger.info('NA length')
-    logger.info(create_binned_seq_lens(num_na))
-    logger.info('=' * 80)
+    section.append(create_binned_seq_lens(num_na))
+    summarize_report.append(section)
 
+    section = ['AA length']
     num_aa = [int(v['NumAA']) for i, v in genes_df.iterrows()]
-    logger.info('AA length')
-    logger.info(create_binned_seq_lens(num_aa))
-    logger.info('=' * 80)
+    section.append(create_binned_seq_lens(num_aa))
+    summarize_report.append(section)
 
+    section = ['PcntIDs']
     pcnt_ident = [float(v['pcnt_id']) for i, v in genes_df.iterrows()]
-    logger.info('PcntIDs')
-    logger.info(create_binned_pcnts(pcnt_ident))
+    section.append(create_binned_pcnts(pcnt_ident))
 
-    logger.info('=' * 80)
-    logger.info('# End of section')
-    logger.info('=' * 80)
+    summarize_report.append(section)
+    section = ['End of report']
+    summarize_report.append(section)
+
+    for section in summarize_report:
+        for pid, part in enumerate(section):
+            if isinstance(part, tuple):
+                logger.info(*part)
+            elif isinstance(part, list):
+                logger.info(*part)
+            else:
+                logger.info(part)
+            if pid < len(section) - 1:
+                logger.info('-' * 80)
+        logger.info('=' * 80)
 
 
 def summarize_genbank_full_genome(
         ref_df, features_df, logger, full_gene_set):
 
-    logger.info('Summarize references with full genomes')
-    logger.info('=' * 80)
+    summarize_report = []
+
+    section = ['Summarize references with full genomes']
+    summarize_report.append(section)
 
     num_ref = 0
     # num_seq = 0
@@ -170,9 +193,22 @@ def summarize_genbank_full_genome(
             # num_seq += genome
             num_ref += 1
 
-    logger.info('Number of References with Full genome:', num_ref)
-    # logger.info('Number of full genome seq', num_seq)
+    section.append(['Number of References with Full genome:', num_ref])
+    # section.append('Number of full genome seq', num_seq)
 
-    logger.info('=' * 80)
-    logger.info('# End of section')
-    logger.info('=' * 80)
+    summarize_report.append(section)
+
+    section = ['End of report']
+    summarize_report.append(section)
+
+    for section in summarize_report:
+        for pid, part in enumerate(section):
+            if isinstance(part, tuple):
+                logger.info(*part)
+            elif isinstance(part, list):
+                logger.info(*part)
+            else:
+                logger.info(part)
+            if pid < len(section) - 1:
+                logger.info('-' * 80)
+        logger.info('=' * 80)

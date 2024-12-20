@@ -4,6 +4,7 @@ from combine.combine_file import combine_file, format_table
 from combine.sum_genbank import summarize_genbank_by_seq
 from combine.sum_genbank import summarize_genbank_by_ref
 from combine.sum_pubmed import summarize_pubmed
+from combine.sum_pubmed import summarize_pubmed_reviewer_gpt
 from combine.sum_genbank import summarize_genbank_full_genome
 from combine.sum_combined import summarize_combined_data
 
@@ -36,8 +37,15 @@ def compare_pubmed_genbank(virus_obj):
 
     pubmed_file = virus_obj.pubmed_file
     pubmed = pd.read_excel(pubmed_file, dtype=str).fillna('')
-    pubmed = pubmed[
-        (pubmed['Resolve Title'].str.lower() != 'unlikely') &
+
+    if summrize:
+        summarize_pubmed_reviewer_gpt(pubmed, virus_obj.pubmed_logger)
+
+    likely = pubmed[
+        (
+            (pubmed['Reviewer1  (Y/N)'].str.lower().isin(('likely', 'unsure'))) |
+            (pubmed['GPT (Y/N)'].str.lower().isin(('likely', 'unsure')))
+        ) &
         (pubmed['Resolve Seq'].str.lower() != 'no') &
         (
             (pubmed['Reviewer(s) Seq'].str.lower() == 'yes') |
@@ -45,7 +53,17 @@ def compare_pubmed_genbank(virus_obj):
         )
     ]
 
+    both_unlikely = pubmed[
+        (
+            (pubmed['Reviewer1  (Y/N)'].str.lower() == 'unlikely') &
+            (pubmed['GPT (Y/N)'].str.lower() == 'unlikely')
+        )
+    ]
+
+    pubmed = pd.concat([likely, both_unlikely])
     print('Pubmed Literatures:', len(pubmed))
+    print('Pubmed Literatures, likely', len(likely))
+    print('Pubmed Literatures, both unlikely', len(both_unlikely))
     pubmed = virus_obj.process_pubmed(pubmed)
 
     if summrize:
