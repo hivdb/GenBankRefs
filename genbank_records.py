@@ -222,6 +222,8 @@ def process_features(feature_list, genes, virus_obj):
 
 def process_gene_list(gene_list, run_blast, virus_obj):
     if run_blast == 1:
+        virus_obj.build_blast_db()
+
         gene_list = pooled_blast(gene_list, virus_obj)
         gene_df = pd.DataFrame(gene_list)
         gene_df.to_excel(str(virus_obj.genbank_gene_file), index=False)

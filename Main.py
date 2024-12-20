@@ -29,8 +29,6 @@ def main():
     virus_obj = load_virus_obj(virus)
     run_blast = select_run_blast()
 
-    virus_obj.build_blast_db()
-
     references, features, genes, excludes = parse_genbank_records(
         virus_obj.genbank_file)
 
