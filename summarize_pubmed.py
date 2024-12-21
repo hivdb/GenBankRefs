@@ -95,6 +95,9 @@ def summarize_pubmed_reviewer_gpt(df, logger):
     summarize_pubmed_reviewer_gpt_to_full_text(
         summary['Title/Abstract:']['R1 likely']['GPT likely'])
 
+    summarize_pubmed_reviewer_gpt_to_full_text(
+        summary['Title/Abstract:']['GPT likely'])
+
     summary['Title/Abstract:']['R1 likely']['GPT unlikely']['df'] = df[
         (df['Reviewer1  (Y/N)'].str.lower().isin(('likely', 'unsure'))) &
         (df['GPT (Y/N)'].str.lower() == 'unlikely')

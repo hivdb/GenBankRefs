@@ -60,6 +60,7 @@ def main():
     # compare_output_files(saved_combined_df, combined_df)
 
     summarize_genbank(references, features, genes, virus_obj)
+
     pubmed = summarize_pubmed(virus_obj.pubmed_file, virus_obj)
 
     if pubmed.empty:
@@ -68,7 +69,6 @@ def main():
     # The virus_obj contains links to pubmed tables, genbank tables
     # the return values are: pubmed (the pubmed data file), pubmed_genbank (Pubmed and GenBank matches)
     literature, lit_ref_match = match_pubmed_GB(pubmed, references, features, genes, virus_obj)
-
 
     if literature.empty or not lit_ref_match:
         return

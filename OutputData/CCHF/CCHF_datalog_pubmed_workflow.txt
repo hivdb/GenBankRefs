@@ -306,3 +306,19 @@ Pubmed Literatures: 196
 Pubmed Literatures, likely: 196
 Pubmed Literatures, both unlikely: 0
 Pubmed Literature with additional Literature from GenBank Only: 214
+GPT Title/Abstract likely: 203
+GPT Title/Abstract likely, GPT with sequence: 182
+GPT Title/Abstract likely, GPT wo sequence: 21
+GPT Title/Abstract likely, GPT with sequence, two reviewer agree with sequence 180
+GPT Title/Abstract likely, GPT with sequence, no two reviewer agree with sequence 2
+GPT Title/Abstract likely, GPT wo sequence, two reviewer agree with sequence 0
+GPT Title/Abstract unlikely, GPT wo sequence, from GenBank only 18
+In pubmed search, Title/Abstract unlikely, but in GenBank 0
+GPT or R1 Title/Abstract likely: 261
+GPT or R1 Title/Abstract likely, GPT with sequence: 200
+GPT or R1 Title/Abstract likely, GPT wo sequence: 61
+GPT or R1 Title/Abstract likely, GPT with sequence, two reviewer agree with sequence 196
+GPT or R1 Title/Abstract likely, GPT with sequence, no two reviewer agree with sequence 4
+GPT or R1 Title/Abstract likely, GPT wo sequence, two reviewer agree with sequence 0
+GPT or R1 Title/Abstract unlikely, GPT wo sequence, from GenBank only 18
+In pubmed search, Title/Abstract unlikely, but in GenBank 0

@@ -217,7 +217,7 @@ def creat_views(db_file):
     vReferenceRecord = """
         CREATE VIEW vReferenceRecord AS
         SELECT a.*, c.*
-        FROM tblGBReference a, tblRefLink b, tblIsolates c
+        FROM tblGBReference a, tblGBRefSeqLink b, tblGBIsolates c
         WHERE a.RefID = b.RefID
         AND b.Accession = c.Accession;
     """
@@ -228,9 +228,9 @@ def creat_views(db_file):
         SELECT
             distinct a.*
         FROM
-            tblIsolates a,
-            tblRefLink b,
-            tblLitRefLink c
+            tblGBIsolates a,
+            tblGBRefSeqLink b,
+            tblLitGBRefLink c
         WHERE
             a.Accession = b.Accession
             AND

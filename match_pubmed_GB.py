@@ -26,6 +26,9 @@ def match_pubmed_GB(
     pubmed_match, genbank_match, pubmed_unmatch, genbank_unmatch = match(
         pubmed, genbank_ref, logger)
 
+    summarize_complete_workflow_GPT(virus_obj, pubmed_match)
+    summarize_complete_workflow_GPT_or_R1(virus_obj, pubmed_match)
+
     # pubmed_unmatch.to_excel('pubmed_unmatch.xlsx')
     # pd.DataFrame(genbank_unmatch).to_excel('genbank_unmatch.xlsx')
 
@@ -468,3 +471,126 @@ def format_table(excel_file):
         ws.column_dimensions[col_letter].width = 20
 
     wb.save(excel_file)
+
+
+def summarize_complete_workflow_GPT(virus_obj, pubmed_match):
+    pubmed = pd.read_excel(virus_obj.pubmed_file, dtype=str).fillna('')
+
+    likely = pubmed[
+        (
+            (pubmed['GPT (Y/N)'].str.lower().isin(('likely', 'unsure')))
+        )
+    ]
+    logger = virus_obj.get_logger('pubmed_workflow')
+    logger.info('GPT Title/Abstract likely:', len(likely))
+
+    likely_with_seq = likely[(likely['GPT seq (Y/N)'].str.lower() == 'yes')]
+    likely_wo_seq = likely[(likely['GPT seq (Y/N)'].str.lower() != 'yes')]
+    logger.info('GPT Title/Abstract likely, GPT with sequence:', len(likely_with_seq))
+    logger.info('GPT Title/Abstract likely, GPT wo sequence:', len(likely_wo_seq))
+
+    two_reviwer_agree_GPT_with = likely_with_seq[
+        (likely_with_seq['Resolve Seq'].str.lower() != 'no') &
+        (
+            (likely_with_seq['Reviewer(s) Seq'].str.lower() == 'yes') |
+            (likely_with_seq['GPT seq (Y/N)'].str.lower() == 'yes')
+        )
+    ]
+    logger.info(
+        'GPT Title/Abstract likely, '
+        'GPT with sequence, '
+        'two reviewer agree with sequence',
+        len(two_reviwer_agree_GPT_with))
+    logger.info(
+        'GPT Title/Abstract likely, '
+        'GPT with sequence, '
+        'no two reviewer agree with sequence',
+        len(likely_with_seq) - len(two_reviwer_agree_GPT_with))
+
+    two_reviwer_agree_GPT_wo = likely_wo_seq[
+        (likely_wo_seq['Resolve Seq'].str.lower() != 'no') &
+        (
+            (likely_wo_seq['Reviewer(s) Seq'].str.lower() == 'yes') |
+            (likely_wo_seq['GPT seq (Y/N)'].str.lower() == 'yes')
+        )
+    ]
+    logger.info('GPT Title/Abstract likely, GPT wo sequence, two reviewer agree with sequence', len(two_reviwer_agree_GPT_wo))
+
+    if virus_obj.pubmed_additional_from_gb:
+        additional_pubmed = pd.read_excel(
+            virus_obj.pubmed_additional_from_gb, dtype=str).fillna('')
+    else:
+        additional_pubmed = pd.DataFrame()
+    logger.info('GPT Title/Abstract unlikely, GPT wo sequence, from GenBank only', len(additional_pubmed))
+
+    unlikely = pubmed[
+        (
+            (pubmed['Reviewer1  (Y/N)'].str.lower() == 'unlikely')
+            &
+            (pubmed['GPT (Y/N)'].str.lower() == 'unlikely')
+        )
+    ]
+    logger.info('In pubmed search, Title/Abstract unlikely, but in GenBank', len(unlikely))
+
+
+def summarize_complete_workflow_GPT_or_R1(virus_obj, pubmed_match):
+    pubmed = pd.read_excel(virus_obj.pubmed_file, dtype=str).fillna('')
+
+    likely = pubmed[
+        (
+            (pubmed['Reviewer1  (Y/N)'].str.lower().isin(('likely', 'unsure')))
+            |
+            (pubmed['GPT (Y/N)'].str.lower().isin(('likely', 'unsure')))
+        )
+    ]
+
+    logger = virus_obj.get_logger('pubmed_workflow')
+    logger.info('GPT or R1 Title/Abstract likely:', len(likely))
+
+    likely_with_seq = likely[(likely['GPT seq (Y/N)'].str.lower() == 'yes')]
+    likely_wo_seq = likely[(likely['GPT seq (Y/N)'].str.lower() != 'yes')]
+    logger.info('GPT or R1 Title/Abstract likely, GPT with sequence:', len(likely_with_seq))
+    logger.info('GPT or R1 Title/Abstract likely, GPT wo sequence:', len(likely_wo_seq))
+
+    two_reviwer_agree_GPT_with = likely_with_seq[
+        (likely_with_seq['Resolve Seq'].str.lower() != 'no') &
+        (
+            (likely_with_seq['Reviewer(s) Seq'].str.lower() == 'yes') |
+            (likely_with_seq['GPT seq (Y/N)'].str.lower() == 'yes')
+        )
+    ]
+    logger.info(
+        'GPT or R1 Title/Abstract likely, '
+        'GPT with sequence, '
+        'two reviewer agree with sequence',
+        len(two_reviwer_agree_GPT_with))
+    logger.info(
+        'GPT or R1 Title/Abstract likely, '
+        'GPT with sequence, '
+        'no two reviewer agree with sequence',
+        len(likely_with_seq) - len(two_reviwer_agree_GPT_with))
+
+    two_reviwer_agree_GPT_wo = likely_wo_seq[
+        (likely_wo_seq['Resolve Seq'].str.lower() != 'no') &
+        (
+            (likely_wo_seq['Reviewer(s) Seq'].str.lower() == 'yes') |
+            (likely_wo_seq['GPT seq (Y/N)'].str.lower() == 'yes')
+        )
+    ]
+    logger.info('GPT or R1 Title/Abstract likely, GPT wo sequence, two reviewer agree with sequence', len(two_reviwer_agree_GPT_wo))
+
+    if virus_obj.pubmed_additional_from_gb:
+        additional_pubmed = pd.read_excel(
+            virus_obj.pubmed_additional_from_gb, dtype=str).fillna('')
+    else:
+        additional_pubmed = pd.DataFrame()
+    logger.info('GPT or R1 Title/Abstract unlikely, GPT wo sequence, from GenBank only', len(additional_pubmed))
+
+    unlikely = pubmed[
+        (
+            (pubmed['Reviewer1  (Y/N)'].str.lower() == 'unlikely')
+            &
+            (pubmed['GPT (Y/N)'].str.lower() == 'unlikely')
+        )
+    ]
+    logger.info('In pubmed search, Title/Abstract unlikely, but in GenBank', len(unlikely))

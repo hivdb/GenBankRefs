@@ -220,6 +220,37 @@ Title/Abstract:
     GPT likely
         77
 --------------------------------------------------------------------------------
+        Full text with seq:
+            R1 yes
+                53
+--------------------------------------------------------------------------------
+                GPT yes
+                    53
+--------------------------------------------------------------------------------
+                GPT no
+                    0
+--------------------------------------------------------------------------------
+                    R2 yes
+                        0
+--------------------------------------------------------------------------------
+                    R2 no
+                        0
+--------------------------------------------------------------------------------
+            R1 no
+                24
+--------------------------------------------------------------------------------
+                GPT yes
+                    12
+--------------------------------------------------------------------------------
+                    R2 yes
+                        6
+--------------------------------------------------------------------------------
+                    R2 no
+                        6
+--------------------------------------------------------------------------------
+                GPT no
+                    12
+--------------------------------------------------------------------------------
     GPT unlikely
         35
 --------------------------------------------------------------------------------
@@ -306,3 +337,19 @@ Pubmed Literatures: 75
 Pubmed Literatures, likely: 66
 Pubmed Literatures, both unlikely: 9
 Pubmed Literature with additional Literature from GenBank Only: 78
+GPT Title/Abstract likely: 77
+GPT Title/Abstract likely, GPT with sequence: 65
+GPT Title/Abstract likely, GPT wo sequence: 12
+GPT Title/Abstract likely, GPT with sequence, two reviewer agree with sequence 59
+GPT Title/Abstract likely, GPT with sequence, no two reviewer agree with sequence 6
+GPT Title/Abstract likely, GPT wo sequence, two reviewer agree with sequence 0
+GPT Title/Abstract unlikely, GPT wo sequence, from GenBank only 3
+In pubmed search, Title/Abstract unlikely, but in GenBank 9
+GPT or R1 Title/Abstract likely: 103
+GPT or R1 Title/Abstract likely, GPT with sequence: 73
+GPT or R1 Title/Abstract likely, GPT wo sequence: 30
+GPT or R1 Title/Abstract likely, GPT with sequence, two reviewer agree with sequence 66
+GPT or R1 Title/Abstract likely, GPT with sequence, no two reviewer agree with sequence 7
+GPT or R1 Title/Abstract likely, GPT wo sequence, two reviewer agree with sequence 0
+GPT or R1 Title/Abstract unlikely, GPT wo sequence, from GenBank only 3
+In pubmed search, Title/Abstract unlikely, but in GenBank 9
