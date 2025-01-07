@@ -185,7 +185,7 @@ combined
 ~$*.xlsx
 
 log.txt
-*.db
+# *.db
 ReferenceData/HBV/HBV.gb
 ReferenceData/CCHF/CCHF.gb.v2.gb
 ReferenceData/Lassa/Lgene_ref.gb
