@@ -26,8 +26,9 @@ def match_pubmed_GB(
     pubmed_match, genbank_match, pubmed_unmatch, genbank_unmatch = match(
         pubmed, genbank_ref, logger)
 
-    summarize_complete_workflow_GPT(virus_obj, pubmed_match)
-    summarize_complete_workflow_GPT_or_R1(virus_obj, pubmed_match)
+    # won't use
+    # summarize_complete_workflow_GPT(virus_obj, pubmed_match)
+    # summarize_complete_workflow_GPT_or_R1(virus_obj, pubmed_match)
 
     # pubmed_unmatch.to_excel('pubmed_unmatch.xlsx')
     # pd.DataFrame(genbank_unmatch).to_excel('genbank_unmatch.xlsx')
