@@ -31,7 +31,7 @@ def match_pubmed_GB(
     # summarize_complete_workflow_GPT_or_R1(virus_obj, pubmed_match)
 
     # pubmed_unmatch.to_excel('pubmed_unmatch.xlsx')
-    # pd.DataFrame(genbank_unmatch).to_excel('genbank_unmatch.xlsx')
+    genbank_unmatch.to_excel(virus_obj.genbank_unmatch_file)
 
     logger = virus_obj.get_logger('compare_pubmed_only')
     logger.info('Pumbed only Literatures:', len(pubmed_unmatch))
@@ -56,6 +56,11 @@ def match_pubmed_GB(
     logger.report(summarize_genbank_full_genome(
         genbank_match, genbank_feature,
         virus_obj.GENES))
+
+    yesno = input('Generate Chord diagram? [y/n]')
+    if yesno == 'y':
+        from chord_diagram import gen_chord_diagram
+        gen_chord_diagram(virus_obj, combined, genbank_feature)
 
     return pubmed, pubmed_match
 
@@ -224,6 +229,7 @@ def summarize_combined_data(combined, features, genes, logger):
     for name in ['Hosts', 'Specimen', 'SampleYr', 'Countries', 'Genes', 'SeqMethod']:
 
         count = 0
+        count_acc = 0
         for idx, row in combined[combined['match'] == 'Yes'].iterrows():
             p_value = row[f"{name} (PM)"]
             g_value = row[f"{name} (GB)"]
@@ -232,10 +238,17 @@ def summarize_combined_data(combined, features, genes, logger):
             p_value = [p for p in p_value.split(',') if p.strip() and p.strip().upper() != 'NA']
             g_value = [g for g in g_value.split(',') if g.strip() and g.strip().upper() != 'NA']
 
+            accessions = set([
+                j.strip()
+                for j in row['GenBank (GB)'].split(',')
+                ])
+
             if p_value and not g_value:
                 count += 1
+                count_acc += len(accessions)
 
         section.append((name, count))
+        section.append((f"{name} num seq", count_acc))
     summarize_report.append(section)
 
     # section = ['Similar virus']
@@ -595,3 +608,4 @@ def summarize_complete_workflow_GPT_or_R1(virus_obj, pubmed_match):
         )
     ]
     logger.info('In pubmed search, Title/Abstract unlikely, but in GenBank', len(unlikely))
+

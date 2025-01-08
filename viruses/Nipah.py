@@ -99,9 +99,10 @@ def process_features(features_df):
     features_df['Host'] = features_df['Host2']
     features_df['isolate_source'] = features_df['isolate_source2']
 
-    for i, row in features_df.iterrows():
-        if int(row['SeqLength']) > 17000:
-            features_df.at[i, 'Genes'] = 'genome'
+    # for i, row in features_df.iterrows():
+    #     print(row)
+    #     if int(row['SeqLength']) > 17000:
+    #         features_df.at[i, 'Genes'] = 'genome'
 
     return features_df
 
@@ -114,6 +115,7 @@ def translate_bio_term(features_df):
         'Sus scrofa domesticus': 'Pig',
         'Canis lupus familiaris': 'Dog',
         'Sus scrofa (pig)': 'Pig',
+        'oropharyngeal swab': 'throat swab',
     }
 
     features_df['Host2'] = features_df['Host']
@@ -142,7 +144,6 @@ def get_additional_host_data(features_df):
         'liver',
         'spleen',
         'lung',
-        'oropharyngeal swab',
         'urine',
         'throat swab',
         ]

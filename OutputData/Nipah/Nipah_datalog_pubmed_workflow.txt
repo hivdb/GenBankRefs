@@ -336,19 +336,3 @@ Full text with seq:
 Pubmed Literatures: 34
 Pubmed Literatures, likely: 33
 Pubmed Literatures, both unlikely: 1
-GPT Title/Abstract likely: 42
-GPT Title/Abstract likely, GPT with sequence: 38
-GPT Title/Abstract likely, GPT wo sequence: 4
-GPT Title/Abstract likely, GPT with sequence, two reviewer agree with sequence 29
-GPT Title/Abstract likely, GPT with sequence, no two reviewer agree with sequence 9
-GPT Title/Abstract likely, GPT wo sequence, two reviewer agree with sequence 0
-GPT Title/Abstract unlikely, GPT wo sequence, from GenBank only 0
-In pubmed search, Title/Abstract unlikely, but in GenBank 1
-GPT or R1 Title/Abstract likely: 76
-GPT or R1 Title/Abstract likely, GPT with sequence: 57
-GPT or R1 Title/Abstract likely, GPT wo sequence: 19
-GPT or R1 Title/Abstract likely, GPT with sequence, two reviewer agree with sequence 33
-GPT or R1 Title/Abstract likely, GPT with sequence, no two reviewer agree with sequence 24
-GPT or R1 Title/Abstract likely, GPT wo sequence, two reviewer agree with sequence 0
-GPT or R1 Title/Abstract unlikely, GPT wo sequence, from GenBank only 0
-In pubmed search, Title/Abstract unlikely, but in GenBank 1

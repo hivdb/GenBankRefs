@@ -110,6 +110,14 @@ class Virus:
     def pubmed_genbank_combined(self):
         return self.output_dir / f"{self.name}_P_G_Combined_{timestamp}.xlsx"
 
+    @property
+    def genbank_unmatch_file(self):
+        return self.output_dir / f"{self.name}_genbank_unmatch_{timestamp}.xlsx"
+
+    @property
+    def chord_diagram_file(self):
+        return self.output_dir / f"{self.name}_chord_{timestamp}.html"
+
     def get_logger(self, logger_name):
         logger_file = f'{self.name}_datalog_{logger_name}.txt'
         if not getattr(self, logger_file, None):
@@ -123,16 +131,17 @@ class Virus:
     def process_features(self, features_df, genes):
         features_df = self._process_features(features_df)
 
+        for i, row in features_df.iterrows():
+            g_list = genes[genes['Accession'] == row['Accession']]
+            g_list = set(g_list['Gene'].tolist())
+            if (g_list == set(self.GENES)):
+                g_list = 'genome'
+            else:
+                g_list = ', '.join(sorted(list(g_list)))
+            features_df.loc[i, 'Genes'] = g_list
+
         features_df['Country'] = features_df[
             'country_region'].str.split(":").str[0]
-
-        for i, row in features_df.iterrows():
-            if row.get('Genes') == 'genome':
-                continue
-
-            g_list = genes[genes['Accession'] == row['Accession']]
-            features_df.loc[i, 'Genes'] = ', '.join(
-                sorted(list(set(g_list['Gene'].tolist()))))
 
         return features_df
 
