@@ -27,7 +27,9 @@ Host
 Homo sapiens (8)
 Rodent (4)
 Homo sapiens and Rodent (3)
-Other (3)
+monkey (vero cells) (1)
+guinea pigs, recombinant (1)
+recombinant (1)
 ================================================================================
 Specimen
 --------------------------------------------------------------------------------

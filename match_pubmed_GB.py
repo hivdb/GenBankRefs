@@ -225,30 +225,55 @@ def summarize_combined_data(combined, features, genes, logger):
 
     genes = genes[genes['Accession'].isin(list(accessions))]
 
+    section = ['After match, GenBank empty sequence']
+    genbank_column_map = {
+        'Hosts': 'Host',
+        'Specimen': 'isolate_source',
+        'Countries': 'Country',
+        'SampleYr': 'IsolateYear',
+        'Genes': 'Genes',
+    }
+    for c in genbank_column_map.values():
+        v = features[features[c] == '']
+        section.append((c, 'num seq', len(v)))
+    summarize_report.append(section)
+
     section = ['Pubmed Supplement GenBank']
-    for name in ['Hosts', 'Specimen', 'SampleYr', 'Countries', 'Genes', 'SeqMethod']:
+    for name in [
+            'Hosts', 'Specimen', 'SampleYr', 'Countries', 'Genes', 'SeqMethod']:
 
         count = 0
-        count_acc = 0
-        for idx, row in combined[combined['match'] == 'Yes'].iterrows():
+        count_acc = []
+        for idx, row in matches.iterrows():
             p_value = row[f"{name} (PM)"]
             g_value = row[f"{name} (GB)"]
             g_value = re.sub(r"\s\(\d+\)", "", g_value)
 
+            na_in_g_value = ('NA' in g_value) or (not g_value)
+
             p_value = [p for p in p_value.split(',') if p.strip() and p.strip().upper() != 'NA']
             g_value = [g for g in g_value.split(',') if g.strip() and g.strip().upper() != 'NA']
 
-            accessions = set([
-                j.strip()
-                for j in row['GenBank (GB)'].split(',')
-                ])
-
             if p_value and not g_value:
                 count += 1
-                count_acc += len(accessions)
+
+            if p_value and na_in_g_value:
+                # accession may show in multiple rows, so calculate supplied accessions.
+                accessions = set([
+                    j.strip()
+                    for j in row['GenBank (GB)'].split(',')
+                    ])
+
+                sub_features = features[features['Accession'].isin(list(accessions))]
+                if name in genbank_column_map:
+                    gb_column = genbank_column_map.get(name, name)
+                    sub_features = sub_features[sub_features[gb_column] == '']
+                    count_acc += sub_features['Accession'].tolist()
+                else:
+                    count_acc += accessions
 
         section.append((name, count))
-        section.append((f"{name} num seq", count_acc))
+        section.append((f"{name} num seq", len(set(count_acc))))
     summarize_report.append(section)
 
     # section = ['Similar virus']

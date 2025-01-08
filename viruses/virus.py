@@ -59,28 +59,34 @@ class Virus:
         return Path("OutputData") / f"{self.name}"
 
     @property
+    def timestamp_dir(self):
+        d = self.output_dir / timestamp
+        d.mkdir(exist_ok=True)
+        return d
+
+    @property
     def exclude_seq_file(self):
-        return self.output_dir / f"{self.name}_Excluded_Seqs_{timestamp}.xlsx"
+        return self.timestamp_dir / f"{self.name}_Excluded_Seqs_{timestamp}.xlsx"
 
     @property
     def genbank_raw_ref_file(self):
-        return self.output_dir / f"{self.name}_Raw_Ref_{timestamp}.xlsx"
+        return self.timestamp_dir / f"{self.name}_Raw_Ref_{timestamp}.xlsx"
 
     @property
     def genbank_ref_file(self):
-        return self.output_dir / f"{self.name}_Ref_{timestamp}.xlsx"
+        return self.timestamp_dir / f"{self.name}_Ref_{timestamp}.xlsx"
 
     @property
     def merged_ref_file(self):
-        return self.output_dir / f"{self.name}_Merged_Ref_{timestamp}.xlsx"
+        return self.timestamp_dir / f"{self.name}_Merged_Ref_{timestamp}.xlsx"
 
     @property
     def genbank_feature_file(self):
-        return self.output_dir / f"{self.name}_GenBankFeatures_{timestamp}.xlsx"
+        return self.timestamp_dir / f"{self.name}_GenBankFeatures_{timestamp}.xlsx"
 
     @property
     def genbank_feature_check_file(self):
-        return self.output_dir / f"{self.name}__GenBankFeatures_check_{timestamp}.xlsx"
+        return self.timestamp_dir / f"{self.name}__GenBankFeatures_check_{timestamp}.xlsx"
 
     @property
     def genbank_gene_file(self):
@@ -88,7 +94,7 @@ class Virus:
 
     @property
     def combined_file(self):
-        return self.output_dir / f"{self.name}_Combined_{timestamp}.xlsx"
+        return self.timestamp_dir / f"{self.name}_Combined_{timestamp}.xlsx"
 
     @property
     def comparison_file(self):
@@ -108,15 +114,15 @@ class Virus:
 
     @property
     def pubmed_genbank_combined(self):
-        return self.output_dir / f"{self.name}_P_G_Combined_{timestamp}.xlsx"
+        return self.timestamp_dir / f"{self.name}_P_G_Combined_{timestamp}.xlsx"
 
     @property
     def genbank_unmatch_file(self):
-        return self.output_dir / f"{self.name}_genbank_unmatch_{timestamp}.xlsx"
+        return self.timestamp_dir / f"{self.name}_genbank_unmatch_{timestamp}.xlsx"
 
     @property
     def chord_diagram_file(self):
-        return self.output_dir / f"{self.name}_chord_{timestamp}.html"
+        return self.timestamp_dir / f"{self.name}_chord_{timestamp}.html"
 
     def get_logger(self, logger_name):
         logger_file = f'{self.name}_datalog_{logger_name}.txt'

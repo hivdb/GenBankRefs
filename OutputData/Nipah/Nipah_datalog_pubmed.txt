@@ -33,9 +33,11 @@ Host
 Homo sapiens (13)
 Bat (13)
 Bat and Homo sapiens (3)
-Other (3)
 Bat and Dog and Homo sapiens and Pig (1)
 Homo sapiens and Pig (1)
+island flying foxes (pteropus hypomelanus) (1)
+cell cultures (1)
+infected cell cultures​ (1)
 ================================================================================
 Specimen
 --------------------------------------------------------------------------------

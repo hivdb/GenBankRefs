@@ -289,8 +289,8 @@ def categorize_host_specimen(self, pubmed):
                 updated_host.append(a.capitalize())
 
         if not updated_host and host and host != 'NA'.lower():
-            updated_host.append('Other')
-            # updated_host.append(host)
+            # updated_host.append('Other')
+            updated_host.append(host)
 
         if not updated_host:
             updated_host.append('NA')
