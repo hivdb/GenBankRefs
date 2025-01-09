@@ -55,7 +55,44 @@ def gen_chord_diagram(virus_obj, combined, features):
     draw_figure(virus_obj.chord_diagram_file2, df1 + df2, total, ordering)
     draw_figure(virus_obj.chord_diagram_file3, df3, total, ordering)
 
+    get_chord_table(virus_obj.chord_table_file, features, year_range)
+
     return df1 + df2 + df3
+
+
+def get_chord_table(save_path, features, year_range):
+    columns = ['Host', 'Country', 'IsolateYear']
+    df = []
+    for (a, b, c) in [columns]:
+
+        list1 = features[a].unique()
+        list2 = features[b].unique()
+        list3 = features[c].unique()
+        # print(source_list, target_list)
+
+        for a1, b1, c1 in product(list1, list2, list3):
+            weight = len(features[
+                (features[a] == a1) &
+                (features[b] == b1) &
+                (features[c] == c1)
+            ])
+
+            if c1:
+                c1 = get_year_range(c1, year_range)
+
+            if not weight:
+                continue
+
+            df.append({
+                'Host': a1,
+                'Country': b1,
+                'IsolateYear': c1,
+                '#': weight,
+                'T': len(features),
+                '%': round(weight / len(features) * 100),
+            })
+
+    pd.DataFrame(df).to_excel(save_path)
 
 
 def get_gene_host_link(features, column_color):

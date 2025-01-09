@@ -132,6 +132,9 @@ class Virus:
     def chord_diagram_file3(self):
         return self.timestamp_dir / f"{self.name}_chord3_{timestamp}.html"
 
+    @property
+    def chord_table_file(self):
+        return self.timestamp_dir / f"{self.name}_chord3_table.xlsx"
 
     def get_logger(self, logger_name):
         logger_file = f'{self.name}_datalog_{logger_name}.txt'
