@@ -200,7 +200,7 @@ def get_label_ordering(columns, features, year_range):
     return ordering
 
 
-def generate_year_ranges(years, range_length=5):
+def generate_year_ranges(years, range_length=5, split=3):
     if not years:
         return []
 
@@ -209,11 +209,23 @@ def generate_year_ranges(years, range_length=5):
     start_year = min(years)
     stop_year = max(years)
 
-    ranges = []
-    current_year = start_year
-    while stop_year >= current_year:
-        ranges.append((current_year, current_year + range_length - 1))
-        current_year += range_length
+    if split:
+        step = (stop_year - start_year + 1) // split
+        ranges = []
+        for i in range(split):
+            range_start = start_year + i * step
+
+            range_end = range_start + step - 1
+            if i == split - 1:
+                range_end = stop_year
+            ranges.append((range_start, range_end))
+    else:
+
+        ranges = []
+        current_year = start_year
+        while stop_year >= current_year:
+            ranges.append((current_year, current_year + range_length - 1))
+            current_year += range_length
 
     return ranges
 
@@ -261,6 +273,7 @@ def get_other_labels(df, label_type, total, pcnt=0):
     labels = set([
         i[label_type]
         for i in df
+        if (i[f'{label_type}_column'] != 'IsolateYear')
     ])
     for i in labels:
         if i.startswith('Other'):
