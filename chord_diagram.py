@@ -42,7 +42,6 @@ def gen_chord_diagram(virus_obj, combined, features):
     df2 = get_paired_link(features, column_color, ['isolate_source', 'Host'], year_range)
 
     columns = [
-        'isolate_source',
         'Host',
         'Country',
         'IsolateYear',
