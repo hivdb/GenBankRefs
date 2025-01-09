@@ -124,6 +124,15 @@ class Virus:
     def chord_diagram_file(self):
         return self.timestamp_dir / f"{self.name}_chord_{timestamp}.html"
 
+    @property
+    def chord_diagram_file2(self):
+        return self.timestamp_dir / f"{self.name}_chord2_{timestamp}.html"
+
+    @property
+    def chord_diagram_file3(self):
+        return self.timestamp_dir / f"{self.name}_chord3_{timestamp}.html"
+
+
     def get_logger(self, logger_name):
         logger_file = f'{self.name}_datalog_{logger_name}.txt'
         if not getattr(self, logger_file, None):
