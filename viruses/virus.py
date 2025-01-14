@@ -178,7 +178,7 @@ class Virus:
             if 'CONSTRUCT' in row['Description'].upper():
                 features_df.at[i, 'Comment'] = 'CONSTRUCT'
             if 'COMPOSITIONS' in row['Description'].upper():
-                features_df.at[i, 'Comment'] = 'COMPOSITIONS'
+                features_df.at[i, 'Comment'] = 'CONSTRUCT'
             if 'monoclonal antibody' in row['Description'].lower():
                 features_df.at[i, 'Comment'] = 'antibody'
             if 'MICROARRAY' in row['Description'].upper():

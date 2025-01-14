@@ -128,9 +128,11 @@ def create_database(
         'Comment']]
 
     for i, row in tblGBIsolates.iterrows():
-        tblGBIsolates.at[i, 'Host'] = row['Host'] if row['Host'] else ('NA' if row['Comment'] else 'Unknown')
-        tblGBIsolates.at[i, 'Specimen'] = row['Specimen'] if row['Specimen'] else ('NA' if row['Comment'] else 'Unknown')
-        tblGBIsolates.at[i, 'IsolateYear'] = row['IsolateYear'] if row['IsolateYear'] else ('NA' if row['Comment'] else 'Unknown')
+        tblGBIsolates.at[i, 'Host'] = row['Host'] if row['Host'] else ('Not applicable' if row['Comment'] else 'Not available')
+        tblGBIsolates.at[i, 'Specimen'] = row['Specimen'] if row['Specimen'] else ('Not applicable' if row['Comment'] else 'Not available')
+        tblGBIsolates.at[i, 'IsolateYear'] = row['IsolateYear'] if row['IsolateYear'] else ('Not applicable' if row['Comment'] else 'Not available')
+        tblGBIsolates.at[i, 'Country'] = row['Country'] if row['Country'] else ('Not applicable' if row['Comment'] else 'Not available')
+
 
     dump_table(
         virus_obj.DB_FILE,
