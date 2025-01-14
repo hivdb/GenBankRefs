@@ -85,7 +85,7 @@ def extract_year_from_date_fields(text):
     if match:
         return match.group()
     else:
-        return "NA"
+        return ""
 
 
 # Each list is a string in which items are separated by ', '

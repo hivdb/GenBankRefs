@@ -119,6 +119,9 @@ def create_database(
     features['Specimen'] = features['isolate_source']
     features['Virus'] = features['organism']
 
+    if 'Comment' not in features.columns:
+        features['Comment'] = ""
+
     tblGBIsolates = features[[
         'Accession', 'Country', 'RecordYear',
         'IsolateYear', 'Host', 'Specimen', 'IsolateName',

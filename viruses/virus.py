@@ -59,8 +59,13 @@ class Virus:
         return Path("OutputData") / f"{self.name}"
 
     @property
+    def output_excel_dir(self):
+        (self.output_dir / 'excels').mkdir(exist_ok=True)
+        return self.output_dir / 'excels'
+
+    @property
     def timestamp_dir(self):
-        d = self.output_dir / timestamp
+        d = self.output_excel_dir / timestamp
         d.mkdir(exist_ok=True)
         return d
 
@@ -113,6 +118,10 @@ class Virus:
         return None
 
     @property
+    def pubmed_with_index(self):
+        return self.timestamp_dir / 'Pubmed_with_index_{timestamp}.xlsx'
+
+    @property
     def pubmed_genbank_combined(self):
         return self.timestamp_dir / f"{self.name}_P_G_Combined_{timestamp}.xlsx"
 
@@ -122,7 +131,7 @@ class Virus:
 
     @property
     def chord_diagram_file(self):
-        return self.timestamp_dir / f"{self.name}_chord_{timestamp}.html"
+        return self.timestamp_dir / f"{self.name}_chord1_{timestamp}.html"
 
     @property
     def chord_diagram_file2(self):
@@ -134,7 +143,7 @@ class Virus:
 
     @property
     def chord_table_file(self):
-        return self.timestamp_dir / f"{self.name}_chord3_table.xlsx"
+        return self.timestamp_dir / f"{self.name}_chord_table_{timestamp}.xlsx"
 
     def get_logger(self, logger_name):
         logger_file = f'{self.name}_datalog_{logger_name}.txt'
@@ -160,6 +169,22 @@ class Virus:
 
         features_df['Country'] = features_df[
             'country_region'].str.split(":").str[0]
+
+        for i, row in features_df.iterrows():
+            if 'patent' in row['Description'].lower():
+                features_df.at[i, 'Comment'] = 'patent'
+            if 'Modified Microbial Nucleic Acid' in row['Description']:
+                features_df.at[i, 'Comment'] = 'Modified Microbial Nucleic Acid'
+            if 'CONSTRUCT' in row['Description'].upper():
+                features_df.at[i, 'Comment'] = 'CONSTRUCT'
+            if 'COMPOSITIONS' in row['Description'].upper():
+                features_df.at[i, 'Comment'] = 'COMPOSITIONS'
+            if 'monoclonal antibody' in row['Description'].lower():
+                features_df.at[i, 'Comment'] = 'antibody'
+            if 'MICROARRAY' in row['Description'].upper():
+                features_df.at[i, 'Comment'] = 'MICROARRAY'
+            if 'conformation' in row['Description'].lower():
+                features_df.at[i, 'Comment'] = 'conformation'
 
         return features_df
 

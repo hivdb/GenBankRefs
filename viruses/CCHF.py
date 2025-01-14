@@ -27,7 +27,7 @@ class CCHF(Virus):
 
     @property
     def pubmed_additional_from_gb(self):
-        return self.pubmed_folder / "ReferenceSummary_Genbank_Dec18.xlsx"
+        return self.pubmed_folder / "ReferenceSummary_Genbank_Jan13.xlsx"
 
     def build_blast_db(self):
         build_blast_db(self)
@@ -199,7 +199,7 @@ def get_additional_host_data(features_df):
 
         if not updated_specimen and specimen:
             # specieman other and NA are the same
-            updated_specimen = ['NA']
+            updated_specimen = ['']
 
         # features_df.at[index, 'Host'] = ",".join(sorted(list(set(updated_host))))
         # features_df.at[index, 'isolate_source'] = ",".join(sorted(list(set(updated_specimen))))

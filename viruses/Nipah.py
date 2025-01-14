@@ -17,6 +17,10 @@ class Nipah(Virus):
     def pubmed_file(self):
         return self.pubmed_folder / "ReferenceSummary_Dec18.xlsx"
 
+    @property
+    def pubmed_additional_from_gb(self):
+        return self.pubmed_folder / "ReferenceSummary_Genbank_Jan13.xlsx"
+
     def build_blast_db(self):
         build_blast_db(self)
 
@@ -103,14 +107,10 @@ def process_features(features_df):
             lambda x: x.capitalize() if x.upper() != "NA" else x)
 
     for i, row in features_df.iterrows():
-        if 'patent' in row['Description'].lower():
-            features_df.at[i, 'Comment'] = 'patent'
-        if 'modified microbial' in row['Description'].lower():
-            features_df.at[i, 'Comment'] = 'non clinical'
-        if 'CONSTRUCT' in row['Description'].upper():
-            features_df.at[i, 'Comment'] = 'construct'
-        if 'IMMUNOGENIC COMPOSITIONS' in row['Description'].upper():
-            features_df.at[i, 'Comment'] = 'IMMUNOGENIC COMPOSITIONS'
+        if 'NV/MY' in row['IsolateName']:
+            features_df.at[i, 'country_region'] = 'Malaysia'
+        elif 'MALAYSIA' in row['IsolateName']:
+            features_df.at[i, 'country_region'] = 'Malaysia'
 
     # for i, row in features_df.iterrows():
     #     print(row)
@@ -202,14 +202,14 @@ def get_additional_host_data(features_df):
 
         if not updated_specimen and specimen:
             # specieman other and NA are the same
-            updated_specimen = ['NA']
+            updated_specimen = ['']
 
         # features_df.at[index, 'Host'] = ",".join(sorted(list(set(updated_host))))
         # features_df.at[index, 'isolate_source'] = ",".join(sorted(list(set(updated_specimen))))
         features_df.at[index, 'Host2'] = ' and '.join(
-            sorted(list(set(updated_host)))) if updated_host else 'NA'
+            sorted(list(set(updated_host)))) if updated_host else ''
         features_df.at[index, 'isolate_source2'] = ' and '.join(
-            sorted(list(set(updated_specimen)))) if updated_specimen else 'NA'
+            sorted(list(set(updated_specimen)))) if updated_specimen else ''
 
     return features_df
 

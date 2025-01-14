@@ -3,7 +3,6 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from .virus import Virus
 import subprocess
-from functools import partial
 
 
 class Lassa(Virus):
@@ -115,6 +114,12 @@ def process_features(features_df):
     features_df['isolate_source'] = features_df['isolate_source'].apply(
             lambda x: x.capitalize() if x.upper() != "NA" else x)
 
+    for i, row in features_df.iterrows():
+        if 'Kosovo' in row['IsolateName']:
+            features_df.at[i, 'country_region'] = 'Kosovo'
+        elif 'China' in row['IsolateName']:
+            features_df.at[i, 'country_region'] = 'China'
+
     return features_df
 
 
@@ -208,14 +213,14 @@ def get_additional_host_data(features_df):
 
         if not updated_specimen and specimen:
             # specieman other and NA are the same
-            updated_specimen = ['NA']
+            updated_specimen = ['']
 
         # features_df.at[index, 'Host'] = ",".join(sorted(list(set(updated_host))))
         # features_df.at[index, 'isolate_source'] = ",".join(sorted(list(set(updated_specimen))))
         features_df.at[index, 'Host2'] = ' and '.join(
-            sorted(list(set(updated_host)))) if updated_host else 'NA'
+            sorted(list(set(updated_host)))) if updated_host else ''
         features_df.at[index, 'isolate_source2'] = ' and '.join(
-            sorted(list(set(updated_specimen)))) if updated_specimen else 'NA'
+            sorted(list(set(updated_specimen)))) if updated_specimen else ''
 
     return features_df
 
