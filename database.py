@@ -8,7 +8,7 @@ def create_tables(db_file):
     conn = sqlite3.connect(db_file)
 
     conn.execute("""
-        CREATE TABLE "tblGBReference" (
+        CREATE TABLE "tblGBReferences" (
             "RefID" INTEGER PRIMARY KEY,
             "Authors" TEXT,
             "Title" TEXT,
@@ -23,10 +23,11 @@ def create_tables(db_file):
             "Accession" TEXT PRIMARY KEY,
             "Country" TEXT,
             "RecordYear" INTEGER,
-            "IsolateYear" TEXT,
+            "IsolateYear" INTEGER,
             "Host" TEXT,
             "Specimen" TEXT,
-            "IsolateName" TEXT
+            "IsolateName" TEXT,
+            "Comment" TEXT
         )
     """)
 
@@ -34,7 +35,7 @@ def create_tables(db_file):
         CREATE TABLE "tblGBRefSeqLink" (
             "RefID" INTEGER,
             "Accession" TEXT,
-            FOREIGN KEY (RefID) REFERENCES tblGBReference (RefID),
+            FOREIGN KEY (RefID) REFERENCES tblGBReferences (RefID),
             FOREIGN KEY (Accession) REFERENCES tblGBIsolates (Accession)
         )
     """)
@@ -91,7 +92,7 @@ def create_tables(db_file):
             "LitID" INTEGER,
             "RefID" TEXT,
             FOREIGN KEY (LitID) REFERENCES tblLiteratures (LitID),
-            FOREIGN KEY (RefID) REFERENCES tblGBReference (RefID)
+            FOREIGN KEY (RefID) REFERENCES tblGBReferences (RefID)
         )
     """)
 
@@ -108,10 +109,10 @@ def create_database(
     create_tables(virus_obj.DB_FILE)
 
     # GenBank Tables
-    tblGBReferences = references[[
+    tblGBReferencess = references[[
         'RefID', 'Authors', 'Title', 'Journal', 'PMID', 'Year']]
     dump_table(virus_obj.DB_FILE,
-               'tblGBReference', tblGBReferences)
+               'tblGBReferences', tblGBReferencess)
 
     create_ref_link(virus_obj, references)
 
@@ -120,7 +121,14 @@ def create_database(
 
     tblGBIsolates = features[[
         'Accession', 'Country', 'RecordYear',
-        'IsolateYear', 'Host', 'Specimen', 'IsolateName']]
+        'IsolateYear', 'Host', 'Specimen', 'IsolateName',
+        'Comment']]
+
+    for i, row in tblGBIsolates.iterrows():
+        tblGBIsolates.at[i, 'Host'] = row['Host'] if row['Host'] else ('NA' if row['Comment'] else 'Unknown')
+        tblGBIsolates.at[i, 'Specimen'] = row['Specimen'] if row['Specimen'] else ('NA' if row['Comment'] else 'Unknown')
+        tblGBIsolates.at[i, 'IsolateYear'] = row['IsolateYear'] if row['IsolateYear'] else ('NA' if row['Comment'] else 'Unknown')
+
     dump_table(
         virus_obj.DB_FILE,
         'tblGBIsolates', tblGBIsolates)
@@ -215,9 +223,9 @@ def create_ref_link(virus_obj, ref):
 def creat_views(db_file):
 
     vReferenceRecord = """
-        CREATE VIEW vReferenceRecord AS
+        CREATE VIEW vGBRecords AS
         SELECT a.*, c.*
-        FROM tblGBReference a, tblGBRefSeqLink b, tblGBIsolates c
+        FROM tblGBReferences a, tblGBRefSeqLink b, tblGBIsolates c
         WHERE a.RefID = b.RefID
         AND b.Accession = c.Accession;
     """
@@ -226,15 +234,20 @@ def creat_views(db_file):
     vLitAccessionLink = """
         CREATE VIEW vLitAccessionLink AS
         SELECT
-            distinct a.*
+            d.*,
+            a.*
         FROM
             tblGBIsolates a,
             tblGBRefSeqLink b,
-            tblLitGBRefLink c
+            tblLitGBRefLink c,
+            tblLiteratures d
         WHERE
             a.Accession = b.Accession
             AND
-            b.RefID = c.RefID;
+            b.RefID = c.RefID
+            AND
+            c.LitID = d.LitID
+        ;
     """
     run_create_view(db_file, vLitAccessionLink)
 

@@ -2,6 +2,7 @@ from itertools import combinations
 from itertools import product
 import pandas as pd
 from copy import deepcopy
+from collections import defaultdict
 
 
 def gen_chord_diagram(virus_obj, combined, features):
@@ -61,7 +62,7 @@ def gen_chord_diagram(virus_obj, combined, features):
 
 def get_chord_table(save_path, features, year_range):
     columns = ['Host', 'Country', 'IsolateYear']
-    df = []
+    counting = defaultdict(int)
     for (a, b, c) in [columns]:
 
         list1 = features[a].unique()
@@ -82,16 +83,23 @@ def get_chord_table(save_path, features, year_range):
             if not weight:
                 continue
 
-            df.append({
-                'Host': a1,
-                'Country': b1,
-                'IsolateYear': c1,
-                '#': weight,
-                'T': len(features),
-                '%': round(weight / len(features) * 100),
-            })
+            counting[(a1, b1, c1)] += weight
 
-    pd.DataFrame(df).to_excel(save_path)
+    df = []
+
+    for (a1, b1, c1), weight in counting.items():
+        df.append({
+            'Host': a1,
+            'Country': b1,
+            'IsolateYear': c1,
+            '#': weight,
+            'T': len(features),
+            '%': round(weight / len(features) * 100),
+        })
+
+    df.sort(key=lambda x: x['#'])
+
+    pd.DataFrame(df).to_excel(save_path, index=False)
 
 
 def get_gene_host_link(features, column_color):

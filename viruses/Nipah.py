@@ -99,6 +99,19 @@ def process_features(features_df):
     features_df['Host'] = features_df['Host2']
     features_df['isolate_source'] = features_df['isolate_source2']
 
+    features_df['isolate_source'] = features_df['isolate_source'].apply(
+            lambda x: x.capitalize() if x.upper() != "NA" else x)
+
+    for i, row in features_df.iterrows():
+        if 'patent' in row['Description'].lower():
+            features_df.at[i, 'Comment'] = 'patent'
+        if 'modified microbial' in row['Description'].lower():
+            features_df.at[i, 'Comment'] = 'non clinical'
+        if 'CONSTRUCT' in row['Description'].upper():
+            features_df.at[i, 'Comment'] = 'construct'
+        if 'IMMUNOGENIC COMPOSITIONS' in row['Description'].upper():
+            features_df.at[i, 'Comment'] = 'IMMUNOGENIC COMPOSITIONS'
+
     # for i, row in features_df.iterrows():
     #     print(row)
     #     if int(row['SeqLength']) > 17000:
@@ -314,7 +327,10 @@ def categorize_host_specimen(self, pubmed):
         pubmed.at[index, 'CleanedSpecimen'] = ' and '.join(
             sorted(list(set(updated_specimen))))
 
-        pubmed['Host'] = pubmed['CleanedHost']
-        pubmed['Specimen'] = pubmed['CleanedSpecimen']
+    pubmed['Host'] = pubmed['CleanedHost']
+    pubmed['Specimen'] = pubmed['CleanedSpecimen']
+
+    pubmed['Specimen'] = pubmed['Specimen'].apply(
+        lambda x: x.capitalize() if x.upper() != "NA" else x)
 
     return pubmed

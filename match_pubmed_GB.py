@@ -67,9 +67,10 @@ def match_pubmed_GB(
 
 def match(pubmed, genbank, logger):
 
-    match_by_title_list = []
     match_by_pmid_list = []
+    match_by_title_list = []
     match_by_acc_list = []
+
     matched_pubmed_indices = []
     genbank_unmatch_list = []
 
@@ -86,30 +87,32 @@ def match(pubmed, genbank, logger):
             matched_pubmed_indices.extend(result.index.tolist())
             match_by_pmid = [row, result, index]
             match_by_pmid_list.append(match_by_pmid)
-            # continue
 
-        title = row['Title'].replace('Direct Submission,', '').replace(', Direct Submission', '').strip()
+        # if genbank pmid exists, don't match title and accession
+        if not pmid:
 
-        # Pubmed title always exists
-        result = pubmed[pubmed['Title'].apply(
-            lambda x: Levenshtein.distance(x.lower(), title.lower()) < 5)]
+            title = row['Title'].replace('Direct Submission,', '').replace(', Direct Submission', '').strip()
 
-        if not result.empty:
-            matched_pubmed_indices.extend(result.index.tolist())
-            match_by_title = [row, result, index]
-            match_by_title_list.append(match_by_title)
+            # Pubmed title always exists
+            result = pubmed[pubmed['Title'].apply(
+                lambda x: Levenshtein.distance(x.lower(), title.lower()) < 5)]
 
-        accession_list = row['accession']
-        accession_prefix_list = set([
-            a.strip()[:6]
-            for a in accession_list.split(',')
-        ])
+            if not result.empty:
+                matched_pubmed_indices.extend(result.index.tolist())
+                match_by_title = [row, result, index]
+                match_by_title_list.append(match_by_title)
 
-        result = search_access_prefix(pubmed, accession_prefix_list)
-        if not result.empty:
-            matched_pubmed_indices.extend(result.index.tolist())
-            match_by_acc = [row, result, index]
-            match_by_acc_list.append(match_by_acc)
+            accession_list = row['accession']
+            accession_prefix_list = set([
+                a.strip()[:6]
+                for a in accession_list.split(',')
+            ])
+
+            result = search_access_prefix(pubmed, accession_prefix_list)
+            if not result.empty:
+                matched_pubmed_indices.extend(result.index.tolist())
+                match_by_acc = [row, result, index]
+                match_by_acc_list.append(match_by_acc)
 
         if match_by_acc or match_by_pmid or match_by_title:
             pass

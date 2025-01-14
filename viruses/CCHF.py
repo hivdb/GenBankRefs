@@ -97,6 +97,9 @@ def process_features(features_df):
     features_df['Host'] = features_df['Host2']
     features_df['isolate_source'] = features_df['isolate_source2']
 
+    features_df['isolate_source'] = features_df['isolate_source'].apply(
+            lambda x: x.capitalize() if x.upper() != "NA" else x)
+
     return features_df
 
 
@@ -269,7 +272,10 @@ def categorize_host_specimen(self, pubmed):
         pubmed.at[index, 'CleanedSpecimen'] = ' and '.join(
             sorted(list(set(updated_specimen))))
 
-        pubmed['Host'] = pubmed['CleanedHost']
-        pubmed['Specimen'] = pubmed['CleanedSpecimen']
+    pubmed['Host'] = pubmed['CleanedHost']
+    pubmed['Specimen'] = pubmed['CleanedSpecimen']
+
+    pubmed['Specimen'] = pubmed['Specimen'].apply(
+        lambda x: x.capitalize() if x.upper() != "NA" else x)
 
     return pubmed
