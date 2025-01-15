@@ -94,6 +94,10 @@ class Virus:
         return self.timestamp_dir / f"{self.name}__GenBankFeatures_check_{timestamp}.xlsx"
 
     @property
+    def genbank_feature_filled_file(self):
+        return self.timestamp_dir / f"{self.name}__GenBankFeatures_filled_{timestamp}.xlsx"
+
+    @property
     def genbank_gene_file(self):
         return self.output_dir / f"{self.name}__GenBankGenes.xlsx"
 

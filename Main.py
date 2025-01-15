@@ -75,6 +75,8 @@ def main():
 
     features = update_genbank_by_pubmed(features, lit_ref_match)
 
+    features.to_excel(virus_obj.genbank_feature_filled_file)
+
     # Create database using tables:
     #   GenBank Submission Set
     #   GenBank Features
