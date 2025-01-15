@@ -61,7 +61,7 @@ def summarize_pubmed(pubmed_file, virus_obj):
     # if summrize:
     #     summarize_pubmed_data(pubmed, virus_obj.get_logger('pubmed_from_GB'))
 
-    pubmed['LitID'] = pubmed.index + 1
+    pubmed['PubID'] = pubmed.index + 1
     pubmed.to_excel(virus_obj.pubmed_with_index, index=False)
 
     return pubmed

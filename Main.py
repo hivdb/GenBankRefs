@@ -73,6 +73,8 @@ def main():
     if literature.empty or not lit_ref_match:
         return
 
+    features = update_genbank_by_pubmed(features, lit_ref_match)
+
     # Create database using tables:
     #   GenBank Submission Set
     #   GenBank Features
@@ -81,6 +83,38 @@ def main():
     create_database(
         virus_obj, references, features, genes,
         literature, lit_ref_match)
+
+
+def update_genbank_by_pubmed(features, matched):
+
+    for pubmed, genbank_list in matched:
+        acc_list = [
+            i.strip()
+            for g in genbank_list
+            for i in g['accession'].split(',')
+        ]
+
+        for key in ['Country', 'Host', 'IsolateType', 'SampleYr']:
+            if not pubmed[key].strip() or pubmed[key].upper() == 'NA':
+                pubmed[key] = ''
+
+        for i, row in features.iterrows():
+            if row['Accession'] not in acc_list:
+                continue
+
+            if not row['Country'] and pubmed['Country']:
+                features.at[i, 'Country'] = pubmed['Country'] + ' *'
+
+            if not row['Host'] and pubmed['Host']:
+                features.at[i, 'Host'] = pubmed['Host'] + ' *'
+
+            if not row['isolate_source'] and pubmed['IsolateType']:
+                features.at[i, 'isolate_source'] = pubmed['IsolateType'] + ' *'
+
+            if not row['IsolateYear'] and pubmed['SampleYr']:
+                features.at[i, 'IsolateYear'] = pubmed['SampleYr'] + ' *'
+
+    return features
 
 
 if __name__ == '__main__':

@@ -61,20 +61,24 @@ def gen_chord_diagram(virus_obj, combined, features):
 
 
 def get_chord_table(save_path, features, year_range):
-    columns = ['Host', 'Country', 'IsolateYear']
+    columns = ['Host', 'Country', 'IsolateYear', 'Genes']
     counting = defaultdict(int)
-    for (a, b, c) in [columns]:
+    for (a, b, c, d) in [columns]:
 
         list1 = features[a].unique()
         list2 = features[b].unique()
         list3 = features[c].unique()
+        list4 = features[d].unique()
+        # list4 = get_gene_list(features)
         # print(source_list, target_list)
 
-        for a1, b1, c1 in product(list1, list2, list3):
+        for a1, b1, c1, d1 in product(list1, list2, list3, list4):
             weight = len(features[
                 (features[a] == a1) &
                 (features[b] == b1) &
-                (features[c] == c1)
+                (features[c] == c1) &
+                (features[d] == d1)
+                # (features['Genes'].str.contains(d1, na=False))
             ])
 
             if c1:
@@ -83,28 +87,27 @@ def get_chord_table(save_path, features, year_range):
             if not weight:
                 continue
 
-            counting[(a1, b1, c1)] += weight
+            counting[(a1, b1, c1, d1)] += weight
 
     df = []
 
-    for (a1, b1, c1), weight in counting.items():
+    for (a1, b1, c1, d1), weight in counting.items():
         df.append({
             'Host': a1,
             'Country': b1,
             'IsolateYear': c1,
+            'Gene': d1,
             '#': weight,
             'T': len(features),
             '%': round(weight / len(features) * 100),
         })
 
-    df.sort(key=lambda x: x['#'])
+    df.sort(key=lambda x: x['#'], reverse=True)
 
     pd.DataFrame(df).to_excel(save_path, index=False)
 
 
-def get_gene_host_link(features, column_color):
-    df = []
-    host_list = features['Host'].unique()
+def get_gene_list(features):
     gene_list = list(features['Genes'].unique())
     gene_list = [i for i in gene_list if i.strip()]
     gene_list = sorted(list(set([
@@ -113,6 +116,14 @@ def get_gene_host_link(features, column_color):
         for j in i.split(',')
     ])))
     gene_list.append('')
+
+    return gene_list
+
+
+def get_gene_host_link(features, column_color):
+    df = []
+    host_list = features['Host'].unique()
+    gene_list = get_gene_list(features)
 
     for s, t in [('Genes', 'Host')]:
         for s_value, t_value in product(gene_list, host_list):
