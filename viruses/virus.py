@@ -119,7 +119,7 @@ class Virus:
 
     @property
     def pubmed_with_index(self):
-        return self.timestamp_dir / 'Pubmed_with_index_{timestamp}.xlsx'
+        return self.timestamp_dir / f'Pubmed_with_index_{timestamp}.xlsx'
 
     @property
     def pubmed_genbank_combined(self):
