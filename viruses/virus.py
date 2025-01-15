@@ -6,6 +6,7 @@ from pathlib import Path
 from datetime import datetime
 from Utilities import get_logger
 import subprocess
+import pandas as pd
 
 
 timestamp = datetime.now().strftime('%m_%d')
@@ -174,6 +175,8 @@ class Virus:
         features_df['Country'] = features_df[
             'country_region'].str.split(":").str[0]
 
+        features_df = add_feature_from_non_pubmed_paper(self, features_df)
+
         for i, row in features_df.iterrows():
             if 'patent' in row['Description'].lower():
                 features_df.at[i, 'Comment'] = 'patent'
@@ -214,3 +217,21 @@ def build_blast_db(virus):
         text=True,
         shell=True
     )
+
+
+def add_feature_from_non_pubmed_paper(virus, features_df):
+    csv_data = []
+    for i in virus.pubmed_folder.iterdir():
+        if i.suffix == '.csv':
+            csv_data.append(pd.read_csv(i))
+
+    csv_data = pd.concat(csv_data)
+
+    for i, row in features_df.iterrows():
+        match = csv_data[csv_data['Accession'] == row['Accession']]
+        if not match.empty:
+            features_df.at[i, 'Country'] = match['Country'].tolist()[0]
+            features_df.at[i, 'collection_date'] = match['IsolateYear'].tolist()[0]
+            features_df.at[i, 'isolate_source'] = match['isolate_source'].tolist()[0]
+
+    return features_df

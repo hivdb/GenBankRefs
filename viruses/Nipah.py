@@ -3,7 +3,7 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from .virus import Virus
 import subprocess
-import pandas as pd
+
 
 
 class Nipah(Virus):
@@ -24,9 +24,7 @@ class Nipah(Virus):
         build_blast_db(self)
 
     def _process_features(self, features_df):
-        features_df = add_feature_from_non_pubmed_paper(self, features_df)
         return process_features(features_df)
-
 
     def process_gene_list(self, gene_df):
         return process_gene_list(self, gene_df)
@@ -117,24 +115,6 @@ def process_features(features_df):
     #     print(row)
     #     if int(row['SeqLength']) > 17000:
     #         features_df.at[i, 'Genes'] = 'genome'
-
-    return features_df
-
-
-def add_feature_from_non_pubmed_paper(virus, features_df):
-    csv_data = []
-    for i in virus.pubmed_folder.iterdir():
-        if i.suffix == '.csv':
-            csv_data.append(pd.read_csv(i))
-
-    csv_data = pd.concat(csv_data)
-
-    for i, row in features_df.iterrows():
-        match = csv_data[csv_data['Accession'] == row['Accession']]
-        if not match.empty:
-            features_df.at[i, 'Country'] = match['Country'].tolist()[0]
-            features_df.at[i, 'IsolateYear'] = match['IsolateYear'].tolist()[0]
-            features_df.at[i, 'isolate_source'] = match['isolate_source'].tolist()[0]
 
     return features_df
 
