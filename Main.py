@@ -86,6 +86,8 @@ def main():
         virus_obj, references, features, genes,
         literature, lit_ref_match)
 
+    virus_obj.pick_phylo_sequence(genes)
+
 
 def update_genbank_by_pubmed(features, matched):
 

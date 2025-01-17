@@ -201,6 +201,15 @@ class Virus:
     def process_gene_list(self, gene_df):
         return gene_df
 
+    @property
+    def phylo_folder(self):
+        d = self.timestamp_dir / 'phylo'
+        d.mkdir(exist_ok=True)
+        return d
+
+    def pick_phylo_sequence(self, gene_list, genes):
+        return
+
 
 Virus('default')
 

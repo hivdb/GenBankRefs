@@ -3,6 +3,8 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from .virus import Virus
 import subprocess
+from bioinfo import dump_fasta
+from bioinfo import load_fasta
 
 
 class Nipah(Virus):
@@ -31,6 +33,13 @@ class Nipah(Virus):
     def process_pubmed(self, pubmed):
         # pubmed['Gene'] = pubmed['Gene'].apply(partial(translate_pubmed_genes, self))
         return categorize_host_specimen(self, pubmed)
+
+    @property
+    def ref_na_gene_map(self):
+        return load_fasta(self.reference_folder / f"{self.name}_RefNAs.fasta")
+
+    def pick_phylo_sequence(self, genes, picked_genes=['N', 'L']):
+        pick_phylo_sequence(self, genes, picked_genes)
 
 
 Nipah("Nipah")
@@ -337,3 +346,19 @@ def categorize_host_specimen(self, pubmed):
         lambda x: x.capitalize() if x.upper() != "NA" else x)
 
     return pubmed
+
+
+def pick_phylo_sequence(virus, genes, picked_genes):
+    genes = genes.to_dict(orient='records')
+    for i in picked_genes:
+        ref_na = virus.ref_na_gene_map[i]
+        g_list = {
+            j['Accession']: j['NA_raw_seq']
+            for j in genes
+            if (j['Gene'] == i) and int(j['NA_length']) >= len(ref_na)
+        }
+        print(f"{virus.name} Gene {i} picked sequence:", len(g_list))
+        print(f"{virus.name} Gene {i} unpicked sequence:", len(genes) - len(g_list))
+
+        dump_fasta(virus.phylo_folder / f"{i}_ref_na.fasta", {i: ref_na})
+        dump_fasta(virus.phylo_folder / f'{i}_isolates.fasta', g_list)
