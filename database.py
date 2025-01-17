@@ -27,6 +27,7 @@ def create_tables(db_file):
             "Host" TEXT,
             "Specimen" TEXT,
             "IsolateName" TEXT,
+            "SeqLength" INTEGER,
             "Comment" TEXT
         )
     """)
@@ -42,20 +43,36 @@ def create_tables(db_file):
 
     conn.execute("""
         CREATE TABLE "tblSequences" (
+            "SeqID" INTEGER PRIMARY KEY,
             "Accession" TEXT,
             "Gene" TEXT,
             "CDS_NAME" TEXT,
-            "AASeq" TEXT,
-            "NumAA" INTEGER,
+            "AA_seq" TEXT,
+            "AA_length" INTEGER,
             "AA_start" INTEGER,
             "AA_stop" INTEGER,
-            "NASeq" TEXT,
-            "NumNA" INTEGER,
+            "NA_Seq" TEXT,
+            "NA_length" INTEGER,
             "NA_start" INTEGER,
             "NA_stop" INTEGER,
             "PcntMatch" REAL,
             "HSPLength" INTEGER,
-            FOREIGN KEY (Accession) REFERENCES tblIsolates (Accession)
+            FOREIGN KEY (Accession) REFERENCES tblSequences (Accession)
+        )
+    """)
+
+    conn.execute("""
+        CREATE TABLE "tblSequenceQA" (
+            "SeqID",
+            "AA_num_ins",
+            "AA_num_del",
+            "AA_blast_failed",
+            "NA_num_ins",
+            "NA_num_del",
+            "NA_blast_failed",
+            "num_N",
+            "translation_issue",
+            FOREIGN KEY (SeqID) REFERENCES tblSequences (SeqID)
         )
     """)
 
@@ -125,6 +142,7 @@ def create_database(
     tblIsolates = features[[
         'Accession', 'Country', 'RecordYear',
         'IsolateYear', 'Host', 'Specimen', 'IsolateName',
+        'SeqLength',
         'Comment']]
 
     for i, row in tblIsolates.iterrows():
@@ -138,18 +156,29 @@ def create_database(
         'tblIsolates', tblIsolates)
 
     genes['PcntMatch'] = genes['pcnt_id']
-    genes['HSPLength'] = genes['align_len']
 
     tblGBSequences = genes[[
         'Accession', 'Gene', 'CDS_NAME',
-        'AASeq', 'NumAA', 'AA_start', 'AA_stop',
-        'NASeq', 'NumNA', 'NA_start', 'NA_stop',
-        'PcntMatch', 'HSPLength',
+        'AA_seq', 'AA_length', 'AA_start', 'AA_stop',
+        'NA_seq', 'NA_length', 'NA_start', 'NA_stop',
+        'PcntMatch',
     ]]
     dump_table(
         virus_obj.DB_FILE,
         'tblSequences',
         tblGBSequences)
+
+    tblSequenceQA = genes[[
+        'SeqID',
+        'AA_num_ins', 'AA_num_del', 'AA_blast_failed',
+        'NA_num_ins', 'NA_num_del', 'NA_blast_failed',
+        'num_N', 'translation_issue'
+    ]]
+
+    dump_table(
+        virus_obj.DB_FILE,
+        'tblSequenceQA',
+        tblSequenceQA)
 
     # PubMed Tables
     tblPublications = pubmed[[

@@ -1,4 +1,5 @@
 from Bio import SeqIO
+from Bio.Seq import Seq
 from Bio import Entrez
 from Bio.Blast.Applications import NcbiblastpCommandline
 from Bio.Blast.Applications import NcbiblastnCommandline
@@ -7,6 +8,8 @@ from Bio.Blast import NCBIXML
 from multiprocessing import Pool
 from pathlib import Path
 from xml.parsers.expat import ExpatError
+from collections import defaultdict
+
 
 Entrez.email = "rshafer.stanford.edu"
 
@@ -47,13 +50,21 @@ def filter_by_taxonomy(record):
     return excluded_seq
 
 
+def is_reference_genome(acc):
+    prefix_list = ['NC', 'NG', 'NM', 'NR']
+    for item in prefix_list:
+        if acc.startswith(item):
+            return True
+    return False
+
+
 def perform_blast(acc, order, query_seq, db_name, func, blast_name):
     """
     Input: sample_seq (str): sequence to compare/blast
         db_name (str), prebuilt db by calling makeblastdb
         output_file (str): tmp file name to store results, cleared each iteration
     Output:
-        a dictionary of keys including {e_value, percent_identity, alignment_length, overlap}
+        a dictionary of keys including {e_value, percent_identity, alignment_length}
             of each alignment
 
     """
@@ -91,52 +102,51 @@ def perform_blast(acc, order, query_seq, db_name, func, blast_name):
             return []
 
     # Extract statistics (assuming a single hit, adjust as needed)
-    # Try blast_records.alignments[0].hsps[0]
     blast_result = []
     for alignment in blast_records.alignments:
-        # max_alignment = sorted([
-        #     (alignment.length, alignment)
-        #     for alignment in blast_records.alignments
-        # ], key=lambda x: x[0])[-1][-1]
 
-        # hsp = sorted([
-        #     (hsp.score, hsp)
-        #     for hsp in max_alignment.hsps
-        # ], key=lambda x: x[0])[-1][-1]
-
-        # print(dir(max_alignment), dir(hsp))
-        # print(idx, hsp.query, len(hsp.query), hsp.query_start, hsp.query_end)
+        # sbjct is the reference
+        # Query is the query sequence
 
         for hsp in alignment.hsps:
-
-            e_value = hsp.expect
             alignment_length = hsp.align_length
             identity = hsp.identities
             percent_identity = (identity / alignment_length) * 100
-            overlap = hsp.align_length
 
-            if blast_name == 'blastn':
-                NA_start = hsp.sbjct_start
-                NA_stop = hsp.sbjct_end
-                AA_start = ((NA_start - 1) // 3) + 1
-                AA_stop = (NA_stop // 3)
-            else:
-                AA_start = hsp.sbjct_start
-                AA_stop = hsp.sbjct_end
-                NA_start = (AA_start - 1) * 3 + 1
-                NA_stop = AA_stop * 3
+            seq_cut = query_seq[hsp.query_start - 1: hsp.query_end]
+            seq = hsp.query
+
+            _ins = 0 if len(seq) <= len(seq) else len(seq) - len(seq_cut)
+            _del = 0 if len(seq) >= len(seq) else len(seq_cut) - len(seq)
+
+            sense = (
+                'pos'
+                if hsp.sbjct_end >= hsp.sbjct_start
+                else 'neg'
+            )
+
+            trim_length = len(query_seq) - len(seq)
 
             blast_result.append({
                 'hit_name': alignment.hit_def,
-                "e_value": e_value,
+                "e_value": hsp.expect,
+                'score': hsp.score,
                 "pcnt_id": percent_identity,
-                "align_len": alignment_length * 3 if blast_name == 'blastp' else alignment_length,
-                "overlap": overlap,
+                "align_len": alignment_length,
                 'blast_name': blast_name,
-                'AA_start': AA_start,
-                'AA_stop': AA_stop,
-                'NA_start': NA_start,
-                'NA_stop': NA_stop,
+                'query_seq': query_seq,
+
+                'start': hsp.sbjct_start,
+                'stop': hsp.sbjct_end,
+                'seq': hsp.query,
+                'length': len(hsp.query),
+                'raw_start': hsp.query_start,
+                'raw_stop': hsp.query_end,
+                'num_ins': _ins,
+                'num_del': _del,
+                'num_N': hsp.query.count('N') if blast_name == 'blastn' else hsp.query.count('X') * 3,
+                'trim_length': trim_length,
+                'sense': sense,
             })
 
     Path(input_file).unlink(missing_ok=True)
@@ -145,95 +155,275 @@ def perform_blast(acc, order, query_seq, db_name, func, blast_name):
     return blast_result
 
 
-def is_reference_genome(acc):
-    prefix_list = ['NC', 'NG', 'NM', 'NR']
-    for item in prefix_list:
-        if acc.startswith(item):
-            return True
-    return False
-
-
-def blast_sequence(idx, features, blast_aa_db_path, blast_na_db_path):
+def blast_gene(gene, blast_aa_db_path, blast_na_db_path):
     """
         Try blastn, blastp, blastx for detecting the genes or segments of an isolate
         This function will decide the best blast result by alignment length of nucleic acid,
         if it's using blastp, the alignment length will be multiplied by 3.
     """
 
-    blast_result = perform_blast(
-        features['Accession'], features['Order'],
-        features['NASeq'], blast_na_db_path,
+    blast_na = perform_blast(
+        gene['Accession'], gene['Order'],
+        gene['NA_raw_seq'], blast_na_db_path,
         func=NcbiblastnCommandline, blast_name='blastn')
+    blast_na = [i for i in blast_na if i]
+    blast_na = get_best_blast(blast_na, by='align_len')
 
-    if len(features['AASeq']) > 30:
-        blast_result.extend(perform_blast(
-            features['Accession'], features['Order'],
-            features['AASeq'], blast_aa_db_path,
-            func=NcbiblastpCommandline, blast_name='blastp'))
+    if (not blast_na) or (blast_na['sense'] != 'pos'):
+        blast_na = perform_blast(
+            gene['Accession'], gene['Order'],
+            Seq(gene['NA_raw_seq']).reverse_complement(), blast_na_db_path,
+            func=NcbiblastnCommandline, blast_name='blastn')
+        blast_na = [i for i in blast_na if i]
+        blast_na = get_best_blast(blast_na, by='align_len')
 
-    blast_result.extend(perform_blast(
-        features['Accession'], features['Order'],
-        features['NASeq'], blast_aa_db_path,
-        func=NcbiblastxCommandline, blast_name='blastx'))
+    blast_aa = []
+    if len(gene['AA_raw_seq']) > 30:
+        blast_aa = perform_blast(
+            gene['Accession'], gene['Order'],
+            gene['AA_raw_seq'], blast_aa_db_path,
+            func=NcbiblastpCommandline, blast_name='blastp')
+
+        blast_aa = [i for i in blast_aa if i]
+
+    blast_aa = get_best_blast(blast_aa, by='align_len')
+
+    # blastx deprecated
+    # perform_blast(
+    #     gene['Accession'], gene['Order'],
+    #     gene['NA_raw_seq'], blast_aa_db_path,
+    #     func=NcbiblastxCommandline, blast_name='blastx')
 
     # if 'e_value' not in blast_data:
-    #     print(blast_data, idx, len(features['AASeq']) <= 30)
+    #     print(blast_data, idx, len(gene['AASeq']) <= 30)
 
-    blast_result = sorted([
-            b
-            for b in blast_result
-        ], key=lambda x: int(x['align_len']), reverse=True)
+    new_gene = get_new_gene(gene, blast_na, blast_aa)
 
-    if not blast_result:
-        blast_data = {}
+    return new_gene
+
+
+def get_best_blast(blasts, by='align_len'):
+    blasts = sorted(blasts, key=lambda x: int(x[by]), reverse=True)
+
+    if not blasts:
+        blast = {}
     else:
-        blast_data = blast_result[0]
+        blast = blasts[0]
 
-    features['hit_name'] = blast_data.get('hit_name', '')
-    features['e_value'] = blast_data.get('e_value', '')
-    features['pcnt_id'] = blast_data.get('pcnt_id', 0)
-    features['align_len'] = blast_data.get('align_len', 0)
-    features['blast_name'] = blast_data.get('blast_name', '')
-    features['NA_start'] = blast_data.get('NA_start', '')
-    features['NA_stop'] = blast_data.get('NA_stop', '')
-    features['AA_start'] = blast_data.get('AA_start', '')
-    features['AA_stop'] = blast_data.get('AA_stop', '')
-
-    features['hit_name_list'] = ', '.join([
-        str(i['hit_name'])
-        for i in blast_result])
-    features['e_value_list'] = ', '.join([
-        str(i['e_value'])
-        for i in blast_result])
-    features['pcnt_id_list'] = ', '.join([
-        str(i['pcnt_id'])
-        for i in blast_result])
-    features['align_len_list'] = ', '.join([
-        str(i['align_len'])
-        for i in blast_result])
-    features['blast_name_list'] = ', '.join([
-        str(i['blast_name'])
-        for i in blast_result])
-
-    return features
+    return blast
 
 
-def pooled_blast(features_list, virus_obj, poolsize=20):
+def pooled_blast_genes(gene_list, virus_obj, poolsize=20):
     """
         For speeding up blast running, using multiprocessing method
         Input:
-            features_list: a list of items, for each one contains NA or AA sequences
+            gene_list: a list of items, for each one contains NA or AA sequences
             db_name: blast database name
             poolsize: depending on how many cores the CPU has, you can adjust this number for running multiple blast program.
     """
 
+    gene_list = [
+        i
+        for i in gene_list
+        if i['CDS_NAME'] not in ('isolate', 'isolate_complete')
+    ]
+
     with Pool(poolsize) as pool:
         parameters = [
-            (idx, f, virus_obj.BLAST_AA_DB_PATH, virus_obj.BLAST_NA_DB_PATH)
-            for idx, f in enumerate(features_list)
+            (gene, virus_obj.BLAST_AA_DB_PATH, virus_obj.BLAST_NA_DB_PATH)
+            for gene in gene_list
         ]
         alignment_result = []
-        for count, i in enumerate(pool.starmap(blast_sequence, parameters)):
+        for count, i in enumerate(pool.starmap(blast_gene, parameters)):
             alignment_result.append(i)
 
     return alignment_result
+
+
+def detect_additional_genes(gene_list, virus_obj, poolsize=20):
+
+    genes = [
+        i
+        for i in gene_list
+        if i['CDS_NAME'] not in ('isolate', 'isolate_complete')
+    ]
+
+    isolate_genes = defaultdict(list)
+    for i in genes:
+        isolate_genes[i['Accession']].append(i['CDS_NAME'])
+
+    isolates = [
+        i
+        for i in gene_list
+        if i['CDS_NAME'] in ('isolate', 'isolate_complete')
+    ]
+
+    additional_genes = []
+
+    with Pool(poolsize) as pool:
+        parameters = [
+            (isolate, isolate_genes[isolate['Accession']],
+             virus_obj.BLAST_NA_DB_PATH)
+            for isolate in isolates
+        ]
+        for count, i in enumerate(pool.starmap(blast_isolates, parameters)):
+            additional_genes.extend(i)
+
+    return additional_genes
+
+
+def blast_isolates(isolate, isolate_genes, blast_na_db_path):
+
+    blast_result = perform_blast(
+        isolate['Accession'], isolate['Order'],
+        isolate['NA_raw_seq'], blast_na_db_path,
+        func=NcbiblastnCommandline, blast_name='blastn')
+
+    additional_genes = []
+
+    for blast in blast_result:
+        hit_name = blast['hit_name']
+        if hit_name == 'genome':
+            continue
+
+        if (blast['sense'] != 'pos'):
+            blast = perform_blast(
+                isolate['Accession'], isolate['Order'],
+                Seq(isolate['NA_raw_seq']).reverse_complement(), blast_na_db_path,
+                func=NcbiblastnCommandline, blast_name='blastn')
+            blast = [i for i in blast if i]
+            blast = get_best_blast(blast, by='align_len')
+
+        if hit_name in isolate_genes:
+            continue
+
+        new_gene = get_new_gene(isolate, blast, {})
+        new_gene['detected_gene'] = 1
+
+        additional_genes.append(new_gene)
+
+    return additional_genes
+
+
+def get_new_gene(gene, blast_na, blast_aa):
+
+    blast_columns = [
+        ('hit_name', ''),
+        ('e_value', 999),
+        ('pcnt_id', 0),
+        ('align_len', 0),
+    ]
+
+    for key, default in blast_columns:
+        if not blast_na and blast_aa:
+            gene[key] = blast_aa.get(key, default)
+        elif blast_na and not blast_aa:
+            gene[key] = blast_na.get(key, default)
+        else:
+            gene[key] = blast_na.get(key, blast_aa.get(key, default))
+
+    if (
+        blast_na.get('hit_name') and
+        blast_aa.get('hit_name') and
+        blast_na['hit_name'] != blast_aa['hit_name']
+            ):
+        gene['diff_hit_name'] = 1
+
+    align_columns = [
+        ('raw_start', 0),
+        ('raw_stop', 0),
+        ('seq', ''),
+        ('start', 0),
+        ('stop', 0),
+        ('length', 0),
+        ('num_ins', 0),
+        ('num_del', 0),
+        ('trim_length', 0),  # trim length calculation is hard
+        ('sense', ''),
+    ]
+
+    for key, default in align_columns:
+        gene[f"NA_{key}"] = blast_na.get(key, default)
+
+    for key, default in align_columns:
+        gene[f"AA_{key}"] = blast_aa.get(key, default)
+
+    gene['num_N'] = max(blast_aa.get('num_N', 0), blast_na.get('num_N', 0))
+
+    # dont use NA to support AA or vice versa, the alignment need more work
+    # if not gene['AA_seq'] and gene['NA_seq']:
+    #     gene['AA_start'] = ((gene['NA_start'] - 1) // 3) + 1
+    #     gene['AA_stop'] = (gene['NA_stop'] // 3)
+    #     # gene['AA_seq'] = Seq(gene['NA_seq']).translate(to_stop=True)
+    #     gene['AA_seq'] = Seq(
+    #         gene['NA_raw_seq'][gene['NA_raw_start'] - 1: gene['NA_raw_stop']]
+    #         ).translate(to_stop=True)
+    #     gene['AA_length'] = len(gene['AA_seq'])
+
+    if not gene['NA_seq']:
+        gene['NA_blast_failed'] = 1
+
+    if not gene['AA_seq']:
+        gene['AA_blast_failed'] = 1
+
+    # if not gene['NA_seq'] and gene['AA_seq']:
+    #     gene['NA_start'] = (gene['AA_start'] - 1) * 3 + 1
+    #     gene['NA_stop'] = gene['AA_stop'] * 3
+    #     gene['NA_seq'] = gene['NA_raw_seq'][gene['NA_start'] - 1: gene['NA_stop']]
+    #     gene['NA_length'] = len(gene['NA_seq'])
+
+    if (
+            gene['NA_seq'] and
+            gene['AA_seq'] and
+            gene['NA_length'] != gene['AA_length'] * 3
+            ):
+        gene['translation_issue'] = abs(gene['NA_length'] - gene['AA_length'] * 3)
+
+    # use na for aa seq
+    # gene['AASeq'] = Seq(gene['NASeq']).translate(to_stop=False)
+
+    columns_order = [
+        'Accession',
+        'Gene',
+        'CDS_NAME',
+        'Order',
+    ]
+
+    raw_columns = [
+        ('raw_seq', ''),
+        ('raw_length', 0),
+    ]
+
+    for key, default in (raw_columns + align_columns):
+        columns_order.append(f"AA_{key}")
+
+    for key, default in (raw_columns + align_columns):
+        columns_order.append(f"NA_{key}")
+
+    columns_order.append('num_N')
+
+    columns_order.extend([
+        'detected_gene',
+        "AA_blast_failed",
+        'NA_blast_failed',
+        'diff_hit_name',
+        'translation_issue'
+    ])
+
+    for key, default in blast_columns:
+        columns_order.append(key)
+
+    missing_columns = [
+        i
+        for i in gene.keys()
+        if i not in columns_order
+    ]
+
+    if missing_columns:
+        print('Missing Gene data columns:', missing_columns)
+
+    new_gene = {}
+    for c in columns_order:
+        new_gene[c] = gene.get(c, '')
+
+    return new_gene

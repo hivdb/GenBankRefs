@@ -14,8 +14,8 @@ class Lassa(Virus):
     @property
     def GENES(self):
         return [
-            'NUCLEOPROTEIN',
-            'GLYCOPROTEIN',
+            'N',
+            'G',
             'Z',
             'L',
         ]
@@ -52,9 +52,9 @@ def build_blast_db(virus):
     for s in virus.SEGMENTS:
         with open(virus.reference_folder / f'{s}.gb', "r") as handle:
             for record in SeqIO.parse(handle, "genbank"):
-                # When
-                na_seqs.append(
-                    SeqRecord(record.seq, id=s, description=''))
+
+                # na_seqs.append(
+                #     SeqRecord(record.seq, id=s, description=''))
 
                 gene_seq = [
                     i
@@ -69,13 +69,22 @@ def build_blast_db(virus):
                         gene = aa.qualifiers[
                             'product'][0].upper().replace(' PROTEIN', '').strip()
 
+                    if gene == 'NUCLEOPROTEIN':
+                        gene = 'N'
+                    elif gene == 'GLYCOPROTEIN':
+                        gene = 'G'
+
                     if gene not in virus.GENES:
                         continue
 
                     aa_seqs.append(
                         SeqRecord(Seq(aa.qualifiers['translation'][0]), id=gene, description=''))
+
+                    na_seq = aa.location.extract(record.seq).upper()
+                    if na_seq[-3:] in ['TAG', 'TGA', 'TAA']:
+                        na_seq = na_seq[:-3]
                     na_seqs.append(
-                        SeqRecord(Seq(aa.location.extract(record.seq)), id=gene, description=''))
+                        SeqRecord(Seq(na_seq), id=gene, description=''))
 
     ref_aa_file = virus.reference_folder / f"{virus.name}_RefAAs.fasta"
     with open(ref_aa_file, "w") as output_handle:
@@ -238,18 +247,18 @@ def process_gene_list(virus, gene_df):
 
 def translate_cds_name(cds):
     name_map = {
-        'GPC': 'GLYCOPROTEIN',
-        'GP': 'GLYCOPROTEIN',
-        'GLYCOPROTEIN': 'GLYCOPROTEIN',
-        'GLYCOPROTEIN PRECURSOR': 'GLYCOPROTEIN',
-        'UNNAMED PRODUCT; GLYCOPROTEIN PRECURSOR (AA 1-490)': 'GLYCOPROTEIN',
+        'GPC': 'G',
+        'GP': 'G',
+        'GLYCOPROTEIN': 'G',
+        'GLYCOPROTEIN PRECURSOR': 'G',
+        'UNNAMED PRODUCT; GLYCOPROTEIN PRECURSOR (AA 1-490)': 'G',
 
-        'N': 'NUCLEOPROTEIN',
-        'NP': 'NUCLEOPROTEIN',
-        'NUCLEOCAPSID (N)': 'NUCLEOPROTEIN',
-        'UNNAMED PRODUCT; NUCLEOCAPSID (AA 1-570)': 'NUCLEOPROTEIN',
-        'NUCLEOPROTEIN': 'NUCLEOPROTEIN',
-        'NUCLEOCAPSID': 'NUCLEOPROTEIN',
+        'N': 'N',
+        'NP': 'N',
+        'NUCLEOCAPSID (N)': 'N',
+        'UNNAMED PRODUCT; NUCLEOCAPSID (AA 1-570)': 'N',
+        'NUCLEOPROTEIN': 'N',
+        'NUCLEOCAPSID': 'N',
 
         'POL': 'L',
         'L POLYMERASE': 'L',
@@ -267,10 +276,10 @@ def translate_cds_name(cds):
 
     if cds in name_map:
         return name_map[cds]
-    elif cds == 'isolate':
+    elif cds in ('isolate', 'isolate_complete'):
         return ''
     else:
-        # print(cds)
+        print('Missing CDS translation', cds)
         return ''
 
 

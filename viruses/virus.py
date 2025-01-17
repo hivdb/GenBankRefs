@@ -167,9 +167,9 @@ class Virus:
             g_list = genes[genes['Accession'] == row['Accession']]
             g_list = set(g_list['Gene'].tolist())
             if (g_list == set(self.GENES)):
-                g_list = 'genome'
-            else:
-                g_list = ', '.join(sorted(list(g_list)))
+                features_df.loc[i, 'Genome'] = 1
+
+            g_list = ', '.join(sorted(list(g_list)))
             features_df.loc[i, 'Genes'] = g_list
 
         features_df['Country'] = features_df[
@@ -224,6 +224,9 @@ def add_feature_from_non_pubmed_paper(virus, features_df):
     for i in virus.pubmed_folder.iterdir():
         if i.suffix == '.csv':
             csv_data.append(pd.read_csv(i))
+
+    if not csv_data:
+        return features_df
 
     csv_data = pd.concat(csv_data)
 

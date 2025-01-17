@@ -5,7 +5,6 @@ from .virus import Virus
 import subprocess
 
 
-
 class Nipah(Virus):
 
     @property
@@ -42,8 +41,9 @@ def build_blast_db(virus):
     na_seqs = []
     with open(virus.reference_folder / 'NC_002728.gb', "r") as handle:
         for record in SeqIO.parse(handle, "genbank"):
-            na_seqs.append(
-                SeqRecord(record.seq, id='genome', description=''))
+            # na_seqs.append(
+            #     SeqRecord(record.seq, id='genome', description=''))
+
             gene_seq = [
                 i
                 for i in record.features
@@ -66,8 +66,12 @@ def build_blast_db(virus):
 
                 aa_seqs.append(
                     SeqRecord(Seq(aa.qualifiers['translation'][0]), id=gene, description=''))
+
+                na_seq = aa.location.extract(record.seq).upper()
+                if na_seq[-3:] in ['TAG', 'TGA', 'TAA']:
+                    na_seq = na_seq[:-3]
                 na_seqs.append(
-                    SeqRecord(Seq(aa.location.extract(record.seq)), id=gene, description=''))
+                    SeqRecord(Seq(na_seq), id=gene, description=''))
 
     ref_aa_file = virus.reference_folder / f"{virus.name}_RefAAs.fasta"
     with open(ref_aa_file, "w") as output_handle:
@@ -263,10 +267,10 @@ def translate_cds_name(cds):
 
     if cds in name_map:
         return name_map[cds]
-    elif cds == 'isolate':
+    elif cds in ('isolate', 'isolate_complete'):
         return ''
     else:
-        print(cds)
+        print('Missing CDS translation', cds)
         return ''
 
 

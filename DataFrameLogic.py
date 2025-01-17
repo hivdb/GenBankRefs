@@ -236,8 +236,8 @@ def merge_feature_rows(df, genes_df):
 
     new_row['NumSubSeqs'] = create_binned_seq_lens(df['NumSubSeqs'].tolist())
 
-    new_row['NumNA'] = create_binned_seq_lens(genes_df['NumNA'].tolist())
-    new_row['NumAA'] = create_binned_seq_lens(genes_df['NumAA'].tolist())
+    new_row['NumNA'] = create_binned_seq_lens(genes_df['NA_length'].tolist())
+    new_row['NumAA'] = create_binned_seq_lens(genes_df['AA_length'].tolist())
 
     new_row['AlignLens'] = create_binned_seq_lens(genes_df['align_len'].tolist())
     new_row['PcntIDs'] = create_binned_pcnts(genes_df['pcnt_id'].tolist())

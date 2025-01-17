@@ -136,12 +136,12 @@ def summarize_genbank_by_seq(df, genes_df):
     summarize_report.append(section)
 
     section = ['NA length']
-    num_na = [int(v['NumNA']) for i, v in genes_df.iterrows()]
+    num_na = [int(v['NA_length']) for i, v in genes_df.iterrows()]
     section.append(create_binned_seq_lens(num_na))
     summarize_report.append(section)
 
     section = ['AA length']
-    num_aa = [int(v['NumAA']) for i, v in genes_df.iterrows()]
+    num_aa = [int(v['AA_length']) for i, v in genes_df.iterrows()]
     section.append(create_binned_seq_lens(num_aa))
     summarize_report.append(section)
 

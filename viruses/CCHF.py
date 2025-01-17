@@ -1,4 +1,3 @@
-import os
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
@@ -53,7 +52,9 @@ def build_blast_db(virus):
     for s in virus.SEGMENTS:
         with open(virus.reference_folder / f'{s}.gb', "r") as handle:
             for record in SeqIO.parse(handle, "genbank"):
-                # TODO, support all genes, also support segments
+
+                # TODO, support all genes, or support segments
+
                 aa_seq = [
                     i
                     for i in record.features

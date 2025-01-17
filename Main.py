@@ -39,9 +39,9 @@ def main():
 
     print("Number of GenBank References:", len(references))
     print('Number of GenBank records:', len(features))
-    print("Number of Genes:", len(genes))
 
     genes = process_gene_list(genes, run_blast, virus_obj)
+    print("Number of Genes:", len(genes))
 
     features = process_features(features, genes, virus_obj)
 

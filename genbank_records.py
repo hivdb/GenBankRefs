@@ -1,8 +1,10 @@
 from Bio import SeqIO
 import pandas as pd
+from operator import itemgetter
 
 from GenBankFunctions import filter_by_taxonomy
-from GenBankFunctions import pooled_blast
+from GenBankFunctions import pooled_blast_genes
+from GenBankFunctions import detect_additional_genes
 
 from Utilities import extract_year_from_date_fields
 from Utilities import extract_year_from_journal
@@ -113,44 +115,33 @@ def process_one_record(record):
                 'Gene': gene_name,
                 'CDS_NAME': gene_name,
                 'Order': idx + 1,
-                'NumNA': len(na_seq),
-                'NumAA': len(aa_seq),
-                'AASeq': aa_seq,
-                'AA_start': '',
-                'AA_stop': '',
-                'NASeq': na_seq,
-                'NA_start': '',
-                'NA_stop': '',
+
+                'AA_raw_seq': aa_seq,
+                'AA_raw_length': len(aa_seq) if aa_seq else '',
+
+                'NA_raw_seq': na_seq,
+                'NA_raw_length': len(na_seq) if na_seq else '',
+
             })
 
-    if not genes:
-        aa_seq = ''
-        na_seq = str(record.seq)
+    aa_seq = ''
+    na_seq = str(record.seq)
 
-        genes.append({
-            'Accession': accession,
-            'Gene': '',
-            'CDS_NAME': 'isolate',
-            'Order': 1,
-            'NumNA': len(na_seq),
-            'NumAA': len(aa_seq),
-            'AASeq': aa_seq,
-            'AA_start': '',
-            'AA_stop': '',
-            'NASeq': na_seq,
-            'NA_start': '',
-            'NA_stop': '',
-        })
+    genes.append({
+        'Accession': accession,
+        'Gene': '',
+        'CDS_NAME': 'isolate',
+        'Order': 0,
+
+        'AA_raw_seq': aa_seq,
+        'AA_raw_length': len(aa_seq),
+
+        'NA_raw_seq': na_seq,
+        'NA_raw_length': len(na_seq),
+    })
 
     features['cds'] = ', '.join(cds_names)
     features['NumSubSeqs'] = len(cds_names)
-
-    for gene in genes:
-        gene['hit_name'] = ''
-        gene['e_value'] = 999
-        gene['pcnt_id'] = 0
-        gene['align_len'] = 0
-        gene['blast_name'] = ''
 
     return refs, features, genes
 
@@ -224,8 +215,14 @@ def process_gene_list(gene_list, run_blast, virus_obj):
     if run_blast == 1:
         virus_obj.build_blast_db()
 
-        gene_list = pooled_blast(gene_list, virus_obj)
+        additional_gene_list = detect_additional_genes(gene_list, virus_obj)
+        gene_list = pooled_blast_genes(gene_list, virus_obj)
+
+        gene_list += additional_gene_list
+        gene_list.sort(key=itemgetter('Accession', 'Gene'))
+
         gene_df = pd.DataFrame(gene_list)
+        gene_df['SeqID'] = gene_df.index + 1
         gene_df.to_excel(str(virus_obj.genbank_gene_file), index=False)
         gene_df = pd.read_excel(
             str(virus_obj.genbank_gene_file)).fillna('')
