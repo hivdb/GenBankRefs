@@ -363,6 +363,7 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
         g_list = {}
         metadata = []
 
+        idx = 1
         for j in genes:
             if (j['Gene'] != i):
                 continue
@@ -374,17 +375,34 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
             #     num_dump += 1
             #     continue
 
-            g_list[j['Accession']] = j['NA_raw_seq']
+            g_list[f"N{idx}"] = j['NA_raw_seq']
             dedup_na.append(j['NA_raw_seq'])
 
+            host = j['Host'] if j["Host"] else 'NA'
+            host = host.rstrip('*').strip()
+            if 'and' in host:
+                host = host.split('and', 1)[0].strip()
+
+            country = j['Country'] if j["Country"] else 'NA'
+            country = country.rstrip('*').strip()
+            if ',' in country:
+                country = country.split(',', 1)[0].strip()
+
+            sampleyr = str(j['IsolateYear']) if j["IsolateYear"] else 'NA'
+            sampleyr = sampleyr.rstrip('*').strip()
+            if '-' in sampleyr:
+                sampleyr = sampleyr.split('-')[-1].strip()
+
             metadata.append({
+                'label': f"N{idx}",
                 'Accession': j['Accession'],
-                'Host': j['Host'],
-                'Country': j['Country'],
-                'SampleYr': j['IsolateYear'],
-                'Source': j['isolate_source']
+                'Host': host,
+                'Country': country,
+                'SampleYr': sampleyr,
+                # 'Source': j['isolate_source'] if j["isolate_source"] else 'NA',
                 # 'Comment':
             })
+            idx += 1
 
         print(f"{virus.name} Gene {i} picked sequence:", len(g_list))
         print(f"{virus.name} Gene {i} unpicked sequence:", len(genes) - len(g_list))
