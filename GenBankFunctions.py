@@ -250,7 +250,8 @@ def detect_additional_genes(gene_list, virus_obj, poolsize=20):
 
     isolate_genes = defaultdict(list)
     for i in genes:
-        isolate_genes[i['Accession']].append(i['CDS_NAME'])
+        isolate_genes[i['Accession']].append(
+            virus_obj.translate_cds_name(i['CDS_NAME']))
 
     isolates = [
         i
@@ -377,7 +378,7 @@ def get_new_gene(gene, blast_na, blast_aa):
             gene['AA_seq'] and
             gene['NA_length'] != gene['AA_length'] * 3
             ):
-        gene['translation_issue'] = abs(gene['NA_length'] - gene['AA_length'] * 3)
+        gene['translation_issue'] = 1
 
     # use na for aa seq
     # gene['AASeq'] = Seq(gene['NASeq']).translate(to_stop=False)

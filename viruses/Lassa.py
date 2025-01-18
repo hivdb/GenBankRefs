@@ -41,6 +41,9 @@ class Lassa(Virus):
         # pubmed['Gene'] = pubmed['Gene'].apply(partial(translate_pubmed_genes, self))
         return categorize_host_specimen(self, pubmed)
 
+    def translate_cds_name(self, cds):
+        return translate_cds_name(cds)
+
 
 Lassa("Lassa")
 

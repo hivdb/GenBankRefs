@@ -1,7 +1,3 @@
-import os
-from Bio import SeqIO
-from Bio.Seq import Seq
-from Bio.SeqRecord import SeqRecord
 from pathlib import Path
 from datetime import datetime
 from Utilities import get_logger
@@ -103,6 +99,10 @@ class Virus:
         return self.output_dir / f"{self.name}__GenBankGenes.xlsx"
 
     @property
+    def genbank_gene_filled_file(self):
+        return self.timestamp_dir / f"{self.name}__GenBankGenes_filled_{timestamp}.xlsx"
+
+    @property
     def combined_file(self):
         return self.timestamp_dir / f"{self.name}_Combined_{timestamp}.xlsx"
 
@@ -147,8 +147,12 @@ class Virus:
         return self.timestamp_dir / f"{self.name}_chord3_{timestamp}.html"
 
     @property
-    def chord_table_file(self):
-        return self.timestamp_dir / f"{self.name}_chord_table_{timestamp}.xlsx"
+    def chord_table_file1(self):
+        return self.timestamp_dir / f"{self.name}_chord_table1_{timestamp}.xlsx"
+
+    @property
+    def chord_table_file2(self):
+        return self.timestamp_dir / f"{self.name}_chord_table2_{timestamp}.xlsx"
 
     def get_logger(self, logger_name):
         logger_file = f'{self.name}_datalog_{logger_name}.txt'
@@ -180,6 +184,8 @@ class Virus:
         for i, row in features_df.iterrows():
             if 'patent' in row['Description'].lower():
                 features_df.at[i, 'Comment'] = 'patent'
+            if 'FDA' in row['Description'].upper():
+                features_df.at[i, 'Comment'] = 'patent'
             if 'Modified Microbial Nucleic Acid' in row['Description']:
                 features_df.at[i, 'Comment'] = 'Modified Microbial Nucleic Acid'
             if 'CONSTRUCT' in row['Description'].upper():
@@ -200,6 +206,9 @@ class Virus:
 
     def process_gene_list(self, gene_df):
         return gene_df
+
+    def translate_cds_name(self, cds):
+        return cds
 
     @property
     def phylo_folder(self):

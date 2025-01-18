@@ -1,0 +1,41 @@
+---
+title: "Nipah"
+output: html_document
+date: "2025-01-18"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+
+library(ggtree)
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(tibble)
+library(waffle)
+library(RColorBrewer)
+library(ggnewscale)
+
+
+```
+
+```{r message=FALSE, warning=FALSE}
+
+tree_file <- "../OutputData/Nipah/excels/01_17/phylo/output_L/L_isolates.fasta.aln.2.treefile"
+tree <- read.tree(tree_file)
+
+metadata_file <- "../OutputData/Nipah/excels/01_17/phylo/L_metadata.csv"
+metadata <- read_csv(metadata_file)
+row.names(metadata) <- metadata$Accession
+
+
+p = ggtree(tree, layout="rectangular") %<+% metadata +
+    geom_tippoint(aes(color=Country)) +
+    # geom_tiplab(size=2,  as_ylab=TRUE) +
+    geom_treescale(fontsize=3, linesize=1, offset=1)
+
+colors <- brewer.pal(8, "Set3")
+gheatmap(p, metadata['Host']) + scale_fill_manual(values=colors, name='Host')
+```
+

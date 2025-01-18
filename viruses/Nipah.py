@@ -5,6 +5,7 @@ from .virus import Virus
 import subprocess
 from bioinfo import dump_fasta
 from bioinfo import load_fasta
+import pandas as pd
 
 
 class Nipah(Virus):
@@ -40,6 +41,9 @@ class Nipah(Virus):
 
     def pick_phylo_sequence(self, genes, picked_genes=['N', 'L']):
         pick_phylo_sequence(self, genes, picked_genes)
+
+    def translate_cds_name(self, cds):
+        return translate_cds_name(cds)
 
 
 Nipah("Nipah")
@@ -348,17 +352,45 @@ def categorize_host_specimen(self, pubmed):
     return pubmed
 
 
-def pick_phylo_sequence(virus, genes, picked_genes):
+def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
     genes = genes.to_dict(orient='records')
+
     for i in picked_genes:
         ref_na = virus.ref_na_gene_map[i]
-        g_list = {
-            j['Accession']: j['NA_raw_seq']
-            for j in genes
-            if (j['Gene'] == i) and int(j['NA_length']) >= len(ref_na)
-        }
+
+        dedup_na = []
+        num_dump = 0
+        g_list = {}
+        metadata = []
+
+        for j in genes:
+            if (j['Gene'] != i):
+                continue
+
+            if (int(j['NA_length']) < (len(ref_na) * coverage_pcnt)):
+                continue
+
+            # if j['NA_raw_seq'] in dedup_na:
+            #     num_dump += 1
+            #     continue
+
+            g_list[j['Accession']] = j['NA_raw_seq']
+            dedup_na.append(j['NA_raw_seq'])
+
+            metadata.append({
+                'Accession': j['Accession'],
+                'Host': j['Host'],
+                'Country': j['Country'],
+                'SampleYr': j['IsolateYear'],
+                'Source': j['isolate_source']
+                # 'Comment':
+            })
+
         print(f"{virus.name} Gene {i} picked sequence:", len(g_list))
         print(f"{virus.name} Gene {i} unpicked sequence:", len(genes) - len(g_list))
+        print(f"{virus.name} Gene {i} duplicated sequence:", num_dump)
+
+        pd.DataFrame(metadata).to_csv(virus.phylo_folder / f"{i}_metadata.csv", index=False)
 
         dump_fasta(virus.phylo_folder / f"{i}_ref_na.fasta", {i: ref_na})
         dump_fasta(virus.phylo_folder / f'{i}_isolates.fasta', g_list)

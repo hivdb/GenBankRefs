@@ -55,12 +55,15 @@ def gen_chord_diagram(virus_obj, combined, features):
     draw_figure(virus_obj.chord_diagram_file2, df1 + df2, total, ordering)
     draw_figure(virus_obj.chord_diagram_file3, df3, total, ordering)
 
-    get_chord_table(virus_obj.chord_table_file, features, year_range)
+    get_chord_table(
+        virus_obj.chord_table_file1,
+        virus_obj.chord_table_file2,
+        features, year_range)
 
     return df1 + df2 + df3
 
 
-def get_chord_table(save_path, features, year_range):
+def get_chord_table(save_path1, save_path2, features, year_range):
     columns = ['Host', 'Country', 'IsolateYear', 'Genes']
     counting = defaultdict(int)
     for (a, b, c, d) in [columns]:
@@ -89,10 +92,10 @@ def get_chord_table(save_path, features, year_range):
 
             counting[(a1, b1, c1, d1)] += weight
 
-    df = []
-
+    df1 = []
+    df2 = []
     for (a1, b1, c1, d1), weight in counting.items():
-        df.append({
+        df1.append({
             'Host': a1,
             'Country': b1,
             'IsolateYear': c1,
@@ -102,9 +105,23 @@ def get_chord_table(save_path, features, year_range):
             '%': round(weight / len(features) * 100),
         })
 
-    df.sort(key=lambda x: x['#'], reverse=True)
+        genes = [g.strip() for g in d1.split(',') if g.strip()]
+        for g in genes:
+            df2.append({
+                'Host': a1,
+                'Country': b1,
+                'IsolateYear': c1,
+                'Gene': g,
+                '#': weight,
+                'T': len(features),
+                '%': round(weight / len(features) * 100),
+            })
 
-    pd.DataFrame(df).to_excel(save_path, index=False)
+    df1.sort(key=lambda x: x['#'], reverse=True)
+    pd.DataFrame(df1).to_excel(save_path1, index=False)
+
+    df2.sort(key=lambda x: x['#'], reverse=True)
+    pd.DataFrame(df2).to_excel(save_path2, index=False)
 
 
 def get_gene_list(features):

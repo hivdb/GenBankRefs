@@ -63,15 +63,15 @@ def create_tables(db_file):
 
     conn.execute("""
         CREATE TABLE "tblSequenceQA" (
-            "SeqID",
-            "AA_num_ins",
-            "AA_num_del",
-            "AA_blast_failed",
-            "NA_num_ins",
-            "NA_num_del",
-            "NA_blast_failed",
-            "num_N",
-            "translation_issue",
+            "SeqID" INTEGER,
+            "AA_num_ins" INTEGER,
+            "AA_num_del" INTEGER,
+            "AA_blast_failed" INTEGER,
+            "NA_num_ins" INTEGER,
+            "NA_num_del" INTEGER,
+            "NA_blast_failed" INTEGER,
+            "num_N" INTEGER,
+            "translation_issue" INTEGER,
             FOREIGN KEY (SeqID) REFERENCES tblSequences (SeqID)
         )
     """)
@@ -168,7 +168,18 @@ def create_database(
         'tblSequences',
         tblGBSequences)
 
-    tblSequenceQA = genes[[
+    tblSequenceQA = genes[
+        (genes['AA_num_ins'] != 0) |
+        (genes['AA_num_del'] != 0) |
+        (genes['AA_blast_failed'] == 1) |
+        (genes['NA_num_ins'] != 0) |
+        (genes['NA_num_del'] != 0) |
+        (genes['NA_blast_failed'] == 1) |
+        (genes['num_N'] != 0) |
+        (genes['translation_issue'] != 0)
+    ]
+
+    tblSequenceQA = tblSequenceQA[[
         'SeqID',
         'AA_num_ins', 'AA_num_del', 'AA_blast_failed',
         'NA_num_ins', 'NA_num_del', 'NA_blast_failed',

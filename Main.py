@@ -74,8 +74,10 @@ def main():
         return
 
     features = update_genbank_by_pubmed(features, lit_ref_match)
-
     features.to_excel(virus_obj.genbank_feature_filled_file)
+
+    genes = update_genes_by_features(genes, features)
+    genes.to_excel(virus_obj.genbank_gene_filled_file)
 
     # Create database using tables:
     #   GenBank Submission Set
@@ -119,6 +121,19 @@ def update_genbank_by_pubmed(features, matched):
                 features.at[i, 'IsolateYear'] = pubmed['SampleYr'] + ' *'
 
     return features
+
+
+def update_genes_by_features(genes, features):
+    for i, g in genes.iterrows():
+        feature = features[features['Accession'] == g['Accession']]
+        genes.at[i, 'Host'] = feature['Host'].tolist()[0]
+        genes.at[i, 'IsolateYear'] = feature['IsolateYear'].tolist()[0]
+        genes.at[i, 'RecordYear'] = feature['RecordYear'].tolist()[0]
+        genes.at[i, 'Comment'] = feature['Comment'].tolist()[0]
+        genes.at[i, 'isolate_source'] = feature['isolate_source'].tolist()[0]
+        genes.at[i, 'Country'] = feature['Country'].tolist()[0]
+
+    return genes
 
 
 if __name__ == '__main__':
