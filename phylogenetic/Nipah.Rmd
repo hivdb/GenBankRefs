@@ -17,25 +17,124 @@ library(waffle)
 library(RColorBrewer)
 library(ggnewscale)
 
+```
 
+```{r}
+
+# from https://dmnfarrell.github.io/r/ggtree-heatmaps
+gettreedata <- function(tree, meta){
+    #get treedata object
+    d<-meta[row.names(meta) %in% tree$tip.label,]
+    d$label <- row.names(d)
+    y <- full_join(as_tibble(tree), d, by='label')
+    y <- as.treedata(y)
+    return(y)
+}
+
+get_color_mapping <- function(data, col, cmap){
+    labels <- (data[[col]])
+    names <- levels(as.factor(labels))
+    n <- length(names)
+    if (n<10){
+        colors <- suppressWarnings(c(brewer.pal(n, cmap)))[1:n]
+    }
+    else {
+        colors <- colorRampPalette(brewer.pal(8, cmap))(n)
+    }
+    names(colors) = names
+    return (colors)
+}
+
+ggplottree <- function(tree, meta, cols=NULL, cmaps=NULL, layout="rectangular",
+                       offset=10, tiplabel=FALSE, tipsize=3) {
+
+    y <- gettreedata(tree, meta)
+    p <- ggtree(y, layout=layout)
+    if (is.null(cols)){
+        return (p)
+    }
+
+    col <- cols[1]
+    cmap <- cmaps[1]
+    df<-meta[tree$tip.label,][col]
+    colors <- get_color_mapping(df, col, cmap)
+
+    #tip formatting
+    p1 <- p + new_scale_fill() +
+          geom_tippoint(mapping=aes(fill=.data[[col]]),size=tipsize,shape=21,stroke=0) +
+          scale_fill_manual(values=colors, na.value="white")
+
+    p2 <- p1
+    if (length(cols)>1){
+        for (i in 2:length(cols)){
+            col <- cols[i]
+            cmap <- cmaps[i]
+            df <- meta[tree$tip.label,][col]
+            type <- class(df[col,])
+            p2 <- p2 + new_scale_fill()
+            p2 <- gheatmap(p2, df, offset=i*offset, width=.08,
+                      colnames_angle=0, colnames_offset_y = .05)
+            colors <- get_color_mapping(df, col, cmap)
+            p2 <- p2 + scale_fill_manual(values=colors, name=col)
+        }
+    }
+
+    p2 <- p2 + theme_tree2(legend.text = element_text(size=20), legend.key.size = unit(1, 'cm'),
+                        legend.position="left", plot.title = element_text(size=40))
+            guides(color = guide_legend(override.aes = list(size=10)))
+
+    return(p2)
+}
 ```
 
 ```{r message=FALSE, warning=FALSE}
 
-tree_file <- "../OutputData/Nipah/excels/01_17/phylo/output_L/L_isolates.fasta.aln.2.treefile"
+tree_file <- "../OutputData/Nipah/excels/01_17/phylo/output_L/L_isolates.fasta.aln.treefile"
 tree <- read.tree(tree_file)
 
 metadata_file <- "../OutputData/Nipah/excels/01_17/phylo/L_metadata.csv"
-metadata <- read_csv(metadata_file)
-row.names(metadata) <- metadata$Accession
+df <- read_csv(metadata_file)
+df$label = df$Accession
+
+tree2 = full_join(tree, df, by='label')
+
+host_colors = get_color_mapping(df, 'Host', 'Set1')
+country_colors = get_color_mapping(df, 'Host', 'Set2')
+sample_yr_colors = get_color_mapping(df, 'Host', 'Set3')
 
 
-p = ggtree(tree, layout="rectangular") %<+% metadata +
-    geom_tippoint(aes(color=Country)) +
+p <- ggtree(tree2, layout="rect") + new_scale_fill() +
+    geom_tippoint(aes(color=Host)) + 
+    scale_color_manual(
+      values=host_colors) +
+    guides(color = "none") +
     # geom_tiplab(size=2,  as_ylab=TRUE) +
-    geom_treescale(fontsize=3, linesize=1, offset=1)
+    geom_treescale(fontsize=3, linesize=1, offset=1) + new_scale_fill()
 
-colors <- brewer.pal(8, "Set3")
-gheatmap(p, metadata['Host']) + scale_fill_manual(values=colors, name='Host')
+
+p <- gheatmap(p, data.frame(Country = rep("Malaysia", 99)), 
+              width=0.1, colnames_position = 'top', font.size = 2, colnames_offset_y = 0.4) + 
+     scale_fill_manual(
+        values=country_colors, name='Country') + 
+    new_scale_fill()
+
+host_data <- df["Host"]
+rownames(host_data) = rownames(df)
+
+p <- gheatmap(p, host_data, offset=0.01,
+              width=0.1, colnames_position = 'top', font.size = 2, colnames_offset_y = 0.4) + 
+     scale_fill_manual(
+        values=host_colors, name='Host')  + new_scale_fill()
+
+p <- gheatmap(p, df["SampleYr"], offset=0.02,
+              width=0.1, colnames_position = 'top', font.size = 2, colnames_offset_y = 0.4) + 
+     scale_fill_manual(
+        values=sample_yr_colors, name='SampleYr')  + new_scale_fill()
+
+p <- p + theme_tree(legend.position='left', legend.text=element_text(size=8), legend.key.size=unit(0.5, "cm"))
+
+p
+
 ```
+
 
