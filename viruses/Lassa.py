@@ -272,14 +272,19 @@ def translate_cds_name(cds):
         'L': 'L',
 
         'Z': 'Z',
+
+        'UNNAMED PRODUCT': '',
+        'HYPOTHETICAL': '',
     }
 
     for v in name_map.values():
-        assert (v in Virus.get_virus('Lassa').GENES)
+        assert (not v or (v in Virus.get_virus('Lassa').GENES))
 
     if cds in name_map:
         return name_map[cds]
     elif cds in ('isolate', 'isolate_complete'):
+        return ''
+    elif not cds:
         return ''
     else:
         print('Missing CDS translation', cds)

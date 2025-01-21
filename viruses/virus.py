@@ -216,7 +216,7 @@ class Virus:
         d.mkdir(exist_ok=True)
         return d
 
-    def pick_phylo_sequence(self, gene_list, genes):
+    def pick_phylo_sequence(self, genes, picked_genes=[]):
         return
 
 
