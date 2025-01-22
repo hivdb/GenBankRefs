@@ -129,7 +129,7 @@ def update_genes_by_features(genes, features):
         genes.at[i, 'Host'] = feature['Host'].tolist()[0]
         genes.at[i, 'IsolateYear'] = feature['IsolateYear'].tolist()[0]
         genes.at[i, 'RecordYear'] = feature['RecordYear'].tolist()[0]
-        genes.at[i, 'Comment'] = feature['Comment'].tolist()[0]
+        genes.at[i, 'IsolateType'] = feature['IsolateType'].tolist()[0]
         genes.at[i, 'isolate_source'] = feature['isolate_source'].tolist()[0]
         genes.at[i, 'Country'] = feature['Country'].tolist()[0]
 

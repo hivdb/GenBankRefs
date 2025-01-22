@@ -44,6 +44,9 @@ class Lassa(Virus):
     def translate_cds_name(self, cds):
         return translate_cds_name(cds)
 
+    def pick_phylo_sequence(self, genes, picked_genes=['G', 'N', 'L']):
+        return super().pick_phylo_sequence(genes, picked_genes)
+
 
 Lassa("Lassa")
 

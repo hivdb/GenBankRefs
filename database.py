@@ -28,7 +28,7 @@ def create_tables(db_file):
             "Specimen" TEXT,
             "IsolateName" TEXT,
             "SeqLength" INTEGER,
-            "Comment" TEXT
+            "IsolateType" TEXT
         )
     """)
 
@@ -136,20 +136,24 @@ def create_database(
     features['Specimen'] = features['isolate_source']
     features['Virus'] = features['organism']
 
-    if 'Comment' not in features.columns:
-        features['Comment'] = ""
+    if 'IsolateType' not in features.columns:
+        features['IsolateType'] = ""
 
     tblIsolates = features[[
         'Accession', 'Country', 'RecordYear',
         'IsolateYear', 'Host', 'Specimen', 'IsolateName',
         'SeqLength',
-        'Comment']]
+        'IsolateType']]
 
     for i, row in tblIsolates.iterrows():
-        tblIsolates.at[i, 'Host'] = row['Host'] if row['Host'] else ('Not applicable' if row['Comment'] else 'Not available')
-        tblIsolates.at[i, 'Specimen'] = row['Specimen'] if row['Specimen'] else ('Not applicable' if row['Comment'] else 'Not available')
-        tblIsolates.at[i, 'IsolateYear'] = row['IsolateYear'] if row['IsolateYear'] else ('Not applicable' if row['Comment'] else 'Not available')
-        tblIsolates.at[i, 'Country'] = row['Country'] if row['Country'] else ('Not applicable' if row['Comment'] else 'Not available')
+        tblIsolates.at[i, 'Host'] = row['Host'] if row['Host'] else (
+            'Not applicable' if row['IsolateType'] else 'Not available')
+        tblIsolates.at[i, 'Specimen'] = row['Specimen'] if row['Specimen'] else (
+            'Not applicable' if row['IsolateType'] else 'Not available')
+        tblIsolates.at[i, 'IsolateYear'] = row['IsolateYear'] if row['IsolateYear'] else (
+            'Not applicable' if row['IsolateType'] else 'Not available')
+        tblIsolates.at[i, 'Country'] = row['Country'] if row['Country'] else (
+            'Not applicable' if row['IsolateType'] else 'Not available')
 
     dump_table(
         virus_obj.DB_FILE,

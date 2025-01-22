@@ -215,8 +215,8 @@ def process_gene_list(gene_list, run_blast, virus_obj):
     if run_blast == 1:
         virus_obj.build_blast_db()
 
-        additional_gene_list = detect_additional_genes(gene_list, virus_obj)
         gene_list = pooled_blast_genes(gene_list, virus_obj)
+        additional_gene_list = detect_additional_genes(gene_list, virus_obj)
 
         gene_list += additional_gene_list
         gene_list.sort(key=itemgetter('Accession', 'Gene'))
@@ -241,7 +241,6 @@ def process_gene_list(gene_list, run_blast, virus_obj):
         gene_df.to_excel(str(virus_obj.genbank_gene_file), index=False)
         gene_df = pd.read_excel(
             str(virus_obj.genbank_gene_file)).fillna('')
-
     gene_df = virus_obj.process_gene_list(gene_df)
     gene_df.to_excel(str(virus_obj.genbank_gene_file), index=False)
 

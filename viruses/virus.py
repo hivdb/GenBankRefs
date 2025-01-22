@@ -3,6 +3,8 @@ from datetime import datetime
 from Utilities import get_logger
 import subprocess
 import pandas as pd
+from bioinfo import dump_fasta
+from bioinfo import load_fasta
 
 
 timestamp = datetime.now().strftime('%m_%d')
@@ -183,21 +185,21 @@ class Virus:
 
         for i, row in features_df.iterrows():
             if 'patent' in row['Description'].lower():
-                features_df.at[i, 'Comment'] = 'patent'
+                features_df.at[i, 'IsolateType'] = 'patent'
             if 'FDA' in row['Description'].upper():
-                features_df.at[i, 'Comment'] = 'patent'
+                features_df.at[i, 'IsolateType'] = 'patent'
             if 'Modified Microbial Nucleic Acid' in row['Description']:
-                features_df.at[i, 'Comment'] = 'Modified Microbial Nucleic Acid'
+                features_df.at[i, 'IsolateType'] = 'Modified Microbial Nucleic Acid'
             if 'CONSTRUCT' in row['Description'].upper():
-                features_df.at[i, 'Comment'] = 'CONSTRUCT'
+                features_df.at[i, 'IsolateType'] = 'CONSTRUCT'
             if 'COMPOSITIONS' in row['Description'].upper():
-                features_df.at[i, 'Comment'] = 'CONSTRUCT'
+                features_df.at[i, 'IsolateType'] = 'CONSTRUCT'
             if 'monoclonal antibody' in row['Description'].lower():
-                features_df.at[i, 'Comment'] = 'antibody'
+                features_df.at[i, 'IsolateType'] = 'antibody'
             if 'MICROARRAY' in row['Description'].upper():
-                features_df.at[i, 'Comment'] = 'MICROARRAY'
+                features_df.at[i, 'IsolateType'] = 'MICROARRAY'
             if 'conformation' in row['Description'].lower():
-                features_df.at[i, 'Comment'] = 'conformation'
+                features_df.at[i, 'IsolateType'] = 'conformation'
 
         return features_df
 
@@ -212,12 +214,16 @@ class Virus:
 
     @property
     def phylo_folder(self):
-        d = self.timestamp_dir / 'phylo'
+        d = self.output_excel_dir / 'phylo'
         d.mkdir(exist_ok=True)
         return d
 
-    def pick_phylo_sequence(self, genes, picked_genes=[]):
-        return
+    @property
+    def ref_na_gene_map(self):
+        return load_fasta(self.reference_folder / f"{self.name}_RefNAs.fasta")
+
+    def pick_phylo_sequence(self, genes, picked_genes=[], coverage_pcnt=1):
+        return pick_phylo_sequence(self, genes, picked_genes, coverage_pcnt=coverage_pcnt)
 
 
 Virus('default')
@@ -256,3 +262,110 @@ def add_feature_from_non_pubmed_paper(virus, features_df):
             features_df.at[i, 'isolate_source'] = match['isolate_source'].tolist()[0]
 
     return features_df
+
+
+def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
+    genes = genes.to_dict(orient='records')
+
+    sampleYr_range = {
+        (1900, 1990): '<1990',
+        (1991, 2000): '1991-2000',
+        (2001, 2010): '2001-2010',
+        (2011, 2020): '2011-2020',
+        (2021, 2025): '2021-2025',
+    }
+
+    for gene_name in picked_genes:
+        ref_na = virus.ref_na_gene_map[gene_name]
+
+        dedup_na = []
+        num_dump = 0
+        g_list = {}
+        metadata = []
+
+        idx = 1
+        for j in genes:
+            if (j['Gene'] != gene_name):
+                continue
+
+            if j['IsolateType']:
+                continue
+
+            if (int(j['NA_length']) < (len(ref_na) * coverage_pcnt)):
+                continue
+
+            if j['NA_raw_seq'] in dedup_na:
+                num_dump += 1
+                continue
+
+            label = j['Accession']
+            # label = f"N{idx}"
+
+            g_list[label] = j['NA_raw_seq']
+            dedup_na.append(j['NA_raw_seq'])
+
+            host = j['Host'] if j["Host"] else 'NA'
+            host = host.rstrip('*').strip()
+            if 'and' in host:
+                host = host.split('and', 1)[0].strip()
+
+            country = j['Country'] if j["Country"] else 'NA'
+            country = country.rstrip('*').strip()
+            if ',' in country:
+                country = country.split(',', 1)[0].strip()
+
+            sampleyr = str(j['IsolateYear']) if j["IsolateYear"] else 'NA'
+            sampleyr = sampleyr.rstrip('*').strip()
+            if '-' in sampleyr:
+                sampleyr = sampleyr.split('-')[-1].strip()
+            elif '–' in sampleyr:
+                sampleyr = sampleyr.split('–')[-1].strip()
+            elif ',' in sampleyr:
+                sampleyr = sampleyr.split(',')[-1].strip()
+
+            if sampleyr != 'NA':
+                sampleyr = int(float(sampleyr))
+                for (start, stop), sampleYr_name in sampleYr_range.items():
+                    if (sampleyr >= start) and (sampleyr <= stop):
+                        sampleyr = sampleYr_name
+                        break
+
+            metadata.append({
+                'label': label,
+                'Host': host,
+                'Country': country,
+                'SampleYr': sampleyr,
+                # 'Source': j['isolate_source'] if j["isolate_source"] else 'NA',
+            })
+            idx += 1
+
+        print(f"{virus.name} Gene {gene_name} picked sequence:", len(g_list))
+        print(f"{virus.name} Gene {gene_name} unpicked sequence:", len(genes) - len(g_list))
+        print(f"{virus.name} Gene {gene_name} duplicated sequence:", num_dump)
+
+        pd.DataFrame(metadata).to_csv(virus.phylo_folder / f"{gene_name}_metadata.csv", index=False)
+
+        dump_fasta(virus.phylo_folder / f"{gene_name}_ref_na.fasta", {gene_name: ref_na})
+        dump_fasta(virus.phylo_folder / f'{gene_name}_isolates.fasta', g_list)
+
+        run_command = input('Run alignment and phylogenetic tree? [y/n]')
+        if run_command == 'n':
+            print('Choose not run phylogenetic tree')
+            return
+
+        cmds = (
+            f"cd {virus.phylo_folder}; "
+            f"rm -rf output_{gene_name}; "
+            f"ViralMSA.py -e hivdbteam@list.stanford.edu -s {gene_name}_isolates.fasta -o output_{gene_name} -r {gene_name}_ref_na.fasta --omit_ref; "
+            f"cd output_{gene_name}; "
+            f"iqtree2 -s {gene_name}_isolates.fasta.aln -m GTR+G4+F -bb 1000 -nt AUTO; "
+        )
+        print('Run command:')
+        print(cmds)
+        subprocess.run(
+            cmds,
+            # stdout=subprocess.PIPE,
+            # stderr=subprocess.PIPE,
+            # text=True,
+            shell=True
+        )

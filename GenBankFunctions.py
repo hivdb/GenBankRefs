@@ -250,8 +250,10 @@ def detect_additional_genes(gene_list, virus_obj, poolsize=20):
 
     isolate_genes = defaultdict(list)
     for i in genes:
-        isolate_genes[i['Accession']].append(
-            virus_obj.translate_cds_name(i['CDS_NAME']))
+        gene_name = virus_obj.translate_cds_name(i['CDS_NAME'])
+        if not gene_name and i.get('hit_name'):
+            gene_name = i['hit_name']
+        isolate_genes[i['Accession']].append(gene_name)
 
     isolates = [
         i
