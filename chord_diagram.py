@@ -66,6 +66,7 @@ def gen_chord_diagram(virus_obj, combined, features):
 def get_chord_table(save_path1, save_path2, features, year_range):
     columns = ['Host', 'Country', 'IsolateYear', 'Genes']
     counting = defaultdict(int)
+    counting2 = defaultdict(int)
     for (a, b, c, d) in [columns]:
 
         list1 = features[a].unique()
@@ -92,6 +93,10 @@ def get_chord_table(save_path1, save_path2, features, year_range):
 
             counting[(a1, b1, c1, d1)] += weight
 
+            genes = [g.strip() for g in d1.split(',') if g.strip()]
+            for d2 in genes:
+                counting2[(a1, b1, c1, d2)] += weight
+
     df1 = []
     df2 = []
     for (a1, b1, c1, d1), weight in counting.items():
@@ -105,17 +110,16 @@ def get_chord_table(save_path1, save_path2, features, year_range):
             '%': round(weight / len(features) * 100),
         })
 
-        genes = [g.strip() for g in d1.split(',') if g.strip()]
-        for g in genes:
-            df2.append({
-                'Host': a1,
-                'Country': b1,
-                'IsolateYear': c1,
-                'Gene': g,
-                '#': weight,
-                'T': len(features),
-                '%': round(weight / len(features) * 100),
-            })
+    for (a1, b1, c1, d2), weight in counting2.items():
+        df2.append({
+            'Host': a1,
+            'Country': b1,
+            'IsolateYear': c1,
+            'Gene': d2,
+            '#': weight,
+            'T': len(features),
+            '%': round(weight / len(features) * 100),
+        })
 
     df1.sort(key=lambda x: x['#'], reverse=True)
     pd.DataFrame(df1).to_excel(save_path1, index=False)
@@ -271,7 +275,8 @@ def get_year_range(year, ranges):
 
     for start, stop in ranges:
         if (start <= year) and (year <= stop):
-            return f"{start} - {stop}"
+            range_name = f"{start} - {stop}"
+            return range_name
 
     return None
 
