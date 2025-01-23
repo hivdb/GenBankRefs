@@ -315,6 +315,124 @@ def creat_views(db_file):
     """
     run_create_view(db_file, vPubDataAccessionLink)
 
+    vNotClinicalAccession = """
+    SELECT      
+        Comment,      
+        COUNT(*) AS count,     
+        SUM(COUNT(*)) OVER () AS total_count 
+    FROM 
+        tblIsolates 
+    WHERE 
+        Comment IS NOT "" 
+    GROUP BY 
+        Comment;"""
+    
+    run_create_view(db_file, vNotClinicalAccession)
+
+    vIsolateHost = """
+    SELECT 
+        Host, COUNT(*) AS count 
+    FROM 
+        tblIsolates 
+    GROUP BY 
+        Host
+    """
+    run_create_view(db_file, vIsolateHost)
+
+    vIsolateSpecimen = """
+    SELECT 
+        Specimen, COUNT(*) AS count 
+    FROM 
+        tblIsolates 
+    GROUP BY 
+        Specimen
+    """
+    run_create_view(db_file, vIsolateSpecimen)
+    
+    vIsolateCountry = """
+    SELECT 
+        Country, COUNT(*) AS count 
+    FROM 
+        tblIsolates 
+    GROUP BY 
+        Country
+    """
+    run_create_view(db_file, vIsolateCountry)
+    
+    vIsolateYear = """
+    SELECT 
+        IsolateYear, COUNT(*) AS count 
+    FROM 
+        tblIsolates 
+    GROUP BY 
+        IsolateYear
+    """
+    run_create_view(db_file, vIsolateYear)
+    
+    vMissingData = """
+    SELECT 
+    (SELECT COUNT(*) 
+     FROM tblIsolates 
+     WHERE Host IN ("Not Applicable", "Not Available", "Not available", "Not applicable")) AS host_count,
+    (SELECT COUNT(*) 
+     FROM tblIsolates 
+     WHERE Specimen IN ("Not Applicable", "Not Available", "Not available", "Not applicable")) AS specimen_count,
+    (SELECT COUNT(*) 
+     FROM tblIsolates 
+     WHERE Country IN ("Not Applicable", "Not Available", "Not available", "Not applicable")) AS country_count,
+    (SELECT COUNT(*) 
+     FROM tblIsolates 
+     WHERE IsolateYear IN ("Not Applicable", "Not Available", "Not available", "Not applicable")) AS isolate_yr_count;
+    """
+
+    run_create_view(db_file, vMissingData)
+
+    vSubmissionSetsSupplementingGB = """
+    SELECT 
+        COUNT(DISTINCT CASE WHEN tblIsolates.Host LIKE '%*%' THEN tblGBRefLink.RefID END) AS submission_hosts,
+        COUNT(DISTINCT CASE WHEN tblIsolates.Host LIKE '%*%' THEN tblIsolates.Accession END) AS numseq_hosts,
+        COUNT(DISTINCT CASE WHEN tblIsolates.Specimen LIKE '%*%' THEN tblGBRefLink.RefID END) AS submission_specimens,
+        COUNT(DISTINCT CASE WHEN tblIsolates.Specimen LIKE '%*%' THEN tblIsolates.Accession END) AS numseq_specimens,
+        COUNT(DISTINCT CASE WHEN tblIsolates.Country LIKE '%*%' THEN tblGBRefLink.RefID END) AS submission_country,
+        COUNT(DISTINCT CASE WHEN tblIsolates.Country LIKE '%*%' THEN tblIsolates.Accession END) AS numseq_country,
+        COUNT(DISTINCT CASE WHEN tblIsolates.IsolateYear LIKE '%*%' THEN tblGBRefLink.RefID END) AS submission_IsolateYear,
+        COUNT(DISTINCT CASE WHEN tblIsolates.IsolateYear LIKE '%*%' THEN tblIsolates.Accession END) AS numseq_IsolateYear
+    FROM 
+        tblGBRefLink
+    JOIN 
+        tblIsolates ON tblGBRefLink.Accession = tblIsolates.Accession;
+
+    """
+
+    run_create_view(db_file, vSubmissionSetsSupplementingGB)
+
+    vChordTable = """
+    SELECT DISTINCT 
+        tblIsolates.Accession, 
+        tblIsolates.Country, 
+        tblIsolates.IsolateYear, 
+        tblIsolates.Host, 
+        tblIsolates.Specimen, 
+        tblIsolates.IsolateName, 
+        tblGBPubRefLink.RefID, 
+        tblGBPubRefLink.PubID,
+        COUNT(*) AS count_rows ,
+        SUM(COUNT(*)) OVER () AS Total_count,
+    FROM 
+        tblIsolates
+    LEFT JOIN 
+        tblGBRefLink ON tblIsolates.Accession = tblGBRefLink.Accession
+    LEFT JOIN 
+        tblGBPubRefLink ON tblGBRefLink.RefID = tblGBPubRefLink.RefID
+    JOIN 
+        tblSequences ON tblIsolates.Accession = tblSequences.Accession
+    GROUP BY 
+        tblIsolates.Host, tblIsolates.Country, tblIsolates.IsolateYear, tblSequences.Gene 
+    ORDER BY 
+        count_rows DESC, tblIsolates.Host, tblIsolates.Country, tblSequences.Gene;
+    """
+    # ROUND((COUNT(*) * 100.0 / SUM(COUNT(*)) OVER ()), 2) AS "%" takes too long to calculate
+    run_create_view(db_file, vChordTable)
 
 def dump_table(db_file, table_name, table):
     conn = sqlite3.connect(str(db_file))
