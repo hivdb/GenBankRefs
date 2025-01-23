@@ -44,6 +44,9 @@ class Lassa(Virus):
     def translate_cds_name(self, cds):
         return translate_cds_name(cds)
 
+    def pick_phylo_sequence(self, genes, picked_genes=['G', 'N', 'L']):
+        return super().pick_phylo_sequence(genes, picked_genes)
+
 
 Lassa("Lassa")
 
@@ -272,14 +275,19 @@ def translate_cds_name(cds):
         'L': 'L',
 
         'Z': 'Z',
+
+        'UNNAMED PRODUCT': '',
+        'HYPOTHETICAL': '',
     }
 
     for v in name_map.values():
-        assert (v in Virus.get_virus('Lassa').GENES)
+        assert (not v or (v in Virus.get_virus('Lassa').GENES))
 
     if cds in name_map:
         return name_map[cds]
     elif cds in ('isolate', 'isolate_complete'):
+        return ''
+    elif not cds:
         return ''
     else:
         print('Missing CDS translation', cds)

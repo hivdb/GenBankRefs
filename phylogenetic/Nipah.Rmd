@@ -147,8 +147,8 @@ return (p)
 ## L gene
 
 ```{r message=FALSE, warning=FALSE, fig.width=12, fig.height=15, dpi=600}
-tree_file <- "../OutputData/Nipah/excels/01_18/phylo/output_L/L_isolates.fasta.aln.treefile"
-metadata_file <- "../OutputData/Nipah/excels/01_18/phylo/L_metadata.csv"
+tree_file <- "../OutputData/Nipah/excels/phylo/output_L/L_isolates.fasta.aln.treefile"
+metadata_file <- "../OutputData/Nipah/excels//phylo/L_metadata.csv"
 
 p <- draw_phylotree_for_gene(tree_file, metadata_file)
 p
@@ -157,8 +157,8 @@ p
 ## N Gene
 
 ```{r message=FALSE, warning=FALSE, fig.width=12, fig.height=15, dpi=600}
-tree_file <- "../OutputData/Nipah/excels/01_18/phylo/output_N/N_isolates.fasta.aln.treefile"
-metadata_file <- "../OutputData/Nipah/excels/01_18/phylo/N_metadata.csv"
+tree_file <- "../OutputData/Nipah/excels/phylo/output_N/N_isolates.fasta.aln.treefile"
+metadata_file <- "../OutputData/Nipah/excels/phylo/N_metadata.csv"
 
 p <- draw_phylotree_for_gene(tree_file, metadata_file)
 p

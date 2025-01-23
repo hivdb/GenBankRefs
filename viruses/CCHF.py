@@ -41,6 +41,9 @@ class CCHF(Virus):
         pubmed['Gene'] = pubmed['Gene'].apply(partial(translate_pubmed_genes, self))
         return categorize_host_specimen(self, pubmed)
 
+    def pick_phylo_sequence(self, genes, picked_genes=['S', 'M', 'L']):
+        return super().pick_phylo_sequence(genes, picked_genes, coverage_pcnt=0.85)
+
 
 CCHF("CCHF")
 

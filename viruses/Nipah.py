@@ -3,9 +3,6 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from .virus import Virus
 import subprocess
-from bioinfo import dump_fasta
-from bioinfo import load_fasta
-import pandas as pd
 
 
 class Nipah(Virus):
@@ -35,12 +32,8 @@ class Nipah(Virus):
         # pubmed['Gene'] = pubmed['Gene'].apply(partial(translate_pubmed_genes, self))
         return categorize_host_specimen(self, pubmed)
 
-    @property
-    def ref_na_gene_map(self):
-        return load_fasta(self.reference_folder / f"{self.name}_RefNAs.fasta")
-
     def pick_phylo_sequence(self, genes, picked_genes=['N', 'L']):
-        pick_phylo_sequence(self, genes, picked_genes)
+        return super().pick_phylo_sequence(genes, picked_genes)
 
     def translate_cds_name(self, cds):
         return translate_cds_name(cds)
@@ -352,87 +345,3 @@ def categorize_host_specimen(self, pubmed):
     return pubmed
 
 
-def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
-    genes = genes.to_dict(orient='records')
-
-    for gene_name in picked_genes:
-        ref_na = virus.ref_na_gene_map[gene_name]
-
-        dedup_na = []
-        num_dump = 0
-        g_list = {}
-        metadata = []
-
-        idx = 1
-        for j in genes:
-            if (j['Gene'] != gene_name):
-                continue
-
-            if (int(j['NA_length']) < (len(ref_na) * coverage_pcnt)):
-                continue
-
-            if j['NA_raw_seq'] in dedup_na:
-                num_dump += 1
-                continue
-
-            label = j['Accession']
-            # label = f"N{idx}"
-
-            g_list[label] = j['NA_raw_seq']
-            dedup_na.append(j['NA_raw_seq'])
-
-            host = j['Host'] if j["Host"] else 'NA'
-            host = host.rstrip('*').strip()
-            if 'and' in host:
-                host = host.split('and', 1)[0].strip()
-
-            country = j['Country'] if j["Country"] else 'NA'
-            country = country.rstrip('*').strip()
-            if ',' in country:
-                country = country.split(',', 1)[0].strip()
-
-            sampleyr = str(j['IsolateYear']) if j["IsolateYear"] else 'NA'
-            sampleyr = sampleyr.rstrip('*').strip()
-            if '-' in sampleyr:
-                sampleyr = sampleyr.split('-')[-1].strip()
-
-            metadata.append({
-                'label': label,
-                'Host': host,
-                'Country': country,
-                'SampleYr': sampleyr,
-                # 'Source': j['isolate_source'] if j["isolate_source"] else 'NA',
-                # 'Comment':
-            })
-            idx += 1
-
-        print(f"{virus.name} Gene {gene_name} picked sequence:", len(g_list))
-        print(f"{virus.name} Gene {gene_name} unpicked sequence:", len(genes) - len(g_list))
-        print(f"{virus.name} Gene {gene_name} duplicated sequence:", num_dump)
-
-        pd.DataFrame(metadata).to_csv(virus.phylo_folder / f"{gene_name}_metadata.csv", index=False)
-
-        dump_fasta(virus.phylo_folder / f"{gene_name}_ref_na.fasta", {gene_name: ref_na})
-        dump_fasta(virus.phylo_folder / f'{gene_name}_isolates.fasta', g_list)
-
-        run_command = input('Run alignment and phylogenetic tree? [y/n]')
-        if run_command == 'n':
-            print('Choose not run phylogenetic tree')
-            return
-
-        cmds = (
-            f"cd {virus.phylo_folder}; "
-            f"rm -rf output_{gene_name}; "
-            f"ViralMSA.py -e hivdbteam@list.stanford.edu -s {gene_name}_isolates.fasta -o output_{gene_name} -r {gene_name}_ref_na.fasta --omit_ref; "
-            f"cd output_{gene_name}; "
-            f"iqtree2 -s {gene_name}_isolates.fasta.aln -m GTR+G4+F -bb 1000 -nt AUTO; "
-        )
-        print('Run command:')
-        print(cmds)
-        subprocess.run(
-            cmds,
-            # stdout=subprocess.PIPE,
-            # stderr=subprocess.PIPE,
-            # text=True,
-            shell=True
-        )
