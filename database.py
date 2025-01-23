@@ -320,79 +320,79 @@ def creat_views(db_file):
     run_create_view(db_file, vPubDataAccessionLink)
 
     vNotClinicalAccession = """
-    SELECT      
-        Comment,      
-        COUNT(*) AS count,     
-        SUM(COUNT(*)) OVER () AS total_count 
-    FROM 
-        tblIsolates 
-    WHERE 
-        Comment IS NOT "" 
-    GROUP BY 
+    SELECT
+        Comment,
+        COUNT(*) AS count,
+        SUM(COUNT(*)) OVER () AS total_count
+    FROM
+        tblIsolates
+    WHERE
+        Comment IS NOT ""
+    GROUP BY
         Comment;"""
-    
+
     run_create_view(db_file, vNotClinicalAccession)
 
     vIsolateHost = """
-    SELECT 
-        Host, COUNT(*) AS count 
-    FROM 
-        tblIsolates 
-    GROUP BY 
+    SELECT
+        Host, COUNT(*) AS count
+    FROM
+        tblIsolates
+    GROUP BY
         Host
     """
     run_create_view(db_file, vIsolateHost)
 
     vIsolateSpecimen = """
-    SELECT 
-        Specimen, COUNT(*) AS count 
-    FROM 
-        tblIsolates 
-    GROUP BY 
+    SELECT
+        Specimen, COUNT(*) AS count
+    FROM
+        tblIsolates
+    GROUP BY
         Specimen
     """
     run_create_view(db_file, vIsolateSpecimen)
-    
+
     vIsolateCountry = """
-    SELECT 
-        Country, COUNT(*) AS count 
-    FROM 
-        tblIsolates 
-    GROUP BY 
+    SELECT
+        Country, COUNT(*) AS count
+    FROM
+        tblIsolates
+    GROUP BY
         Country
     """
     run_create_view(db_file, vIsolateCountry)
-    
+
     vIsolateYear = """
-    SELECT 
-        IsolateYear, COUNT(*) AS count 
-    FROM 
-        tblIsolates 
-    GROUP BY 
+    SELECT
+        IsolateYear, COUNT(*) AS count
+    FROM
+        tblIsolates
+    GROUP BY
         IsolateYear
     """
     run_create_view(db_file, vIsolateYear)
-    
+
     vMissingData = """
-    SELECT 
-    (SELECT COUNT(*) 
-     FROM tblIsolates 
+    SELECT
+    (SELECT COUNT(*)
+     FROM tblIsolates
      WHERE Host IN ("Not Applicable", "Not Available", "Not available", "Not applicable")) AS host_count,
-    (SELECT COUNT(*) 
-     FROM tblIsolates 
+    (SELECT COUNT(*)
+     FROM tblIsolates
      WHERE Specimen IN ("Not Applicable", "Not Available", "Not available", "Not applicable")) AS specimen_count,
-    (SELECT COUNT(*) 
-     FROM tblIsolates 
+    (SELECT COUNT(*)
+     FROM tblIsolates
      WHERE Country IN ("Not Applicable", "Not Available", "Not available", "Not applicable")) AS country_count,
-    (SELECT COUNT(*) 
-     FROM tblIsolates 
+    (SELECT COUNT(*)
+     FROM tblIsolates
      WHERE IsolateYear IN ("Not Applicable", "Not Available", "Not available", "Not applicable")) AS isolate_yr_count;
     """
 
     run_create_view(db_file, vMissingData)
 
     vSubmissionSetsSupplementingGB = """
-    SELECT 
+    SELECT
         COUNT(DISTINCT CASE WHEN tblIsolates.Host LIKE '%*%' THEN tblGBRefLink.RefID END) AS submission_hosts,
         COUNT(DISTINCT CASE WHEN tblIsolates.Host LIKE '%*%' THEN tblIsolates.Accession END) AS numseq_hosts,
         COUNT(DISTINCT CASE WHEN tblIsolates.Specimen LIKE '%*%' THEN tblGBRefLink.RefID END) AS submission_specimens,
@@ -401,9 +401,9 @@ def creat_views(db_file):
         COUNT(DISTINCT CASE WHEN tblIsolates.Country LIKE '%*%' THEN tblIsolates.Accession END) AS numseq_country,
         COUNT(DISTINCT CASE WHEN tblIsolates.IsolateYear LIKE '%*%' THEN tblGBRefLink.RefID END) AS submission_IsolateYear,
         COUNT(DISTINCT CASE WHEN tblIsolates.IsolateYear LIKE '%*%' THEN tblIsolates.Accession END) AS numseq_IsolateYear
-    FROM 
+    FROM
         tblGBRefLink
-    JOIN 
+    JOIN
         tblIsolates ON tblGBRefLink.Accession = tblIsolates.Accession;
 
     """
@@ -411,23 +411,23 @@ def creat_views(db_file):
     run_create_view(db_file, vSubmissionSetsSupplementingGB)
 
     vChordTable = """
-    SELECT DISTINCT 
-        tblIsolates.Host, 
-        tblIsolates.Country, 
-        tblIsolates.IsolateYear, 
+    SELECT DISTINCT
+        tblIsolates.Host,
+        tblIsolates.Country,
+        tblIsolates.IsolateYear,
         tblSequences.Gene,
         COUNT(*) AS count_rows ,
         SUM(COUNT(*)) OVER () AS Total_count,
         ROUND((COUNT(*) * 100.0 / SUM(COUNT(*)) OVER ()), 2) AS "%"
-    FROM tblIsolates 
-    JOIN tblGBRefLink ON tblIsolates.Accession = tblGBRefLink.Accession 
-    LEFT JOIN tblGBPubRefLink ON tblGBRefLink.RefID = tblGBPubRefLink.RefID 
-    LEFT JOIN tblSequences ON tblIsolates.Accession = tblSequences.Accession 
-    WHERE 
+    FROM tblIsolates
+    JOIN tblGBRefLink ON tblIsolates.Accession = tblGBRefLink.Accession
+    LEFT JOIN tblGBPubRefLink ON tblGBRefLink.RefID = tblGBPubRefLink.RefID
+    LEFT JOIN tblSequences ON tblIsolates.Accession = tblSequences.Accession
+    WHERE
         tblGBPubRefLink.RefID IS NOT NULL
-    GROUP BY 
-        tblIsolates.Host, tblIsolates.Country, tblIsolates.IsolateYear, tblSequences.Gene 
-    ORDER BY 
+    GROUP BY
+        tblIsolates.Host, tblIsolates.Country, tblIsolates.IsolateYear, tblSequences.Gene
+    ORDER BY
         count_rows DESC, tblIsolates.Host, tblIsolates.Country, tblIsolates.IsolateYear, tblSequences.Gene;
     """
     run_create_view(db_file, vChordTable)
