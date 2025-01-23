@@ -412,22 +412,15 @@ def creat_views(db_file):
 
     vChordTable = """
     SELECT DISTINCT 
-        tblIsolates.Accession, 
+        tblIsolates.Host, 
         tblIsolates.Country, 
         tblIsolates.IsolateYear, 
-        tblIsolates.Host, 
-        tblIsolates.Specimen, 
-        tblIsolates.IsolateName, 
-        tblGBPubRefLink.RefID, 
-        tblGBPubRefLink.PubID,
+        tblSequences.Gene,
         COUNT(*) AS count_rows ,
         SUM(COUNT(*)) OVER () AS Total_count,
+        ROUND((COUNT(*) * 100.0 / SUM(COUNT(*)) OVER ()), 2) AS "%"
     FROM 
         tblIsolates
-    LEFT JOIN 
-        tblGBRefLink ON tblIsolates.Accession = tblGBRefLink.Accession
-    LEFT JOIN 
-        tblGBPubRefLink ON tblGBRefLink.RefID = tblGBPubRefLink.RefID
     JOIN 
         tblSequences ON tblIsolates.Accession = tblSequences.Accession
     GROUP BY 
