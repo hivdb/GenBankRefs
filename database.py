@@ -419,16 +419,17 @@ def creat_views(db_file):
         COUNT(*) AS count_rows ,
         SUM(COUNT(*)) OVER () AS Total_count,
         ROUND((COUNT(*) * 100.0 / SUM(COUNT(*)) OVER ()), 2) AS "%"
-    FROM 
-        tblIsolates
-    JOIN 
-        tblSequences ON tblIsolates.Accession = tblSequences.Accession
+    FROM tblIsolates 
+    JOIN tblGBRefLink ON tblIsolates.Accession = tblGBRefLink.Accession 
+    LEFT JOIN tblGBPubRefLink ON tblGBRefLink.RefID = tblGBPubRefLink.RefID 
+    LEFT JOIN tblSequences ON tblIsolates.Accession = tblSequences.Accession 
+    WHERE 
+        tblGBPubRefLink.RefID IS NOT NULL
     GROUP BY 
         tblIsolates.Host, tblIsolates.Country, tblIsolates.IsolateYear, tblSequences.Gene 
     ORDER BY 
-        count_rows DESC, tblIsolates.Host, tblIsolates.Country, tblSequences.Gene;
+        count_rows DESC, tblIsolates.Host, tblIsolates.Country, tblIsolates.IsolateYear, tblSequences.Gene;
     """
-    # ROUND((COUNT(*) * 100.0 / SUM(COUNT(*)) OVER ()), 2) AS "%" takes too long to calculate
     run_create_view(db_file, vChordTable)
 
 def dump_table(db_file, table_name, table):
