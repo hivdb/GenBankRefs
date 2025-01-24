@@ -1,6 +1,7 @@
 import pandas as pd
 import sqlite3
 from functools import reduce
+import json
 
 
 def create_tables(db_file):
@@ -126,10 +127,10 @@ def create_database(
     create_tables(virus_obj.DB_FILE)
 
     # GenBank Tables
-    tblGBRefss = references[[
+    tblGBRefs = references[[
         'RefID', 'Authors', 'Title', 'Journal', 'PMID', 'Year']]
-    dump_table(virus_obj.DB_FILE,
-               'tblGBRefs', tblGBRefss)
+    fill_in_table(virus_obj.DB_FILE,
+               'tblGBRefs', tblGBRefs)
 
     create_ref_link(virus_obj, references)
 
@@ -155,7 +156,7 @@ def create_database(
         tblIsolates.at[i, 'Country'] = row['Country'] if row['Country'] else (
             'Not applicable' if row['IsolateType'] else 'Not available')
 
-    dump_table(
+    fill_in_table(
         virus_obj.DB_FILE,
         'tblIsolates', tblIsolates)
 
@@ -167,7 +168,7 @@ def create_database(
         'NA_seq', 'NA_length', 'NA_start', 'NA_stop',
         'PcntMatch',
     ]]
-    dump_table(
+    fill_in_table(
         virus_obj.DB_FILE,
         'tblSequences',
         tblGBSequences)
@@ -190,7 +191,7 @@ def create_database(
         'num_N', 'translation_issue'
     ]]
 
-    dump_table(
+    fill_in_table(
         virus_obj.DB_FILE,
         'tblSequenceQA',
         tblSequenceQA)
@@ -204,7 +205,7 @@ def create_database(
         'PMID',
         'Year'
     ]]
-    dump_table(
+    fill_in_table(
         virus_obj.DB_FILE,
         'tblPublications', tblPublications)
 
@@ -221,7 +222,7 @@ def create_database(
         'IsolateType',
         'Gene'
     ]]
-    dump_table(
+    fill_in_table(
         virus_obj.DB_FILE,
         'tblPublicationData',
         tblPublicationData)
@@ -240,12 +241,14 @@ def create_database(
         for i, j in tblPubRefLink
     ]
 
-    dump_table(
+    fill_in_table(
         virus_obj.DB_FILE,
         'tblGBPubRefLink',
         pd.DataFrame(tblPubRefLink))
 
     creat_views(virus_obj.DB_FILE)
+
+    dump_db_tables(virus_obj.DB_FILE, virus_obj.db_dump_folder)
 
     # get_table_schema_sql(virus_obj.DB_FILE)
 
@@ -262,7 +265,7 @@ def create_ref_link(virus_obj, ref):
                 'Accession': acc
             })
 
-    dump_table(
+    fill_in_table(
         virus_obj.DB_FILE,
         'tblGBRefLink',
         pd.DataFrame(ref_link))
@@ -475,8 +478,8 @@ def creat_views(db_file):
 
     run_create_view(db_file, vNumSuppliedIsolateDataByPubMed)
 
-    tblIsolateOrig = """
-    CREATE VIEW tblIsolateOrig AS
+    vIsolateOrig = """
+    CREATE VIEW vIsolateOrig AS
     SELECT
         Accession,
         CASE
@@ -494,19 +497,20 @@ def creat_views(db_file):
         CASE
             WHEN Country LIKE '%*' THEN ''
             ELSE Country
-        END AS Country
+        END AS Country,
+        IsolateType
     FROM tblIsolates;
     """
-    run_create_view(db_file, tblIsolateOrig)
+    run_create_view(db_file, vIsolateOrig)
 
     vIsolateMetadataSummary = """
     CREATE VIEW vIsolateMetadataSummary AS
     WITH temp_selection AS (
         SELECT *
         FROM
-            tblIsolateOrig
-            JOIN tblSequences ON tblIsolateOrig.Accession = tblSequences.Accession
-            JOIN tblGBRefLink ON tblIsolateOrig.Accession = tblGBRefLink.Accession
+            vIsolateOrig
+            JOIN tblSequences ON vIsolateOrig.Accession = tblSequences.Accession
+            JOIN tblGBRefLink ON vIsolateOrig.Accession = tblGBRefLink.Accession
             JOIN tblGBPubRefLink ON tblGBRefLink.RefID = tblGBPubRefLink.RefID
         WHERE
             IsolateType == ''
@@ -549,7 +553,7 @@ def creat_views(db_file):
     run_create_view(db_file, vIsolateMetadataSummary)
 
 
-def dump_table(db_file, table_name, table):
+def fill_in_table(db_file, table_name, table):
     conn = sqlite3.connect(str(db_file))
 
     table.to_sql(
@@ -610,4 +614,44 @@ def get_table_schema_sql(db_file):
 
         print(schema)
 
+    conn.close()
+
+
+def dump_db_tables(db_path, db_dump_folder):
+    tables = [
+        'tblGBRefs',
+        'vIsolateMissingData',
+        'vSubMissionNotMatch',
+        'vIsolateMetadataSummary',
+        # 'vNonClinicalIsolate',
+
+        'tblPublications',
+        # 'tblSubmissionPub'
+
+        'vNumSuppliedIsolateDataByPubMed'
+    ]
+
+    for t in tables:
+        json_file_path = db_dump_folder / f"{t}.json"
+        dump_table_to_json(json_file_path, db_path, t)
+
+
+def dump_table_to_json(json_file_path, db_path, table_name):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    cursor.execute(f"SELECT * FROM {table_name}")
+    rows = cursor.fetchall()
+
+    column_names = [description[0] for description in cursor.description]
+
+    data = [dict(zip(column_names, row)) for row in rows]
+
+    with open(json_file_path, 'w') as json_file:
+        json.dump(data, json_file, indent=4)
+
+    # print(
+    #     f"Data from view '{table_name}' has been exported to {json_file_path}")
+
+    conn.commit()
     conn.close()

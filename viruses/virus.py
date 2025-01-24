@@ -156,6 +156,11 @@ class Virus:
     def chord_table_file2(self):
         return self.timestamp_dir / f"{self.name}_chord_table2_{timestamp}.xlsx"
 
+    @property
+    def db_dump_folder(self):
+        (self.output_dir / 'db_json').mkdir(exist_ok=True)
+        return self.output_dir / 'db_json'
+
     def get_logger(self, logger_name):
         logger_file = f'{self.name}_datalog_{logger_name}.txt'
         if not getattr(self, logger_file, None):
