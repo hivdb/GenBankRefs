@@ -15,8 +15,10 @@ def gen_chord_diagram(virus_obj, combined, features):
         for j in v['GenBank (GB)'].split(',')
         ])
 
-    features = features[features['Accession'].isin(list(accessions))]
-    # print(len(features))
+    features = features[
+        features['Accession'].isin(list(accessions)) &
+        (features['IsolateType'] == '')
+    ]
 
     columns = [
         'Genes',
@@ -85,9 +87,6 @@ def get_chord_table(save_path1, save_path2, features, year_range):
                 # (features['Genes'].str.contains(d1, na=False))
             ])
 
-            if c1:
-                c1 = get_year_range(c1, year_range)
-
             if not weight:
                 continue
 
@@ -104,6 +103,7 @@ def get_chord_table(save_path1, save_path2, features, year_range):
             'Host': a1,
             'Country': b1,
             'IsolateYear': c1,
+            'YearRange': get_year_range(c1, year_range) if c1 else '',
             'Gene': d1,
             '#': weight,
             'T': len(features),

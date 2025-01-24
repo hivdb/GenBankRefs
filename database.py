@@ -270,17 +270,43 @@ def create_ref_link(virus_obj, ref):
 
 def creat_views(db_file):
 
-    vReferenceRecord = """
-        CREATE VIEW vGBRecords AS
+    vGBRefIsolates = """
+        CREATE VIEW vGBRefIsolates AS
         SELECT a.*, c.*
         FROM tblGBRefs a, tblGBRefLink b, tblIsolates c
         WHERE a.RefID = b.RefID
         AND b.Accession = c.Accession;
     """
-    run_create_view(db_file, vReferenceRecord)
+    run_create_view(db_file, vGBRefIsolates)
 
-    vPubAccessionLink = """
-        CREATE VIEW vPubAccessionLink AS
+    vNonClinicalIsolate = """
+        CREATE VIEW vNonClinicalIsolate AS
+        SELECT
+            *
+        FROM
+            tblIsolates
+        WHERE
+            IsolateType IS NOT ""
+    ;
+    """
+    run_create_view(db_file, vNonClinicalIsolate)
+
+    vSubmissionPub = """
+        CREATE VIEW vSubmissionPub AS
+        SELECT
+            a.*, c.*
+        FROM
+            tblGBRefs a,
+            tblGBPubRefLink b,
+            tblPublications c
+        WHERE
+            a.RefID = b.RefID
+            AND b.PubID = c.PubID;
+    """
+    run_create_view(db_file, vSubmissionPub)
+
+    vAccessionPub = """
+        CREATE VIEW vAccessionPub AS
         SELECT
             d.*,
             a.*
@@ -297,10 +323,10 @@ def creat_views(db_file):
             c.PubID = d.PubID
         ;
     """
-    run_create_view(db_file, vPubAccessionLink)
+    run_create_view(db_file, vAccessionPub)
 
-    vPubDataAccessionLink = """
-        CREATE VIEW vPubDataAccessionLink AS
+    vAccessionPubData = """
+        CREATE VIEW vAccessionPubData AS
         SELECT
             d.*,
             a.*
@@ -317,89 +343,87 @@ def creat_views(db_file):
             c.PubID = d.PubID
         ;
     """
-    run_create_view(db_file, vPubDataAccessionLink)
+    run_create_view(db_file, vAccessionPubData)
 
-    vNumAccessions = """
-    CREATE VIEW vNumAccessions AS
-    SELECT
-        COUNT(DISTINCT Accession) AS NumAccessions
-    FROM
-        tblIsolates;
-    """
-    run_create_view(db_file, vNumAccessions)
+    # vNumAccessions = """
+    # CREATE VIEW vNumAccessions AS
+    # SELECT
+    #     COUNT(DISTINCT Accession) AS NumAccessions
+    # FROM
+    #     tblIsolates;
+    # """
+    # run_create_view(db_file, vNumAccessions)
 
-    vNumSubmissionSets = """
-    CREATE VIEW vNumSubmissionSets AS
-    SELECT
-        COUNT(DISTINCT RefID) AS NumSubmissionSets
-    FROM
-        tblGBRefs;
-    """
-    run_create_view(db_file, vNumSubmissionSets)
-
-    vNumNotClinicalIsolate = """
-    CREATE VIEW vNumNotClinicalIsolate AS
-    SELECT
-        COUNT(1)
-    FROM
-        tblIsolates
-    WHERE
-        IsolateType IS NOT ""
-    ;
-    """
-
-    run_create_view(db_file, vNumNotClinicalIsolate)
+    # vNumSubmissionSets = """
+    # CREATE VIEW vNumSubmissionSets AS
+    # SELECT
+    #     COUNT(DISTINCT RefID) AS NumSubmissionSets
+    # FROM
+    #     tblGBRefs;
+    # """
+    # run_create_view(db_file, vNumSubmissionSets)
 
     vIsolateMissingData = """
     CREATE VIEW vIsolateMissingData AS
     SELECT
+        *
+    FROM tblIsolates
+    WHERE
+        IsolateType IS ""
+    AND
         (
-            SELECT
-                COUNT(*)
-            FROM tblIsolates
-            WHERE
-                Host IN
-                ("Not Applicable", "Not Available", "Not available", "Not applicable")
-        ) AS host_count,
-        (
-            SELECT
-                COUNT(*)
-            FROM tblIsolates
-            WHERE
-                Specimen IN
-                ("Not Applicable", "Not Available", "Not available", "Not applicable")
-        ) AS specimen_count,
-        (
-            SELECT
-                COUNT(*)
-            FROM tblIsolates
-            WHERE
-                Country IN
-                ("Not Applicable", "Not Available", "Not available", "Not applicable")
-        ) AS country_count,
-        (
-            SELECT
-                COUNT(*)
-            FROM tblIsolates
-            WHERE
-                IsolateYear IN
-                ("Not Applicable", "Not Available", "Not available", "Not applicable")
-        ) AS isolate_yr_count
-    ;
+        Host IN
+        ("Not Applicable", "Not Available", "Not available", "Not applicable")
+    OR
+        Specimen IN
+        ("Not Applicable", "Not Available", "Not available", "Not applicable")
+    OR
+        Country IN
+        ("Not Applicable", "Not Available", "Not available", "Not applicable")
+    OR
+        IsolateYear IN
+        ("Not Applicable", "Not Available", "Not available", "Not applicable")
+    );
     """
     run_create_view(db_file, vIsolateMissingData)
 
-    vNumMatchedSubmission = """
-    CREATE VIEW vNumMatchedSubmission AS
+    vSubmissionNotMatch = """
+    CREATE VIEW vSubmissionNotMatch AS
     SELECT
-        (SELECT COUNT(DISTINCT RefID) FROM tblGBPubRefLink) as num_submission_set,
-        (SELECT COUNT(DISTINCT PubID) FROM tblGBPubRefLink) as num_publication,
-        (SELECT COUNT(DISTINCT RefID) FROM tblGBRefs WHERE
-            RefID NOT IN (SELECT DISTINCT RefID FROM tblGBPubRefLink)
-        ) as num_submission_not_match
-    ;
+        *
+    FROM
+        tblGBRefs
+    WHERE
+        RefID NOT IN (
+            SELECT RefID from tblGBPubRefLink
+        )
     """
-    run_create_view(db_file, vNumMatchedSubmission)
+    run_create_view(db_file, vSubmissionNotMatch)
+
+    vPubNotMatch = """
+    CREATE VIEW vPubNotMatch AS
+    SELECT
+        *
+    FROM
+        tblGBRefs
+    WHERE
+        RefID NOT IN (
+            SELECT RefID from tblGBPubRefLink
+        )
+    """
+    run_create_view(db_file, vPubNotMatch)
+
+    # vNumMatchedSubmission = """
+    # CREATE VIEW vNumMatchedSubmission AS
+    # SELECT
+    #     (SELECT COUNT(DISTINCT RefID) FROM tblGBPubRefLink) as num_submission_set,
+    #     (SELECT COUNT(DISTINCT PubID) FROM tblGBPubRefLink) as num_publication,
+    #     (SELECT COUNT(DISTINCT RefID) FROM tblGBRefs WHERE
+    #         RefID NOT IN (SELECT DISTINCT RefID FROM tblGBPubRefLink)
+    #     ) as num_submission_not_match
+    # ;
+    # """
+    # run_create_view(db_file, vNumMatchedSubmission)
 
     vNumSuppliedIsolateDataByPubMed = """
     CREATE VIEW vNumSuppliedIsolateDataByPubMed AS
@@ -451,8 +475,8 @@ def creat_views(db_file):
 
     run_create_view(db_file, vNumSuppliedIsolateDataByPubMed)
 
-    _tblIsolateOrig = """
-    CREATE VIEW _tblIsolates AS
+    tblIsolateOrig = """
+    CREATE VIEW tblIsolateOrig AS
     SELECT
         Accession,
         CASE
@@ -473,21 +497,24 @@ def creat_views(db_file):
         END AS Country
     FROM tblIsolates;
     """
-    run_create_view(db_file, _tblIsolateOrig)
+    run_create_view(db_file, tblIsolateOrig)
 
     vIsolateMetadataSummary = """
     CREATE VIEW vIsolateMetadataSummary AS
     WITH temp_selection AS (
         SELECT *
         FROM
-            _tblIsolates
-            JOIN tblSequences ON _tblIsolates.Accession = tblSequences.Accession
-            JOIN tblGBRefLink ON _tblIsolates.Accession = tblGBRefLink.Accession
+            tblIsolateOrig
+            JOIN tblSequences ON tblIsolateOrig.Accession = tblSequences.Accession
+            JOIN tblGBRefLink ON tblIsolateOrig.Accession = tblGBRefLink.Accession
             JOIN tblGBPubRefLink ON tblGBRefLink.RefID = tblGBPubRefLink.RefID
+        WHERE
+            IsolateType == ''
     )
     SELECT DISTINCT
         Host,
         Country,
+        IsolateYear,
         CASE
             WHEN IsolateYear BETWEEN 1900 AND 1990 THEN '<1990'
             WHEN IsolateYear BETWEEN 1991 AND 2000 THEN '1991-2000'
