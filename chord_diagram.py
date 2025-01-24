@@ -115,6 +115,7 @@ def get_chord_table(save_path1, save_path2, features, year_range):
             'Host': a1,
             'Country': b1,
             'IsolateYear': c1,
+            'YearRange': get_year_range(c1, year_range) if c1 else '',
             'Gene': d2,
             '#': weight,
             'T': len(features),
