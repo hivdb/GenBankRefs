@@ -327,9 +327,15 @@ def creat_views(db_file):
         CREATE VIEW vGPMatched AS
         SELECT
             a.RefID as RefID,
-            "PMID: " || a.PMID || ", Authors: " || a.Authors || ", Journal: " || a.Journal || ", Year: " || a.Year AS SubmissionSet,
+            CASE
+                WHEN a.PMID IS NOT NULL AND a.PMID != '' THEN
+                "PMID: " || a.PMID || ", Title: " || a.Title || ", Authors: " || a.Authors || ", Journal: " || a.Journal || ", Year: " || a.Year
+                ELSE
+                "Title: " || a.Title || ", Authors: "|| a.Authors || ", Journal: " || a.Journal || ", Year: " || a.Year
+            END AS SubmissionSet,
+
             c.PubID as PubID,
-            "PMID: " || c.PMID || ", Authors: " || c.Authors || ", Journal: " || c.Journal || ", Year: " || c.Year AS Publication,
+            "PMID: " || c.PMID || ", Title: " || c.Title || ", Authors: " || c.Authors || ", Journal: " || c.Journal || ", Year: " || c.Year AS Publication,
             CASE
                 WHEN c.ShortName IS NOT NULL THEN c.ShortName
                 ELSE a.ShortName
@@ -344,7 +350,13 @@ def creat_views(db_file):
         UNION
         SELECT
             a.RefID as RefID,
-            "PMID: " || a.PMID || ", Authors: " || a.Authors || ", Journal: " || a.Journal || ", Year: " || a.Year AS SubmissionSet,
+            CASE
+                WHEN a.PMID IS NOT NULL AND a.PMID != '' THEN
+                "PMID: " || a.PMID || ", Title: " || a.Title || ", Authors: " || a.Authors || ", Journal: " || a.Journal || ", Year: " || a.Year
+                ELSE
+                "Title: " || a.Title || ", Authors: "|| a.Authors || ", Journal: " || a.Journal || ", Year: " || a.Year
+            END AS SubmissionSet,
+
             '' as PubID,
             '' AS Publication,
             a.ShortName as ShortName
@@ -357,7 +369,7 @@ def creat_views(db_file):
             '' as RefID,
             '' AS SubmissionSet,
             c.PubID as PubID,
-            "PMID: " || c.PMID || ", Authors: " || c.Authors || ", Journal: " || c.Journal || ", Year: " || c.Year AS Publication,
+            "PMID: " || c.PMID || ", Title: " || c.Title || ", Authors: " || c.Authors || ", Journal: " || c.Journal || ", Year: " || c.Year AS Publication,
             c.ShortName as ShortName
         FROM
             tblPublications c
@@ -438,9 +450,6 @@ def creat_views(db_file):
         Host IN
         ("Not Applicable", "Not Available", "Not available", "Not applicable")
     OR
-        Specimen IN
-        ("Not Applicable", "Not Available", "Not available", "Not applicable")
-    OR
         Country IN
         ("Not Applicable", "Not Available", "Not available", "Not applicable")
     OR
@@ -448,6 +457,9 @@ def creat_views(db_file):
         ("Not Applicable", "Not Available", "Not available", "Not applicable")
     );
     """
+    # OR
+    # Specimen IN
+    # ("Not Applicable", "Not Available", "Not available", "Not applicable")
     run_create_view(db_file, vIsolateMissingData)
 
     vSubmissionNotMatch = """
@@ -683,7 +695,7 @@ def get_table_schema_sql(db_file):
 def dump_db_tables(db_path, db_dump_folder):
     tables = [
         # 'tblGBRefs',
-        # 'vIsolateMissingData',
+        'vIsolateMissingData',
         # 'vSubMissionNotMatch',
         'vIsolateMetadataSummary',
         # 'vNonClinicalIsolate',
