@@ -12,10 +12,12 @@ def create_tables(db_file):
         CREATE TABLE "tblGBRefs" (
             "RefID" INTEGER PRIMARY KEY,
             "Authors" TEXT,
+            "FirstAuthorSurname" TEXT,
             "Title" TEXT,
             "Journal" TEXT,
             "PMID" TEXT,
-            "Year" TEXT
+            "Year" TEXT,
+            "ShortName" TEXT
         )
     """)
 
@@ -81,10 +83,12 @@ def create_tables(db_file):
         CREATE TABLE "tblPublications" (
             "PubID" INTEGER PRIMARY KEY,
             "Authors" TEXT,
+            "FirstAuthorSurname" TEXT,
             "Title" TEXT,
             "Journal" TEXT,
             "PMID" TEXT,
-            "Year" TEXT
+            "Year" TEXT,
+            "ShortName" TEXT
         )
     """)
 
@@ -128,9 +132,18 @@ def create_database(
 
     # GenBank Tables
     tblGBRefs = references[[
-        'RefID', 'Authors', 'Title', 'Journal', 'PMID', 'Year']]
-    fill_in_table(virus_obj.DB_FILE,
-               'tblGBRefs', tblGBRefs)
+        'RefID',
+        'Authors',
+        'FirstAuthorSurname',
+        'Title',
+        'Journal',
+        'PMID',
+        'Year',
+        'ShortName',
+    ]]
+    fill_in_table(
+        virus_obj.DB_FILE,
+        'tblGBRefs', tblGBRefs)
 
     create_ref_link(virus_obj, references)
 
@@ -200,10 +213,12 @@ def create_database(
     tblPublications = pubmed[[
         'PubID',
         'Authors',
+        'FirstAuthorSurname',
         'Title',
         'Journal',
         'PMID',
-        'Year'
+        'Year',
+        'ShortName',
     ]]
     fill_in_table(
         virus_obj.DB_FILE,
@@ -307,6 +322,51 @@ def creat_views(db_file):
             AND b.PubID = c.PubID;
     """
     run_create_view(db_file, vSubmissionPub)
+
+    vGPMatched = """
+        CREATE VIEW vGPMatched AS
+        SELECT
+            a.RefID as RefID,
+            "PMID: " || a.PMID || ", Authors: " || a.Authors || ", Journal: " || a.Journal || ", Year: " || a.Year AS SubmissionSet,
+            c.PubID as PubID,
+            "PMID: " || c.PMID || ", Authors: " || c.Authors || ", Journal: " || c.Journal || ", Year: " || c.Year AS Publication,
+            CASE
+                WHEN c.ShortName IS NOT NULL THEN c.ShortName
+                ELSE a.ShortName
+            END as ShortName
+        FROM
+            tblGBRefs a,
+            tblGBPubRefLink b,
+            tblPublications c
+        WHERE
+            a.RefID = b.RefID
+            AND b.PubID = c.PubID
+        UNION
+        SELECT
+            a.RefID as RefID,
+            "PMID: " || a.PMID || ", Authors: " || a.Authors || ", Journal: " || a.Journal || ", Year: " || a.Year AS SubmissionSet,
+            '' as PubID,
+            '' AS Publication,
+            a.ShortName as ShortName
+        FROM
+            tblGBRefs a
+        WHERE
+            a.RefID NOT IN (SELECT RefID FROM tblGBPubRefLink)
+        UNION
+        SELECT
+            '' as RefID,
+            '' AS SubmissionSet,
+            c.PubID as PubID,
+            "PMID: " || c.PMID || ", Authors: " || c.Authors || ", Journal: " || c.Journal || ", Year: " || c.Year AS Publication,
+            c.ShortName as ShortName
+        FROM
+            tblPublications c
+        WHERE
+            c.PubID NOT IN (SELECT PubID FROM tblGBPubRefLink)
+        ;
+    """
+
+    run_create_view(db_file, vGPMatched)
 
     vAccessionPub = """
         CREATE VIEW vAccessionPub AS
@@ -511,7 +571,7 @@ def creat_views(db_file):
             vIsolateOrig
             JOIN tblSequences ON vIsolateOrig.Accession = tblSequences.Accession
             JOIN tblGBRefLink ON vIsolateOrig.Accession = tblGBRefLink.Accession
-            JOIN tblGBPubRefLink ON tblGBRefLink.RefID = tblGBPubRefLink.RefID
+            JOIN vGPMatched ON tblGBRefLink.RefID = vGPMatched.RefID
         WHERE
             IsolateType == ''
     )
@@ -528,6 +588,8 @@ def creat_views(db_file):
             ELSE ''
         END AS IsolateYr,
         Gene,
+        COUNT(DISTINCT temp_selection.ShortName) AS NumPublications,
+        GROUP_CONCAT(DISTINCT temp_selection.ShortName) AS Publications,
         COUNT(DISTINCT Accession) AS "#" ,
         (SELECT COUNT(DISTINCT Accession) from temp_selection) AS Total,
         ROUND(
@@ -542,7 +604,8 @@ def creat_views(db_file):
         Host,
         Country,
         IsolateYr,
-        Gene
+        Gene,
+        ShortName
     ORDER BY
         "#" DESC,
         Host,
@@ -619,16 +682,17 @@ def get_table_schema_sql(db_file):
 
 def dump_db_tables(db_path, db_dump_folder):
     tables = [
-        'tblGBRefs',
-        'vIsolateMissingData',
-        'vSubMissionNotMatch',
+        # 'tblGBRefs',
+        # 'vIsolateMissingData',
+        # 'vSubMissionNotMatch',
         'vIsolateMetadataSummary',
         # 'vNonClinicalIsolate',
 
-        'tblPublications',
+        # 'tblPublications',
         # 'tblSubmissionPub'
 
-        'vNumSuppliedIsolateDataByPubMed'
+        # 'vNumSuppliedIsolateDataByPubMed',
+        'vGPMatched'
     ]
 
     for t in tables:

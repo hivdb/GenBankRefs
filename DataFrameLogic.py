@@ -1,8 +1,5 @@
 import pandas as pd
-import numpy as np
 import re
-import os
-from collections import Counter
 import Levenshtein
 
 from Utilities import (get_pcnt_authors_overlap,
@@ -38,6 +35,33 @@ def aggregate_references(references, virus_obj):
     # merge rows that are dups
     merged_ref = merge_by_author_title_acc(grouped_ref)
     merged_ref['RefID'] = merged_ref.index + 1
+
+    for idx, row in merged_ref.iterrows():
+        authors = row['Authors']
+        if ',' in authors:
+            authors = authors.split(',')
+        else:
+            authors = authors.split(';')
+        first_author_surname = ''
+        if authors:
+            first_author = authors[0]
+            first_author_name_list = first_author.split()
+            if len(first_author_name_list) == 1:
+                first_author_surname = first_author_name_list[0]
+            else:
+                first_author_surname = ' '.join(first_author_name_list[:-1])
+        merged_ref.at[idx, 'FirstAuthorSurname'] = first_author_surname
+
+        PMID = row['PMID']
+        years = [int(y) for y in str(row['Year']).split(',')]
+        year = years[len(years) // 2]
+        if PMID:
+            short_name = f"{first_author_surname} ({year}, {PMID})"
+        else:
+
+            short_name = f"{first_author_surname} ({year})"
+
+        merged_ref.at[idx, 'ShortName'] = short_name
 
     print("Number of entries following aggregation by similarity: ",
           len(merged_ref))

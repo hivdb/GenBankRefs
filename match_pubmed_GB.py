@@ -22,6 +22,21 @@ from DataFrameLogic import merge_feature_rows
 def match_pubmed_GB(
         pubmed, genbank_ref, genbank_feature, genbank_genes, virus_obj):
 
+    for idx, row in pubmed.iterrows():
+        authors = row['Authors']
+        if ',' in authors:
+            authors = authors.split(',')
+        else:
+            authors = authors.split(';')
+        first_author_surname = ''
+        if authors:
+            first_author = authors[0]
+            first_author_surname = ' '.join(first_author.split()[:-1])
+        pubmed.at[idx, 'FirstAuthorSurname'] = first_author_surname
+
+        short_name = f"{first_author_surname} ({row['Year']}, {row['PMID']})"
+        pubmed.at[idx, 'ShortName'] = short_name
+
     logger = virus_obj.get_logger('compare_matched')
     pubmed_match, genbank_match, pubmed_unmatch, genbank_unmatch = match(
         pubmed, genbank_ref, logger)
