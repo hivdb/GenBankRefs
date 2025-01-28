@@ -327,15 +327,11 @@ def creat_views(db_file):
         CREATE VIEW vGPMatched AS
         SELECT
             a.RefID as RefID,
-            CASE
-                WHEN a.PMID IS NOT NULL AND a.PMID != '' THEN
-                "PMID: " || a.PMID || ", Title: " || a.Title || ", Authors: " || a.Authors || ", Journal: " || a.Journal || ", Year: " || a.Year
-                ELSE
-                "Title: " || a.Title || ", Authors: "|| a.Authors || ", Journal: " || a.Journal || ", Year: " || a.Year
-            END AS SubmissionSet,
+            a.ShortName || ". " || a.Title || ". " || a.Journal AS SubmissionSet,
 
             c.PubID as PubID,
-            "PMID: " || c.PMID || ", Title: " || c.Title || ", Authors: " || c.Authors || ", Journal: " || c.Journal || ", Year: " || c.Year AS Publication,
+            c.ShortName || ". " || c.Title || ". " || c.Journal AS Publication,
+
             CASE
                 WHEN c.ShortName IS NOT NULL THEN c.ShortName
                 ELSE a.ShortName
@@ -347,29 +343,33 @@ def creat_views(db_file):
         WHERE
             a.RefID = b.RefID
             AND b.PubID = c.PubID
+            AND LOWER(a.Title) NOT LIKE '%patent%'
+            AND LOWER(a.Title) NOT LIKE '%direct submission%'
+            AND LOWER(a.Title) NOT LIKE '%construct%'
         UNION
         SELECT
             a.RefID as RefID,
-            CASE
-                WHEN a.PMID IS NOT NULL AND a.PMID != '' THEN
-                "PMID: " || a.PMID || ", Title: " || a.Title || ", Authors: " || a.Authors || ", Journal: " || a.Journal || ", Year: " || a.Year
-                ELSE
-                "Title: " || a.Title || ", Authors: "|| a.Authors || ", Journal: " || a.Journal || ", Year: " || a.Year
-            END AS SubmissionSet,
+            a.ShortName || ". " || a.Title || ". " || a.Journal AS SubmissionSet,
 
             '' as PubID,
             '' AS Publication,
+
             a.ShortName as ShortName
         FROM
             tblGBRefs a
         WHERE
             a.RefID NOT IN (SELECT RefID FROM tblGBPubRefLink)
+            AND LOWER(a.Title) NOT LIKE '%patent%'
+            AND LOWER(a.Title) NOT LIKE '%direct submission%'
+            AND LOWER(a.Title) NOT LIKE '%construct%'
         UNION
         SELECT
             '' as RefID,
             '' AS SubmissionSet,
+
             c.PubID as PubID,
-            "PMID: " || c.PMID || ", Title: " || c.Title || ", Authors: " || c.Authors || ", Journal: " || c.Journal || ", Year: " || c.Year AS Publication,
+            c.ShortName || ". " || c.Title || ". " || c.Journal AS Publication,
+
             c.ShortName as ShortName
         FROM
             tblPublications c
@@ -555,19 +555,19 @@ def creat_views(db_file):
     SELECT
         Accession,
         CASE
-            WHEN IsolateYear LIKE '%*' THEN ''
+            WHEN IsolateYear LIKE '%*' THEN 'Not Available'
             ELSE IsolateYear
         END AS IsolateYear,
         CASE
-            WHEN Host LIKE '%*' THEN ''
+            WHEN Host LIKE '%*' THEN 'Not Available'
             ELSE Host
         END AS Host,
         CASE
-            WHEN Specimen LIKE '%*' THEN ''
+            WHEN Specimen LIKE '%*' THEN 'Not Available'
             ELSE Specimen
         END AS Specimen,
         CASE
-            WHEN Country LIKE '%*' THEN ''
+            WHEN Country LIKE '%*' THEN 'Not Available'
             ELSE Country
         END AS Country,
         IsolateType

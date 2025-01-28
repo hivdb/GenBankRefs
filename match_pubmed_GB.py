@@ -94,9 +94,9 @@ def match(pubmed, genbank, logger):
 
         result = pubmed[pubmed['PMID'] == pmid]
 
-        match_by_acc = None
         match_by_pmid = None
         match_by_title = None
+        match_by_acc = None
 
         if not result.empty:
             matched_pubmed_indices.extend(result.index.tolist())
@@ -121,6 +121,7 @@ def match(pubmed, genbank, logger):
             accession_prefix_list = set([
                 a.strip()[:6]
                 for a in accession_list.split(',')
+                # if a.strip()[:2].upper() not in ['NC', 'NG', 'NM', 'NR']
             ])
 
             result = search_access_prefix(pubmed, accession_prefix_list)
