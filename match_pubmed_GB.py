@@ -121,7 +121,7 @@ def match(pubmed, genbank, logger):
             accession_prefix_list = set([
                 a.strip()[:6]
                 for a in accession_list.split(',')
-                # if a.strip()[:2].upper() not in ['NC', 'NG', 'NM', 'NR']
+                if a.strip()[:2].upper() not in ['NC', 'NG', 'NM', 'NR']
             ])
 
             result = search_access_prefix(pubmed, accession_prefix_list)
