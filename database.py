@@ -346,6 +346,9 @@ def creat_views(db_file):
             AND LOWER(a.Title) NOT LIKE '%patent%'
             AND LOWER(a.Title) NOT LIKE '%direct submission%'
             AND LOWER(a.Title) NOT LIKE '%construct%'
+            AND LOWER(a.Journal) NOT LIKE '%patent%'
+            AND LOWER(a.Journal) NOT LIKE '%direct submission%'
+            AND LOWER(a.Journal) NOT LIKE '%construct%'
         UNION
         SELECT
             a.RefID as RefID,
@@ -362,6 +365,9 @@ def creat_views(db_file):
             AND LOWER(a.Title) NOT LIKE '%patent%'
             AND LOWER(a.Title) NOT LIKE '%direct submission%'
             AND LOWER(a.Title) NOT LIKE '%construct%'
+            AND LOWER(a.Journal) NOT LIKE '%patent%'
+            AND LOWER(a.Journal) NOT LIKE '%direct submission%'
+            AND LOWER(a.Journal) NOT LIKE '%construct%'
         UNION
         SELECT
             '' as RefID,
