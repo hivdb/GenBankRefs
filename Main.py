@@ -93,7 +93,7 @@ def main():
 
 def update_genbank_by_pubmed(features, matched):
 
-    for pubmed, genbank_list in matched:
+    for pubmed, genbank_list, method in matched:
         acc_list = [
             i.strip()
             for g in genbank_list

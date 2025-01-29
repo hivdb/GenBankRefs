@@ -92,6 +92,10 @@ def merge_by_author_title_acc(df):
         if len(close_matches) >= 1:
             close_lists[row_i['RowID']] = close_matches
 
+    # for i, j in close_lists.items():
+    #     check_list = [367, 369, 464, 475]
+    #     if set(check_list) & set([i] + j):
+    #         print(i, j)
     list_of_merged_rows, complete_list_of_merged_rows = convert_dict_to_list_of_sets(
         df, close_lists)
     # print(close_lists)
@@ -165,45 +169,41 @@ def is_same_submission_set(row_i, row_j):
     ]
     accessions_j = [s for s in accessions_j if not is_reference_genome(s)]
 
-    # Accession
-    if accessions_i and accessions_j:
-        if (set(accessions_i).issubset(set(accessions_j)) or set(accessions_j).issubset(set(accessions_i))):
-            return 1
-
-    # idealy should be sharing 100%
-    pcnt_shared_accessions = get_pcnt_shared_accessions(accessions_i, accessions_j)
-    if pcnt_shared_accessions > 0.8:
-        return 1
-
     author_score = closed_author(row_i, row_j)
     title_score = closed_title(row_i, row_j)
     journal_score = closed_journal(row_i, row_j)
-    acc_score = closed_accession_stem(accessions_i, accessions_j)
+    acc_score = (
+        closed_accession_stem(accessions_i, accessions_j)
+        or
+        closed_accession_group(accessions_i, accessions_j)
+    )
     year_score = closed_year(row_i, row_j)
 
     valid_column = get_valid_fuzzy_column(row_i) & get_valid_fuzzy_column(row_j)
 
     if 'Title' in valid_column:
         multiple_scores = {
-            ('Authors', 'Title'): author_score and title_score,
+            ('Authors', 'Title', 'Year'): author_score and title_score and year_score,
+            ('Authors', 'Title', 'Accession'): author_score and title_score and acc_score,
             ('Title', 'Journal', 'Year'): title_score and journal_score and year_score,
             ('Title', 'Journal', 'Accession'): title_score and journal_score and acc_score,
+            ('Authors', 'Title', 'Journal'): author_score and title_score and journal_score,
             # journal year, accession
         }
     else:
         multiple_scores = {
             ('Authors', 'Journal', 'Year'): author_score and journal_score and year_score,
             ('Authors', 'Year', 'Accession'): author_score and year_score and acc_score,
+            ('Authors', 'Journal', 'Accession'): author_score and journal_score and year_score,
             # journal year, accession
         }
 
     # title_list = [
-    #     'Complete genome sequence of Nipah virus from patient sample of Kerala outbreak 2018',
-    #     'The genome sequence of Nipah virus from patient sample of Kerala outbreak 2018',
-    #     'Transcriptional analysis of Nipah viral mRNA reveals differential expression of the P gene'
+
     # ]
     # if row_i['Title'] in title_list and row_j['Title'] in title_list:
     #     print(multiple_scores)
+    #     print(valid_column)
 
     multiple_scores = [
         v
@@ -226,6 +226,7 @@ def get_valid_fuzzy_column(row):
         columns.append('Journal')
 
     columns.append('Year')
+    columns.append('Accession')
 
     return set(columns)
 
@@ -241,6 +242,20 @@ def closed_accession_stem(accessions_i, accessions_j):
         return 0
 
 
+def closed_accession_group(accessions_i, accessions_j):
+    # Accession
+    if accessions_i and accessions_j:
+        if (set(accessions_i).issubset(set(accessions_j)) or set(accessions_j).issubset(set(accessions_i))):
+            return 1
+
+    # idealy should be sharing 100%
+    pcnt_shared_accessions = get_pcnt_shared_accessions(accessions_i, accessions_j)
+    if pcnt_shared_accessions > 0.8:
+        return 1
+
+    return 0
+
+
 def closed_author(row_i, row_j):
 
     authors_i = row_i['Authors'].upper()
@@ -253,7 +268,7 @@ def closed_author(row_i, row_j):
         return 0
 
     pcnt_authors_overlap = get_pcnt_authors_overlap(authors_i, authors_j)
-    if pcnt_authors_overlap > 0.75:
+    if pcnt_authors_overlap > 0.66:
         return 1
     else:
         return 0
@@ -288,9 +303,9 @@ def closed_year(row_i, row_j):
     if not year_i and not year_j:
         return 1
     elif year_i and not year_j:
-        return 0
+        return 1
     elif year_j and not year_i:
-        return 0
+        return 1
 
     max_year_dif = calc_year_dif(year_i, year_j)
     if max_year_dif <= 1:
@@ -309,16 +324,32 @@ def closed_journal(row_i, row_j):
     # if (journal_i.lower() == 'Unpublished'.lower()) or (journal_j.lower() == 'Unpublished'.lower()):
     #     return 0
 
-    if journal_i.lower() in journal_i.lower():
-        return 1
-    elif journal_j.lower() in journal_i.lower():
-        return 1
+    # if journal_i.lower() in journal_i.lower():
+    #     return 1
+    # elif journal_j.lower() in journal_i.lower():
+    #     return 1
 
     distance = Levenshtein.distance(journal_i, journal_j)
     if distance < 5:
         return 1
     else:
         return 0
+
+
+def merge_similar_title(title_list):
+    new_title_list = []
+    for idx, t1 in enumerate(title_list):
+        for jdx, t2 in enumerate(title_list):
+            if idx >= jdx:
+                continue
+            title_distance = Levenshtein.distance(t1, t2)
+            if title_distance < 5:
+                if t1 in new_title_list or t2 in new_title_list:
+                    continue
+                else:
+                    new_title_list.append(t1)
+
+    return new_title_list
 
 
 def merge_rows(df, merged_rowID):
@@ -331,6 +362,7 @@ def merge_rows(df, merged_rowID):
     titles_list = rows['Title'].tolist()
     titles_list = [i.capitalize() for i in titles_list if i != 'Direct Submission']
     if titles_list:
+        # titles_list = merge_similar_title(title_list)
         new_row['Title'] = combine_items_in_different_lists(titles_list)
     else:
         new_row['Title'] = 'Direct Submission'

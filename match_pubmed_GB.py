@@ -100,7 +100,7 @@ def match(pubmed, genbank, logger):
 
             if not result.empty:
                 matched_pubmed_indices.extend(result.index.tolist())
-                match_by_pmid = [row, result, index]
+                match_by_pmid = [row, result, index, 'PMID']
                 match_by_pmid_list.append(match_by_pmid)
             else:
                 genbank_unmatch_list.append(row)
@@ -122,7 +122,7 @@ def match(pubmed, genbank, logger):
 
             if not result.empty:
                 matched_pubmed_indices.extend(result.index.tolist())
-                match_by_title = [row, result, index]
+                match_by_title = [row, result, index, 'Title']
                 match_by_title_list.append(match_by_title)
 
         accession_list = row['accession']
@@ -137,7 +137,7 @@ def match(pubmed, genbank, logger):
         result = search_access_prefix(pubmed, accession_prefix_list)
         if not result.empty:
             matched_pubmed_indices.extend(result.index.tolist())
-            match_by_acc = [row, result, index]
+            match_by_acc = [row, result, index, 'ACCESSION']
             match_by_acc_list.append(match_by_acc)
 
         if match_by_acc or match_by_title:
@@ -147,16 +147,17 @@ def match(pubmed, genbank, logger):
 
     genbank_match_list = match_by_title_list + match_by_pmid_list + match_by_acc_list
 
-    logger.info("Genbank match by pmid:", len(set(i[-1] for i in match_by_pmid_list)))
-    logger.info("Genbank match by title:", len(set(i[-1] for i in match_by_title_list)))
-    logger.info("Genbank match by acc:", len(set(i[-1] for i in match_by_acc_list)))
-    logger.info('Genbank match total:', len(set(i[-1] for i in genbank_match_list)))
+    # TODO, should be a small data structure
+    logger.info("Genbank match by pmid:", len(set(i[-2] for i in match_by_pmid_list)))
+    logger.info("Genbank match by title:", len(set(i[-2] for i in match_by_title_list)))
+    logger.info("Genbank match by acc:", len(set(i[-2] for i in match_by_acc_list)))
+    logger.info('Genbank match total:', len(set(i[-2] for i in genbank_match_list)))
     logger.info('-' * 80)
 
     pubmed_match = match_pubmed2genbank(genbank_match_list)
 
     genbank_match = {}
-    for row, result, index in genbank_match_list:
+    for row, result, index, method in genbank_match_list:
         genbank_match[index] = row
 
     genbank_match = genbank_match.values()
@@ -185,7 +186,7 @@ def search_access_prefix(pubmed, accession_prefix_list):
 
 def match_pubmed2genbank(genbank_match):
     pubmed_match = defaultdict(dict)
-    for g, pubmed_list, index in genbank_match:
+    for g, pubmed_list, index, method in genbank_match:
         for r, i in pubmed_list.iterrows():
             pubmed_match[r]['pubmed'] = i
             if 'genbank' not in pubmed_match[r]:
@@ -193,8 +194,12 @@ def match_pubmed2genbank(genbank_match):
 
             pubmed_match[r]['genbank'].append(g)
 
+            if 'method' not in pubmed_match[r]:
+                pubmed_match[r]['method'] = []
+            pubmed_match[r]['method'].append(method)
+
     pubmed_match = [
-        [v['pubmed'], v['genbank']]
+        (v['pubmed'], v['genbank'], set(v['method']))
         for v in pubmed_match.values()
     ]
 
@@ -214,6 +219,7 @@ def summarize_combined_data(combined, features, genes, logger):
         ]
     section = ['GenBank only PMID']
     section.append(len(genbank_only_pubmed))
+    section.append(', '.join(genbank_only_pubmed['PMID'].to_list()))
     summarize_report.append(section)
 
     matches = combined[(combined['match'] == 'Yes')]
@@ -351,7 +357,7 @@ def combine_file(
         ):
 
     result = []
-    for pubmed, genbank_list in pubmed_match:
+    for pubmed, genbank_list, method in pubmed_match:
         accessions = set([
              j.strip()
              for i in genbank_list
@@ -406,6 +412,7 @@ def combine_file(
             'NumSubSeqs': features_stat['NumSubSeqs'],
             'AlignLens (GB)': features_stat['AlignLens'],
             'PcntIDs (GB)': features_stat['PcntIDs'],
+            'Combine Method': ','.join(list(method)),
         }
 
         result.append(row)
@@ -432,6 +439,7 @@ def combine_file(
             'SeqMethod (PM)': pubmed['SeqMethod'],
             'CloneMethod (PM)': pubmed['CloneMethod'],
             'GenBank (PM)': pubmed['GenBank'],
+            'Combine Method': ''
         }
 
         result.append(row)
@@ -465,6 +473,7 @@ def combine_file(
             'NumSubSeqs': features_stat['NumSubSeqs'],
             'AlignLens (GB)': features_stat['AlignLens'],
             'PcntIDs (GB)': features_stat['PcntIDs'],
+            'Combine Method': ''
         }
 
         result.append(row)
@@ -514,6 +523,7 @@ def combine_file(
         'NumSubSeqs',
         'AlignLens (GB)',
         'PcntIDs (GB)',
+        'Combine Method',
     ]
 
     for i in result:

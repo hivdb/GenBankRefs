@@ -342,8 +342,9 @@ def summarize_pubmed_data(df):
     publish_year = [
         int(v['Year']) for i, v in df.iterrows()
         if v['Year'] and v['Year'] != 'NA']
+
     section.append(
-        create_binnned_year(publish_year)
+        create_binnned_year(publish_year) if publish_year else ''
     )
     summarize_report.append(section)
 
@@ -375,8 +376,12 @@ def summarize_pubmed_data(df):
     section.append(year)
 
     year = [int(v['MedianYear']) for i, v in df.iterrows() if v['MedianYear'] and v['MedianYear'] != 'NA']
-    section.append(('Median IQR', np.percentile(year, 25), np.percentile(year, 50), np.percentile(year, 75)))
-    section.append(create_binnned_year(year))
+    if year:
+        section.append(('Median IQR', np.percentile(year, 25), np.percentile(year, 50), np.percentile(year, 75)))
+        section.append(create_binnned_year(year))
+    else:
+        section.append(('Median IQR', ))
+        section.append('')
     summarize_report.append(section)
 
     section = ["Country"]

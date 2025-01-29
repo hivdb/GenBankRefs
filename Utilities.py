@@ -3,6 +3,7 @@ import re
 from collections import Counter
 import logging
 from statistics import median
+from collections import defaultdict
 
 
 def get_logger(logging_file):
@@ -136,6 +137,40 @@ def convert_dict_to_list_of_sets(df, matched_indexes):
                 if iline & jline:
                     return idx, jdx
 
+    def split_row_by_pmid(row):
+        row_with_pmid = defaultdict(list)
+        for i, r in row.iterrows():
+            pmid = r['PMID'].strip()
+            if not pmid:
+                continue
+            row_with_pmid[pmid].append(r['RowID'])
+
+        row_wo_pmid = [
+            r['RowID']
+            for i, r in row.iterrows()
+            if not r['PMID'].strip()
+        ]
+
+        new_arrays = []
+        for i, (pmid, r_list) in enumerate(row_with_pmid.items()):
+            if i == 0:
+                new_arrays.append(set(r_list + row_wo_pmid))
+            else:
+                new_arrays.append(set(r_list))
+
+        if not new_arrays:
+            new_arrays = [set(row_wo_pmid)]
+
+        return new_arrays
+
+    nlist_of_sets = []
+    for iline in list_of_sets:
+        row_i = df[df['RowID'].isin(list(iline))]
+        row_i_arrays = split_row_by_pmid(row_i)
+        nlist_of_sets.extend(row_i_arrays)
+
+    list_of_sets = nlist_of_sets
+
     pair = get_linked_pair(list_of_sets)
     while pair:
         idx, jdx = pair
@@ -143,20 +178,36 @@ def convert_dict_to_list_of_sets(df, matched_indexes):
         iline = list_of_sets[idx]
         jline = list_of_sets[jdx]
 
-        PMID_i = set([
-            pi
-            for pi in df[df['RowID'].isin(list(iline))]['PMID'].to_list()
-            if pi])
-        PMID_j = set([
-            pj
-            for pj in df[df['RowID'].isin(list(jline))]['PMID'].to_list()
-            if pj])
+        row_i = df[df['RowID'].isin(list(iline))]
+        row_i_arrays = split_row_by_pmid(row_i)
 
-        if (PMID_i and PMID_j) and PMID_i != PMID_j:
-            # merge to one way
-            list_of_sets[jdx] = jline - iline
-        else:
+        if len(row_i_arrays) > 1:
+            list_of_sets[idx] = row_i_arrays[0]
+            list_of_sets = list_of_sets[:idx] + row_i_arrays[1:] + list_of_sets[idx:]
+            continue
+
+        row_j = df[df['RowID'].isin(list(jline))]
+        row_j_arrays = split_row_by_pmid(row_j)
+        if len(row_j_arrays) > 1:
+            list_of_sets[jdx] = row_j_arrays[0]
+            list_of_sets = list_of_sets[:jdx] + row_j_arrays[1:] + list_of_sets[jdx:]
+            continue
+
+        iline = row_i_arrays[0]
+        jline = row_j_arrays[0]
+
+        PMID_i = [pi for pi in df[df['RowID'].isin(list(iline))]['PMID'].to_list() if pi]
+        PMID_j = [pj for pj in df[df['RowID'].isin(list(jline))]['PMID'].to_list() if pj]
+
+        if not (PMID_i and PMID_j):
             list_of_sets = merge_two_row(list_of_sets, idx, jdx)
+        else:
+            PMID_i = PMID_i[0]
+            PMID_j = PMID_j[0]
+            if PMID_i == PMID_j:
+                list_of_sets = merge_two_row(list_of_sets, idx, jdx)
+            else:
+                list_of_sets[jdx] = jline - iline
 
         pair = get_linked_pair(list_of_sets)
 
@@ -185,10 +236,15 @@ def get_pcnt_authors_overlap(authors1, authors2):
         return 0
     set1 = set(authors1.split(', '))
     set2 = set(authors2.split(', '))
+
+    if (set1 in set2) or (set2 in set1):
+        return 1
     shared_set = set1 & set2
-    combined_set = set1 | set2
-    pcnt = len(shared_set) / len(combined_set)
-    return pcnt
+
+    # combined_set = set1 | set2
+    # pcnt = len(shared_set) / len(combined_set)
+
+    return max(len(shared_set) / len(set1), len(shared_set) / len(set2))
 
 
 def get_pcnt_shared_accessions(list1, list2):
@@ -210,8 +266,10 @@ def get_pcnt_shared_stems(list1, list2, stem_length):
         acc_num_stem_list2.append(acc_num[:stem_length])
     set_acc_num_stem1 = set(acc_num_stem_list1)
     set_acc_num_stem2 = set(acc_num_stem_list2)
-    pcnt_shared_stems = len(set_acc_num_stem1 & set_acc_num_stem2) / \
+    pcnt_shared_stems = (
+        len(set_acc_num_stem1 & set_acc_num_stem2) /
         len((set_acc_num_stem1 | set_acc_num_stem2))
+    )
     return pcnt_shared_stems
 
 

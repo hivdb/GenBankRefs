@@ -243,7 +243,7 @@ def create_database(
         tblPublicationData)
 
     tblPubRefLink = []
-    for pubmed, genbank_list in pubmed_genbank:
+    for pubmed, genbank_list, method in pubmed_genbank:
         for g in genbank_list:
             tblPubRefLink.append((pubmed['PubID'], g['RefID']))
 
