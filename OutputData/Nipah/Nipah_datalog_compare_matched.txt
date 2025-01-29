@@ -1,10 +1,10 @@
 Genbank match by pmid: 23
-Genbank match by title: 2
+Genbank match by title: 3
 Genbank match by acc: 6
 Genbank match total: 30
 --------------------------------------------------------------------------------
 Pubmed match by pmid: 23
-Pubmed match by title: 2
+Pubmed match by title: 3
 Pubmed match by acc: 7
 Pubmed match total: 30
 Summarize PubMed GenBank Match
@@ -90,7 +90,7 @@ Summarize Genbank By Seq
 Host
 --------------------------------------------------------------------------------
 Bat (169)
-Homo sapiens (94)
+Human (94)
 NA (12)
 Pig (5)
 Dog (1)

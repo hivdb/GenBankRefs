@@ -325,19 +325,85 @@ def creat_views(db_file):
 
     vGPMatched = """
         CREATE VIEW vGPMatched AS
+        WITH temp_isolate AS (
+            SELECT
+                iso.*,
+                seq.Gene
+            FROM
+                tblIsolates iso,
+                tblSequences seq
+            WHERE
+                iso.Accession = seq.Accession
+            GROUP BY
+                iso.Accession, seq.Gene
+        ),
+        temp_num_isolate AS (
+            SELECT
+                a.*,
+                COUNT(DISTINCT c.ACCESSION) AS num_Isolate,
+                'https://www.ncbi.nlm.nih.gov/nuccore?cmd=Search&doptcmdl=Summary&term=' || GROUP_CONCAT('"' || c.ACCESSION || '"%5BACCN%5D', "%20OR%20") AS gb_search
+            FROM
+                tblGBRefs a,
+                tblGBRefLink b,
+                temp_isolate c
+            WHERE
+                a.RefID = b.RefID
+                AND b.Accession = c.Accession
+            GROUP BY
+                a.RefID
+        ),
+        temp_num_gene AS (
+            SELECT
+                a.*,
+                c.Gene,
+                COUNT(c.Gene) AS num_Gene
+            FROM
+                tblGBRefs a,
+                tblGBRefLink b,
+                temp_isolate c
+            WHERE
+                a.RefID = b.RefID
+                AND b.Accession = c.Accession
+            GROUP BY
+                a.RefID, c.Gene
+            ORDER BY
+                c.Gene
+        ),
+        temp_num_gene_str AS (
+            SELECT
+                a.*,
+                GROUP_CONCAT(a.Gene || ' (' || a.num_Gene || ')', ', ') AS Genes
+            FROM
+                temp_num_gene a
+            GROUP BY
+                a.RefID
+        ),
+        temp_GBRef AS (
+            SELECT
+                a.*,
+                b.num_Isolate,
+                b.gb_search,
+                c.Genes
+            FROM
+                tblGBRefs a
+                LEFT JOIN temp_num_isolate b ON a.RefID = b.RefID
+                LEFT JOIN temp_num_gene_str c ON a.RefID = c.RefID
+        )
+
         SELECT
             a.RefID as RefID,
-            a.ShortName || ". " || a.Title || ". " || a.Journal AS SubmissionSet,
+            a.ShortName || ". " || a.Title || "; " || a.Authors || "; " || a.Journal || "; ["|| a.Genes || "](" || a.gb_search || ")"
+            AS SubmissionSet,
 
             c.PubID as PubID,
-            c.ShortName || ". " || c.Title || ". " || c.Journal AS Publication,
+            c.ShortName || ". " || c.Title || "; " || c.Authors || "; " || c.Journal AS Publication,
 
             CASE
                 WHEN c.ShortName IS NOT NULL THEN c.ShortName
                 ELSE a.ShortName
             END as ShortName
         FROM
-            tblGBRefs a,
+            temp_GBRef a,
             tblGBPubRefLink b,
             tblPublications c
         WHERE
@@ -352,14 +418,15 @@ def creat_views(db_file):
         UNION
         SELECT
             a.RefID as RefID,
-            a.ShortName || ". " || a.Title || ". " || a.Journal AS SubmissionSet,
+            a.ShortName || ". " || a.Title || "; " || a.Authors || "; " || a.Journal || "; ["|| a.Genes || "](" || a.gb_search || ")"
+            AS SubmissionSet,
 
             '' as PubID,
             '' AS Publication,
 
             a.ShortName as ShortName
         FROM
-            tblGBRefs a
+            temp_GBRef a
         WHERE
             a.RefID NOT IN (SELECT RefID FROM tblGBPubRefLink)
             AND LOWER(a.Title) NOT LIKE '%patent%'
@@ -374,7 +441,7 @@ def creat_views(db_file):
             '' AS SubmissionSet,
 
             c.PubID as PubID,
-            c.ShortName || ". " || c.Title || ". " || c.Journal AS Publication,
+            c.ShortName || ". " || c.Title || "; " || c.Authors || "; " || c.Journal AS Publication,
 
             c.ShortName as ShortName
         FROM

@@ -92,45 +92,55 @@ def match(pubmed, genbank, logger):
     for index, row in genbank.iterrows():
         pmid = row['PMID']
 
-        result = pubmed[pubmed['PMID'] == pmid]
-
-        match_by_pmid = None
-        match_by_title = None
-        match_by_acc = None
-
-        if not result.empty:
-            matched_pubmed_indices.extend(result.index.tolist())
-            match_by_pmid = [row, result, index]
-            match_by_pmid_list.append(match_by_pmid)
-
         # if genbank pmid exists, don't match title and accession
-        if not pmid:
+        if pmid:
+            result = pubmed[pubmed['PMID'] == pmid]
 
-            title = row['Title'].replace('Direct Submission,', '').replace(', Direct Submission', '').strip()
+            match_by_pmid = None
+
+            if not result.empty:
+                matched_pubmed_indices.extend(result.index.tolist())
+                match_by_pmid = [row, result, index]
+                match_by_pmid_list.append(match_by_pmid)
+            else:
+                genbank_unmatch_list.append(row)
+            continue
+
+        title = row['Title'].replace('Direct Submission', '')
+
+        match_by_title = None
+
+        if title:
 
             # Pubmed title always exists
             result = pubmed[pubmed['Title'].apply(
-                lambda x: Levenshtein.distance(x.lower(), title.lower()) < 5)]
+                lambda x:
+                    (Levenshtein.distance(x.lower(), title.lower()) < 5) or
+                    (title.lower() in x.lower()) or
+                    (x.lower() in title.lower())
+            )]
 
             if not result.empty:
                 matched_pubmed_indices.extend(result.index.tolist())
                 match_by_title = [row, result, index]
                 match_by_title_list.append(match_by_title)
 
-            accession_list = row['accession']
-            accession_prefix_list = set([
-                a.strip()[:6]
-                for a in accession_list.split(',')
-                if a.strip()[:2].upper() not in ['NC', 'NG', 'NM', 'NR']
-            ])
+        accession_list = row['accession']
+        accession_prefix_list = set([
+            a.strip()[:6]
+            for a in accession_list.split(',')
+            if a.strip()[:2].upper() not in ['NC', 'NG', 'NM', 'NR']
+        ])
 
-            result = search_access_prefix(pubmed, accession_prefix_list)
-            if not result.empty:
-                matched_pubmed_indices.extend(result.index.tolist())
-                match_by_acc = [row, result, index]
-                match_by_acc_list.append(match_by_acc)
+        match_by_acc = None
 
-        if match_by_acc or match_by_pmid or match_by_title:
+        result = search_access_prefix(pubmed, accession_prefix_list)
+        if not result.empty:
+            matched_pubmed_indices.extend(result.index.tolist())
+            match_by_acc = [row, result, index]
+            match_by_acc_list.append(match_by_acc)
+
+        if match_by_acc or match_by_title:
             pass
         else:
             genbank_unmatch_list.append(row)

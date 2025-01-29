@@ -33,15 +33,15 @@ Publish Year
 ================================================================================
 Host
 --------------------------------------------------------------------------------
-Homo sapiens (15)
+Human (15)
 Ticks (13)
 Cattle and Goat and Ticks (2)
-Animal and Homo sapiens (2)
+Animal and Human (2)
 Goat and Sheep and Ticks (2)
-Goat and Homo sapiens and Sheep and Ticks (2)
-Homo sapiens and Ticks (2)
+Goat and Human and Sheep and Ticks (2)
+Human and Ticks (2)
 Deer and Ticks (1)
-Animal and Homo sapiens and Ticks (1)
+Animal and Human and Ticks (1)
 NA (1)
 Livestock and Ticks (1)
 Cattle and Ticks (1)
@@ -52,8 +52,8 @@ Monkey and Ticks (1)
 Camel and Cattle and Ticks (1)
 vero cell (1)
 Livestock and Rodent and Sheep (1)
-Homo sapiens and Livestock and Ticks (1)
-Homo sapiens and Rodent (1)
+Human and Livestock and Ticks (1)
+Human and Rodent (1)
 Rodent and Sheep and Ticks (1)
 ================================================================================
 Specimen

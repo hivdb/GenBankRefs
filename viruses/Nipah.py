@@ -185,9 +185,9 @@ def get_additional_host_data(features_df):
         updated_specimen = []
 
         if any(key in specimen for key in human_host):
-            updated_host.append("Homo sapiens")
+            updated_host.append("Human")
         if any(key in host for key in human_host):
-            updated_host.append("Homo sapiens")
+            updated_host.append("Human")
 
         for a in animal_host:
             if a in specimen:
@@ -294,7 +294,7 @@ def categorize_host_specimen(self, pubmed):
         updated_specimen = []
 
         if 'homo sapiens' in host:
-            updated_host.append('Homo sapiens')
+            updated_host.append('Human')
 
         for a in ['bat', 'pig', 'dog']:
             if a in host:

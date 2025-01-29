@@ -1,10 +1,10 @@
 Genbank match by pmid: 126
-Genbank match by title: 6
+Genbank match by title: 7
 Genbank match by acc: 70
 Genbank match total: 198
 --------------------------------------------------------------------------------
 Pubmed match by pmid: 117
-Pubmed match by title: 6
+Pubmed match by title: 7
 Pubmed match by acc: 65
 Pubmed match total: 169
 Summarize PubMed GenBank Match
@@ -98,7 +98,7 @@ Summarize Genbank By Seq
 ================================================================================
 Host
 --------------------------------------------------------------------------------
-Homo sapiens (2381)
+Human (2381)
 Ticks (672)
 NA (206)
 Cattle and Ticks (14)
@@ -108,7 +108,7 @@ Sheep and Ticks (10)
 Sheep (8)
 Goat (6)
 Animal (4)
-Homo sapiens and Ticks (4)
+Human and Ticks (4)
 Serow (3)
 Buffalo (3)
 Jerboa and Ticks (3)
@@ -116,7 +116,7 @@ Camel (2)
 Ticks and Tortoise (2)
 Rat (2)
 Tortoise (1)
-Calf and Homo sapiens and Rat and Ticks (1)
+Calf and Human and Rat and Ticks (1)
 ================================================================================
 Specimens
 --------------------------------------------------------------------------------

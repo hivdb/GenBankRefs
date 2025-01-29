@@ -31,10 +31,10 @@ Publish Year
 Host
 --------------------------------------------------------------------------------
 Bat (14)
-Homo sapiens (13)
-Bat and Homo sapiens (3)
-Bat and Dog and Homo sapiens and Pig (1)
-Homo sapiens and Pig (1)
+Human (13)
+Bat and Human (3)
+Bat and Dog and Human and Pig (1)
+Human and Pig (1)
 cell cultures (1)
 infected cell cultures​ (1)
 ================================================================================

@@ -30,6 +30,7 @@ def aggregate_references(references, virus_obj):
     print("Number of entries following aggregation by exact matches: ",
           len(grouped_ref))
 
+    grouped_ref['RowID'] = grouped_ref.index + 1
     grouped_ref.to_excel(virus_obj.genbank_ref_file)
 
     # merge rows that are dups
@@ -53,8 +54,11 @@ def aggregate_references(references, virus_obj):
         merged_ref.at[idx, 'FirstAuthorSurname'] = first_author_surname
 
         PMID = row['PMID']
-        years = [int(y) for y in str(row['Year']).split(',')]
-        year = years[len(years) // 2]
+        years = [int(y) for y in str(row['Year']).split(',') if y]
+        if years:
+            year = years[len(years) // 2]
+        else:
+            year = ''
         if PMID:
             short_name = f"{first_author_surname} ({year}, {PMID})"
         else:
@@ -73,156 +77,278 @@ def aggregate_references(references, virus_obj):
 
 def merge_by_author_title_acc(df):
     close_lists = {}
-    for i, row_i in df.iterrows():
+
+    for _, row_i in df.iterrows():
 
         close_matches = []
-        for j, row_j in df.iterrows():
-            if i >= j:
+        for _, row_j in df.iterrows():
+            if row_i['RowID'] >= row_j['RowID']:
                 continue
 
-            score = compare_authors_titles_year_accession_overlap(row_i, row_j)
+            score = is_same_submission_set(row_i, row_j)
             if score == 1:
-                close_matches.append(j)
+                close_matches.append(row_j['RowID'])
 
         if len(close_matches) >= 1:
-            close_lists[i] = close_matches
+            close_lists[row_i['RowID']] = close_matches
 
-    list_of_merged_indexes, complete_list_of_merged_indexes = convert_dict_to_list_of_sets(close_lists)
+    list_of_merged_rows, complete_list_of_merged_rows = convert_dict_to_list_of_sets(
+        df, close_lists)
     # print(close_lists)
     # for i in list_of_merged_indexes:
     #     if 39 in i:
     #         print(i)
     # print(list_of_merged_indexes, len(complete_list_of_merged_indexes))
     # print("Close lists:", close_lists)
-    # print(f'''No with shared author_titles: {len(list_of_sets_w_shared_indexes)}: {list_of_sets_w_shared_indexes}''')
-    # print(f'''To be dropped: {len(complete_list_of_shared_indexes)}: {complete_list_of_shared_indexes}''')
+    # print(f'''No with shared author_titles: {len(list_of_merged_rows)}: {list_of_merged_rows}''')
+    # print(f'''To be dropped: {len(complete_list_of_shared_indexes)}: {complete_list_of_merged_rows}''')
 
     list_of_new_rows = []
-    for indexes in list_of_merged_indexes:
-        indexes = list(indexes)
-        rows = df.loc[indexes]
+    for rowIDs in list_of_merged_rows:
+        rowIDs = list(rowIDs)
 
-        indexes_with_pmid = [
-            i
-            for i, row in rows.iterrows()
-            if row['PMID'].strip()
-        ]
+        new_row = merge_rows(df, rowIDs)
+        list_of_new_rows.append(new_row)
 
-        if len(indexes_with_pmid) < 2:
-            new_row = merge_rows(df, indexes)
-            list_of_new_rows.append(new_row)
-        else:
-            first_index = indexes_with_pmid[0]
-            new_indexes = [first_index] + [
-                _i
-                for _i in indexes
-                if _i not in indexes_with_pmid
-            ]
-            new_row = merge_rows(df, new_indexes)
-            list_of_new_rows.append(new_row)
+        # rows = df[df['RowID'].isin(rowIDs)]
+        # rows_with_pmid = [
+        #     i
+        #     for i, row in rows.iterrows()
+        #     if row['PMID'].strip()
+        # ]
 
-            list_of_new_rows.append(df.loc[indexes_with_pmid[1:]])
+        # if len(rows_with_pmid) < 2:
+        #     new_row = merge_rows(df, rowIDs)
+        #     list_of_new_rows.append(new_row)
+        # else:
+        #     first_rowID = rows_with_pmid[0]
+        #     new_rowIDs = [first_rowID] + [
+        #         _i
+        #         for _i in rowIDs
+        #         if _i not in rows_with_pmid
+        #     ]
+        #     new_row = merge_rows(df, new_rowIDs)
+        #     list_of_new_rows.append(new_row)
 
-    df = df.drop(complete_list_of_merged_indexes)
-    list_of_new_rows.insert(0, df)
+        #     list_of_new_rows.append(
+        #         df[df['RowID'].isin(rows_with_pmid[1:])]
+        #     )
+
+    list_of_new_rows.insert(
+        0,
+        df[~df['RowID'].isin(complete_list_of_merged_rows)])
     list_of_new_rows = pd.concat(list_of_new_rows, ignore_index=True)
     return list_of_new_rows
 
 
-def compare_authors_titles_year_accession_overlap(row_i, row_j):
+def is_same_submission_set(row_i, row_j):
     # !!Change the order of comparison will change the final result
 
-    authors_i = row_i['Authors']
-    authors_j = row_j['Authors']
-    title_i = row_i['Title']
-    title_j = row_j['Title']
-    year_i = str(row_i['Year'])
-    year_j = str(row_j['Year'])
+    # PMID
+    if row_i['PMID'] and row_j['PMID']:
+        if int(row_i['PMID']) == int(row_j['PMID']):
+            return 1
+        else:
+            return 0
 
     accessions_i = [
         r.strip()
         for r in row_i['accession'].split(',')
         if r.strip()
     ]
+    accessions_i = [s for s in accessions_i if not is_reference_genome(s)]
+
     accessions_j = [
         r.strip()
         for r in row_j['accession'].split(',')
         if r.strip()
     ]
-
-    accessions_i = [s for s in accessions_i if not is_reference_genome(s)]
     accessions_j = [s for s in accessions_j if not is_reference_genome(s)]
-
-    # def log_match_reference():
-    #     with open('MatchingReferences.txt', 'a') as file:
-    #         title_distance = Levenshtein.distance(title_i, title_j)
-    #         max_year_dif = calc_year_dif(year_i, year_j)
-    #         pcnt_authors_overlap = get_pcnt_authors_overlap(authors_i, authors_j)
-    #         pcnt_shared_accessions = get_pcnt_shared_accessions(accessions_i, accessions_j)
-    #         pcnt_shared_stems = get_pcnt_shared_stems(accessions_i, accessions_j, 3)
-
-    #         file.write(f'Title_i:{title_i}\nTitle_j:{title_j}\nTitle_distance:{title_distance}\n')
-    #         file.write(f'Authors_i: {authors_i}\nAuthors_j: {authors_j}\n')
-    #         file.write(f'Authors_overlap:{pcnt_authors_overlap}\n')
-    #         file.write(f'Year_i:{year_i} Year_j:{year_j} Max_year_dif:{max_year_dif}\n')
-    #         file.write(f'Accessions_i:{accessions_i}\nAccessions_j:{accessions_j}\n')
-    #         file.write(f'Pcnt_shared_accessions:{pcnt_shared_accessions} Pcnt_shared_stems:{pcnt_shared_stems}\n\n')
-
-    # PMID
-    if row_i['PMID'] and row_j['PMID']:
-        if row_i['PMID'] == row_j['PMID']:
-            return 1
-        else:
-            return 0
 
     # Accession
     if accessions_i and accessions_j:
         if (set(accessions_i).issubset(set(accessions_j)) or set(accessions_j).issubset(set(accessions_i))):
             return 1
 
+    # idealy should be sharing 100%
     pcnt_shared_accessions = get_pcnt_shared_accessions(accessions_i, accessions_j)
     if pcnt_shared_accessions > 0.8:
         return 1
 
-    # Title - when both not Direct Submission
-    title_distance = Levenshtein.distance(title_i, title_j)
-    if title_i != 'Direct Submission' and (title_j != 'Direct Submission') and title_distance < 5:
+    author_score = closed_author(row_i, row_j)
+    title_score = closed_title(row_i, row_j)
+    journal_score = closed_journal(row_i, row_j)
+    acc_score = closed_accession_stem(accessions_i, accessions_j)
+    year_score = closed_year(row_i, row_j)
+
+    valid_column = get_valid_fuzzy_column(row_i) & get_valid_fuzzy_column(row_j)
+
+    if 'Title' in valid_column:
+        multiple_scores = {
+            ('Authors', 'Title'): author_score and title_score,
+            ('Title', 'Journal', 'Year'): title_score and journal_score and year_score,
+            ('Title', 'Journal', 'Accession'): title_score and journal_score and acc_score,
+            # journal year, accession
+        }
+    else:
+        multiple_scores = {
+            ('Authors', 'Journal', 'Year'): author_score and journal_score and year_score,
+            ('Authors', 'Year', 'Accession'): author_score and year_score and acc_score,
+            # journal year, accession
+        }
+
+    # title_list = [
+    #     'Complete genome sequence of Nipah virus from patient sample of Kerala outbreak 2018',
+    #     'The genome sequence of Nipah virus from patient sample of Kerala outbreak 2018',
+    #     'Transcriptional analysis of Nipah viral mRNA reveals differential expression of the P gene'
+    # ]
+    # if row_i['Title'] in title_list and row_j['Title'] in title_list:
+    #     print(multiple_scores)
+
+    multiple_scores = [
+        v
+        for k, v in multiple_scores.items()
+        if set(k).issubset(valid_column)
+    ]
+    if any(multiple_scores):
         return 1
 
-    if (title_i != 'Direct Submission') and (title_j != 'Direct Submission'):
-        return 0
-
-    # if any author not NCBI (empty), skip comparison
-    if (authors_i and authors_i != 'NCBI') or (authors_j and authors_j != 'NCBI'):
-        return 0
-
-    # Title, author, accession stem
-    max_year_dif = calc_year_dif(year_i, year_j)
-    pcnt_authors_overlap = get_pcnt_authors_overlap(authors_i, authors_j)
-    pcnt_shared_stems = get_pcnt_shared_stems(accessions_i, accessions_j, 3)
-    if pcnt_authors_overlap >= 0.75 \
-            and max_year_dif <= 1 \
-            and pcnt_shared_stems > 0.75:
-        return 1
     return 0
 
 
-def merge_rows(df, merged_indexes):
+def get_valid_fuzzy_column(row):
+    columns = []
+    if row['Authors'] and row['Authors'] != 'NCBI':
+        columns.append('Authors')
+    if row['Title'] and row['Title'] != 'Direct Submission':
+        columns.append('Title')
+    if row['Journal']:
+        columns.append('Journal')
+
+    columns.append('Year')
+
+    return set(columns)
+
+
+def closed_accession_stem(accessions_i, accessions_j):
+    if not accessions_i or not accessions_j:
+        return 0
+
+    pcnt_shared_stems = get_pcnt_shared_stems(accessions_i, accessions_j, 3)
+    if pcnt_shared_stems > 0.75:
+        return 1
+    else:
+        return 0
+
+
+def closed_author(row_i, row_j):
+
+    authors_i = row_i['Authors'].upper()
+    authors_j = row_j['Authors'].upper()
+
+    if not authors_i or not authors_j:
+        return 0
+
+    if (authors_i == 'NCBI') or (authors_j == 'NCBI'):
+        return 0
+
+    pcnt_authors_overlap = get_pcnt_authors_overlap(authors_i, authors_j)
+    if pcnt_authors_overlap > 0.75:
+        return 1
+    else:
+        return 0
+
+
+def closed_title(row_i, row_j):
+    title_i = row_i['Title'].upper()
+    title_j = row_j['Title'].upper()
+
+    if not title_i or not title_j:
+        return 0
+
+    if (title_i == 'Direct Submission'.upper()) or (title_j == 'Direct Submission'.upper()):
+        return 0
+
+    if title_i in title_j:
+        return 1
+    elif title_j in title_i:
+        return 1
+
+    title_distance = Levenshtein.distance(title_i, title_j)
+    if title_distance < 5:
+        return 1
+    else:
+        return 0
+
+
+def closed_year(row_i, row_j):
+    year_i = str(row_i['Year'])
+    year_j = str(row_j['Year'])
+
+    if not year_i and not year_j:
+        return 1
+    elif year_i and not year_j:
+        return 0
+    elif year_j and not year_i:
+        return 0
+
+    max_year_dif = calc_year_dif(year_i, year_j)
+    if max_year_dif <= 1:
+        return 1
+    else:
+        return 0
+
+
+def closed_journal(row_i, row_j):
+    journal_i = row_i['Journal']
+    journal_j = row_j['Journal']
+
+    if not journal_i or not journal_j:
+        return 0
+
+    # if (journal_i.lower() == 'Unpublished'.lower()) or (journal_j.lower() == 'Unpublished'.lower()):
+    #     return 0
+
+    if journal_i.lower() in journal_i.lower():
+        return 1
+    elif journal_j.lower() in journal_i.lower():
+        return 1
+
+    distance = Levenshtein.distance(journal_i, journal_j)
+    if distance < 5:
+        return 1
+    else:
+        return 0
+
+
+def merge_rows(df, merged_rowID):
     new_row = {}
-    authors_list = df.loc[merged_indexes, 'Authors'].tolist()
-    titles_list = df.loc[merged_indexes, 'Title'].tolist()
-    titles_list = [i for i in titles_list if i != 'Direct Submission']
-    journal_list = df.loc[merged_indexes, 'Journal'].tolist()
-    pmid_list = df.loc[merged_indexes, 'PMID'].tolist()
-    year_list = df.loc[merged_indexes, 'Year'].tolist()
-    accession_list = df.loc[merged_indexes, 'accession'].tolist()
-    new_row['Authors'] = combine_items_in_different_lists(authors_list)
-    new_row['Year'] = combine_items_in_different_lists(year_list)
-    new_row['Title'] = combine_items_in_different_lists(titles_list)
-    new_row['PMID'] = combine_items_in_different_lists(pmid_list)
+    rows = df[df['RowID'].isin(merged_rowID)]
+
+    authors_list = rows['Authors'].tolist()
+    new_row['Authors'] = combine_items_in_different_lists(authors_list, spliter=',')
+
+    titles_list = rows['Title'].tolist()
+    titles_list = [i.capitalize() for i in titles_list if i != 'Direct Submission']
+    if titles_list:
+        new_row['Title'] = combine_items_in_different_lists(titles_list)
+    else:
+        new_row['Title'] = 'Direct Submission'
+
+    journal_list = rows['Journal'].tolist()
     new_row['Journal'] = combine_items_in_different_lists(journal_list)
-    new_row['accession'] = combine_items_in_different_lists(accession_list)
-    # new_row['merged_indexes'] = ';'.join([str(i) for i in merged_indexes])
+
+    pmid_list = rows['PMID'].tolist()
+    new_row['PMID'] = combine_items_in_different_lists(pmid_list)
+
+    year_list = rows['Year'].tolist()
+    new_row['Year'] = combine_items_in_different_lists(year_list)
+
+    accession_list = rows['accession'].tolist()
+    new_row['accession'] = combine_items_in_different_lists(accession_list, spliter=',')
+
+    new_row['merged_indexes'] = ';'.join([str(i) for i in sorted(merged_rowID)])
+    new_row['num_merged_indexes'] = len(merged_rowID)
     return pd.DataFrame([new_row])
 
 

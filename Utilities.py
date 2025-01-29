@@ -89,19 +89,28 @@ def extract_year_from_date_fields(text):
 
 
 # Each list is a string in which items are separated by ', '
-def combine_items_in_different_lists(lists):
+def combine_items_in_different_lists(lists, spliter=None):
     unique_value = set()
+
     for value in lists:
-        if isinstance(value, str):
-            items = [
+        value = str(value)
+        if spliter:
+            value_list = [
                 i.strip()
-                for i in value.split(',')
+                for i in value.split(spliter)
                 if i.strip()
             ]
-            for item in items:
-                unique_value.add(item)
         else:
-            unique_value.add(str(value))
+            value_list = [value]
+
+        value_list = [
+            v
+            for v in value_list
+            if v and not any([v in u for u in unique_value])
+        ]
+        for v in value_list:
+            unique_value.add(v)
+
     unique_items = ', '.join(sorted(list(unique_value)))
     return unique_items
 
@@ -110,23 +119,46 @@ def combine_items_in_different_lists(lists):
 # In this program, each key is the index of a row and the values contain
 # one or more indexes of rows that share some property
 # The subset flag code ensures sets do not share items with one another
-def convert_dict_to_list_of_sets(matched_indexes):
-    list_of_sets = []
 
-    for row_i, row_j_list in matched_indexes.items():
-        matched_rows = set()
-        matched_rows.add(row_i)
-        matched_rows.update(set(row_j_list))
+# TODO: Algorithm
+def convert_dict_to_list_of_sets(df, matched_indexes):
+    list_of_sets = [
+        set([i] + j_list)
+        for i, j_list in matched_indexes.items()
+    ]
+    # print(list_of_sets)
 
-        find_same_group = False
-        for merged_indexes in list_of_sets:
-            for row in matched_rows:
-                if row in merged_indexes:
-                    find_same_group = True
-                    merged_indexes.update(matched_rows)
+    def get_linked_pair(components):
+        for idx, iline in enumerate(components):
+            for jdx, jline in enumerate(components):
+                if idx >= jdx:
+                    continue
+                if iline & jline:
+                    return idx, jdx
 
-        if not find_same_group:
-            list_of_sets.append(matched_rows)
+    pair = get_linked_pair(list_of_sets)
+    while pair:
+        idx, jdx = pair
+
+        iline = list_of_sets[idx]
+        jline = list_of_sets[jdx]
+
+        PMID_i = set([
+            pi
+            for pi in df[df['RowID'].isin(list(iline))]['PMID'].to_list()
+            if pi])
+        PMID_j = set([
+            pj
+            for pj in df[df['RowID'].isin(list(jline))]['PMID'].to_list()
+            if pj])
+
+        if (PMID_i and PMID_j) and PMID_i != PMID_j:
+            # merge to one way
+            list_of_sets[jdx] = jline - iline
+        else:
+            list_of_sets = merge_two_row(list_of_sets, idx, jdx)
+
+        pair = get_linked_pair(list_of_sets)
 
     list_of_rows = [
         j
@@ -135,6 +167,17 @@ def convert_dict_to_list_of_sets(matched_indexes):
     ]
 
     return (list_of_sets, list_of_rows)
+
+
+def merge_two_row(alist, i, j):
+
+    a = alist[i]
+    b = alist[j]
+
+    # Remove elements at original indices without shifting
+    new_list = [v for idx, v in enumerate(alist) if idx not in (i, j)]
+    new_list.append(a | b)
+    return new_list
 
 
 def get_pcnt_authors_overlap(authors1, authors2):

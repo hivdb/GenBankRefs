@@ -92,7 +92,7 @@ Summarize Genbank By Seq
 ================================================================================
 Host
 --------------------------------------------------------------------------------
-Homo sapiens (3448)
+Human (3448)
 Ticks (1008)
 NA (280)
 Cattle and Ticks (17)
@@ -104,7 +104,7 @@ Sheep and Ticks (10)
 Mouse (6)
 Goat (6)
 Animal (4)
-Homo sapiens and Ticks (4)
+Human and Ticks (4)
 Rat (3)
 Serow (3)
 Buffalo (3)
@@ -112,7 +112,7 @@ Camel (3)
 Jerboa and Ticks (3)
 Ticks and Tortoise (2)
 Tortoise (1)
-Calf and Homo sapiens and Rat and Ticks (1)
+Calf and Human and Rat and Ticks (1)
 ================================================================================
 Specimens
 --------------------------------------------------------------------------------
