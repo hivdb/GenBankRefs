@@ -65,7 +65,7 @@ def create_tables(db_file):
     """)
 
     conn.execute("""
-        CREATE TABLE "tblSequenceQA" (
+        CREATE TABLE "tblIndels" (
             "SeqID" INTEGER,
             "AA_num_ins" INTEGER,
             "AA_num_del" INTEGER,
@@ -186,7 +186,7 @@ def create_database(
         'tblSequences',
         tblGBSequences)
 
-    tblSequenceQA = genes[
+    tblIndels = genes[
         (genes['AA_num_ins'] != 0) |
         (genes['AA_num_del'] != 0) |
         (genes['AA_blast_failed'] == 1) |
@@ -197,7 +197,7 @@ def create_database(
         (genes['translation_issue'] != 0)
     ]
 
-    tblSequenceQA = tblSequenceQA[[
+    tblIndels = tblIndels[[
         'SeqID',
         'AA_num_ins', 'AA_num_del', 'AA_blast_failed',
         'NA_num_ins', 'NA_num_del', 'NA_blast_failed',
@@ -206,8 +206,8 @@ def create_database(
 
     fill_in_table(
         virus_obj.DB_FILE,
-        'tblSequenceQA',
-        tblSequenceQA)
+        'tblIndels',
+        tblIndels)
 
     # PubMed Tables
     tblPublications = pubmed[[
