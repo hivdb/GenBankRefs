@@ -194,7 +194,7 @@ def is_same_submission_set(row_i, row_j):
         multiple_scores = {
             ('Authors', 'Journal', 'Year'): author_score and journal_score and year_score,
             ('Authors', 'Year', 'Accession'): author_score and year_score and acc_score,
-            ('Authors', 'Journal', 'Accession'): author_score and journal_score and year_score,
+            ('Authors', 'Journal', 'Accession'): author_score and journal_score and acc_score,
             # journal year, accession
         }
 
