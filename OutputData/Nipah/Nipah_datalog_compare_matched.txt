@@ -1,7 +1,7 @@
 Genbank match by pmid: 23
 Genbank match by title: 4
-Genbank match by acc: 7
-Genbank match total: 31
+Genbank match by acc: 6
+Genbank match total: 30
 --------------------------------------------------------------------------------
 Pubmed match by pmid: 23
 Pubmed match by title: 4
@@ -207,7 +207,7 @@ Summarize references with full genomes
 ================================================================================
 Number of References with Full genome:
 --------------------------------------------------------------------------------
-18
+17
 ================================================================================
 End of report
 ================================================================================

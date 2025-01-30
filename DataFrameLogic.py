@@ -195,6 +195,7 @@ def is_same_submission_set(row_i, row_j):
             ('Authors', 'Journal', 'Year'): author_score and journal_score and year_score,
             ('Authors', 'Year', 'Accession'): author_score and year_score and acc_score,
             ('Authors', 'Journal', 'Accession'): author_score and journal_score and acc_score,
+            ('Authors', 'Accession'): author_score and closed_accession_group(accessions_i, accessions_j, 1) and (len(accessions_i) >= 10)
             # journal year, accession
         }
 
@@ -242,7 +243,7 @@ def closed_accession_stem(accessions_i, accessions_j):
         return 0
 
 
-def closed_accession_group(accessions_i, accessions_j):
+def closed_accession_group(accessions_i, accessions_j, threshold=0.8):
     # Accession
     if accessions_i and accessions_j:
         if (set(accessions_i).issubset(set(accessions_j)) or set(accessions_j).issubset(set(accessions_i))):
@@ -250,7 +251,7 @@ def closed_accession_group(accessions_i, accessions_j):
 
     # idealy should be sharing 100%
     pcnt_shared_accessions = get_pcnt_shared_accessions(accessions_i, accessions_j)
-    if pcnt_shared_accessions > 0.8:
+    if pcnt_shared_accessions >= threshold:
         return 1
 
     return 0
