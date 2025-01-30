@@ -121,10 +121,8 @@ def create_tables(db_file):
     conn.close()
 
 
-def create_database(
-        virus_obj,
-        references, features, genes,
-        pubmed, pubmed_genbank):
+def create_database(virus_obj, references, features, genes, pubmed,
+                    pubmed_genbank):
 
     virus_obj.DB_FILE.unlink(missing_ok=True)
 
@@ -141,9 +139,7 @@ def create_database(
         'Year',
         'ShortName',
     ]]
-    fill_in_table(
-        virus_obj.DB_FILE,
-        'tblGBRefs', tblGBRefs)
+    fill_in_table(virus_obj.DB_FILE, 'tblGBRefs', tblGBRefs)
 
     create_ref_link(virus_obj, references)
 
@@ -154,60 +150,55 @@ def create_database(
         features['IsolateType'] = ""
 
     tblIsolates = features[[
-        'Accession', 'Country', 'RecordYear',
-        'IsolateYear', 'Host', 'Specimen', 'IsolateName',
-        'SeqLength',
-        'IsolateType']]
+        'Accession', 'Country', 'RecordYear', 'IsolateYear', 'Host',
+        'Specimen', 'IsolateName', 'SeqLength', 'IsolateType'
+    ]]
 
     for i, row in tblIsolates.iterrows():
         tblIsolates.at[i, 'Host'] = row['Host'] if row['Host'] else (
             'Not applicable' if row['IsolateType'] else 'Not available')
-        tblIsolates.at[i, 'Specimen'] = row['Specimen'] if row['Specimen'] else (
-            'Not applicable' if row['IsolateType'] else 'Not available')
-        tblIsolates.at[i, 'IsolateYear'] = row['IsolateYear'] if row['IsolateYear'] else (
-            'Not applicable' if row['IsolateType'] else 'Not available')
+        tblIsolates.at[i,
+                       'Specimen'] = row['Specimen'] if row['Specimen'] else (
+                           'Not applicable'
+                           if row['IsolateType'] else 'Not available')
+        tblIsolates.at[
+            i, 'IsolateYear'] = row['IsolateYear'] if row['IsolateYear'] else (
+                'Not applicable' if row['IsolateType'] else 'Not available')
         tblIsolates.at[i, 'Country'] = row['Country'] if row['Country'] else (
             'Not applicable' if row['IsolateType'] else 'Not available')
 
-    fill_in_table(
-        virus_obj.DB_FILE,
-        'tblIsolates', tblIsolates)
+    fill_in_table(virus_obj.DB_FILE, 'tblIsolates', tblIsolates)
 
     genes['PcntMatch'] = genes['pcnt_id']
 
     tblGBSequences = genes[[
-        'Accession', 'Gene', 'CDS_NAME',
-        'AA_seq', 'AA_length', 'AA_start', 'AA_stop',
-        'NA_seq', 'NA_length', 'NA_start', 'NA_stop',
+        'Accession',
+        'Gene',
+        'CDS_NAME',
+        'AA_seq',
+        'AA_length',
+        'AA_start',
+        'AA_stop',
+        'NA_seq',
+        'NA_length',
+        'NA_start',
+        'NA_stop',
         'PcntMatch',
     ]]
-    fill_in_table(
-        virus_obj.DB_FILE,
-        'tblSequences',
-        tblGBSequences)
+    fill_in_table(virus_obj.DB_FILE, 'tblSequences', tblGBSequences)
 
-    tblIndels = genes[
-        (genes['AA_num_ins'] != 0) |
-        (genes['AA_num_del'] != 0) |
-        (genes['AA_blast_failed'] == 1) |
-        (genes['NA_num_ins'] != 0) |
-        (genes['NA_num_del'] != 0) |
-        (genes['NA_blast_failed'] == 1) |
-        (genes['num_N'] != 0) |
-        (genes['translation_issue'] != 0)
-    ]
+    tblIndels = genes[(genes['AA_num_ins'] != 0) | (genes['AA_num_del'] != 0) |
+                      (genes['AA_blast_failed'] == 1) |
+                      (genes['NA_num_ins'] != 0) | (genes['NA_num_del'] != 0) |
+                      (genes['NA_blast_failed'] == 1) | (genes['num_N'] != 0) |
+                      (genes['translation_issue'] != 0)]
 
     tblIndels = tblIndels[[
-        'SeqID',
-        'AA_num_ins', 'AA_num_del', 'AA_blast_failed',
-        'NA_num_ins', 'NA_num_del', 'NA_blast_failed',
-        'num_N', 'translation_issue'
+        'SeqID', 'AA_num_ins', 'AA_num_del', 'AA_blast_failed', 'NA_num_ins',
+        'NA_num_del', 'NA_blast_failed', 'num_N', 'translation_issue'
     ]]
 
-    fill_in_table(
-        virus_obj.DB_FILE,
-        'tblIndels',
-        tblIndels)
+    fill_in_table(virus_obj.DB_FILE, 'tblIndels', tblIndels)
 
     # PubMed Tables
     tblPublications = pubmed[[
@@ -220,27 +211,13 @@ def create_database(
         'Year',
         'ShortName',
     ]]
-    fill_in_table(
-        virus_obj.DB_FILE,
-        'tblPublications', tblPublications)
+    fill_in_table(virus_obj.DB_FILE, 'tblPublications', tblPublications)
 
     tblPublicationData = pubmed[[
-        'PubID',
-        'Viruses',
-        'NumSeqs',
-        'Host',
-        'SampleYr',
-        'Country',
-        'GenBank',
-        'SeqMethod',
-        'CloneMethod',
-        'IsolateType',
-        'Gene'
+        'PubID', 'Viruses', 'NumSeqs', 'Host', 'SampleYr', 'Country',
+        'GenBank', 'SeqMethod', 'CloneMethod', 'IsolateType', 'Gene'
     ]]
-    fill_in_table(
-        virus_obj.DB_FILE,
-        'tblPublicationData',
-        tblPublicationData)
+    fill_in_table(virus_obj.DB_FILE, 'tblPublicationData', tblPublicationData)
 
     tblPubRefLink = []
     for pubmed, genbank_list, method in pubmed_genbank:
@@ -248,18 +225,10 @@ def create_database(
             tblPubRefLink.append((pubmed['PubID'], g['RefID']))
 
     tblPubRefLink = list(set(tblPubRefLink))
-    tblPubRefLink = [
-        {
-            'PubID': i,
-            'RefID': j
-        }
-        for i, j in tblPubRefLink
-    ]
+    tblPubRefLink = [{'PubID': i, 'RefID': j} for i, j in tblPubRefLink]
 
-    fill_in_table(
-        virus_obj.DB_FILE,
-        'tblGBPubRefLink',
-        pd.DataFrame(tblPubRefLink))
+    fill_in_table(virus_obj.DB_FILE, 'tblGBPubRefLink',
+                  pd.DataFrame(tblPubRefLink))
 
     creat_views(virus_obj.DB_FILE)
 
@@ -272,18 +241,11 @@ def create_ref_link(virus_obj, ref):
     ref_link = []
     for i, row in ref.iterrows():
         accessions = row['accession']
-        accessions = [
-            i.strip() for i in accessions.split(',') if i.strip()]
+        accessions = [i.strip() for i in accessions.split(',') if i.strip()]
         for acc in accessions:
-            ref_link.append({
-                'RefID': row['RefID'],
-                'Accession': acc
-            })
+            ref_link.append({'RefID': row['RefID'], 'Accession': acc})
 
-    fill_in_table(
-        virus_obj.DB_FILE,
-        'tblGBRefLink',
-        pd.DataFrame(ref_link))
+    fill_in_table(virus_obj.DB_FILE, 'tblGBRefLink', pd.DataFrame(ref_link))
 
 
 def creat_views(db_file):
@@ -700,15 +662,41 @@ def creat_views(db_file):
     """
     run_create_view(db_file, vIsolateMetadataSummary)
 
+    vMatchNotByPMID = """
+        SELECT
+            gbr.RefID,
+            GROUP_CONCAT(gbrfl.Accession) AS CombinedAccessions,
+            gbr.Authors,
+            gbr.Title,
+            gbr.Journal,
+            pub.PubID,
+            pub.PMID AS RefPMID,
+            pub.Authors AS RefAuthor,
+            pub.Title AS RefTitle,
+            pub.Journal AS RefJournal,
+            pubd.GenBank AS RefAccession
+        FROM
+            tblGBPubRefLink gbprl
+        JOIN
+            tblGBRefs gbr ON gbprl.RefID = gbr.RefID
+        JOIN
+            tblPublications pub ON gbprl.pubID = pub.pubID
+        JOIN
+            tblPublicationData pubd ON gbprl.pubID = pubd.pubID
+        JOIN
+            tblGBRefLink gbrfl ON gbrfl.refID = gbr.refID
+        WHERE
+            gbr.PMID IS NULL OR gbr.PMID = ''
+        GROUP BY
+            gbr.RefID, gbr.PMID, gbr.Authors, gbr.Title, gbr.Journal, pub.Authors, pub.Title, pub.Journal;
+    """
+    run_create_view(db_file, vMatchNotByPMID)
+
 
 def fill_in_table(db_file, table_name, table):
     conn = sqlite3.connect(str(db_file))
 
-    table.to_sql(
-        table_name,
-        conn,
-        if_exists='append',
-        index=False)
+    table.to_sql(table_name, conn, if_exists='append', index=False)
 
 
 def run_create_view(db_file, sql):
@@ -751,12 +739,16 @@ def get_table_schema_sql(db_file):
 
     conn = sqlite3.connect(db_file)
 
-    cursor = conn.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';")
+    cursor = conn.execute(
+        f"SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';"
+    )
 
     for i in cursor.fetchall():
         table_name = i[0]
 
-        cursor = conn.execute(f"SELECT sql FROM sqlite_master WHERE type='table' AND name='{table_name}';")
+        cursor = conn.execute(
+            f"SELECT sql FROM sqlite_master WHERE type='table' AND name='{table_name}';"
+        )
 
         schema = cursor.fetchone()[0]
 
@@ -804,3 +796,24 @@ def dump_table_to_json(json_file_path, db_path, table_name):
 
     conn.commit()
     conn.close()
+
+
+def dump_view_to_excel(virus_obj, db_path):
+    conn = sqlite3.connect(db_path)
+
+    query = "SELECT * FROM vMatchNotByPMID"
+
+    # Execute the query and fetch data into a pandas DataFrame
+    df = pd.read_sql_query(query, conn)
+
+    # Ensure output directory exists
+    output_dir = f"OutputData/{virus_obj}"
+
+    # Save the DataFrame to an Excel file
+    excel_path = f"{output_dir}/{virus_obj}_matched_except_PMID.xlsx"
+    df.to_excel(excel_path, index=False)
+
+    # Close the database connection
+    conn.close()
+
+    return excel_path
