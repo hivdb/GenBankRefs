@@ -22,7 +22,7 @@ class CCHF(Virus):
 
     @property
     def pubmed_file(self):
-        return self.pubmed_folder / "ReferenceSummary_Dec11.xlsx"
+        return self.pubmed_folder / "ReferenceSummary_Jan29.xlsx"
 
     @property
     def pubmed_additional_from_gb(self):
