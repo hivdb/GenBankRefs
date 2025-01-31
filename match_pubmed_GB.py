@@ -245,7 +245,7 @@ def summarize_combined_data(combined, features, genes, logger):
         (combined['Reviewer(s) Seq'] == '') &
         (combined['PMID'] != '')
         ]
-    section = ['GenBank only PMID']
+    section = ['GenBank only PMID, or not in first search PMID']
     section.append(len(genbank_only_pubmed))
     section.append(', '.join(genbank_only_pubmed['PMID'].to_list()))
     summarize_report.append(section)
