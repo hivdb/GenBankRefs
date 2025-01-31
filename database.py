@@ -88,7 +88,8 @@ def create_tables(db_file):
             "Journal" TEXT,
             "PMID" TEXT,
             "Year" TEXT,
-            "ShortName" TEXT
+            "ShortName" TEXT,
+            "ref_source" TEXT
         )
     """)
 
@@ -210,6 +211,7 @@ def create_database(virus_obj, references, features, genes, pubmed,
         'PMID',
         'Year',
         'ShortName',
+        'ref_source'
     ]]
     fill_in_table(virus_obj.DB_FILE, 'tblPublications', tblPublications)
 

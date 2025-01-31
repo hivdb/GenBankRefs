@@ -18,6 +18,8 @@ def summarize_pubmed(pubmed_file, virus_obj):
 
     pubmed = pd.read_excel(pubmed_file, dtype=str).fillna('')
 
+    pubmed['ref_source'] = 'PubMed search'
+
     summarize_pubmed_reviewer_gpt(pubmed, virus_obj.get_logger('pubmed_workflow'))
 
     likely = pubmed[
@@ -52,6 +54,8 @@ def summarize_pubmed(pubmed_file, virus_obj):
     if virus_obj.pubmed_additional_from_gb:
         additional_pubmed = pd.read_excel(
             virus_obj.pubmed_additional_from_gb, dtype=str).fillna('')
+
+        additional_pubmed['ref_source'] = 'GB reference'
 
         additional_pubmed = virus_obj.process_pubmed(additional_pubmed)
         pubmed = pd.concat([pubmed, additional_pubmed], ignore_index=True)
