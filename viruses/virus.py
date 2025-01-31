@@ -81,6 +81,14 @@ class Virus:
         return self.timestamp_dir / f"{self.name}_Ref_{timestamp}.xlsx"
 
     @property
+    def fixed_ref_id_file(self):
+        return self.output_dir / f"{self.name}_fixed_RefID.csv"
+
+    @property
+    def fixed_pub_id_file(self):
+        return self.output_dir / f"{self.name}_fixed_PubID.csv"
+
+    @property
     def merged_ref_file(self):
         return self.timestamp_dir / f"{self.name}_Merged_Ref_{timestamp}.xlsx"
 
@@ -135,6 +143,10 @@ class Virus:
     @property
     def genbank_unmatch_file(self):
         return self.timestamp_dir / f"{self.name}_genbank_unmatch_{timestamp}.xlsx"
+
+    @property
+    def pubmed_unmatch_file(self):
+        return self.timestamp_dir / f"{self.name}_pubmed_unmatch_{timestamp}.xlsx"
 
     @property
     def chord_diagram_file(self):

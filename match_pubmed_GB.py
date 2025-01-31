@@ -45,7 +45,7 @@ def match_pubmed_GB(
     # summarize_complete_workflow_GPT(virus_obj, pubmed_match)
     # summarize_complete_workflow_GPT_or_R1(virus_obj, pubmed_match)
 
-    # pubmed_unmatch.to_excel('pubmed_unmatch.xlsx')
+    pubmed_unmatch.to_excel(virus_obj.pubmed_unmatch_file)
     genbank_unmatch.to_excel(virus_obj.genbank_unmatch_file)
 
     logger = virus_obj.get_logger('compare_pubmed_only')

@@ -4,6 +4,8 @@ from collections import Counter
 import logging
 from statistics import median
 from collections import defaultdict
+from pathlib import Path
+import csv
 
 
 def get_logger(logging_file):
@@ -470,3 +472,49 @@ def median_year(entry):
 
 def with_country(country):
     return 'Yes' if (country and country != 'NA') else 'No'
+
+
+def dump_csv(file_path, table, headers=[], remain=True):
+
+    file_path = Path(file_path)
+
+    table_headers = []
+    for rec in table:
+        for key in rec.keys():
+            if key not in table_headers:
+                table_headers.append(key)
+
+    if not headers:
+        headers = table_headers
+    else:
+        remain_headers = [
+            i
+            for i in table_headers
+            if i not in headers
+        ]
+        if remain:
+            headers = headers + remain_headers
+        table = [
+            {
+                k: v
+                for k, v in i.items()
+                if k in headers
+            }
+            for i in table
+        ]
+
+    file_path.parent.mkdir(exist_ok=True, parents=True)
+
+    with open(file_path, 'w', encoding='utf-8-sig') as fd:
+        writer = csv.DictWriter(fd, fieldnames=headers)
+        writer.writeheader()
+        writer.writerows(table)
+
+
+def load_csv(file_path):
+    records = []
+
+    with open(file_path, encoding='utf-8-sig') as fd:
+        for record in csv.DictReader(fd):
+            records.append(record)
+    return records

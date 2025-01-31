@@ -6,6 +6,8 @@ from Utilities import create_binnned_year
 import numpy as np
 import pandas as pd
 from collections import defaultdict
+from Utilities import load_csv
+from Utilities import dump_csv
 
 
 def summarize_pubmed(pubmed_file, virus_obj):
@@ -61,7 +63,8 @@ def summarize_pubmed(pubmed_file, virus_obj):
     # if summrize:
     #     summarize_pubmed_data(pubmed, virus_obj.get_logger('pubmed_from_GB'))
 
-    pubmed['PubID'] = pubmed.index + 1
+    # pubmed['PubID'] = pubmed.index + 1
+    get_fixed_Pub_ID(virus_obj, pubmed)
     pubmed.to_excel(virus_obj.pubmed_with_index, index=False)
 
     return pubmed
@@ -417,3 +420,36 @@ def summarize_pubmed_data(df):
     summarize_report.append(section)
 
     return summarize_report
+
+
+def get_fixed_Pub_ID(virus, references):
+    if virus.fixed_pub_id_file.exists():
+        fixed_ref = load_csv(virus.fixed_pub_id_file)
+    else:
+        fixed_ref = []
+
+    def find_fixed_ref_id(ref):
+        for prev_ref in fixed_ref:
+            if prev_ref['PMID'].strip() and ref['PMID'].strip() and prev_ref['PMID'].strip() == ref['PMID'].strip():
+                return int(prev_ref['PubID'])
+
+        return None
+
+    max_ref_id = max([int(r['PubID']) for r in fixed_ref]) if fixed_ref else 0
+
+    for idx, ref in references.iterrows():
+
+        fixed_ref_id = find_fixed_ref_id(ref)
+        if not fixed_ref_id:
+            max_ref_id += 1
+            fixed_ref_id = max_ref_id
+            fixed_ref.append({
+                'PubID': fixed_ref_id,
+                'PMID': ref['PMID'],
+            })
+
+        references.at[idx, 'PubID'] = fixed_ref_id
+
+    dump_csv(virus.fixed_pub_id_file, fixed_ref)
+
+    return references

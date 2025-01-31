@@ -12,6 +12,8 @@ from Utilities import (get_pcnt_authors_overlap,
                        combine_items_in_different_lists,
                        create_binned_seq_lens,
                        create_binned_pcnts)
+from Utilities import load_csv
+from Utilities import dump_csv
 
 from GenBankFunctions import is_reference_genome
 
@@ -35,7 +37,6 @@ def aggregate_references(references, virus_obj):
 
     # merge rows that are dups
     merged_ref = merge_by_author_title_acc(grouped_ref)
-    merged_ref['RefID'] = merged_ref.index + 1
 
     for idx, row in merged_ref.iterrows():
         authors = row['Authors']
@@ -70,9 +71,59 @@ def aggregate_references(references, virus_obj):
     print("Number of entries following aggregation by similarity: ",
           len(merged_ref))
 
+    # merged_ref['RefID'] = merged_ref.index + 1
+    merged_ref = get_fixed_Ref_ID(virus_obj, merged_ref)
+
     merged_ref.to_excel(str(virus_obj.merged_ref_file), index=False)
 
     return merged_ref
+
+
+def get_fixed_Ref_ID(virus, references):
+    if virus.fixed_ref_id_file.exists():
+        fixed_ref = load_csv(virus.fixed_ref_id_file)
+    else:
+        fixed_ref = []
+
+    def metadata_match(prev_ref, ref):
+        for key in ['Title', 'Authors', 'Journal', 'PMID', 'Year', 'accession']:
+            if str(prev_ref[key]) != str(ref[key]):
+                return False
+
+        return True
+
+    def find_fixed_ref_id(ref):
+        for prev_ref in fixed_ref:
+            if prev_ref['PMID'].strip() and ref['PMID'].strip() and prev_ref['PMID'].strip() == ref['PMID'].strip():
+                return int(prev_ref['RefID'])
+            elif metadata_match(prev_ref, ref):
+                return int(prev_ref['RefID'])
+
+        return None
+
+    max_ref_id = max([int(r['RefID']) for r in fixed_ref]) if fixed_ref else 0
+
+    for idx, ref in references.iterrows():
+
+        fixed_ref_id = find_fixed_ref_id(ref)
+        if not fixed_ref_id:
+            max_ref_id += 1
+            fixed_ref_id = max_ref_id
+            fixed_ref.append({
+                'RefID': fixed_ref_id,
+                'PMID': ref['PMID'],
+                'Title': ref['Title'],
+                'Authors': ref['Authors'],
+                'Journal': ref['Journal'],
+                'Year': ref['Year'],
+                'accession': ref['accession']
+            })
+
+        references.at[idx, 'RefID'] = fixed_ref_id
+
+    dump_csv(virus.fixed_ref_id_file, fixed_ref)
+
+    return references
 
 
 def merge_by_author_title_acc(df):
