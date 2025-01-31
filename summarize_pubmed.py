@@ -58,6 +58,9 @@ def summarize_pubmed(pubmed_file, virus_obj):
         additional_pubmed['ref_source'] = 'GB reference'
 
         additional_pubmed = virus_obj.process_pubmed(additional_pubmed)
+        logger.info(
+            'Only from GenBank Search:',
+            len(additional_pubmed))
         pubmed = pd.concat([pubmed, additional_pubmed], ignore_index=True)
         logger.info(
             'Pubmed Literature with additional Literature from GenBank Only:',
@@ -70,10 +73,10 @@ def summarize_pubmed(pubmed_file, virus_obj):
         pubmed_missing['ref_source'] = 'Not found in PubMed or GenBank Search'
 
         pubmed_missing = virus_obj.process_pubmed(pubmed_missing)
-        pubmed = pd.concat([pubmed, pubmed_missing], ignore_index=True)
         logger.info(
             'Not found in PubMed or GenBank Search:',
-            len(pubmed))
+            len(pubmed_missing))
+        pubmed = pd.concat([pubmed, pubmed_missing], ignore_index=True)
 
     # IF inlude additional PMID from GenBank
     # if summrize:

@@ -179,19 +179,21 @@ def translate_bio_term(features_df):
 
 def get_additional_host_data(features_df):
     blood_specimen = ['blood', 'serum', 'plasma', 'sera']
+    organs = [
+        'brain',
+        'spleen',
+        'kidney',
+        'liver',
+        'lung',
+    ]
     other_speciman = [
         'tissue',
-        'brain',
         'pleural fluid',
         'urine',
-        'lung',
         'csf',
         'breast milk',
         'rectal swab',
         'faces',
-        'spleen',
-        'kidney',
-        'liver',
     ]
     human_host = ['patient', 'human', 'homo sapiens']
     animal_host = [
@@ -200,8 +202,8 @@ def get_additional_host_data(features_df):
 
     for index, row in features_df.iterrows():
 
-        host = row['Host2'].lower()
-        specimen = row['isolate_source2'].lower()
+        host = row['Host2'].lower().strip()
+        specimen = row['isolate_source2'].lower().strip()
 
         if not host and not specimen:
             continue
@@ -225,11 +227,16 @@ def get_additional_host_data(features_df):
         if any(key in host for key in blood_specimen):
             updated_specimen.append('blood')
 
+        if any(key in specimen for key in organs):
+            updated_specimen.append('Organs')
+        if any(key in host for key in organs):
+            updated_specimen.append('Organs')
+
         for a in other_speciman:
             if a in specimen:
-                updated_specimen.append(a)
+                updated_specimen.append(a.capitalize())
             if a in host:
-                updated_specimen.append(a)
+                updated_specimen.append(a.capitalize())
 
         if not updated_host and host:
             updated_host = ['Other']

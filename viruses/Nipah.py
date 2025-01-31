@@ -164,16 +164,18 @@ def translate_bio_term(features_df):
 
 def get_additional_host_data(features_df):
     blood_specimen = ['blood', 'serum', 'plasma', 'sera']
-    other_speciman = [
-        'brain',
-        'breast milk',
-        'csf',
-        'heart',
-        'intestine',
+    organs = [
         'kidney',
         'liver',
         'spleen',
         'lung',
+        'heart',
+        'brain',
+    ]
+    other_speciman = [
+        'breast milk',
+        'csf',
+        'intestine',
         'urine',
         'throat swab',
         ]
@@ -183,8 +185,8 @@ def get_additional_host_data(features_df):
 
     for index, row in features_df.iterrows():
 
-        host = row['Host2'].lower()
-        specimen = row['isolate_source2'].lower()
+        host = row['Host2'].lower().strip()
+        specimen = row['isolate_source2'].lower().strip()
 
         if not host and not specimen:
             continue
@@ -208,11 +210,16 @@ def get_additional_host_data(features_df):
         if any(key in host for key in blood_specimen):
             updated_specimen.append('blood')
 
+        if any(key in specimen for key in organs):
+            updated_specimen.append('Organs')
+        if any(key in host for key in organs):
+            updated_specimen.append('Organs')
+
         for a in other_speciman:
             if a in specimen:
-                updated_specimen.append(a)
+                updated_specimen.append(a.capitalize())
             if a in host:
-                updated_specimen.append(a)
+                updated_specimen.append(a.capitalize())
 
         if not updated_host and host:
             updated_host = ['Other']
@@ -295,8 +302,8 @@ def translate_pubmed_genes(virus, gene):
 def categorize_host_specimen(self, pubmed):
 
     for index, row in pubmed.iterrows():
-        host = row['Host'].lower()
-        specimen = row['IsolateType'].lower()
+        host = row['Host'].lower().strip()
+        specimen = row['IsolateType'].lower().strip()
 
         updated_host = []
         updated_specimen = []

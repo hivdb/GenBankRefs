@@ -3,6 +3,7 @@ from collections import defaultdict
 import Levenshtein
 import pandas as pd
 import re
+from operator import itemgetter
 
 from Utilities import count_number
 from Utilities import int_sorter
@@ -176,6 +177,7 @@ def match(virus, pubmed, genbank, logger):
                 'RefID': ref_id,
                 'PubID': p_pubmed['PubID']
             })
+    paired_pub_id_ref_id.sort(key=itemgetter('RefID', 'PubID'))
     pd.DataFrame(paired_pub_id_ref_id).to_csv(virus.paired_pub_id_ref_id_track, index=False)
 
     # TODO, should be a small data structure

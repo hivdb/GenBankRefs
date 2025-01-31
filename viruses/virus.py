@@ -212,6 +212,8 @@ class Virus:
 
         features_df = add_feature_from_non_pubmed_paper(self, features_df)
 
+        features_df['isolate_source'] = features_df['isolate_source'].str.capitalize()
+
         for i, row in features_df.iterrows():
             if 'patent' in row['Description'].lower():
                 features_df.at[i, 'IsolateType'] = 'patent'

@@ -336,5 +336,6 @@ Full text with seq:
 Pubmed Literatures: 79
 Pubmed Literatures, likely: 67
 Pubmed Literatures, both unlikely: 12
+Only from GenBank Search: 3
 Pubmed Literature with additional Literature from GenBank Only: 82
-Not found in PubMed or GenBank Search: 84
+Not found in PubMed or GenBank Search: 2

@@ -101,18 +101,13 @@ Specimens
 Blood (1612)
 NA (1049)
 Tissue (52)
-Brain (18)
-Liver and lung (12)
-Blood and kidney (8)
+Organs (38)
+Organs and blood (13)
 Csf (6)
-Kidney (6)
 Rectal swab (5)
-Blood and spleen (4)
 Pleural fluid (2)
 Urine (2)
-Lung (2)
 Breast milk (1)
-Blood and liver (1)
 ================================================================================
 RecordYears
 --------------------------------------------------------------------------------
