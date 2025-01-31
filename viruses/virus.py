@@ -133,6 +133,14 @@ class Virus:
         return None
 
     @property
+    def pubmed_genbank_hardlink(self):
+        return None
+
+    @property
+    def pubmed_search_missing(self):
+        return None
+
+    @property
     def pubmed_with_index(self):
         return self.timestamp_dir / f'Pubmed_with_index_{timestamp}.xlsx'
 

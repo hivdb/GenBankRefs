@@ -39,7 +39,7 @@ def match_pubmed_GB(
 
     logger = virus_obj.get_logger('compare_matched')
     pubmed_match, genbank_match, pubmed_unmatch, genbank_unmatch = match(
-        pubmed, genbank_ref, logger)
+        virus_obj, pubmed, genbank_ref, logger)
 
     # won't use
     # summarize_complete_workflow_GPT(virus_obj, pubmed_match)
@@ -80,30 +80,30 @@ def match_pubmed_GB(
     return pubmed, pubmed_match
 
 
-def match(pubmed, genbank, logger):
+def match(virus, pubmed, genbank, logger):
 
     match_by_pmid_list = []
     match_by_title_list = []
     match_by_acc_list = []
 
-    matched_pubmed_indices = []
-    genbank_unmatch_list = []
+    matched_pub_id = []
+    genbank_unmatch_list = {}
 
     for index, row in genbank.iterrows():
         pmid = row['PMID']
 
         # if genbank pmid exists, don't match title and accession
         if pmid:
-            result = pubmed[pubmed['PMID'] == pmid]
+            pubmed_paper = pubmed[pubmed['PMID'] == pmid]
 
             match_by_pmid = None
 
-            if not result.empty:
-                matched_pubmed_indices.extend(result.index.tolist())
-                match_by_pmid = [row, result, index, 'PMID']
+            if not pubmed_paper.empty:
+                matched_pub_id.extend(pubmed_paper['PubID'].tolist())
+                match_by_pmid = [row, pubmed_paper, row['RefID'], 'PMID']
                 match_by_pmid_list.append(match_by_pmid)
             else:
-                genbank_unmatch_list.append(row)
+                genbank_unmatch_list[row['RefID']] = row
             continue
 
         title = row['Title'].replace('Direct Submission', '')
@@ -113,16 +113,16 @@ def match(pubmed, genbank, logger):
         if title:
 
             # Pubmed title always exists
-            result = pubmed[pubmed['Title'].apply(
+            pubmed_paper = pubmed[pubmed['Title'].apply(
                 lambda x:
                     (Levenshtein.distance(x.lower(), title.lower()) < 5) or
                     (title.lower() in x.lower()) or
                     (x.lower() in title.lower())
             )]
 
-            if not result.empty:
-                matched_pubmed_indices.extend(result.index.tolist())
-                match_by_title = [row, result, index, 'Title']
+            if not pubmed_paper.empty:
+                matched_pub_id.extend(pubmed_paper['PubID'].tolist())
+                match_by_title = [row, pubmed_paper, row['RefID'], 'Title']
                 match_by_title_list.append(match_by_title)
 
         accession_list = row['accession']
@@ -134,18 +134,46 @@ def match(pubmed, genbank, logger):
 
         match_by_acc = None
 
-        result = search_access_prefix(pubmed, accession_prefix_list)
-        if not result.empty:
-            matched_pubmed_indices.extend(result.index.tolist())
-            match_by_acc = [row, result, index, 'ACCESSION']
+        pubmed_paper = search_access_prefix(pubmed, accession_prefix_list)
+        if not pubmed_paper.empty:
+            matched_pub_id.extend(pubmed_paper['PubID'].tolist())
+            match_by_acc = [row, pubmed_paper, row['RefID'], 'ACCESSION']
             match_by_acc_list.append(match_by_acc)
 
         if match_by_acc or match_by_title:
             pass
         else:
-            genbank_unmatch_list.append(row)
+            genbank_unmatch_list[row['RefID']] = row
 
-    genbank_match_list = match_by_title_list + match_by_pmid_list + match_by_acc_list
+    hard_link_list = []
+
+    if virus.pubmed_genbank_hardlink:
+        hard_link_df = pd.read_excel(str(virus.pubmed_genbank_hardlink))
+        for idx, pair in hard_link_df.iterrows():
+            pub_id = int(pair['PubID'])
+            ref_id = int(pair['RefID'])
+            pubmed_paper = pubmed[pubmed['PubID'].isin([pub_id])]
+            genbank_ss = genbank[genbank['RefID'].isin([ref_id])].iloc[0]
+
+            hard_link_list.append([genbank_ss, pubmed_paper, ref_id, 'Hardlink'])
+            matched_pub_id.extend(pubmed_paper['PubID'].tolist())
+
+            if ref_id not in genbank_unmatch_list:
+                print(f"Warning: hard link file is matching to a wrong RefID: {ref_id}")
+            del genbank_unmatch_list[ref_id]
+
+    genbank_match_list = (
+        match_by_title_list +
+        match_by_pmid_list +
+        match_by_acc_list +
+        hard_link_list
+    )
+    # for a, b, c, d in genbank_match_list:
+    #     print(a)
+    #     print(b)
+    #     print(c)
+    #     print(d)
+    #     print('*' * 30)
 
     # TODO, should be a small data structure
     logger.info("Genbank match by pmid:", len(set(i[-2] for i in match_by_pmid_list)))
@@ -157,8 +185,8 @@ def match(pubmed, genbank, logger):
     pubmed_match = match_pubmed2genbank(genbank_match_list)
 
     genbank_match = {}
-    for row, result, index, method in genbank_match_list:
-        genbank_match[index] = row
+    for row, result, ref_id, method in genbank_match_list:
+        genbank_match[ref_id] = row
 
     genbank_match = genbank_match.values()
 
@@ -167,9 +195,9 @@ def match(pubmed, genbank, logger):
     logger.info("Pubmed match by acc:", len(match_pubmed2genbank(match_by_acc_list)))
     logger.info('Pubmed match total:', len(pubmed_match))
 
-    pubmed_unmatch = pubmed.drop(index=matched_pubmed_indices)
+    pubmed_unmatch = pubmed[~pubmed['PubID'].isin(matched_pub_id)]
 
-    return pubmed_match, pd.DataFrame(genbank_match), pubmed_unmatch, pd.DataFrame(genbank_unmatch_list)
+    return pubmed_match, pd.DataFrame(genbank_match), pubmed_unmatch, pd.DataFrame(genbank_unmatch_list.values())
 
 
 def search_access_prefix(pubmed, accession_prefix_list):
@@ -186,7 +214,7 @@ def search_access_prefix(pubmed, accession_prefix_list):
 
 def match_pubmed2genbank(genbank_match):
     pubmed_match = defaultdict(dict)
-    for g, pubmed_list, index, method in genbank_match:
+    for g, pubmed_list, ref_id, method in genbank_match:
         for r, i in pubmed_list.iterrows():
             pubmed_match[r]['pubmed'] = i
             if 'genbank' not in pubmed_match[r]:
@@ -601,6 +629,13 @@ def summarize_complete_workflow_GPT(virus_obj, pubmed_match):
         additional_pubmed = pd.DataFrame()
     logger.info('GPT Title/Abstract unlikely, GPT wo sequence, from GenBank only', len(additional_pubmed))
 
+    if virus_obj.pubmed_search_missing:
+        pubmed_missing = pd.read_excel(
+            virus_obj.pubmed_search_missing, dtype=str).fillna('')
+    else:
+        pubmed_missing = pd.DataFrame()
+    logger.info('Papers not found in PubMed and GenBank search:', len(pubmed_missing))
+
     unlikely = pubmed[
         (
             (pubmed['Reviewer1  (Y/N)'].str.lower() == 'unlikely')
@@ -664,6 +699,13 @@ def summarize_complete_workflow_GPT_or_R1(virus_obj, pubmed_match):
         additional_pubmed = pd.DataFrame()
     logger.info('GPT or R1 Title/Abstract unlikely, GPT wo sequence, from GenBank only', len(additional_pubmed))
 
+    if virus_obj.pubmed_search_missing:
+        pubmed_missing = pd.read_excel(
+            virus_obj.pubmed_search_missing, dtype=str).fillna('')
+    else:
+        pubmed_missing = pd.DataFrame()
+    logger.info('Papers not found in PubMed and GenBank search:', len(pubmed_missing))
+
     unlikely = pubmed[
         (
             (pubmed['Reviewer1  (Y/N)'].str.lower() == 'unlikely')
@@ -672,4 +714,3 @@ def summarize_complete_workflow_GPT_or_R1(virus_obj, pubmed_match):
         )
     ]
     logger.info('In pubmed search, Title/Abstract unlikely, but in GenBank', len(unlikely))
-

@@ -121,6 +121,7 @@ def get_fixed_Ref_ID(virus, references):
 
         references.at[idx, 'RefID'] = fixed_ref_id
 
+    references["RefID"] = references["RefID"].astype(int)
     dump_csv(virus.fixed_ref_id_file, fixed_ref)
 
     return references
@@ -201,7 +202,7 @@ def is_same_submission_set(row_i, row_j):
 
     # PMID
     if row_i['PMID'] and row_j['PMID']:
-        if int(row_i['PMID']) == int(row_j['PMID']):
+        if str(row_i['PMID']).strip() == str(row_j['PMID']).strip():
             return 1
         else:
             return 0

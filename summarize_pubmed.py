@@ -63,6 +63,18 @@ def summarize_pubmed(pubmed_file, virus_obj):
             'Pubmed Literature with additional Literature from GenBank Only:',
             len(pubmed))
 
+    if virus_obj.pubmed_search_missing:
+        pubmed_missing = pd.read_excel(
+            virus_obj.pubmed_search_missing, dtype=str).fillna('')
+
+        pubmed_missing['ref_source'] = 'Not found in PubMed or GenBank Search'
+
+        pubmed_missing = virus_obj.process_pubmed(pubmed_missing)
+        pubmed = pd.concat([pubmed, pubmed_missing], ignore_index=True)
+        logger.info(
+            'Not found in PubMed or GenBank Search:',
+            len(pubmed))
+
     # IF inlude additional PMID from GenBank
     # if summrize:
     #     summarize_pubmed_data(pubmed, virus_obj.get_logger('pubmed_from_GB'))
@@ -378,7 +390,7 @@ def summarize_pubmed_data(df):
     summarize_report.append(section)
 
     section = ["Median of Sample Year"]
-    df['MedianYear'] = df['SampleYr'].apply(median_year)
+    df.loc[:, 'MedianYear'] = df['SampleYr'].apply(median_year)
     year = count_number([v for i, v in df.iterrows()], 'MedianYear', sorter=int_sorter)
     section.append(year)
 
@@ -453,6 +465,8 @@ def get_fixed_Pub_ID(virus, references):
             })
 
         references.at[idx, 'PubID'] = fixed_ref_id
+
+    references["PubID"] = references["PubID"].astype(int)
 
     dump_csv(virus.fixed_pub_id_file, fixed_ref)
 
