@@ -89,6 +89,10 @@ class Virus:
         return self.output_dir / f"{self.name}_fixed_PubID.csv"
 
     @property
+    def paired_pub_id_ref_id_track(self):
+        return self.output_dir / f"{self.name}_paired_PubID_RefID_track.csv"
+
+    @property
     def merged_ref_file(self):
         return self.timestamp_dir / f"{self.name}_Merged_Ref_{timestamp}.xlsx"
 

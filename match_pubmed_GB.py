@@ -168,12 +168,15 @@ def match(virus, pubmed, genbank, logger):
         match_by_acc_list +
         hard_link_list
     )
-    # for a, b, c, d in genbank_match_list:
-    #     print(a)
-    #     print(b)
-    #     print(c)
-    #     print(d)
-    #     print('*' * 30)
+
+    paired_pub_id_ref_id = []
+    for _, paired_pubmed, ref_id, _ in genbank_match_list:
+        for _, p_pubmed in paired_pubmed.iterrows():
+            paired_pub_id_ref_id.append({
+                'RefID': ref_id,
+                'PubID': p_pubmed['PubID']
+            })
+    pd.DataFrame(paired_pub_id_ref_id).to_csv(virus.paired_pub_id_ref_id_track, index=False)
 
     # TODO, should be a small data structure
     logger.info("Genbank match by pmid:", len(set(i[-2] for i in match_by_pmid_list)))
