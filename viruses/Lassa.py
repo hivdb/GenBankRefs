@@ -131,6 +131,9 @@ def build_blast_db(virus):
 def process_features(features_df):
     features_df = translate_bio_term(features_df)
     features_df = get_additional_host_data(features_df)
+    features_df['host_orig'] = features_df['Host']
+    features_df['isolate_source_orig'] = features_df['isolate_source']
+
     features_df['Host'] = features_df['Host2']
     features_df['isolate_source'] = features_df['isolate_source2']
 
@@ -195,10 +198,14 @@ def get_additional_host_data(features_df):
         'rectal swab',
         'faces',
     ]
-    human_host = ['patient', 'human', 'homo sapiens']
+    human_host = ['patient', 'human', 'homo sapiens', 'homon sapiens']
     animal_host = [
-        'rodent', 'mouse', 'rat',
-        'goat', 'dog', 'lizard']
+        'rodent',
+        'mouse',
+        # 'rat',
+        # 'goat', 'dog',
+        # 'lizard'
+        ]
 
     for index, row in features_df.iterrows():
 
