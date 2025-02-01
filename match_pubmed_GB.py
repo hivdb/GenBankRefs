@@ -4,6 +4,7 @@ import Levenshtein
 import pandas as pd
 import re
 from operator import itemgetter
+from collections import Counter
 
 from Utilities import count_number
 from Utilities import int_sorter
@@ -94,18 +95,31 @@ def match(virus, pubmed, genbank, logger):
     for index, row in genbank.iterrows():
         pmid = row['PMID']
 
-        # if genbank pmid exists, don't match title and accession
+        match_by_pmid = None
+
+        # some times a PMID can match to multiple papers.
         if pmid:
             pubmed_paper = pubmed[pubmed['PMID'] == pmid]
-
-            match_by_pmid = None
 
             if not pubmed_paper.empty:
                 matched_pub_id.extend(pubmed_paper['PubID'].tolist())
                 match_by_pmid = [row, pubmed_paper, row['RefID'], 'PMID']
                 match_by_pmid_list.append(match_by_pmid)
-            else:
-                genbank_unmatch_list[row['RefID']] = row
+            # else:
+            #     genbank_unmatch_list[row['RefID']] = row
+            # continue
+
+        match_by_acc = None
+
+        accession_list = row['accession']
+
+        pubmed_paper = search_by_accession(pubmed, accession_list)
+        if not pubmed_paper.empty:
+            matched_pub_id.extend(pubmed_paper['PubID'].tolist())
+            match_by_acc = [row, pubmed_paper, row['RefID'], 'ACCESSION']
+            match_by_acc_list.append(match_by_acc)
+
+        if match_by_acc or match_by_pmid:
             continue
 
         title = row['Title'].replace('Direct Submission', '')
@@ -127,24 +141,7 @@ def match(virus, pubmed, genbank, logger):
                 match_by_title = [row, pubmed_paper, row['RefID'], 'Title']
                 match_by_title_list.append(match_by_title)
 
-        accession_list = row['accession']
-        accession_prefix_list = set([
-            a.strip()[:6]
-            for a in accession_list.split(',')
-            if a.strip()[:2].upper() not in ['NC', 'NG', 'NM', 'NR']
-        ])
-
-        match_by_acc = None
-
-        pubmed_paper = search_access_prefix(pubmed, accession_prefix_list)
-        if not pubmed_paper.empty:
-            matched_pub_id.extend(pubmed_paper['PubID'].tolist())
-            match_by_acc = [row, pubmed_paper, row['RefID'], 'ACCESSION']
-            match_by_acc_list.append(match_by_acc)
-
-        if match_by_acc or match_by_title:
-            pass
-        else:
+        if not match_by_title:
             genbank_unmatch_list[row['RefID']] = row
 
     hard_link_list = []
@@ -214,16 +211,45 @@ def match(virus, pubmed, genbank, logger):
     return pubmed_match, pd.DataFrame(genbank_match), pubmed_unmatch, genbank_unmatch_list
 
 
-def search_access_prefix(pubmed, accession_prefix_list):
-    found = pd.DataFrame()
+def search_by_accession(pubmed, accession_list):
 
-    for acc_prefix in accession_prefix_list:
-        result = pubmed[pubmed['GenBank'].apply(
-            lambda x: acc_prefix.lower() in str(x).lower())]
-        if not result.empty:
-            found = pd.concat([found, result])
+    accession_list = [
+        a.strip() for a in accession_list.split(',')
+        if a.strip() and a.strip()[:2].upper() not in ['NC', 'NG', 'NM', 'NR']
+    ]
 
-    return found
+    found = []
+
+    for idx, row in pubmed.iterrows():
+        accs = row['GenBank']
+        accs = re.findall(r'[A-Z]{1,2}\d{5,7}', accs)
+        if not accs:
+            continue
+
+        if len(set(accs) & set(accession_list)):
+            found.append(row)
+            # continue
+
+        # acc1 = [
+        #     i[:6]
+        #     for i in accs
+        # ]
+
+        # acc2 = [
+        #     i[:6]
+        #     for i in accession_list
+        # ]
+
+        # counter1 = Counter(acc1)
+        # counter2 = Counter(acc2)
+        # overlap_count = sum(
+        #     min(counter1[key], counter2[key])
+        #     for key in counter1.keys() & counter2.keys())
+
+        # if overlap_count > 1:
+        #     found.append(row)
+
+    return pd.DataFrame(found)
 
 
 def match_pubmed2genbank(genbank_match):
