@@ -1,6 +1,7 @@
 Genbank match by pmid: 23
 Genbank match by title: 6
 Genbank match by acc: 8
+Genbank match by acc or title not by pubmed: 11
 Genbank match total: 34
 --------------------------------------------------------------------------------
 Pubmed match by pmid: 23

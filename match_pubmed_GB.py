@@ -18,6 +18,7 @@ from summarize_genbank import summarize_genbank_by_seq
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment
 from DataFrameLogic import merge_feature_rows
+from AI_match_paper import using_ai_match
 
 
 def match_pubmed_GB(
@@ -184,6 +185,11 @@ def match(virus, pubmed, genbank, logger):
     logger.info("Genbank match by pmid:", len(set(i[-2] for i in match_by_pmid_list)))
     logger.info("Genbank match by title:", len(set(i[-2] for i in match_by_title_list)))
     logger.info("Genbank match by acc:", len(set(i[-2] for i in match_by_acc_list)))
+    logger.info("Genbank match by acc or title not by pubmed:", len(
+        set(i[-2] for i in (match_by_acc_list + match_by_title_list))
+        -
+        set(i[-2] for i in match_by_pmid_list)
+    ))
     logger.info('Genbank match total:', len(set(i[-2] for i in genbank_match_list)))
     logger.info('-' * 80)
 
@@ -202,7 +208,10 @@ def match(virus, pubmed, genbank, logger):
 
     pubmed_unmatch = pubmed[~pubmed['PubID'].isin(matched_pub_id)]
 
-    return pubmed_match, pd.DataFrame(genbank_match), pubmed_unmatch, pd.DataFrame(genbank_unmatch_list.values())
+    genbank_unmatch_list = pd.DataFrame(genbank_unmatch_list.values())
+    genbank_unmatch_list = using_ai_match(virus, genbank_unmatch_list)
+
+    return pubmed_match, pd.DataFrame(genbank_match), pubmed_unmatch, genbank_unmatch_list
 
 
 def search_access_prefix(pubmed, accession_prefix_list):

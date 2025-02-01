@@ -13,7 +13,7 @@ class Nipah(Virus):
 
     @property
     def pubmed_file(self):
-        return self.pubmed_folder / "ReferenceSummary_Dec18.xlsx"
+        return self.pubmed_folder / "ReferenceSummary_Jan31.xlsx"
 
     @property
     def pubmed_additional_from_gb(self):
