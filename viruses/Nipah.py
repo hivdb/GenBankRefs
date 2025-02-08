@@ -176,7 +176,7 @@ def get_additional_host_data(features_df):
         'heart',
         'brain',
     ]
-    other_speciman = [
+    other_specimen = [
         'breast milk',
         'csf',
         'intestine',
@@ -198,32 +198,24 @@ def get_additional_host_data(features_df):
         updated_host = []
         updated_specimen = []
 
-        if any(key in specimen for key in human_host):
+        if any(key in specimen for key in human_host) or any(key in host for key in human_host):
             updated_host.append("Human")
-        if any(key in host for key in human_host):
-            updated_host.append("Human")
+            for key in blood_specimen:
+                if key in specimen:
+                    updated_specimen.append("Blood")
+            for key in other_specimen:
+                if key in specimen:
+                    updated_specimen.append(key)
+            for key in organs:
+                if key in specimen:
+                    updated_specimen.append("Organs")
 
         for a in animal_host:
             if a in specimen:
                 updated_host.append(a.capitalize())
+                updated_specimen.append(a)
             if a in host:
                 updated_host.append(a.capitalize())
-
-        if any(key in specimen for key in blood_specimen):
-            updated_specimen.append('blood')
-        if any(key in host for key in blood_specimen):
-            updated_specimen.append('blood')
-
-        if any(key in specimen for key in organs):
-            updated_specimen.append('Organs')
-        if any(key in host for key in organs):
-            updated_specimen.append('Organs')
-
-        for a in other_speciman:
-            if a in specimen:
-                updated_specimen.append(a.capitalize())
-            if a in host:
-                updated_specimen.append(a.capitalize())
 
         if not updated_host and host:
             updated_host = ['Other']
@@ -249,7 +241,6 @@ def process_gene_list(virus, gene_df):
     for i, row in gene_df.iterrows():
         if str(row['Gene']) not in virus.GENES:
             gene_df.at[i, 'Gene'] = row['hit_name']
-
     return gene_df
 
 
@@ -312,8 +303,25 @@ def categorize_host_specimen(self, pubmed):
         updated_host = []
         updated_specimen = []
 
+        # Only collect those specimen for human
         if 'homo sapiens' in host:
             updated_host.append('Human')
+            for s in [
+                'brain',
+                'breast milk',
+                'csf',
+                'heart',
+                'intestine',
+                'kidney',
+                'liver',
+                'spleen',
+                'lung',
+                'oropharyngeal swab',
+                'urine',
+                'throat swab',
+                ]:
+                if s in specimen:
+                    updated_specimen.append(s)
 
         for a in ['bat', 'pig', 'dog']:
             if a in host:
@@ -329,23 +337,6 @@ def categorize_host_specimen(self, pubmed):
         for i in ['serum', 'blood', 'plasma', 'sera']:
             if i in specimen:
                 updated_specimen.append('blood')
-
-        for s in [
-                'brain',
-                'breast milk',
-                'csf',
-                'heart',
-                'intestine',
-                'kidney',
-                'liver',
-                'spleen',
-                'lung',
-                'oropharyngeal swab',
-                'urine',
-                'throat swab',
-                ]:
-            if s in specimen:
-                updated_specimen.append(s)
 
         if not updated_specimen:
             updated_specimen.append('NA')

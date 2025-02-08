@@ -155,10 +155,26 @@ def translate_bio_term(features_df):
 
 def get_additional_host_data(features_df):
     blood_specimen = ['blood', 'serum', 'plasma', 'sera']
-    other_speciman = ['nasopharyngeal swab']
+    organs = [
+        'tissue',
+        'brain',
+        'spleen',
+        'kidney',
+        'liver',
+        'lung',
+    ]
+    other_specimen = [
+        'nasopharyngeal swab',
+        'pleural fluid',
+        'urine',
+        'csf',
+        'breast milk',
+        'rectal swab',
+        'feces',
+    ]
     human_host = ['patient', 'human', 'homo sapiens']
     animal_host = [
-        'mouse', 'rat', 'jerboa',
+        'tick', 'mouse', 'rat', 'jerboa',
         'sheep', 'camel', 'cattle', 'goat', 'serow',
         'buffalo', 'calf',
         'animal',
@@ -175,38 +191,42 @@ def get_additional_host_data(features_df):
         updated_host = []
         updated_specimen = []
 
-        if any(key in specimen for key in human_host):
+        if any(key in specimen for key in human_host) or any(key in host for key in human_host):
             updated_host.append("Human")
-        if any(key in host for key in human_host):
-            updated_host.append("Human")
+            # Only get specimen for human hosts
+            for key in blood_specimen:
+                if key in specimen:
+                    updated_specimen.append("Blood")
+            for key in other_specimen: # Append actual specimen
+                if key in specimen:
+                    updated_specimen.append(key)
+            for key in organs:
+                if key in specimen:
+                    updated_specimen.append("Organs")
 
+        # if animal, simply append host name to specimen, ticks special case
         for a in animal_host:
             if a in specimen:
-                updated_host.append(a.capitalize())
-            if a in host:
-                updated_host.append(a.capitalize())
-
-        if 'tick' in specimen:
-            updated_host.append("Ticks")
-        if 'tick' in host:
-            updated_host.append("Ticks")
-
-        if any(key in specimen for key in blood_specimen):
-            updated_specimen.append('blood')
-        if any(key in host for key in blood_specimen):
-            updated_specimen.append('blood')
-
-        for a in other_speciman:
-            if a in specimen:
-                updated_specimen.append(a)
-            if a in host:
-                updated_specimen.append(a)
+                if a == 'tick':
+                    updated_host.append(a.capitalize())
+                    updated_specimen.append("Tick")
+                # just put animal for other animals
+                else:
+                    updated_host.append("ANIMAL")
+                    updated_specimen.append("Animal")
+            elif a in host:
+                if a == 'tick':
+                    updated_host.append(a.capitalize())
+                    updated_specimen.append("Tick")
+                else:
+                    updated_host.append("ANIMAL")
+                    updated_specimen.append("Animal")
 
         if not updated_host and host:
             updated_host = ['Other']
 
         if not updated_specimen and specimen:
-            # specieman other and NA are the same
+            # specimen other and NA are the same
             updated_specimen = ['']
 
         # features_df.at[index, 'Host'] = ",".join(sorted(list(set(updated_host))))
@@ -242,20 +262,30 @@ def categorize_host_specimen(self, pubmed):
         updated_host = []
         updated_specimen = []
 
+        # Human, specimen matters
         if 'homo sapiens' in host:
             updated_host.append('Human')
+            # only check for human what's the source
+            for i in ['serum', 'blood', 'plasma', 'sera']:
+                if i in specimen:
+                    updated_specimen.append('blood')
 
+            for s in ['brain', 'spleen', 'nasal swab']:
+                if s in specimen:
+                    updated_specimen.append(s)
+
+        # For ticks specimen & hosts are both
+        if 'tick' in host or 'tick' in specimen:
+            updated_host.append('Ticks')
+            updated_specimen.append('Ticks')
+
+        # Rest of the animals
         for a in ['animal', 'sheep', 'cattle', 'goat', 'mouse', 'boar', 'hare',
                   'livestock', 'cow', 'sheep', 'camel', 'monkey', 'deer', 'buffalo',
                   'rodent', 'serow']:
             if a in host:
                 updated_host.append(a.capitalize())
-
-        if 'tick' in host:
-            updated_host.append('Ticks')
-
-        if 'tick' in specimen:
-            updated_host.append('Ticks')
+                updated_specimen.append('Animals')
 
         if not updated_host and host and host != 'NA'.lower():
             # updated_host.append('Other')
@@ -263,14 +293,6 @@ def categorize_host_specimen(self, pubmed):
 
         if not updated_host:
             updated_host.append('NA')
-
-        for i in ['serum', 'blood', 'plasma', 'sera']:
-            if i in specimen:
-                updated_specimen.append('blood')
-
-        for s in ['brain', 'spleen', 'nasal swab']:
-            if s in specimen:
-                updated_specimen.append(s)
 
         if not updated_specimen:
             updated_specimen.append('NA')

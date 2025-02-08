@@ -6,110 +6,130 @@ Summarize PubMed
 ================================================================================
 Publish Year
 --------------------------------------------------------------------------------
-2000 (1)
-2001 (2)
-2002 (1)
-2004 (1)
-2005 (2)
-2006 (1)
-2007 (1)
-2009 (1)
-2010 (2)
-2011 (1)
-2012 (2)
-2013 (1)
-2016 (1)
-2018 (2)
-2019 (3)
-2020 (2)
-2021 (4)
-2022 (1)
-2024 (3)
+{'2024': 3, '2022': 1, '2021': 4, '2020': 2, '2019': 3, '2018': 2, '2016': 1, '2013': 1, '2012': 2, '2011': 1, '2010': 2, '2007': 1, '2006': 1, '2005': 2, '2004': 1, '2002': 1, '2001': 2, '2000': 1, '2009': 1}
 --------------------------------------------------------------------------------
-2000-2009 (10), 2010-2019 (12), 2020-2029 (10)
+2000-2009 (10) (31.2)%, 2010-2019 (12) (37.5)%, 2020-2029 (10) (31.2)%
 ================================================================================
 Host
 --------------------------------------------------------------------------------
-Bat (13)
-Human (12)
-Bat and Human (3)
-Bat and Dog and Human and Pig (1)
-Human and Pig (1)
-island flying foxes (pteropus hypomelanus) (1)
-infected cell cultures​ (1)
+Counts:
+Bat: 13
+Human: 12
+Bat and Human: 3
+Bat and Dog and Human and Pig: 1
+Human and Pig: 1
+island flying foxes (pteropus hypomelanus): 1
+infected cell cultures​: 1
+
+--------------------------------------------------------------------------------
+Percentages:
+Bat (40.6%), Human (37.5%), Bat and Human (9.4%), Bat and Dog and Human and Pig (3.1%), Human and Pig (3.1%), island flying foxes (pteropus hypomelanus) (3.1%), infected cell cultures​ (3.1%)
+
 ================================================================================
 Specimen
 --------------------------------------------------------------------------------
-Urine (11)
-NA (3)
-Blood and throat swab and urine (2)
-Throat swab and urine (2)
-Brain (2)
-Oropharyngeal swab (1)
-Kidney and spleen (1)
-Blood and csf (1)
-Kidney and liver and spleen (1)
-Oropharyngeal swab and urine (1)
-Liver and lung and spleen and throat swab (1)
-Liver and spleen (1)
-Kidney and liver (1)
-Csf and throat swab and urine (1)
-Lung (1)
-Csf and oropharyngeal swab and urine (1)
-Blood and lung (1)
+Counts:
+Urine: 11
+NA: 3
+Blood and throat swab and urine: 2
+Throat swab and urine: 2
+Brain: 2
+Oropharyngeal swab: 1
+Kidney and spleen: 1
+Blood and csf: 1
+Kidney and liver and spleen: 1
+Oropharyngeal swab and urine: 1
+Liver and lung and spleen and throat swab: 1
+Liver and spleen: 1
+Kidney and liver: 1
+Csf and throat swab and urine: 1
+Lung: 1
+Csf and oropharyngeal swab and urine: 1
+Blood and lung: 1
+
+--------------------------------------------------------------------------------
+Percentages:
+Urine (34.4%), NA (9.4%), Blood and throat swab and urine (6.2%), Throat swab and urine (6.2%), Brain (6.2%), Oropharyngeal swab (3.1%), Kidney and spleen (3.1%), Blood and csf (3.1%), Kidney and liver and spleen (3.1%), Oropharyngeal swab and urine (3.1%), Liver and lung and spleen and throat swab (3.1%), Liver and spleen (3.1%), Kidney and liver (3.1%), Csf and throat swab and urine (3.1%), Lung (3.1%), Csf and oropharyngeal swab and urine (3.1%), Blood and lung (3.1%)
+
 ================================================================================
 Median of Sample Year
 --------------------------------------------------------------------------------
-NA (1)
-1998 (3)
-1999 (1)
-2000 (1)
-2001 (1)
-2003 (1)
-2004 (3)
-2005 (1)
-2006 (1)
-2007 (2)
-2009 (3)
-2010 (2)
-2014 (2)
-2015 (3)
-2018 (2)
-2019 (1)
-2020 (1)
-2021 (1)
-2023 (2)
+Counts:
+2015: 3
+2009: 3
+2004: 3
+1998: 3
+2010: 2
+2023: 2
+2007: 2
+2018: 2
+2014: 2
+2021: 1
+2019: 1
+2020: 1
+2006: 1
+2005: 1
+2001: 1
+1999: 1
+2000: 1
+2003: 1
+NA: 1
+
+--------------------------------------------------------------------------------
+Percentages:
+2015 (9.4%), 2009 (9.4%), 2004 (9.4%), 1998 (9.4%), 2010 (6.2%), 2023 (6.2%), 2007 (6.2%), 2018 (6.2%), 2014 (6.2%), 2021 (3.1%), 2019 (3.1%), 2020 (3.1%), 2006 (3.1%), 2005 (3.1%), 2001 (3.1%), 1999 (3.1%), 2000 (3.1%), 2003 (3.1%), NA (3.1%)
+
 --------------------------------------------------------------------------------
 Median IQR 2004.0 2009.0 2015.0
 --------------------------------------------------------------------------------
-1990-1999 (4), 2000-2009 (13), 2010-2019 (10), 2020-2029 (4)
+1990-1999 (4) (12.9)%, 2000-2009 (13) (41.9)%, 2010-2019 (10) (32.3)%, 2020-2029 (4) (12.9)%
 ================================================================================
 Country
 --------------------------------------------------------------------------------
-India (9)
-Bangladesh (6)
-Malaysia (6)
-Thailand (4)
-Bangladesh, Malaysia (2)
-Multinational (1)
-NA (1)
-Indonesia (1)
-Cambodia (1)
-Bangladesh, Cambodia, Malaysia (1)
+Counts:
+India: 9
+Bangladesh: 6
+Malaysia: 6
+Thailand: 4
+Bangladesh, Malaysia: 2
+Multinational: 1
+NA: 1
+Indonesia: 1
+Cambodia: 1
+Bangladesh, Cambodia, Malaysia: 1
+
+--------------------------------------------------------------------------------
+Percentages:
+India (28.1%), Bangladesh (18.8%), Malaysia (18.8%), Thailand (12.5%), Bangladesh, Malaysia (6.2%), Multinational (3.1%), NA (3.1%), Indonesia (3.1%), Cambodia (3.1%), Bangladesh, Cambodia, Malaysia (3.1%)
+
+--------------------------------------------------------------------------------
+{'Multinational': 1, 'India': 9, 'Bangladesh, Malaysia': 2, 'Thailand': 4, 'Bangladesh': 6, 'NA': 1, 'Indonesia': 1, 'Malaysia': 6, 'Cambodia': 1, 'Bangladesh, Cambodia, Malaysia': 1}
 ================================================================================
 Gene
 --------------------------------------------------------------------------------
-N (30)
-P (18)
-M (18)
-G (18)
-F (17)
-L (16)
+Counts:
+N: 30
+P: 18
+M: 18
+G: 18
+F: 17
+L: 16
+
+--------------------------------------------------------------------------------
+Percentages:
+N (25.6%), P (15.4%), M (15.4%), G (15.4%), F (14.5%), L (13.7%)
+
 ================================================================================
 Seq method
 --------------------------------------------------------------------------------
-Sanger (21)
-NGS (11)
+Counts:
+Sanger: 21
+NGS: 11
+
+--------------------------------------------------------------------------------
+Percentages:
+Sanger (65.6%), NGS (34.4%)
+
 ================================================================================
 End of Report
 ================================================================================

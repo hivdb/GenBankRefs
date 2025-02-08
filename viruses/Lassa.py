@@ -188,15 +188,15 @@ def get_additional_host_data(features_df):
         'kidney',
         'liver',
         'lung',
-    ]
-    other_speciman = [
         'tissue',
+    ]
+    other_specimen = [
         'pleural fluid',
         'urine',
         'csf',
         'breast milk',
         'rectal swab',
-        'faces',
+        'feces',
     ]
     human_host = ['patient', 'human', 'homo sapiens', 'homon sapiens']
     animal_host = [
@@ -218,32 +218,26 @@ def get_additional_host_data(features_df):
         updated_host = []
         updated_specimen = []
 
-        if any(key in specimen for key in human_host):
+        if any(key in specimen for key in human_host) or any(key in host for key in human_host):
             updated_host.append("Human")
-        if any(key in host for key in human_host):
-            updated_host.append("Human")
+            for key in blood_specimen:
+                if key in specimen:
+                    updated_specimen.append("Blood")
+            for key in other_specimen:
+                if key in specimen:
+                    updated_specimen.append(key)
+            for key in organs:
+                if key in specimen:
+                    updated_specimen.append("Organs")
 
         for a in animal_host:
             if a in specimen:
                 updated_host.append(a.capitalize())
+                updated_specimen.append(a)
             if a in host:
                 updated_host.append(a.capitalize())
+                updated_specimen.append(a)
 
-        if any(key in specimen for key in blood_specimen):
-            updated_specimen.append('blood')
-        if any(key in host for key in blood_specimen):
-            updated_specimen.append('blood')
-
-        if any(key in specimen for key in organs):
-            updated_specimen.append('Organs')
-        if any(key in host for key in organs):
-            updated_specimen.append('Organs')
-
-        for a in other_speciman:
-            if a in specimen:
-                updated_specimen.append(a.capitalize())
-            if a in host:
-                updated_specimen.append(a.capitalize())
 
         if not updated_host and host:
             updated_host = ['Other']
@@ -322,6 +316,14 @@ def translate_pubmed_genes(virus, gene):
 
 def categorize_host_specimen(self, pubmed):
 
+    tissue = ['tissue','brain', 'lung', 'spleen', 'kidney', 'liver']
+    other_source = [
+            'pleural fluid',
+            'urine',
+            'csf',
+            'breast milk',
+            'rectal swab',
+            'feces']
     for index, row in pubmed.iterrows():
         host = row['Host'].lower()
         specimen = row['IsolateType'].lower()
@@ -331,6 +333,17 @@ def categorize_host_specimen(self, pubmed):
 
         if 'homo sapiens' in host:
             updated_host.append('Human')
+            updated_specimen.append('Human')
+            #only update for human
+            for s in tissue:
+                if s in specimen:
+                    updated_specimen.append("Tissue & Organ")
+            for s in other_source:
+                if s in specimen:
+                    updated_specimen.append(s)
+            for i in ['serum', 'blood', 'plasma', 'sera']:
+                if i in specimen:
+                    updated_specimen.append('Blood')
 
         for a in [
                 'rodent', 'mouse', 'rat',
@@ -345,27 +358,6 @@ def categorize_host_specimen(self, pubmed):
         if not updated_host:
             updated_host.append('NA')
 
-        for i in ['serum', 'blood', 'plasma', 'sera']:
-            if i in specimen:
-                updated_specimen.append('blood')
-
-        for s in [
-                'tissue',
-                'brain',
-                'pleural fluid',
-                'urine',
-                'lung',
-                'csf',
-                'breast milk',
-                'rectal swab',
-                'faces',
-                'spleen',
-                'kidney',
-                'liver',
-                ]:
-            if s in specimen:
-                updated_specimen.append(s)
-
         if not updated_specimen:
             updated_specimen.append('NA')
 
@@ -376,7 +368,6 @@ def categorize_host_specimen(self, pubmed):
 
     pubmed['Host'] = pubmed['CleanedHost']
     pubmed['Specimen'] = pubmed['CleanedSpecimen']
-
     pubmed['Specimen'] = pubmed['Specimen'].apply(
         lambda x: x.capitalize() if x.upper() != "NA" else x)
 
