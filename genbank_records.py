@@ -53,10 +53,6 @@ def parse_genbank_records(genbank_file):
             should_exclude = any(
                 keyword.lower() in description for keyword in exclusion_keywords
             )
-            if should_exclude:
-                excluded_seq_data = filter_by_taxonomy(record, False)
-                excluded_list.append(excluded_seq_data)
-                continue
 
             # total_record += 1
             # if total_record % 10000 == 0:

@@ -231,7 +231,6 @@ def summarize_genbank_by_seq(df, genes_df):
     section = ['Genes']
 
     virus = df.at[0, 'organism']
-    df.to_excel("tmp_gene_ori.xlsx")
     # align sequences where gene is empty to get gene
     for index, row in df.iterrows():
         if row['Genes'] == "": # if we comment this out, more accurate, only detect genes present in seq, currently has dup
@@ -241,7 +240,6 @@ def summarize_genbank_by_seq(df, genes_df):
             df.at[index, 'Genes'] = new_genes
 
     df[df['Genes'] == 'NA'].to_excel(f"OutputData/{virus}/excels/gene_missing.xlsx")
-    df.to_excel("tmp_gene_after.xlsx")
     genes = Counter()
     for row in df['Genes']:
         unique_genes = set(row.split(', '))
