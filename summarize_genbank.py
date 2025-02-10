@@ -4,11 +4,17 @@ from Utilities import count_number
 from Utilities import int_sorter
 from Utilities import create_binned_pcnts
 from Utilities import create_binned_seq_lens
-from Utilities import create_binnned_year
-from collections import defaultdict
+from Utilities import create_binnned_year, count_rev_sorter
+from Utilities import format_counts_and_percentages
+from collections import defaultdict, Counter
+from Bio import SeqIO, pairwise2
+import pandas as pd
+
+import re
 
 
 def summarize_genbank(genbank_ref, genbank_feature, genbank_genes, virus_obj):
+
     genbank_ref = genbank_ref.fillna('')
 
     genbank_feature = genbank_feature.fillna('')
@@ -36,6 +42,10 @@ def summarize_genbank_by_ref(df):
     publish_year = count_number([
         v for i, v in df.iterrows()], 'MedianPublishYear', sorter=int_sorter)
     section = ['Publish Year']
+    publish_year = '\n'.join([
+        f'{k} ({v})'
+        for k, v in count_rev_sorter(publish_year.items())
+    ])
     section.append(publish_year)
 
     publish_year = [
@@ -58,6 +68,10 @@ def summarize_genbank_by_ref(df):
     df['NumSeq (GB)'] = df['accession'].apply(lambda x: len(x.split(',')))
     num_seqs = count_number(
         [v for i, v in df.iterrows()], 'NumSeq (GB)', sorter=int_sorter)
+    num_seqs = '\n'.join([
+        f'{k} ({v})'
+        for k, v in count_rev_sorter(num_seqs.items())
+    ])
     section.append(num_seqs)
 
     section.append((
@@ -75,6 +89,81 @@ def summarize_genbank_by_ref(df):
     return summarize_report
 
 
+def match_genes(pattern, description, gene_dict_keys):
+    """
+    Only return genes in gene_dict_keys (listt)
+    """
+    matches = pattern.findall(description)
+    matched_genes = set()
+
+    for match in matches:
+        matched_terms = [m for m in match if m and m in gene_dict_keys]  # Filter only valid genes
+        matched_genes.update(matched_terms)
+
+    return ', '.join(matched_genes) if matched_genes else "NA"
+
+
+def local_align_genes(seq, description, virus_name):
+
+    gene_dict = {}  # Dictionary to store gene names and sequences
+
+    with open(f"ReferenceData/{virus_name}/{virus_name}_RefNAs.fasta", "r") as fasta_file:
+        for record in SeqIO.parse(fasta_file, "fasta"):
+            gene_dict[record.id] = str(record.seq)
+
+    matched_genes = []
+    for gene, ref_seq in gene_dict.items():
+        align_score = pairwise2.align.localxx(seq, ref_seq, score_only=True)  
+        if align_score > len(ref_seq) * 0.8:  # 80% similarity threshold
+            matched_genes.append(gene)
+
+    genes = ', '.join(matched_genes) if matched_genes else 'NA'
+
+    # for those still NA, try finding protein name from submission description
+    if genes == 'NA':
+        unique_genes = list(gene_dict.keys())
+        pattern = re.compile(
+            r'\b(' + '|'.join(map(re.escape, unique_genes)) + r')\b(?=\s+(protein|gene))'
+            r'|\(\b(' + '|'.join(map(re.escape, unique_genes)) + r')\b\)\s+gene',
+            re.IGNORECASE
+        )
+
+        genes = match_genes(pattern, description, gene_dict.keys())
+
+    # if still not found
+    if genes == 'NA':
+        matched_genes = []
+        description = description.lower()
+        if virus_name == 'CCHF':
+            # filter out other viruses that are not CCHF
+            if not ("orthonairovirus" in description or "crimean-congo" in description):
+                return genes
+            # attempt matching by gene name in description
+            segment_s_keywords = ['nucleocapsid', 'nucleoprotein', 'segment: s', 'segment s']
+            if any(w in description for w in segment_s_keywords):
+                matched_genes.append("S")
+            if 'glycoprotein' in description or "segment m" in description:
+                matched_genes.append("M")
+            if "rdrp" in description or 'rna polymerase' in description:
+                matched_genes.append("L")
+
+        elif virus_name == 'Lassa':
+            if not ("lassa" in description):
+                return genes
+            if 'polymerase' in description:
+                matched_genes.append("L")
+            if 'nucleoprotein' in description or 'nucleocapsid' in description:
+                matched_genes.append("N")
+            if 'glycoprotein' in description or 'gpc' in description:
+                matched_genes.append("G")
+            if 'matrix' in description or '(z)' in description:
+                matched_genes.append("Z")
+
+        genes = ', '.join(matched_genes) if matched_genes else 'NA'
+
+    return genes
+
+
 def summarize_genbank_by_seq(df, genes_df):
     summarize_report = []
 
@@ -83,18 +172,27 @@ def summarize_genbank_by_seq(df, genes_df):
 
     section = ['Host']
     hosts = count_number([v for i, v in df.iterrows()], 'Host')
-    section.append(hosts)
+    counts_formatted, percentages_formatted = format_counts_and_percentages(hosts)
+
+    section.append(f"Counts:\n{counts_formatted}\n")
+    section.append(f"Percentages:\n{percentages_formatted}\n")
     summarize_report.append(section)
 
     section = ['Specimens']
     specimen = count_number([v for i, v in df.iterrows()], 'isolate_source')
-    section.append(specimen)
+    counts_formatted, percentages_formatted = format_counts_and_percentages(specimen)
+
+    section.append(f"Counts:\n{counts_formatted}\n")
+    section.append(f"Percentages:\n{percentages_formatted}\n")
     summarize_report.append(section)
 
     section = ['RecordYears']
     year = count_number(
         [v for i, v in df.iterrows()], 'RecordYear', sorter=int_sorter)
-    section.append(year)
+    counts_formatted, percentages_formatted = format_counts_and_percentages(year)
+
+    section.append(f"Counts:\n{counts_formatted}\n")
+    section.append(f"Percentages:\n{percentages_formatted}\n")
 
     year = [int(v['RecordYear']) for i, v in df.iterrows() if v['RecordYear']]
     section.append(create_binnned_year(year))
@@ -105,7 +203,10 @@ def summarize_genbank_by_seq(df, genes_df):
         int(v['IsolateYear'])
         if v['IsolateYear'] else '' for i, v in df.iterrows()],
         sorter=int_sorter)
-    section.append(year)
+    counts_formatted, percentages_formatted = format_counts_and_percentages(year)
+
+    section.append(f"Counts:\n{counts_formatted}\n")
+    section.append(f"Percentages:\n{percentages_formatted}\n")
 
     year = [int(v['IsolateYear']) for i, v in df.iterrows() if v['IsolateYear'] and v['IsolateYear'] != 'NA']
     section.append(create_binnned_year(year))
@@ -114,7 +215,10 @@ def summarize_genbank_by_seq(df, genes_df):
     section = ['Countries']
     country = count_number(
         [v for i, v in df.iterrows()], 'Country')
-    section.append(country)
+    counts_formatted, percentages_formatted = format_counts_and_percentages(country)
+
+    section.append(f"Counts:\n{counts_formatted}\n")
+    section.append(f"Percentages:\n{percentages_formatted}\n")
     summarize_report.append(section)
 
     section = ['Countries W/WO']
@@ -125,9 +229,70 @@ def summarize_genbank_by_seq(df, genes_df):
     section.append('=' * 40)
 
     section = ['Genes']
-    genes = count_number(
-        [v for i, v in df.iterrows()], 'Genes')
-    section.append(genes)
+
+    virus = df.at[0, 'organism']
+    df.to_excel("tmp_gene_ori.xlsx")
+    # align sequences where gene is empty to get gene
+    for index, row in df.iterrows():
+        if row['Genes'] == "": # if we comment this out, more accurate, only detect genes present in seq, currently has dup
+            # should move to an earlier step when generating feature_df? some accessions not in genes_df
+            # combining by isolateName & removing dup solves the problem partially
+            new_genes = local_align_genes(row['Seq'], row['Description'], virus)
+            df.at[index, 'Genes'] = new_genes
+
+    df[df['Genes'] == 'NA'].to_excel(f"OutputData/{virus}/excels/gene_missing.xlsx")
+    df.to_excel("tmp_gene_after.xlsx")
+    genes = Counter()
+    for row in df['Genes']:
+        unique_genes = set(row.split(', '))
+        genes.update(unique_genes)
+
+    total_count = df.shape[0]
+    counts_formatted, percentages_formatted = format_counts_and_percentages(genes, total=total_count)
+
+
+    # get number of entries that has 1 gene, 2 gene, 3 gene
+    num_gene_counts = df.loc[df['Genes'] != 'NA', 'Genes'].apply(lambda x: len(set(x.split(', '))) if isinstance(x, str) else 0)
+    num_gene_distribution = Counter(num_gene_counts)
+    num_gene_distribution_f, num_gene_percent_f = format_counts_and_percentages(num_gene_distribution, total=total_count)
+
+    section.append(f"Counts:\n{counts_formatted}\n")
+    section.append(f"Percentages:\n{percentages_formatted}\n")
+    section.append(f"Counts # of genes:\n{num_gene_distribution_f}\n")
+    section.append(f"Percentages # of genes:\n{num_gene_percent_f}\n")
+
+    # Try to merge on isolateName, the fields should all be the same for same isolate
+    df_no_merge = df[df['IsolateName'] == ""].copy()
+
+    # Filter out rows where "IsolateName" is not empty and perform merging
+    df_to_merge = df[df['IsolateName'] != ""].copy()
+
+    merged_df = (df_to_merge.groupby(['country_region', 'collection_date', 'Host', 'IsolateName'], as_index=False)
+               .agg({'Genes': lambda x: ', '.join(sorted(set(g.strip() for v in x for g in v.split(','))))})
+            )
+
+    # Concatenate merged rows with non-merged rows
+    final_merged_df = pd.concat([merged_df, df_no_merge], ignore_index=True)
+    # print(df.shape[0], final_merged_df.shape[0])
+
+    combined_num_gene_counts = final_merged_df.loc[final_merged_df['Genes'] != 'NA', 'Genes'].apply(lambda x: len(set(x.split(', '))) if isinstance(x, str) else 0)
+    combined_num_gene_distribution = Counter(combined_num_gene_counts)
+    combined_num_gene_distribution_f, combined_num_gene_percent_f = format_counts_and_percentages(combined_num_gene_distribution, total=final_merged_df.shape[0])
+
+    combined_genes = Counter()
+    for row in final_merged_df['Genes']:
+        unique_genes = set(row.split(', '))
+        combined_genes.update(unique_genes)
+    counts_formatted_combined, percentages_formatted_combined = format_counts_and_percentages(combined_genes, total=final_merged_df.shape[0])
+
+    # # Check merge is correct, isolateName often the same for different isolates - incorrect for Nipah
+    # merged_groups = df_to_merge.groupby(['country_region', 'collection_date', 'Host', 'IsolateName']).filter(lambda x: len(x) > 1)  
+
+    section.append(f"Counts genes after combining isolate:\n{counts_formatted_combined}\n")
+    section.append(f"Percentages genes after combining isolate:\n{percentages_formatted_combined}\n")
+    section.append(f"Counts # of genes after combining isolate:\n{combined_num_gene_distribution_f}\n")
+    section.append(f"Percentages # of genes after combining isolate:\n{combined_num_gene_percent_f}\n")
+
     summarize_report.append(section)
 
     section = ['AlignLens']

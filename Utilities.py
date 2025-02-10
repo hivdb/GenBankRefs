@@ -338,8 +338,9 @@ def create_binned_seq_lens(numbers):
     counts = binned.value_counts().reindex(labels, fill_value=0)
     non_zero_counts = {label: count for label,
                        count in counts.items() if count > 0}
+    total = sum(counts)
     result_str = ", ".join(
-        [f"{label} ({count})" for label, count in non_zero_counts.items()])
+        [f"{label} ({count}, {count / total:.1%})" for label, count in non_zero_counts.items()])
     return result_str
 
 
@@ -363,8 +364,13 @@ def create_binnned_year(years):
     counts = binned.value_counts().reindex(labels, fill_value=0)
     non_zero_counts = {label: count for label,
                        count in counts.items() if count > 0}
+
+    total_count = sum(non_zero_counts.values())
+    percentages = {label: round((count / total_count) * 100, 1) for label, count in non_zero_counts.items()}
+
     result_str = ", ".join(
-        [f"{label} ({count})" for label, count in non_zero_counts.items()])
+        [f"{label} ({count}) ({percentages[label]})%" for label, count in non_zero_counts.items()])
+
     return result_str
 
 
@@ -394,10 +400,7 @@ def count_number(rows, key=None, translater=lambda x: x, sorter=count_rev_sorter
     column_values = [translater(x) for x in column_values]
     counter = dict(Counter(column_values))
 
-    return '\n'.join([
-        f'{k} ({v})'
-        for k, v in sorter(counter.items())
-    ])
+    return counter
 
 
 def split_value_count(value_count):
@@ -518,3 +521,20 @@ def load_csv(file_path):
         for record in csv.DictReader(fd):
             records.append(record)
     return records
+
+
+def format_counts_and_percentages(data_dict, total=None):
+
+    if total is None:
+        total = sum(data_dict.values())
+
+    # Compute percentages with one decimal place
+    percentages = {key: round((count / total) * 100, 1) for key, count in data_dict.items()}
+
+    # Format output
+    counts_formatted = "\n".join([f"{key}: {count}"
+                    for key, count in count_rev_sorter(data_dict.items())])
+    percentages_formatted = ", ".join([f"{key} ({percentage}%)"
+                    for key, percentage in count_rev_sorter(percentages.items())])
+
+    return counts_formatted, percentages_formatted

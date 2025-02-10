@@ -2,7 +2,7 @@ from Utilities import count_number
 from Utilities import split_value_by_comma
 from Utilities import median_year
 from Utilities import int_sorter
-from Utilities import create_binnned_year
+from Utilities import create_binnned_year, format_counts_and_percentages
 import numpy as np
 import pandas as pd
 from collections import defaultdict
@@ -358,12 +358,14 @@ def summarize_pubmed_data(df):
     summarize_report.append(section)
 
     section = ["Publish Year"]
-    section.append(
-        count_number([v for i, v in df.iterrows()], 'Year', sorter=int_sorter)
-    )
+    year = count_number([v for i, v in df.iterrows()], 'Year', sorter=int_sorter)
     publish_year = [
         int(v['Year']) for i, v in df.iterrows()
         if v['Year'] and v['Year'] != 'NA']
+
+    counts_formatted, percentages_formatted = format_counts_and_percentages(year)
+    section.append(f"Counts:\n{counts_formatted}\n")
+    section.append(f"Percentages:\n{percentages_formatted}\n")
 
     section.append(
         create_binnned_year(publish_year) if publish_year else ''
@@ -384,18 +386,24 @@ def summarize_pubmed_data(df):
 
     section = ["Host"]
     hosts = count_number([v for i, v in df.iterrows()], 'Host')
-    section.append(hosts)
+    counts_formatted, percentages_formatted = format_counts_and_percentages(hosts)
+    section.append(f"Counts:\n{counts_formatted}\n")
+    section.append(f"Percentages:\n{percentages_formatted}\n")
     summarize_report.append(section)
 
     section = ["Specimen"]
     specimen = count_number([v for i, v in df.iterrows()], 'Specimen')
-    section.append(specimen)
+    counts_formatted, percentages_formatted = format_counts_and_percentages(specimen)
+    section.append(f"Counts:\n{counts_formatted}\n")
+    section.append(f"Percentages:\n{percentages_formatted}\n")
     summarize_report.append(section)
 
     section = ["Median of Sample Year"]
     df.loc[:, 'MedianYear'] = df['SampleYr'].apply(median_year)
     year = count_number([v for i, v in df.iterrows()], 'MedianYear', sorter=int_sorter)
-    section.append(year)
+    counts_formatted, percentages_formatted = format_counts_and_percentages(year)
+    section.append(f"Counts:\n{counts_formatted}\n")
+    section.append(f"Percentages:\n{percentages_formatted}\n")
 
     year = [int(v['MedianYear']) for i, v in df.iterrows() if v['MedianYear'] and v['MedianYear'] != 'NA']
     if year:
@@ -415,6 +423,9 @@ def summarize_pubmed_data(df):
         countries = sorted(list(set(countries)))
         country_list.append(', '.join(countries) if len(countries) < 4 else 'Multinational')
     country = count_number(country_list)
+    counts_formatted, percentages_formatted = format_counts_and_percentages(country)
+    section.append(f"Counts:\n{counts_formatted}\n")
+    section.append(f"Percentages:\n{percentages_formatted}\n")
     section.append(country)
     summarize_report.append(section)
 
@@ -427,12 +438,16 @@ def summarize_pubmed_data(df):
     section = ["Gene"]
     gene_list = split_value_by_comma(df, 'Gene')
     gene = count_number(gene_list)
-    section.append(gene)
+    counts_formatted, percentages_formatted = format_counts_and_percentages(gene)
+    section.append(f"Counts:\n{counts_formatted}\n")
+    section.append(f"Percentages:\n{percentages_formatted}\n")
     summarize_report.append(section)
 
     section = ["Seq method"]
     methods = count_number([v for i, v in df.iterrows()], 'SeqMethod')
-    section.append(methods)
+    counts_formatted, percentages_formatted = format_counts_and_percentages(methods)
+    section.append(f"Counts:\n{counts_formatted}\n")
+    section.append(f"Percentages:\n{percentages_formatted}\n")
     summarize_report.append(section)
 
     section = ["End of Report"]
