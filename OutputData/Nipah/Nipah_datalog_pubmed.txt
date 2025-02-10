@@ -6,7 +6,31 @@ Summarize PubMed
 ================================================================================
 Publish Year
 --------------------------------------------------------------------------------
-{'2024': 3, '2022': 1, '2021': 4, '2020': 2, '2019': 3, '2018': 2, '2016': 1, '2013': 1, '2012': 2, '2011': 1, '2010': 2, '2007': 1, '2006': 1, '2005': 2, '2004': 1, '2002': 1, '2001': 2, '2000': 1, '2009': 1}
+Counts:
+2021: 4
+2024: 3
+2019: 3
+2020: 2
+2018: 2
+2012: 2
+2010: 2
+2005: 2
+2001: 2
+2022: 1
+2016: 1
+2013: 1
+2011: 1
+2007: 1
+2006: 1
+2004: 1
+2002: 1
+2000: 1
+2009: 1
+
+--------------------------------------------------------------------------------
+Percentages:
+2021 (12.5%), 2024 (9.4%), 2019 (9.4%), 2020 (6.2%), 2018 (6.2%), 2012 (6.2%), 2010 (6.2%), 2005 (6.2%), 2001 (6.2%), 2022 (3.1%), 2016 (3.1%), 2013 (3.1%), 2011 (3.1%), 2007 (3.1%), 2006 (3.1%), 2004 (3.1%), 2002 (3.1%), 2000 (3.1%), 2009 (3.1%)
+
 --------------------------------------------------------------------------------
 2000-2009 (10) (31.2)%, 2010-2019 (12) (37.5)%, 2020-2029 (10) (31.2)%
 ================================================================================
@@ -29,19 +53,14 @@ Bat (40.6%), Human (37.5%), Bat and Human (9.4%), Bat and Dog and Human and Pig 
 Specimen
 --------------------------------------------------------------------------------
 Counts:
-Urine: 11
-NA: 3
+NA: 17
+Urine: 3
 Blood and throat swab and urine: 2
-Throat swab and urine: 2
 Brain: 2
 Oropharyngeal swab: 1
-Kidney and spleen: 1
 Blood and csf: 1
-Kidney and liver and spleen: 1
-Oropharyngeal swab and urine: 1
+Throat swab and urine: 1
 Liver and lung and spleen and throat swab: 1
-Liver and spleen: 1
-Kidney and liver: 1
 Csf and throat swab and urine: 1
 Lung: 1
 Csf and oropharyngeal swab and urine: 1
@@ -49,7 +68,7 @@ Blood and lung: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Urine (34.4%), NA (9.4%), Blood and throat swab and urine (6.2%), Throat swab and urine (6.2%), Brain (6.2%), Oropharyngeal swab (3.1%), Kidney and spleen (3.1%), Blood and csf (3.1%), Kidney and liver and spleen (3.1%), Oropharyngeal swab and urine (3.1%), Liver and lung and spleen and throat swab (3.1%), Liver and spleen (3.1%), Kidney and liver (3.1%), Csf and throat swab and urine (3.1%), Lung (3.1%), Csf and oropharyngeal swab and urine (3.1%), Blood and lung (3.1%)
+NA (53.1%), Urine (9.4%), Blood and throat swab and urine (6.2%), Brain (6.2%), Oropharyngeal swab (3.1%), Blood and csf (3.1%), Throat swab and urine (3.1%), Liver and lung and spleen and throat swab (3.1%), Csf and throat swab and urine (3.1%), Lung (3.1%), Csf and oropharyngeal swab and urine (3.1%), Blood and lung (3.1%)
 
 ================================================================================
 Median of Sample Year

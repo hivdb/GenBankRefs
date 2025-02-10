@@ -166,7 +166,13 @@ def local_align_genes(seq, description, virus_name):
 
 def summarize_genbank_by_seq(df, genes_df):
     summarize_report = []
+    # print(df.columns)
+    # drop nonempty IsolatType - empty means clinical, kept
+    df = df[df["IsolateType"].isna() | (df["IsolateType"] == "")]
 
+    section = [f'Total after dropping non-clinical: {df.shape[0]}']
+    summarize_report.append(section)
+    
     section = ['Summarize Genbank By Seq']
     summarize_report.append(section)
 
