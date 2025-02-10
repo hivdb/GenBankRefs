@@ -193,16 +193,22 @@ def get_additional_host_data(features_df):
 
         if any(key in specimen for key in human_host) or any(key in host for key in human_host):
             updated_host.append("Human")
+            found_specimen = False
             # Only get specimen for human hosts
             for key in blood_specimen:
                 if key in specimen:
                     updated_specimen.append("Blood")
-            for key in other_specimen: # Append actual specimen
+                    found_specimen = True
+            for key in other_specimen:
                 if key in specimen:
                     updated_specimen.append(key)
+                    found_specimen = True
             for key in organs:
                 if key in specimen:
                     updated_specimen.append("Organs")
+                    found_specimen = True
+            if not found_specimen:
+                updated_specimen.append("Human")
 
         # if animal, simply append host name to specimen, ticks special case
         for a in animal_host:
