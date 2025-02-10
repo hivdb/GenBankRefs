@@ -71,6 +71,13 @@ def using_ai_match(virus, genbank_unmatched):
         You are also skilled in systematic review methods,
         capable of synthesizing research findings
         and providing evidence-based insights.
+        For every GenBank submission set provided, try your best to find
+        the matching paper. Do not give steps to find the paper, but directly provide
+        the pmid, or when it's not in pubmed, provide the doi or the website by
+        searching on the web. Do not give recommendations like look in the journal.
+        Even if the entry says "Unpublished", it could be published recently,
+        so give a result regardless.
+        Do not consider asking authors as a possible solution.
     """
 
     cache_file = virus.output_excel_dir / 'AI_cache.csv'
