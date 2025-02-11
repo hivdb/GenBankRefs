@@ -17,7 +17,7 @@ def gen_chord_diagram(virus_obj, combined, features):
 
     features = features[
         features['Accession'].isin(list(accessions)) &
-        (features['IsolateType'] == '')
+        (features['NonClinical'] == '')
     ]
 
     columns = [
@@ -355,6 +355,7 @@ def draw_figure(save_path, df, total, ordering):
 
     df = pd.DataFrame(df)
     # print(df)
+    # print(ordering)
 
     from d3blocks import D3Blocks
     d3 = D3Blocks()

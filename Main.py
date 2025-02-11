@@ -30,24 +30,22 @@ def main():
     virus_obj = load_virus_obj(virus)
     run_blast = select_run_blast()
 
-    references, features, genes, excludes = parse_genbank_records(
+    references, features, genes, nonvirus, nonclinical = parse_genbank_records(
         virus_obj.genbank_file)
 
-    excludes = pd.DataFrame(excludes)
+    excludes = pd.DataFrame(nonvirus)
     print("Number of excluded records:", len(excludes))
-    excludes.to_excel(str(virus_obj.exclude_seq_file), index=False)
-
-    print("Number of GenBank References:", len(references))
-    print('Number of GenBank records:', len(features))
+    print('Number of non clinical records:', len(nonclinical))
+    # excludes.to_excel(str(virus_obj.exclude_seq_file), index=False)
 
     genes = process_gene_list(genes, run_blast, virus_obj)
     print("Number of Genes:", len(genes))
 
+    print('Number of GenBank records:', len(features))
     features = process_features(features, genes, virus_obj)
 
+    print("Number of GenBank References:", len(references))
     references = process_references(references)
-
-    print("Number of original entries: ", len(references))
 
     references = aggregate_references(references, virus_obj)
 
@@ -129,7 +127,7 @@ def update_genes_by_features(genes, features):
         genes.at[i, 'Host'] = feature['Host'].tolist()[0]
         genes.at[i, 'IsolateYear'] = feature['IsolateYear'].tolist()[0]
         genes.at[i, 'RecordYear'] = feature['RecordYear'].tolist()[0]
-        genes.at[i, 'IsolateType'] = feature['IsolateType'].tolist()[0]
+        genes.at[i, 'NonClinical'] = feature['NonClinical'].tolist()[0]
         genes.at[i, 'isolate_source'] = feature['isolate_source'].tolist()[0]
         genes.at[i, 'Country'] = feature['Country'].tolist()[0]
 

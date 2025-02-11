@@ -31,7 +31,7 @@ def create_tables(db_file):
             "Specimen" TEXT,
             "IsolateName" TEXT,
             "SeqLength" INTEGER,
-            "IsolateType" TEXT
+            "NonClinical" TEXT
         )
     """)
 
@@ -147,26 +147,26 @@ def create_database(virus_obj, references, features, genes, pubmed,
     features['Specimen'] = features['isolate_source']
     features['Virus'] = features['organism']
 
-    if 'IsolateType' not in features.columns:
-        features['IsolateType'] = ""
+    if 'NonClinical' not in features.columns:
+        features['NonClinical'] = ""
 
     tblIsolates = features[[
         'Accession', 'Country', 'RecordYear', 'IsolateYear', 'Host',
-        'Specimen', 'IsolateName', 'SeqLength', 'IsolateType'
+        'Specimen', 'IsolateName', 'SeqLength', 'NonClinical'
     ]]
 
     for i, row in tblIsolates.iterrows():
         tblIsolates.at[i, 'Host'] = row['Host'] if row['Host'] else (
-            'Not applicable' if row['IsolateType'] else 'Not available')
+            'Not applicable' if row['NonClinical'] else 'Not available')
         tblIsolates.at[i,
                        'Specimen'] = row['Specimen'] if row['Specimen'] else (
                            'Not applicable'
-                           if row['IsolateType'] else 'Not available')
+                           if row['NonClinical'] else 'Not available')
         tblIsolates.at[
             i, 'IsolateYear'] = row['IsolateYear'] if row['IsolateYear'] else (
-                'Not applicable' if row['IsolateType'] else 'Not available')
+                'Not applicable' if row['NonClinical'] else 'Not available')
         tblIsolates.at[i, 'Country'] = row['Country'] if row['Country'] else (
-            'Not applicable' if row['IsolateType'] else 'Not available')
+            'Not applicable' if row['NonClinical'] else 'Not available')
 
     fill_in_table(virus_obj.DB_FILE, 'tblIsolates', tblIsolates)
 
@@ -268,7 +268,7 @@ def creat_views(db_file):
         FROM
             tblIsolates
         WHERE
-            IsolateType IS NOT ""
+            NonClinical IS NOT ""
     ;
     """
     run_create_view(db_file, vNonClinicalIsolate)
@@ -481,7 +481,7 @@ def creat_views(db_file):
         *
     FROM tblIsolates
     WHERE
-        IsolateType IS ""
+        NonClinical IS ""
     AND
         (
         Host IN
@@ -607,7 +607,7 @@ def creat_views(db_file):
             WHEN Country LIKE '%*' THEN 'Not Available'
             ELSE Country
         END AS Country,
-        IsolateType
+        NonClinical
     FROM tblIsolates;
     """
     run_create_view(db_file, vIsolateOrig)
@@ -622,7 +622,7 @@ def creat_views(db_file):
             JOIN tblGBRefLink ON vIsolateOrig.Accession = tblGBRefLink.Accession
             JOIN vGPMatched ON tblGBRefLink.RefID = vGPMatched.RefID
         WHERE
-            IsolateType == ''
+            NonClinical == ''
     )
     SELECT DISTINCT
         Host,

@@ -29,9 +29,21 @@ def parse_genbank_records(genbank_file):
     reference_list = []
     feature_list = []
     gene_list = []
-    excluded_list = []
+    nonvirus_list = []
+    nonclinical_list = []
 
     # total_record = 0
+
+    exclusion_keywords = [
+        'patent',
+        'FDA',
+        'Modified Microbial Nucleic Acid',
+        'CONSTRUCT',
+        'COMPOSITIONS',
+        'monoclonal antibody',
+        'MICROARRAY',
+        'conformation'
+    ]
 
     with open(genbank_file, "r") as handle:
         for record in SeqIO.parse(handle, "genbank"):
@@ -42,7 +54,17 @@ def parse_genbank_records(genbank_file):
             taxonomy = record.annotations['taxonomy']
             if len(taxonomy) == 0 or taxonomy[0] != 'Viruses':
                 excluded_seq_data = filter_by_taxonomy(record)
-                excluded_list.append(excluded_seq_data)
+                nonvirus_list.append(excluded_seq_data)
+                continue
+
+            # Check if the description contains any exclusion keyword
+            description = record.description.lower()
+            should_exclude = any(
+                keyword.lower() in description
+                for keyword in exclusion_keywords
+            )
+            if should_exclude:
+                nonclinical_list.append(record)
                 continue
 
             refs, features, genes = process_one_record(record)
@@ -54,7 +76,9 @@ def parse_genbank_records(genbank_file):
         reference_list,
         feature_list,
         gene_list,
-        excluded_list)
+        nonvirus_list,
+        nonclinical_list
+        )
 
 
 def process_one_record(record):
@@ -206,6 +230,10 @@ def process_features(feature_list, genes, virus_obj):
         str(virus_obj.genbank_feature_check_file), index=False)
     features_df = pd.read_excel(
         str(virus_obj.genbank_feature_check_file)).fillna('')
+
+    # drop non clinical isolate
+    features_df = features_df[
+        features_df["NonClinical"].isna() | (features_df["NonClinical"] == "")]
 
     return features_df
 

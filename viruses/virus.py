@@ -214,23 +214,24 @@ class Virus:
 
         features_df['isolate_source'] = features_df['isolate_source'].str.capitalize()
 
-        for i, row in features_df.iterrows():
-            if 'patent' in row['Description'].lower():
-                features_df.at[i, 'IsolateType'] = 'patent'
-            if 'FDA' in row['Description'].upper():
-                features_df.at[i, 'IsolateType'] = 'patent'
-            if 'Modified Microbial Nucleic Acid' in row['Description']:
-                features_df.at[i, 'IsolateType'] = 'Modified Microbial Nucleic Acid'
-            if 'CONSTRUCT' in row['Description'].upper():
-                features_df.at[i, 'IsolateType'] = 'CONSTRUCT'
-            if 'COMPOSITIONS' in row['Description'].upper():
-                features_df.at[i, 'IsolateType'] = 'CONSTRUCT'
-            if 'monoclonal antibody' in row['Description'].lower():
-                features_df.at[i, 'IsolateType'] = 'antibody'
-            if 'MICROARRAY' in row['Description'].upper():
-                features_df.at[i, 'IsolateType'] = 'MICROARRAY'
-            if 'conformation' in row['Description'].lower():
-                features_df.at[i, 'IsolateType'] = 'conformation'
+        features_df['NonClinical'] = ''
+        # for i, row in features_df.iterrows():
+        #     if 'patent' in row['Description'].lower():
+        #         features_df.at[i, 'NonClinical'] = 'patent'
+        #     if 'FDA' in row['Description'].upper():
+        #         features_df.at[i, 'NonClinical'] = 'patent'
+        #     if 'Modified Microbial Nucleic Acid' in row['Description']:
+        #         features_df.at[i, 'NonClinical'] = 'Modified Microbial Nucleic Acid'
+        #     if 'CONSTRUCT' in row['Description'].upper():
+        #         features_df.at[i, 'NonClinical'] = 'CONSTRUCT'
+        #     if 'COMPOSITIONS' in row['Description'].upper():
+        #         features_df.at[i, 'NonClinical'] = 'CONSTRUCT'
+        #     if 'monoclonal antibody' in row['Description'].lower():
+        #         features_df.at[i, 'NonClinical'] = 'antibody'
+        #     if 'MICROARRAY' in row['Description'].upper():
+        #         features_df.at[i, 'NonClinical'] = 'MICROARRAY'
+        #     if 'conformation' in row['Description'].lower():
+        #         features_df.at[i, 'NonClinical'] = 'conformation'
 
         return features_df
 
@@ -319,7 +320,7 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
             if (j['Gene'] != gene_name):
                 continue
 
-            if j['IsolateType']:
+            if j['NonClinical']:
                 continue
 
             if (int(j['NA_length']) < (len(ref_na) * coverage_pcnt)):

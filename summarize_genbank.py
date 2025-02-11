@@ -113,7 +113,7 @@ def local_align_genes(seq, description, virus_name):
 
     matched_genes = []
     for gene, ref_seq in gene_dict.items():
-        align_score = pairwise2.align.localxx(seq, ref_seq, score_only=True)  
+        align_score = pairwise2.align.localxx(seq, ref_seq, score_only=True)
         if align_score > len(ref_seq) * 0.8:  # 80% similarity threshold
             matched_genes.append(gene)
 
@@ -167,10 +167,7 @@ def local_align_genes(seq, description, virus_name):
 def summarize_genbank_by_seq(df, genes_df):
     summarize_report = []
 
-    # drop nonempty IsolatType - empty means clinical, kept
-    df = df[df["IsolateType"].isna() | (df["IsolateType"] == "")]
-
-    virus = df.at[0, 'organism']
+    virus = df.iloc[0]['organism']
     if virus == 'CCHF':
         # filter out non_CCHF
         df = df[df['Description'].str.contains('orthonairovirus|crimean-congo', case=False, na=False)]
@@ -316,7 +313,7 @@ def summarize_genbank_by_seq(df, genes_df):
     counts_formatted_combined, percentages_formatted_combined = format_counts_and_percentages(combined_genes, total=final_merged_df.shape[0])
 
     # # Check merge is correct, isolateName often the same for different isolates - incorrect for Nipah
-    # merged_groups = df_to_merge.groupby(['country_region', 'collection_date', 'Host', 'IsolateName']).filter(lambda x: len(x) > 1)  
+    # merged_groups = df_to_merge.groupby(['country_region', 'collection_date', 'Host', 'IsolateName']).filter(lambda x: len(x) > 1)
 
     section.append(f"Counts genes after combining isolate:\n{counts_formatted_combined}\n")
     section.append(f"Percentages genes after combining isolate:\n{percentages_formatted_combined}\n")
