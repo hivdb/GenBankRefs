@@ -375,7 +375,7 @@ def create_binnned_year(years):
 
 
 def count_rev_sorter(value_count_list):
-    return sorted(value_count_list, key=lambda x: int(x[-1]), reverse=True)
+    return sorted(value_count_list, key=lambda x: x[-1], reverse=True)
 
 
 def alphabetical_sorter(value_count_list):

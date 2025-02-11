@@ -171,10 +171,18 @@ def match(virus, pubmed, genbank, logger):
     paired_pub_id_ref_id = []
     for _, paired_pubmed, ref_id, _ in genbank_match_list:
         for _, p_pubmed in paired_pubmed.iterrows():
-            paired_pub_id_ref_id.append({
-                'RefID': ref_id,
-                'PubID': p_pubmed['PubID']
-            })
+            paired_pub_id_ref_id.append(
+                (ref_id, p_pubmed['PubID'])
+            )
+
+    paired_pub_id_ref_id = [
+        {
+            'RefID': ref_id,
+            'PubID': pub_id
+        }
+        for ref_id, pub_id in sorted(
+            list(set(paired_pub_id_ref_id)))
+    ]
     paired_pub_id_ref_id.sort(key=itemgetter('RefID', 'PubID'))
     pd.DataFrame(paired_pub_id_ref_id).to_csv(virus.paired_pub_id_ref_id_track, index=False)
 

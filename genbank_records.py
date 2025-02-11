@@ -63,11 +63,20 @@ def parse_genbank_records(genbank_file):
                 keyword.lower() in description
                 for keyword in exclusion_keywords
             )
+
+            refs, features, genes = process_one_record(record)
+
+            if not should_exclude:
+                if all(
+                    'patent' in r['Journal'].lower()
+                    for r in refs
+                ):
+                    should_exclude = True
+
             if should_exclude:
                 nonclinical_list.append(record)
                 continue
 
-            refs, features, genes = process_one_record(record)
             reference_list.extend(refs)
             feature_list.append(features)
             gene_list.extend(genes)

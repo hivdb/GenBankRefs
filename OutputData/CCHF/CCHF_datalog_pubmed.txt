@@ -36,7 +36,7 @@ Counts:
 
 --------------------------------------------------------------------------------
 Percentages:
-2021 (9.2%), 2016 (7.7%), 2004 (6.1%), 2013 (6.6%), 2017 (6.6%), 2014 (5.6%), 2020 (5.1%), 2002 (4.1%), 2010 (4.1%), 2012 (4.6%), 2018 (4.6%), 2022 (4.6%), 2023 (4.6%), 2005 (3.6%), 2006 (3.1%), 2011 (3.6%), 2019 (3.6%), 2024 (3.1%), 2009 (2.6%), 2015 (2.6%), 1997 (1.0%), 2003 (1.0%), 2008 (1.0%), 1992 (0.5%), 1996 (0.5%), 2001 (0.5%)
+2021 (9.2%), 2016 (7.7%), 2013 (6.6%), 2017 (6.6%), 2004 (6.1%), 2014 (5.6%), 2020 (5.1%), 2012 (4.6%), 2018 (4.6%), 2022 (4.6%), 2023 (4.6%), 2002 (4.1%), 2010 (4.1%), 2005 (3.6%), 2011 (3.6%), 2019 (3.6%), 2006 (3.1%), 2024 (3.1%), 2009 (2.6%), 2015 (2.6%), 1997 (1.0%), 2003 (1.0%), 2008 (1.0%), 1992 (0.5%), 1996 (0.5%), 2001 (0.5%)
 
 --------------------------------------------------------------------------------
 1990-1999 (4) (2.0)%, 2000-2009 (43) (21.9)%, 2010-2019 (97) (49.5)%, 2020-2029 (52) (26.5)%
@@ -97,7 +97,7 @@ Rodent and Sheep and Ticks: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Human (34.7%), Ticks (13.3%), Human and Ticks (11.7%), Sheep and Ticks (3.1%), NA (2.6%), Cattle and Ticks (2.6%), Goat and Sheep and Ticks (2.0%), Camel and Ticks (2.0%), Livestock and Ticks (2.0%), Cattle and Goat and Ticks (1.5%), Animal and Ticks (1.0%), Goat and Human and Sheep and Ticks (1.5%), Cattle and Goat and Sheep and Ticks (1.0%), Animal and Human (1.0%), Human and Livestock and Ticks (1.0%), Cattle and Goat and Livestock and Sheep and Ticks (1.0%), Cattle and Sheep and Ticks (1.0%), Human and Rodent and Ticks (0.5%), sw13 cells (0.5%), Human and Sheep and Ticks (0.5%), Deer and Ticks (0.5%), Animal and Human and Ticks (0.5%), Sheep (0.5%), Rodent and Ticks (0.5%), Cattle and Goat and Human and Livestock and Sheep and Ticks (0.5%), Cow and Goat and Sheep and Ticks (0.5%), Animal and Cattle and Goat and Livestock and Sheep and Ticks (0.5%), Mouse (0.5%), Boar and Cattle and Goat and Hare and Ticks (0.5%), Cow and Goat and Livestock and Sheep and Ticks (0.5%), cell culture (0.5%), Goat and Ticks (0.5%), Cattle and Human and Ticks (0.5%), Cattle and Deer and Ticks (0.5%), Buffalo and Ticks (0.5%), lab strain (0.5%), Boar and Deer and Ticks (0.5%), Cow and Ticks (0.5%), Camel (0.5%), Monkey and Ticks (0.5%), Animal and Buffalo and Cattle and Goat and Sheep and Ticks (0.5%), Camel and Cattle and Ticks (0.5%), Camel and Sheep and Ticks (0.5%), Boar and Cattle and Deer and Goat and Livestock and Sheep and Ticks (0.5%), vero cell (0.5%), Livestock and Rodent and Sheep (0.5%), Cattle and Livestock and Ticks (0.5%), Serow (0.5%), Human and Rodent (0.5%), Rodent and Sheep and Ticks (0.5%)
+Human (34.7%), Ticks (13.3%), Human and Ticks (11.7%), Sheep and Ticks (3.1%), NA (2.6%), Cattle and Ticks (2.6%), Goat and Sheep and Ticks (2.0%), Camel and Ticks (2.0%), Livestock and Ticks (2.0%), Cattle and Goat and Ticks (1.5%), Goat and Human and Sheep and Ticks (1.5%), Animal and Ticks (1.0%), Cattle and Goat and Sheep and Ticks (1.0%), Animal and Human (1.0%), Human and Livestock and Ticks (1.0%), Cattle and Goat and Livestock and Sheep and Ticks (1.0%), Cattle and Sheep and Ticks (1.0%), Human and Rodent and Ticks (0.5%), sw13 cells (0.5%), Human and Sheep and Ticks (0.5%), Deer and Ticks (0.5%), Animal and Human and Ticks (0.5%), Sheep (0.5%), Rodent and Ticks (0.5%), Cattle and Goat and Human and Livestock and Sheep and Ticks (0.5%), Cow and Goat and Sheep and Ticks (0.5%), Animal and Cattle and Goat and Livestock and Sheep and Ticks (0.5%), Mouse (0.5%), Boar and Cattle and Goat and Hare and Ticks (0.5%), Cow and Goat and Livestock and Sheep and Ticks (0.5%), cell culture (0.5%), Goat and Ticks (0.5%), Cattle and Human and Ticks (0.5%), Cattle and Deer and Ticks (0.5%), Buffalo and Ticks (0.5%), lab strain (0.5%), Boar and Deer and Ticks (0.5%), Cow and Ticks (0.5%), Camel (0.5%), Monkey and Ticks (0.5%), Animal and Buffalo and Cattle and Goat and Sheep and Ticks (0.5%), Camel and Cattle and Ticks (0.5%), Camel and Sheep and Ticks (0.5%), Boar and Cattle and Deer and Goat and Livestock and Sheep and Ticks (0.5%), vero cell (0.5%), Livestock and Rodent and Sheep (0.5%), Cattle and Livestock and Ticks (0.5%), Serow (0.5%), Human and Rodent (0.5%), Rodent and Sheep and Ticks (0.5%)
 
 ================================================================================
 Specimen
@@ -118,7 +118,7 @@ Animals and brain: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Blood (30.6%), Animals and ticks (28.6%), Ticks (16.3%), NA (8.7%), Ticks and blood (7.7%), Animals and ticks and blood (2.0%), Animals (2.6%), Animals and ticks and brain (1.0%), Animals and blood (1.0%), Ticks and brain (0.5%), Ticks and blood and spleen (0.5%), Animals and brain (0.5%)
+Blood (30.6%), Animals and ticks (28.6%), Ticks (16.3%), NA (8.7%), Ticks and blood (7.7%), Animals (2.6%), Animals and ticks and blood (2.0%), Animals and ticks and brain (1.0%), Animals and blood (1.0%), Ticks and brain (0.5%), Ticks and blood and spleen (0.5%), Animals and brain (0.5%)
 
 ================================================================================
 Median of Sample Year
@@ -168,7 +168,7 @@ NA: 15
 
 --------------------------------------------------------------------------------
 Percentages:
-NA (7.7%), 2012 (7.7%), 2014 (6.1%), 2016 (5.1%), 2018 (5.1%), 2008 (4.6%), 2010 (4.1%), 2015 (4.6%), 2017 (4.6%), 2019 (4.1%), 2002 (3.1%), 2007 (3.1%), 2009 (3.6%), 2020 (3.6%), 1990 (2.0%), 2000 (2.6%), 2001 (2.0%), 2022 (2.0%), 2005 (2.0%), 2013 (2.0%), 2021 (2.6%), 1993 (1.5%), 1994 (1.0%), 1974 (1.0%), 1978 (1.0%), 1995 (1.5%), 1992 (1.5%), 2006 (1.5%), 2004 (1.5%), 2011 (1.0%), 1979 (1.0%), 1971 (0.5%), 1966 (0.5%), 1976 (0.5%), 1973 (0.5%), 1980 (0.5%), 1975 (0.5%), 1981 (0.5%), 1982 (0.5%), 1970 (0.5%), 1996 (0.5%)
+NA (7.7%), 2012 (7.7%), 2014 (6.1%), 2016 (5.1%), 2018 (5.1%), 2008 (4.6%), 2015 (4.6%), 2017 (4.6%), 2010 (4.1%), 2019 (4.1%), 2009 (3.6%), 2020 (3.6%), 2002 (3.1%), 2007 (3.1%), 2000 (2.6%), 2021 (2.6%), 1990 (2.0%), 2001 (2.0%), 2022 (2.0%), 2005 (2.0%), 2013 (2.0%), 1993 (1.5%), 1995 (1.5%), 1992 (1.5%), 2006 (1.5%), 2004 (1.5%), 1994 (1.0%), 1974 (1.0%), 1978 (1.0%), 2011 (1.0%), 1979 (1.0%), 1971 (0.5%), 1966 (0.5%), 1976 (0.5%), 1973 (0.5%), 1980 (0.5%), 1975 (0.5%), 1981 (0.5%), 1982 (0.5%), 1970 (0.5%), 1996 (0.5%)
 
 --------------------------------------------------------------------------------
 Median IQR 2002.0 2012.0 2016.0
@@ -238,7 +238,7 @@ Hungary: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Turkey (11.7%), Iran (9.7%), China (8.2%), Multinational (7.7%), Spain (5.1%), Kosovo (4.1%), NA (4.1%), Bulgaria (4.1%), Pakistan (4.1%), Russia (3.6%), Greece (3.1%), Albania (2.0%), India (2.0%), Uganda (2.6%), Uae (1.0%), Senegal (1.5%), Nigeria (1.0%), Tajikistan (1.5%), Afghanistan (1.5%), Sudan (1.5%), Kazakhstan (1.0%), Kenya (1.0%), Mauritania (1.0%), China, Pakistan (0.5%), Soamalia, Usa (0.5%), Nigeria, Pakistan (0.5%), Russia, Tajikistan (0.5%), Iraq, Pakistan, Uzbekistan (0.5%), Russia, Tajikista (0.5%), Namibia, Pakistan, South africa (0.5%), Namibia, Pakistan, Southern africa (0.5%), Drc (0.5%), Somalia, Sudan (0.5%), Pakistan and afghanistan (0.5%), Syria and turkey (0.5%), Mali (0.5%), South africa
+Turkey (11.7%), Iran (9.7%), China (8.2%), Multinational (7.7%), Spain (5.1%), Kosovo (4.1%), NA (4.1%), Bulgaria (4.1%), Pakistan (4.1%), Russia (3.6%), Greece (3.1%), Uganda (2.6%), Albania (2.0%), India (2.0%), Senegal (1.5%), Tajikistan (1.5%), Afghanistan (1.5%), Sudan (1.5%), Uae (1.0%), Nigeria (1.0%), Kazakhstan (1.0%), Kenya (1.0%), Mauritania (1.0%), China, Pakistan (0.5%), Soamalia, Usa (0.5%), Nigeria, Pakistan (0.5%), Russia, Tajikistan (0.5%), Iraq, Pakistan, Uzbekistan (0.5%), Russia, Tajikista (0.5%), Namibia, Pakistan, South africa (0.5%), Namibia, Pakistan, Southern africa (0.5%), Drc (0.5%), Somalia, Sudan (0.5%), Pakistan and afghanistan (0.5%), Syria and turkey (0.5%), Mali (0.5%), South africa
 namibia (0.5%), Afghanistan, Pakistan (0.5%), Algeria (0.5%), Japan (0.5%), Ethiopia, Somalia, Unknown (0.5%), Namibia, South africa, Turkey (0.5%), South russia (0.5%), Crimea (0.5%), Mongolia (0.5%), Oman (0.5%), Italy (0.5%), Zambia (0.5%), Saudi arabia (0.5%), United arab emirates (0.5%), Ethiopia, Somalia, Sudan (0.5%), Balkan peninsula (0.5%), Cameroon (0.5%), Sanegal (0.5%), Ghana (0.5%), Hungary (0.5%)
 
 --------------------------------------------------------------------------------
