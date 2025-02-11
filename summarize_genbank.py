@@ -166,13 +166,18 @@ def local_align_genes(seq, description, virus_name):
 
 def summarize_genbank_by_seq(df, genes_df):
     summarize_report = []
-    # print(df.columns)
+
     # drop nonempty IsolatType - empty means clinical, kept
     df = df[df["IsolateType"].isna() | (df["IsolateType"] == "")]
 
-    section = [f'Total after dropping non-clinical: {df.shape[0]}']
+    virus = df.at[0, 'organism']
+    if virus == 'CCHF':
+        # filter out non_CCHF
+        df = df[df['Description'].str.contains('orthonairovirus|crimean-congo', case=False, na=False)]
+
+    section = [f'Total after dropping non-clinical and non_virus: {df.shape[0]}']
     summarize_report.append(section)
-    
+
     section = ['Summarize Genbank By Seq']
     summarize_report.append(section)
 
@@ -236,7 +241,6 @@ def summarize_genbank_by_seq(df, genes_df):
 
     section = ['Genes']
 
-    virus = df.at[0, 'organism']
     # align sequences where gene is empty to get gene
     for index, row in df.iterrows():
         if row['Genes'] == "": # if we comment this out, more accurate, only detect genes present in seq, currently has dup
@@ -271,13 +275,35 @@ def summarize_genbank_by_seq(df, genes_df):
     # Filter out rows where "IsolateName" is not empty and perform merging
     df_to_merge = df[df['IsolateName'] != ""].copy()
 
-    merged_df = (df_to_merge.groupby(['country_region', 'collection_date', 'Host', 'IsolateName'], as_index=False)
-               .agg({'Genes': lambda x: ', '.join(sorted(set(g.strip() for v in x for g in v.split(','))))})
-            )
+
+    # Count occurrences of each group
+    group_counts = df_to_merge.groupby(['country_region', 'collection_date', 'Host', 'IsolateName']).size().reset_index(name='count')
+
+    # Separate groups: ones with <= 3 occurrences (to merge) and ones with > 3 (to keep separate, not merge)
+    valid_groups = group_counts[group_counts['count'] <= 3].drop(columns=['count'])
+    invalid_groups = group_counts[group_counts['count'] > 3].drop(columns=['count'])
+
+    # Process valid groups (merge)
+    filtered_df = df_to_merge.merge(valid_groups, on=['country_region', 'collection_date', 'Host', 'IsolateName'])
+    merged_df = (filtered_df.groupby(['country_region', 'collection_date', 'Host', 'IsolateName'], as_index=False)
+             .agg({
+                 'Genes': lambda x: ', '.join(sorted(set(g.strip() for v in x for g in v.split(',')))),
+                 'Accession': lambda x: ', '.join(sorted(set(x))),  # Combine Accessions
+                 'cds': lambda x: ', '.join(sorted(set(x))),  # Combine cds
+                 'isolate_source2': lambda x: ', '.join(sorted(set(x))),
+                 **{col: 'first' for col in df_to_merge.columns if col not in ['Description', 'record_date', 'organism', 'segment_source',]}  # Keep first value
+             })
+           )
+    # Keep invalid groups as they are
+    invalid_df = df_to_merge.merge(invalid_groups, on=['country_region', 'collection_date', 'Host', 'IsolateName'])
+
+    # Combine both datasets
+    final_df = pd.concat([merged_df, invalid_df], ignore_index=True)
 
     # Concatenate merged rows with non-merged rows
-    final_merged_df = pd.concat([merged_df, df_no_merge], ignore_index=True)
+    final_merged_df = pd.concat([final_df, df_no_merge], ignore_index=True)
     # print(df.shape[0], final_merged_df.shape[0])
+    final_merged_df.to_excel("tmp_gene_after.xlsx")
 
     combined_num_gene_counts = final_merged_df.loc[final_merged_df['Genes'] != 'NA', 'Genes'].apply(lambda x: len(set(x.split(', '))) if isinstance(x, str) else 0)
     combined_num_gene_distribution = Counter(combined_num_gene_counts)

@@ -33,27 +33,8 @@ def parse_genbank_records(genbank_file):
 
     # total_record = 0
 
-    exclusion_keywords = [
-        'patent',
-        'FDA',
-        'Modified Microbial Nucleic Acid',
-        'CONSTRUCT',
-        'COMPOSITIONS',
-        'monoclonal antibody',
-        'MICROARRAY',
-        'conformation'
-    ]
-
     with open(genbank_file, "r") as handle:
         for record in SeqIO.parse(handle, "genbank"):
-
-            description = record.description.lower()
-
-            # Check if the description contains any exclusion keyword
-            should_exclude = any(
-                keyword.lower() in description for keyword in exclusion_keywords
-            )
-
             # total_record += 1
             # if total_record % 10000 == 0:
             #     print(total_record)
