@@ -42,7 +42,8 @@ def parse_genbank_records(genbank_file):
         'COMPOSITIONS',
         'monoclonal antibody',
         'MICROARRAY',
-        'conformation'
+        'conformation',
+        # 'Chain',
     ]
 
     with open(genbank_file, "r") as handle:
@@ -66,6 +67,8 @@ def parse_genbank_records(genbank_file):
 
             refs, features, genes = process_one_record(record)
 
+            # if 'MAG' in record.annotations['keywords']:
+            #     should_exclude = True
             if not should_exclude:
                 if all(
                     'patent' in r['Journal'].lower()
@@ -251,10 +254,10 @@ def process_gene_list(gene_list, run_blast, virus_obj):
     if run_blast == 1:
         virus_obj.build_blast_db()
 
-        gene_list = pooled_blast_genes(gene_list, virus_obj)
+        gene_list2 = pooled_blast_genes(gene_list, virus_obj)
         additional_gene_list = detect_additional_genes(gene_list, virus_obj)
 
-        gene_list += additional_gene_list
+        gene_list = gene_list2 + additional_gene_list
         gene_list.sort(key=itemgetter('Accession', 'Gene'))
 
         gene_df = pd.DataFrame(gene_list)

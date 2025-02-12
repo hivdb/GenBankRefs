@@ -120,9 +120,9 @@ def perform_blast(acc, order, query_seq, db_name, func, blast_name):
             _del = 0 if len(seq) >= len(seq) else len(seq_cut) - len(seq)
 
             sense = (
-                'pos'
+                'positive'
                 if hsp.sbjct_end >= hsp.sbjct_start
-                else 'neg'
+                else 'negative'
             )
 
             trim_length = len(query_seq) - len(seq)
@@ -169,7 +169,7 @@ def blast_gene(gene, blast_aa_db_path, blast_na_db_path):
     blast_na = [i for i in blast_na if i]
     blast_na = get_best_blast(blast_na, by='align_len')
 
-    if (not blast_na) or (blast_na['sense'] != 'pos'):
+    if (not blast_na) or (blast_na['sense'] != 'positive'):
         blast_na = perform_blast(
             gene['Accession'], gene['Order'],
             Seq(gene['NA_raw_seq']).reverse_complement(), blast_na_db_path,
@@ -289,7 +289,7 @@ def blast_isolates(isolate, isolate_genes, blast_na_db_path):
         if hit_name == 'genome':
             continue
 
-        if (blast['sense'] != 'pos'):
+        if (blast['sense'] != 'positive'):
             blast = perform_blast(
                 isolate['Accession'], isolate['Order'],
                 Seq(isolate['NA_raw_seq']).reverse_complement(), blast_na_db_path,

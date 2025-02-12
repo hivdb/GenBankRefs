@@ -114,7 +114,7 @@ def local_align_genes(seq, description, virus_name):
     matched_genes = []
     for gene, ref_seq in gene_dict.items():
         align_score = pairwise2.align.localms(seq, ref_seq, 2, -3, -5, -2, score_only=True)
-        if align_score > len(ref_seq) * 0.80:  # 80% similarity threshold
+        if align_score > len(ref_seq) * 0.85:  # 85% similarity threshold
             matched_genes.append(gene)
 
     genes = ', '.join(matched_genes) if matched_genes else 'NA'
@@ -303,9 +303,9 @@ def summarize_genbank_by_seq(df, genes_df):
             'Accession': lambda x: ', '.join(sorted(set(x.dropna()))),  # Combine unique Accessions
             'cds': lambda x: ', '.join(sorted(set(g.strip() for v in x.dropna() for g in v.split(',')))),  # Combine unique cds
             'isolate_source2': lambda x: ', '.join(sorted(set(x.dropna()))),
-            **{col: 'first' for col in valid_groups.columns if col not in 
-            ['country_region', 'collection_date', 'Host', 'IsolateName', 
-                'Genes', 'Accession', 'cds', 'isolate_source2', 
+            **{col: 'first' for col in valid_groups.columns if col not in
+            ['country_region', 'collection_date', 'Host', 'IsolateName',
+                'Genes', 'Accession', 'cds', 'isolate_source2',
                 'Description', 'record_date', 'organism', 'segment_source']}
         })
     )
