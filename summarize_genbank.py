@@ -103,7 +103,7 @@ def match_genes(pattern, description, gene_dict_keys):
     return ', '.join(matched_genes) if matched_genes else "NA"
 
 
-def local_align_genes(seq, description, virus_name):
+def local_align_genes(seq, description, virus_name, acc):
 
     gene_dict = {}  # Dictionary to store gene names and sequences
 
@@ -288,7 +288,7 @@ def summarize_genbank_by_seq(df, genes_df):
     df_to_merge = df[df['IsolateName'] != ""].copy()
     df_to_merge['count'] = df_to_merge.groupby(['Accession_prefix', 'country_region', 'collection_date', 'Host', 'IsolateName'])['Genes'].transform(lambda x: x.nunique())
 
-    
+
     # Separate groups: ones with <= 6 occurrences (to merge) and ones with > 6 (to keep separate, not merge)
     valid_groups = df_to_merge[(df_to_merge['count'] <= 6) & (df_to_merge['count'] > 1)]
     valid_groups.to_excel(f"OutputData/{virus}/excels/tmp_to_merge.xlsx")
@@ -306,9 +306,9 @@ def summarize_genbank_by_seq(df, genes_df):
             'Accession': lambda x: ', '.join(sorted(set(x.dropna()))),  # Combine unique Accessions
             'cds': lambda x: ', '.join(sorted(set(g.strip() for v in x.dropna() for g in v.split(',')))),  # Combine unique cds
             'isolate_source2': lambda x: ', '.join(sorted(set(x.dropna()))),
-            **{col: 'first' for col in valid_groups.columns if col not in 
-            ['country_region', 'collection_date', 'Host', 'IsolateName', 
-                'Genes', 'Accession', 'cds', 'isolate_source2', 
+            **{col: 'first' for col in valid_groups.columns if col not in
+            ['country_region', 'collection_date', 'Host', 'IsolateName',
+                'Genes', 'Accession', 'cds', 'isolate_source2',
                 'Description', 'record_date', 'organism', 'segment_source']}
         })
     )
