@@ -113,7 +113,7 @@ def local_align_genes(seq, description, virus_name):
 
     matched_genes = []
     for gene, ref_seq in gene_dict.items():
-        align_score = pairwise2.align.localxx(seq, ref_seq, score_only=True)
+        align_score = pairwise2.align.localms(seq, ref_seq, score_only=True)
         if align_score > len(ref_seq) * 0.85:  # 85% similarity threshold
             matched_genes.append(gene)
 
