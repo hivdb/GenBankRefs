@@ -42,7 +42,8 @@ def parse_genbank_records(genbank_file):
         'COMPOSITIONS',
         'monoclonal antibody',
         'MICROARRAY',
-        'conformation'
+        'conformation',
+        # 'Chain',
     ]
 
     with open(genbank_file, "r") as handle:
@@ -66,6 +67,8 @@ def parse_genbank_records(genbank_file):
 
             refs, features, genes = process_one_record(record)
 
+            # if 'MAG' in record.annotations['keywords']:
+            #     should_exclude = True
             if not should_exclude:
                 if all(
                     'patent' in r['Journal'].lower()
