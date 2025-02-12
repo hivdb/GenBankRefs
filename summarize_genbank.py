@@ -113,8 +113,8 @@ def local_align_genes(seq, description, virus_name):
 
     matched_genes = []
     for gene, ref_seq in gene_dict.items():
-        align_score = pairwise2.align.localms(seq, ref_seq, score_only=True)
-        if align_score > len(ref_seq) * 0.85:  # 85% similarity threshold
+        align_score = pairwise2.align.localms(seq, ref_seq, 2, -1, -2, -0.5, score_only=True)
+        if align_score > len(ref_seq) * 0.80:  # 80% similarity threshold
             matched_genes.append(gene)
 
     genes = ', '.join(matched_genes) if matched_genes else 'NA'
@@ -248,11 +248,9 @@ def summarize_genbank_by_seq(df, genes_df):
 
     # align sequences where gene is empty to get gene
     for index, row in df.iterrows():
-        # if row['Genes'] == "": # if we comment this out, more accurate, only detect genes present in seq, currently has dup
-            # should move to an earlier step when generating feature_df? some accessions not in genes_df
-            # combining by isolateName & removing dup solves the problem partially
-        new_genes = local_align_genes(row['Seq'], row['Description'], virus)
-        df.at[index, 'Genes'] = new_genes
+        if row['Genes'] == "": 
+            new_genes = local_align_genes(row['Seq'], row['Description'], virus)
+            df.at[index, 'Genes'] = new_genes
 
     df[df['Genes'] == 'NA'].to_excel(f"OutputData/{virus}/excels/gene_missing.xlsx")
     genes = Counter()
@@ -262,7 +260,6 @@ def summarize_genbank_by_seq(df, genes_df):
 
     total_count = df.shape[0]
     counts_formatted, percentages_formatted = format_counts_and_percentages(genes, total=total_count)
-
 
     # get number of entries that has 1 gene, 2 gene, 3 gene
     num_gene_counts = df.loc[df['Genes'] != 'NA', 'Genes'].apply(
@@ -288,7 +285,7 @@ def summarize_genbank_by_seq(df, genes_df):
     df_to_merge = df[df['IsolateName'] != ""].copy()
     df_to_merge['count'] = df_to_merge.groupby(['Accession_prefix', 'country_region', 'collection_date', 'Host', 'IsolateName'])['Genes'].transform(lambda x: x.nunique())
 
-    
+
     # Separate groups: ones with <= 6 occurrences (to merge) and ones with > 6 (to keep separate, not merge)
     valid_groups = df_to_merge[(df_to_merge['count'] <= 6) & (df_to_merge['count'] > 1)]
     valid_groups.to_excel(f"OutputData/{virus}/excels/tmp_to_merge.xlsx")
