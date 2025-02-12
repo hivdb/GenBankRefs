@@ -113,7 +113,7 @@ def local_align_genes(seq, description, virus_name):
 
     matched_genes = []
     for gene, ref_seq in gene_dict.items():
-        align_score = pairwise2.align.localms(seq, ref_seq, 2, -1, -2, -0.5, score_only=True)
+        align_score = pairwise2.align.localms(seq, ref_seq, 2, -3, -5, -2, score_only=True)
         if align_score > len(ref_seq) * 0.80:  # 80% similarity threshold
             matched_genes.append(gene)
 
@@ -144,7 +144,7 @@ def local_align_genes(seq, description, virus_name):
                 matched_genes.append("S")
             if 'glycoprotein' in description or "segment m" in description:
                 matched_genes.append("M")
-            if "rdrp" in description or 'rna polymerase' in description or 'segment L' in description:
+            if "rdrp" in description or 'rna polymerase' in description or 'segment L' in description or 'large segment' in description:
                 matched_genes.append("L")
 
         elif virus_name == 'Lassa':
@@ -258,7 +258,7 @@ def summarize_genbank_by_seq(df, genes_df):
         unique_genes = set(row.split(', '))
         genes.update(unique_genes)
 
-    total_count = df.shape[0]
+    total_count = df[df['Genes'] != 'NA'].shape[0]
     counts_formatted, percentages_formatted = format_counts_and_percentages(genes, total=total_count)
 
     # get number of entries that has 1 gene, 2 gene, 3 gene
@@ -316,17 +316,18 @@ def summarize_genbank_by_seq(df, genes_df):
     # print(df.shape[0], final_merged_df.shape[0])
     final_df.to_excel(f"OutputData/{virus}/excels/tmp_merge_after.xlsx")
 
+    total_count_after_na = final_df[final_df['Genes'] != 'NA'].shape[0]
     combined_num_gene_counts = final_df.loc[final_df['Genes'] != 'NA', 'Genes'].apply(
         lambda x: len(set(x.split(','))) if isinstance(x, str) else 0
     )
     combined_num_gene_distribution = Counter(combined_num_gene_counts)
-    combined_num_gene_distribution_f, combined_num_gene_percent_f = format_counts_and_percentages(combined_num_gene_distribution, total=final_df.shape[0])
+    combined_num_gene_distribution_f, combined_num_gene_percent_f = format_counts_and_percentages(combined_num_gene_distribution, total=total_count_after_na)
 
     combined_genes = Counter()
     for row in final_df['Genes']:
         unique_genes = set(row.split(', '))
         combined_genes.update(unique_genes)
-    counts_formatted_combined, percentages_formatted_combined = format_counts_and_percentages(combined_genes, total=final_df.shape[0])
+    counts_formatted_combined, percentages_formatted_combined = format_counts_and_percentages(combined_genes, total=total_count_after_na)
 
     # # Check merge is correct, isolateName often the same for different isolates - incorrect for Nipah
     # merged_groups = df_to_merge.groupby(['country_region', 'collection_date', 'Host', 'IsolateName']).filter(lambda x: len(x) > 1)
