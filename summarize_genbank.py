@@ -114,7 +114,7 @@ def local_align_genes(seq, description, virus_name):
     matched_genes = []
     for gene, ref_seq in gene_dict.items():
         align_score = pairwise2.align.localxx(seq, ref_seq, score_only=True)
-        if align_score > len(ref_seq) * 0.8:  # 80% similarity threshold
+        if align_score > len(ref_seq) * 0.85:  # 85% similarity threshold
             matched_genes.append(gene)
 
     genes = ', '.join(matched_genes) if matched_genes else 'NA'
@@ -139,12 +139,12 @@ def local_align_genes(seq, description, virus_name):
             if not ("orthonairovirus" in description or "crimean-congo" in description):
                 return genes
             # attempt matching by gene name in description
-            segment_s_keywords = ['nucleocapsid', 'nucleoprotein', 'segment: s', 'segment s']
+            segment_s_keywords = ['nucleocapsid', 'nucleoprotein', 'capsid','segment: s', 'segment s']
             if any(w in description for w in segment_s_keywords):
                 matched_genes.append("S")
             if 'glycoprotein' in description or "segment m" in description:
                 matched_genes.append("M")
-            if "rdrp" in description or 'rna polymerase' in description:
+            if "rdrp" in description or 'rna polymerase' in description or 'segment L' in description:
                 matched_genes.append("L")
 
         elif virus_name == 'Lassa':
@@ -158,6 +158,14 @@ def local_align_genes(seq, description, virus_name):
                 matched_genes.append("G")
             if 'matrix' in description or '(z)' in description:
                 matched_genes.append("Z")
+        elif virus_name == 'Nipah':
+            if "nucleocapsid" in description or "nucleoprotein" in description:
+                matched_genes.append("N")
+            if "phosphoprotein" in description or "P/V/M/C" in description:
+                matched_genes.append("P")
+            if "glycoprotein" in description:
+                matched_genes.append("G")
+
 
         genes = ', '.join(matched_genes) if matched_genes else 'NA'
 
@@ -240,11 +248,11 @@ def summarize_genbank_by_seq(df, genes_df):
 
     # align sequences where gene is empty to get gene
     for index, row in df.iterrows():
-        if row['Genes'] == "": # if we comment this out, more accurate, only detect genes present in seq, currently has dup
+        # if row['Genes'] == "": # if we comment this out, more accurate, only detect genes present in seq, currently has dup
             # should move to an earlier step when generating feature_df? some accessions not in genes_df
             # combining by isolateName & removing dup solves the problem partially
-            new_genes = local_align_genes(row['Seq'], row['Description'], virus)
-            df.at[index, 'Genes'] = new_genes
+        new_genes = local_align_genes(row['Seq'], row['Description'], virus)
+        df.at[index, 'Genes'] = new_genes
 
     df[df['Genes'] == 'NA'].to_excel(f"OutputData/{virus}/excels/gene_missing.xlsx")
     genes = Counter()
@@ -257,7 +265,9 @@ def summarize_genbank_by_seq(df, genes_df):
 
 
     # get number of entries that has 1 gene, 2 gene, 3 gene
-    num_gene_counts = df.loc[df['Genes'] != 'NA', 'Genes'].apply(lambda x: len(set(x.split(', '))) if isinstance(x, str) else 0)
+    num_gene_counts = df.loc[df['Genes'] != 'NA', 'Genes'].apply(
+        lambda x: len(set(x.split(','))) if isinstance(x, str) else 0
+    )
     num_gene_distribution = Counter(num_gene_counts)
     num_gene_distribution_f, num_gene_percent_f = format_counts_and_percentages(num_gene_distribution, total=total_count)
 
@@ -267,50 +277,59 @@ def summarize_genbank_by_seq(df, genes_df):
     section.append(f"Percentages # of genes:\n{num_gene_percent_f}\n")
 
     # Try to merge on isolateName, the fields should all be the same for same isolate
-    df_no_merge = df[df['IsolateName'] == ""].copy()
-
     # Filter out rows where "IsolateName" is not empty and perform merging
+    df.loc[:, 'Accession_prefix'] = df['Accession'].str[:5]
+    df_no_merge = df[df['IsolateName'] == ""].copy()
+    df_no_merge.to_excel(f"OutputData/{virus}/excels/tmp_not_merged.xlsx")
+
+    # Count occurrences of each group, if >3 don't merge
+    # maybe 6 for Nipah, 3 for cchf?
+    # Gene should also be unique
     df_to_merge = df[df['IsolateName'] != ""].copy()
+    df_to_merge['count'] = df_to_merge.groupby(['Accession_prefix', 'country_region', 'collection_date', 'Host', 'IsolateName'])['Genes'].transform(lambda x: x.nunique())
 
+    
+    # Separate groups: ones with <= 6 occurrences (to merge) and ones with > 6 (to keep separate, not merge)
+    valid_groups = df_to_merge[(df_to_merge['count'] <= 6) & (df_to_merge['count'] > 1)]
+    valid_groups.to_excel(f"OutputData/{virus}/excels/tmp_to_merge.xlsx")
+    invalid_groups = df_to_merge[(df_to_merge['count'] > 6) | (df_to_merge['count'] == 1)]
+    # Combine invalid groups back into df_no_merge
+    df_no_merge = pd.concat([df_no_merge, invalid_groups], ignore_index=True)
+    invalid_groups.to_excel(f"OutputData/{virus}/excels/tmp_not_merged_invalid.xlsx", index=False)
 
-    # Count occurrences of each group
-    group_counts = df_to_merge.groupby(['country_region', 'collection_date', 'Host', 'IsolateName']).size().reset_index(name='count')
+    # Merge the valid_groups back with the original DataFrame to retain all columns
 
-    # Separate groups: ones with <= 3 occurrences (to merge) and ones with > 3 (to keep separate, not merge)
-    valid_groups = group_counts[group_counts['count'] <= 3].drop(columns=['count'])
-    invalid_groups = group_counts[group_counts['count'] > 3].drop(columns=['count'])
-
-    # Process valid groups (merge)
-    filtered_df = df_to_merge.merge(valid_groups, on=['country_region', 'collection_date', 'Host', 'IsolateName'])
-    merged_df = (filtered_df.groupby(['country_region', 'collection_date', 'Host', 'IsolateName'], as_index=False)
-             .agg({
-                 'Genes': lambda x: ', '.join(sorted(set(g.strip() for v in x for g in v.split(',')))),
-                 'Accession': lambda x: ', '.join(sorted(set(x))),  # Combine Accessions
-                 'cds': lambda x: ', '.join(sorted(set(x))),  # Combine cds
-                 'isolate_source2': lambda x: ', '.join(sorted(set(x))),
-                 **{col: 'first' for col in df_to_merge.columns if col not in ['Description', 'record_date', 'organism', 'segment_source',]}  # Keep first value
-             })
-           )
-    # Keep invalid groups as they are
-    invalid_df = df_to_merge.merge(invalid_groups, on=['country_region', 'collection_date', 'Host', 'IsolateName'])
+    merged_valid_df = (
+        valid_groups.groupby(['Accession_prefix', 'country_region', 'collection_date', 'Host', 'IsolateName'], as_index=False)
+        .agg({
+            'Genes': lambda x: ', '.join(sorted(set(g.strip() for v in x.dropna() for g in v.split(',')))),
+            'Accession': lambda x: ', '.join(sorted(set(x.dropna()))),  # Combine unique Accessions
+            'cds': lambda x: ', '.join(sorted(set(g.strip() for v in x.dropna() for g in v.split(',')))),  # Combine unique cds
+            'isolate_source2': lambda x: ', '.join(sorted(set(x.dropna()))),
+            **{col: 'first' for col in valid_groups.columns if col not in 
+            ['country_region', 'collection_date', 'Host', 'IsolateName', 
+                'Genes', 'Accession', 'cds', 'isolate_source2', 
+                'Description', 'record_date', 'organism', 'segment_source']}
+        })
+    )
 
     # Combine both datasets
-    final_df = pd.concat([merged_df, invalid_df], ignore_index=True)
+    final_df = pd.concat([merged_valid_df, df_no_merge], ignore_index=True)
 
-    # Concatenate merged rows with non-merged rows
-    final_merged_df = pd.concat([final_df, df_no_merge], ignore_index=True)
     # print(df.shape[0], final_merged_df.shape[0])
-    final_merged_df.to_excel("tmp_gene_after.xlsx")
+    final_df.to_excel(f"OutputData/{virus}/excels/tmp_merge_after.xlsx")
 
-    combined_num_gene_counts = final_merged_df.loc[final_merged_df['Genes'] != 'NA', 'Genes'].apply(lambda x: len(set(x.split(', '))) if isinstance(x, str) else 0)
+    combined_num_gene_counts = final_df.loc[final_df['Genes'] != 'NA', 'Genes'].apply(
+        lambda x: len(set(x.split(','))) if isinstance(x, str) else 0
+    )
     combined_num_gene_distribution = Counter(combined_num_gene_counts)
-    combined_num_gene_distribution_f, combined_num_gene_percent_f = format_counts_and_percentages(combined_num_gene_distribution, total=final_merged_df.shape[0])
+    combined_num_gene_distribution_f, combined_num_gene_percent_f = format_counts_and_percentages(combined_num_gene_distribution, total=final_df.shape[0])
 
     combined_genes = Counter()
-    for row in final_merged_df['Genes']:
+    for row in final_df['Genes']:
         unique_genes = set(row.split(', '))
         combined_genes.update(unique_genes)
-    counts_formatted_combined, percentages_formatted_combined = format_counts_and_percentages(combined_genes, total=final_merged_df.shape[0])
+    counts_formatted_combined, percentages_formatted_combined = format_counts_and_percentages(combined_genes, total=final_df.shape[0])
 
     # # Check merge is correct, isolateName often the same for different isolates - incorrect for Nipah
     # merged_groups = df_to_merge.groupby(['country_region', 'collection_date', 'Host', 'IsolateName']).filter(lambda x: len(x) > 1)

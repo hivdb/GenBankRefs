@@ -108,7 +108,7 @@ def process_one_record(record):
     features['Host'] = feature_data.get('host_source', '')
     features['isolate_source'] = feature_data.get(
         'isolation_source_source', '')
-    features['IsolateName'] = feature_data.get('isolate_source', '')
+    features['IsolateName'] = feature_data.get('isolate_source') or feature_data.get('strain_source', '')
     features['country_region'] = feature_data.get(
         'geo_loc_name_source', '')
     features['collection_date'] = feature_data.get(
