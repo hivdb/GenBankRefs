@@ -103,7 +103,7 @@ def match_genes(pattern, description, gene_dict_keys):
     return ', '.join(matched_genes) if matched_genes else "NA"
 
 
-def local_align_genes(seq, description, virus_name):
+def local_align_genes(seq, description, virus_name, acc):
 
     gene_dict = {}  # Dictionary to store gene names and sequences
 
@@ -115,6 +115,10 @@ def local_align_genes(seq, description, virus_name):
     for gene, ref_seq in gene_dict.items():
         align_score = pairwise2.align.localxx(seq, ref_seq, score_only=True)
         if align_score > len(ref_seq) * 0.8:  # 80% similarity threshold
+            # if acc == 'OQ791499':
+            #     print('new', gene, align_score)
+            #     for i in pairwise2.align.localms(seq, ref_seq, 2, -3, -5, -2):
+            #         print(pairwise2.format_alignment(*i))
             matched_genes.append(gene)
 
     genes = ', '.join(matched_genes) if matched_genes else 'NA'
@@ -243,7 +247,9 @@ def summarize_genbank_by_seq(df, genes_df):
         if row['Genes'] == "": # if we comment this out, more accurate, only detect genes present in seq, currently has dup
             # should move to an earlier step when generating feature_df? some accessions not in genes_df
             # combining by isolateName & removing dup solves the problem partially
-            new_genes = local_align_genes(row['Seq'], row['Description'], virus)
+            new_genes = local_align_genes(row['Seq'], row['Description'], virus, row['Accession'])
+            if (row['Accession'] == 'OQ791499'):
+                print(new_genes)
             df.at[index, 'Genes'] = new_genes
 
     df[df['Genes'] == 'NA'].to_excel(f"OutputData/{virus}/excels/gene_missing.xlsx")

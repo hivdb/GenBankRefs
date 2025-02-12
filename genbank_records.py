@@ -251,10 +251,10 @@ def process_gene_list(gene_list, run_blast, virus_obj):
     if run_blast == 1:
         virus_obj.build_blast_db()
 
-        gene_list = pooled_blast_genes(gene_list, virus_obj)
+        gene_list2 = pooled_blast_genes(gene_list, virus_obj)
         additional_gene_list = detect_additional_genes(gene_list, virus_obj)
 
-        gene_list += additional_gene_list
+        gene_list = gene_list2 + additional_gene_list
         gene_list.sort(key=itemgetter('Accession', 'Gene'))
 
         gene_df = pd.DataFrame(gene_list)
