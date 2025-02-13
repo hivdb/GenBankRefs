@@ -247,6 +247,9 @@ def process_features(feature_list, genes, virus_obj):
     features_df = features_df[
         features_df["NonClinical"].isna() | (features_df["NonClinical"] == "")]
 
+    # Drop sequences with no detected genes
+    features_df = features_df[features_df["Genes"].isna() | (features_df["Genes"] == "")]
+
     return features_df
 
 

@@ -38,6 +38,10 @@ class Virus:
         return Path("ReferenceData") / f"{self.name}"
 
     @property
+    def ref_na_path(self):
+        return Path("ReferenceData") / self.name / f"{self.name}_RefNAs.fasta"
+
+    @property
     def genbank_file(self):
         return self.reference_folder / f"{self.name}.gb"
 
