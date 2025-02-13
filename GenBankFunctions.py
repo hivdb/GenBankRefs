@@ -1,4 +1,4 @@
-from Bio import SeqIO
+from Bio import SeqIO, pairwise2
 from Bio.Seq import Seq
 from Bio import Entrez
 from Bio.Blast.Applications import NcbiblastpCommandline
@@ -240,6 +240,25 @@ def pooled_blast_genes(gene_list, virus_obj, poolsize=20):
     return alignment_result
 
 
+def local_align_genes(seq, virus_obj):
+
+    gene_dict = {}  # Dictionary to store gene names and sequences
+
+    with open(virus_obj.ref_na_path) as fasta_file:
+        for record in SeqIO.parse(fasta_file, "fasta"):
+            gene_dict[record.id] = str(record.seq)
+
+    matched_genes = []
+    for gene, ref_seq in gene_dict.items():
+        align_score = pairwise2.align.localms(seq, ref_seq, 2, -3, -5, -2, score_only=True)
+        if align_score > len(ref_seq) * 0.80:  # 80% similarity threshold
+            matched_genes.append(gene)
+
+    genes = ', '.join(matched_genes) if matched_genes else 'NA'
+
+    return genes
+
+
 def detect_additional_genes(gene_list, virus_obj, poolsize=20):
 
     genes = [
@@ -263,6 +282,28 @@ def detect_additional_genes(gene_list, virus_obj, poolsize=20):
 
     additional_genes = []
 
+    for isolate in isolates:
+        seq = isolate.get('NA_raw_seq', '') 
+
+        # Attempt gene detection using local alignment
+        aligned_genes = local_align_genes(seq, virus_obj)
+
+        if aligned_genes != "NA":
+            for gene_name in aligned_genes.split(', '):
+                new_gene = {
+                    'Accession': isolate['Accession'],
+                    'Gene': gene_name,
+                    'CDS_NAME': isolate['CDS_NAME'], # should this be modified?
+                    'Order': isolate['Order'],
+                    'detected_gene': 1
+                }
+                additional_genes.append(new_gene)
+
+    # If local alignment found genes, return early to avoid unnecessary BLAST
+    if additional_genes:
+        return additional_genes
+
+    # Otherwise, proceed with BLAST
     with Pool(poolsize) as pool:
         parameters = [
             (isolate, isolate_genes[isolate['Accession']],

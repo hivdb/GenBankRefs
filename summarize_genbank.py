@@ -89,89 +89,6 @@ def summarize_genbank_by_ref(df):
     return summarize_report
 
 
-def match_genes(pattern, description, gene_dict_keys):
-    """
-    Only return genes in gene_dict_keys (listt)
-    """
-    matches = pattern.findall(description)
-    matched_genes = set()
-
-    for match in matches:
-        matched_terms = [m for m in match if m and m in gene_dict_keys]  # Filter only valid genes
-        matched_genes.update(matched_terms)
-
-    return ', '.join(matched_genes) if matched_genes else "NA"
-
-
-def local_align_genes(seq, description, virus_name):
-
-    gene_dict = {}  # Dictionary to store gene names and sequences
-
-    with open(f"ReferenceData/{virus_name}/{virus_name}_RefNAs.fasta", "r") as fasta_file:
-        for record in SeqIO.parse(fasta_file, "fasta"):
-            gene_dict[record.id] = str(record.seq)
-
-    matched_genes = []
-    for gene, ref_seq in gene_dict.items():
-        align_score = pairwise2.align.localms(seq, ref_seq, 2, -3, -5, -2, score_only=True)
-        if align_score > len(ref_seq) * 0.85:  # 85% similarity threshold
-            matched_genes.append(gene)
-
-    genes = ', '.join(matched_genes) if matched_genes else 'NA'
-
-    # for those still NA, try finding protein name from submission description
-    if genes == 'NA':
-        unique_genes = list(gene_dict.keys())
-        pattern = re.compile(
-            r'\b(' + '|'.join(map(re.escape, unique_genes)) + r')\b(?=\s+(protein|gene))'
-            r'|\(\b(' + '|'.join(map(re.escape, unique_genes)) + r')\b\)\s+gene',
-            re.IGNORECASE
-        )
-
-        genes = match_genes(pattern, description, gene_dict.keys())
-
-    # if still not found
-    if genes == 'NA':
-        matched_genes = []
-        description = description.lower()
-        if virus_name == 'CCHF':
-            # filter out other viruses that are not CCHF
-            if not ("orthonairovirus" in description or "crimean-congo" in description):
-                return genes
-            # attempt matching by gene name in description
-            segment_s_keywords = ['nucleocapsid', 'nucleoprotein', 'capsid','segment: s', 'segment s']
-            if any(w in description for w in segment_s_keywords):
-                matched_genes.append("S")
-            if 'glycoprotein' in description or "segment m" in description:
-                matched_genes.append("M")
-            if "rdrp" in description or 'rna polymerase' in description or 'segment L' in description or 'large segment' in description:
-                matched_genes.append("L")
-
-        elif virus_name == 'Lassa':
-            if not ("lassa" in description):
-                return genes
-            if 'polymerase' in description:
-                matched_genes.append("L")
-            if 'nucleoprotein' in description or 'nucleocapsid' in description:
-                matched_genes.append("N")
-            if 'glycoprotein' in description or 'gpc' in description:
-                matched_genes.append("G")
-            if 'matrix' in description or '(z)' in description:
-                matched_genes.append("Z")
-        elif virus_name == 'Nipah':
-            if "nucleocapsid" in description or "nucleoprotein" in description:
-                matched_genes.append("N")
-            if "phosphoprotein" in description or "P/V/M/C" in description:
-                matched_genes.append("P")
-            if "glycoprotein" in description:
-                matched_genes.append("G")
-
-
-        genes = ', '.join(matched_genes) if matched_genes else 'NA'
-
-    return genes
-
-
 def summarize_genbank_by_seq(df, genes_df):
     summarize_report = []
 
@@ -245,12 +162,6 @@ def summarize_genbank_by_seq(df, genes_df):
     section.append('=' * 40)
 
     section = ['Genes']
-
-    # align sequences where gene is empty to get gene
-    for index, row in df.iterrows():
-        if row['Genes'] == "": 
-            new_genes = local_align_genes(row['Seq'], row['Description'], virus)
-            df.at[index, 'Genes'] = new_genes
 
     df[df['Genes'] == 'NA'].to_excel(f"OutputData/{virus}/excels/gene_missing.xlsx")
     genes = Counter()
