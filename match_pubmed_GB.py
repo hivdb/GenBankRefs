@@ -152,7 +152,12 @@ def match(virus, pubmed, genbank, logger):
             pub_id = int(pair['PubID'])
             ref_id = int(pair['RefID'])
             pubmed_paper = pubmed[pubmed['PubID'].isin([pub_id])]
-            genbank_ss = genbank[genbank['RefID'].isin([ref_id])].iloc[0]
+            genbank_ss = genbank[genbank['RefID'].isin([ref_id])]
+
+            if genbank_ss.empty:
+                continue
+
+            genbank_ss = genbank_ss.iloc[0]
 
             hard_link_list.append([genbank_ss, pubmed_paper, ref_id, 'Hardlink'])
             matched_pub_id.extend(pubmed_paper['PubID'].tolist())
