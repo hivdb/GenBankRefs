@@ -250,20 +250,31 @@ def local_align_genes(seq, virus_obj):
 
     matched_genes = []
     for gene, ref_seq in gene_dict.items():
-        align_score = pairwise2.align.localms(seq, ref_seq, 2, -3, -5, -2, score_only=True)
+        alignments = pairwise2.align.localms(seq, ref_seq, 2, -3, -5, -2)
+
+        best_alignment = alignments[0]  # Take the best alignment
+        aligned_seq1, aligned_seq2, align_score, start, end = best_alignment
+        seq1_length = len(aligned_seq1.replace("-", ""))  # Exclude gaps
+
+        matches = sum(1 for a, b in zip(aligned_seq1, aligned_seq2) if a == b and a != '-' and b != '-')
+        percent_identity = (matches / len(ref_seq)) * 100 if seq1_length > 0 else 0
+
         if align_score > len(ref_seq) * 0.80:  # 80% similarity threshold
-            matched_genes.append(gene)
+            matched_genes.append({
+                'Gene': gene,
+                'Alignment Length': aligned_seq1,  # remove gaps?
+                'Percent Identity': round(percent_identity, 2),
+                'NA_len': seq1_length,
+                'AA_len': seq1_length // 3
+            })
 
-    genes = ', '.join(matched_genes) if matched_genes else 'NA'
-
-    return genes
+    return matched_genes
 
 
 def detect_additional_genes(gene_list, virus_obj, poolsize=20):
 
     genes = [
-        i
-        for i in gene_list
+        i for i in gene_list
         if i['CDS_NAME'] not in ('isolate', 'isolate_complete')
     ]
 
@@ -275,43 +286,50 @@ def detect_additional_genes(gene_list, virus_obj, poolsize=20):
         isolate_genes[i['Accession']].append(gene_name)
 
     isolates = [
-        i
-        for i in gene_list
+        i for i in gene_list
         if i['CDS_NAME'] in ('isolate', 'isolate_complete')
     ]
 
     additional_genes = []
 
-    for isolate in isolates:
-        seq = isolate.get('NA_raw_seq', '') 
+    # Step 1: Run BLAST First
+    with Pool(poolsize) as pool:
+        parameters = [(isolate, isolate_genes[isolate['Accession']],
+                       virus_obj.BLAST_NA_DB_PATH) for isolate in isolates]
+        for count, blast_results in enumerate(
+                pool.starmap(blast_isolates, parameters)):
+            additional_genes.extend(blast_results)
 
-        # Attempt gene detection using local alignment
-        aligned_genes = local_align_genes(seq, virus_obj)
+    # Step 2: Run Local Alignment in Parallel (for Isolates Without BLAST Hits)
+    # Step 2: Run Local Alignment in Parallel (for Isolates Without BLAST Hits)
+    remaining_isolates = [
+        iso for iso in isolates if not any(g['Accession'] == iso['Accession'] for g in additional_genes)
+    ]
 
-        if aligned_genes != "NA":
-            for gene_name in aligned_genes.split(', '):
+    # Prepare parameters for multiprocessing
+    alignment_parameters = [(iso.get('NA_raw_seq', ''), virus_obj) for iso in remaining_isolates]
+
+    # Run local alignment in parallel
+    with Pool(poolsize) as pool:
+        local_alignment_results = pool.starmap(local_align_genes, alignment_parameters)
+
+    # Aggregate results
+    for isolate, aligned_genes in zip(remaining_isolates, local_alignment_results):
+        if aligned_genes:
+            for gene in aligned_genes:
                 new_gene = {
                     'Accession': isolate['Accession'],
-                    'Gene': gene_name,
-                    'CDS_NAME': isolate['CDS_NAME'], # should this be modified?
+                    'Gene': gene["Gene"],
+                    'CDS_NAME': gene["Gene"],
                     'Order': isolate['Order'],
-                    'detected_gene': 1
+                    'detected_gene': 1,
+                    'NA_length': gene["NA_len"],
+                    'AA_length': gene["AA_len"],
+                    'align_len': gene["Alignment Length"],
+                    'PcntIDs': gene["Percent Identity"]
                 }
                 additional_genes.append(new_gene)
 
-    # If local alignment found genes, return early to avoid unnecessary BLAST
-    if additional_genes:
-        return additional_genes
-
-    # Otherwise, proceed with BLAST
-    with Pool(poolsize) as pool:
-        parameters = [
-            (isolate, isolate_genes[isolate['Accession']],
-             virus_obj.BLAST_NA_DB_PATH)
-            for isolate in isolates
-        ]
-        for count, i in enumerate(pool.starmap(blast_isolates, parameters)):
-            additional_genes.extend(i)
 
     return additional_genes
 
