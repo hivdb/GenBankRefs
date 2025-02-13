@@ -301,20 +301,12 @@ def detect_additional_genes(gene_list, virus_obj, poolsize=20):
             additional_genes.extend(blast_results)
 
     # Step 2: Run Local Alignment in Parallel (for Isolates Without BLAST Hits)
-    # Step 2: Run Local Alignment in Parallel (for Isolates Without BLAST Hits)
-    remaining_isolates = [
-        iso for iso in isolates if not any(g['Accession'] == iso['Accession'] for g in additional_genes)
-    ]
+    for isolate in isolates:
+        seq = isolate.get('NA_raw_seq', '')
 
-    # Prepare parameters for multiprocessing
-    alignment_parameters = [(iso.get('NA_raw_seq', ''), virus_obj) for iso in remaining_isolates]
+        # Attempt gene detection using local alignment
+        aligned_genes = local_align_genes(seq, virus_obj)
 
-    # Run local alignment in parallel
-    with Pool(poolsize) as pool:
-        local_alignment_results = pool.starmap(local_align_genes, alignment_parameters)
-
-    # Aggregate results
-    for isolate, aligned_genes in zip(remaining_isolates, local_alignment_results):
         if aligned_genes:
             for gene in aligned_genes:
                 new_gene = {
@@ -329,7 +321,6 @@ def detect_additional_genes(gene_list, virus_obj, poolsize=20):
                     'PcntIDs': gene["Percent Identity"]
                 }
                 additional_genes.append(new_gene)
-
 
     return additional_genes
 
