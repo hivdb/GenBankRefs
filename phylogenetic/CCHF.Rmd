@@ -71,12 +71,12 @@ p = p +
     values=country_colors$colors) +
   guides(color = "none") 
 
-p = p +
-  geom_tiplab(
-    size=10,  
-    as_ylab=TRUE, 
-    color='firebrick', 
-    offset=-0.01)
+# p = p +
+#  geom_tiplab(
+#    size=10,  
+#    as_ylab=TRUE, 
+#    color='firebrick', 
+#    offset=-0.01)
 
 p = p +
   geom_treescale(
@@ -146,7 +146,7 @@ return (p)
 ```
 ## S segment
 
-```{r message=FALSE, warning=FALSE, fig.width=12, fig.height=15, dpi=600}
+```{r message=FALSE, warning=FALSE, fig.width=12, fig.height=30, dpi=600}
 tree_file <- "../OutputData/CCHF/excels/phylo/output_S/S_isolates.fasta.aln.treefile"
 metadata_file <- "../OutputData/CCHF/excels/phylo/S_metadata.csv"
 
@@ -156,7 +156,7 @@ p
 
 ## M segment
 
-```{r message=FALSE, warning=FALSE, fig.width=12, fig.height=15, dpi=600}
+```{r message=FALSE, warning=FALSE, fig.width=12, fig.height=30, dpi=600}
 tree_file <- "../OutputData/CCHF/excels/phylo/output_M/M_isolates.fasta.aln.treefile"
 metadata_file <- "../OutputData/CCHF/excels/phylo/M_metadata.csv"
 
@@ -164,9 +164,9 @@ p <- draw_phylotree_for_gene(tree_file, metadata_file)
 p
 ```
 
-## M segment
+## L segment
 
-```{r message=FALSE, warning=FALSE, fig.width=12, fig.height=15, dpi=600}
+```{r message=FALSE, warning=FALSE, fig.width=12, fig.height=30, dpi=600}
 tree_file <- "../OutputData/CCHF/excels/phylo/output_L/L_isolates.fasta.aln.treefile"
 metadata_file <- "../OutputData/CCHF/excels/phylo/L_metadata.csv"
 

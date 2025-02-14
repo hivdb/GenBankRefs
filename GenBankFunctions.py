@@ -239,7 +239,8 @@ def pooled_blast_genes(gene_list, virus_obj, poolsize=20):
 
     for i in alignment_result:
         gene_name = virus_obj.translate_cds_name(i['CDS_NAME'])
-        if gene_name:
+
+        if gene_name and gene_name in virus_obj.GENES:
             i['Gene'] = gene_name
             continue
 

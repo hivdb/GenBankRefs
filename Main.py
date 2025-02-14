@@ -79,6 +79,9 @@ def main():
     if literature.empty or not lit_ref_match:
         return
 
+    genes = update_genes_by_features(genes, features)
+    virus_obj.pick_phylo_sequence(genes)
+
     features = update_genbank_by_pubmed(features, lit_ref_match)
     features.to_excel(virus_obj.genbank_feature_filled_file)
 
@@ -94,7 +97,7 @@ def main():
         virus_obj, references, features, genes,
         literature, lit_ref_match)
 
-    virus_obj.pick_phylo_sequence(genes)
+
 
 
 def update_genbank_by_pubmed(features, matched):

@@ -293,128 +293,58 @@ Russia (46.4%), Turkey (14.2%), Pakistan (5.8%), India (4.8%), Kosovo (4.4%), Ir
 Genes
 --------------------------------------------------------------------------------
 Counts:
-NUCLEOCAPSID: 1336
-L: 1149
-S: 991
-RNA-DEPENDENT RNA POLYMERASE: 977
-ENVELOPE GLYCOPROTEIN: 737
-NUCLEOPROTEIN: 536
-M: 487
-GLYCOPROTEIN PRECURSOR: 342
-ENVELOPE GLYCOPROTEIN PRECURSOR: 147
-N: 97
-GLYCOPROTEIN: 51
-GLYCOPROTEINS PRECURSOR: 41
-GPC: 34
-POLYPROTEIN: 32
-CAPSID: 28
-STRUCTURAL CAPSID: 27
-NP: 27
-RDRP: 17
-RNA POLYMERASE: 17
-GP: 16
-NUCLEOPROTEIN PRECURSOR: 14
-PUTATIVE POLYPROTEIN: 11
-N-PROTEIN: 9
-ENVELOPE GLYCOPROTEIN PRECUSOR: 8
-RNA-DIRECTED RNA POLYMERASE: 5
-POLYMERASE: 3
-RNA-DEPENDENT RNA-POLYMERASE: 3
-RNA DEPENDANT RNA POLYMERASE: 2
-MEMBRANE GLYCOPROTEIN: 2
-G: 1
-RNA-DEPENDENT RNA POLIMERASE: 1
-VIRAL NUCLEOCAPSID: 1
-RNA-DEPENDENT POLYMERASE: 1
-TRANSCRIPTASE: 1
-PREGLYCOPROTEIN: 1
-PUTATIVE RNA POLYMERASE: 1
+S: 2237
+M: 1400
+L: 1169
 
 --------------------------------------------------------------------------------
 Percentages:
-NUCLEOCAPSID (27.8%), L (23.9%), S (20.6%), RNA-DEPENDENT RNA POLYMERASE (20.3%), ENVELOPE GLYCOPROTEIN (15.3%), NUCLEOPROTEIN (11.2%), M (10.1%), GLYCOPROTEIN PRECURSOR (7.1%), ENVELOPE GLYCOPROTEIN PRECURSOR (3.1%), N (2.0%), GLYCOPROTEIN (1.1%), GLYCOPROTEINS PRECURSOR (0.9%), GPC (0.7%), POLYPROTEIN (0.7%), STRUCTURAL CAPSID (0.6%), NP (0.6%), CAPSID (0.6%), RDRP (0.4%), RNA POLYMERASE (0.4%), GP (0.3%), NUCLEOPROTEIN PRECURSOR (0.3%), PUTATIVE POLYPROTEIN (0.2%), N-PROTEIN (0.2%), ENVELOPE GLYCOPROTEIN PRECUSOR (0.2%), POLYMERASE (0.1%), RNA-DEPENDENT RNA-POLYMERASE (0.1%), RNA-DIRECTED RNA POLYMERASE (0.1%), G (0.0%), RNA-DEPENDENT RNA POLIMERASE (0.0%), RNA DEPENDANT RNA POLYMERASE (0.0%), VIRAL NUCLEOCAPSID (0.0%), RNA-DEPENDENT POLYMERASE (0.0%), TRANSCRIPTASE (0.0%), PREGLYCOPROTEIN (0.0%), PUTATIVE RNA POLYMERASE (0.0%), MEMBRANE GLYCOPROTEIN (0.0%)
+S (46.5%), M (29.1%), L (24.3%)
 
 --------------------------------------------------------------------------------
 Counts # of genes:
-1: 2459
-2: 2347
+1: 4806
 
 --------------------------------------------------------------------------------
 Percentages # of genes:
-1 (51.2%), 2 (48.8%)
+1 (100.0%)
 
 --------------------------------------------------------------------------------
 Counts genes after combining isolate:
-NUCLEOCAPSID: 1336
-L: 1147
-S: 989
-RNA-DEPENDENT RNA POLYMERASE: 977
-ENVELOPE GLYCOPROTEIN: 737
-NUCLEOPROTEIN: 536
-M: 487
-GLYCOPROTEIN PRECURSOR: 341
-ENVELOPE GLYCOPROTEIN PRECURSOR: 147
-N: 97
-GLYCOPROTEIN: 51
-GLYCOPROTEINS PRECURSOR: 41
-GPC: 34
-POLYPROTEIN: 32
-CAPSID: 28
-STRUCTURAL CAPSID: 27
-NP: 27
-RDRP: 17
-RNA POLYMERASE: 17
-GP: 16
-NUCLEOPROTEIN PRECURSOR: 14
-PUTATIVE POLYPROTEIN: 11
-N-PROTEIN: 9
-ENVELOPE GLYCOPROTEIN PRECUSOR: 8
-RNA-DIRECTED RNA POLYMERASE: 5
-POLYMERASE: 3
-RNA-DEPENDENT RNA-POLYMERASE: 3
-RNA DEPENDANT RNA POLYMERASE: 2
-MEMBRANE GLYCOPROTEIN: 2
-PUTATIVE RNA POLYMERASE: 1
-PREGLYCOPROTEIN: 1
-TRANSCRIPTASE: 1
-VIRAL NUCLEOCAPSID: 1
-RNA-DEPENDENT POLYMERASE: 1
-RNA-DEPENDENT RNA POLIMERASE: 1
-G: 1
+S: 2235
+M: 1399
+L: 1168
 
 --------------------------------------------------------------------------------
 Percentages genes after combining isolate:
-NUCLEOCAPSID (43.0%), L (36.9%), S (31.8%), RNA-DEPENDENT RNA POLYMERASE (31.5%), ENVELOPE GLYCOPROTEIN (23.7%), NUCLEOPROTEIN (17.3%), M (15.7%), GLYCOPROTEIN PRECURSOR (11.0%), ENVELOPE GLYCOPROTEIN PRECURSOR (4.7%), N (3.1%), GLYCOPROTEIN (1.6%), GLYCOPROTEINS PRECURSOR (1.3%), GPC (1.1%), POLYPROTEIN (1.0%), STRUCTURAL CAPSID (0.9%), NP (0.9%), CAPSID (0.9%), RDRP (0.5%), RNA POLYMERASE (0.5%), NUCLEOPROTEIN PRECURSOR (0.5%), GP (0.5%), PUTATIVE POLYPROTEIN (0.4%), N-PROTEIN (0.3%), ENVELOPE GLYCOPROTEIN PRECUSOR (0.3%), RNA-DIRECTED RNA POLYMERASE (0.2%), POLYMERASE (0.1%), RNA-DEPENDENT RNA-POLYMERASE (0.1%), RNA DEPENDANT RNA POLYMERASE (0.1%), MEMBRANE GLYCOPROTEIN (0.1%), PUTATIVE RNA POLYMERASE (0.0%), PREGLYCOPROTEIN (0.0%), TRANSCRIPTASE (0.0%), VIRAL NUCLEOCAPSID (0.0%), RNA-DEPENDENT POLYMERASE (0.0%), RNA-DEPENDENT RNA POLIMERASE (0.0%), G (0.0%)
+S (71.9%), M (45.0%), L (37.6%)
 
 --------------------------------------------------------------------------------
 Counts # of genes after combining isolate:
-1: 1436
-2: 604
-3: 419
-6: 290
-4: 278
-5: 79
+1: 2030
+3: 618
+2: 459
 
 --------------------------------------------------------------------------------
 Percentages # of genes after combining isolate:
-1 (46.2%), 2 (19.4%), 3 (13.5%), 6 (9.3%), 4 (9.0%), 5 (2.5%)
+1 (65.3%), 3 (19.9%), 2 (14.8%)
 
 ================================================================================
 AlignLens
 --------------------------------------------------------------------------------
-30-100 (476, 6.5%), 100-500 (3817, 52.1%), 500-1000 (288, 3.9%), 1000-3000 (1240, 16.9%), 3000-5000 (346, 4.7%), 5000-10000 (556, 7.6%), >10000 (605, 8.3%)
+30-100 (403, 8.4%), 100-500 (2847, 59.1%), 500-1000 (135, 2.8%), 1000-3000 (645, 13.4%), 3000-5000 (215, 4.5%), 5000-10000 (237, 4.9%), >10000 (332, 6.9%)
 ================================================================================
 NA length
 --------------------------------------------------------------------------------
-<30 (2363, 32.2%), 30-100 (73, 1.0%), 100-500 (1914, 26.1%), 500-1000 (287, 3.9%), 1000-3000 (1184, 16.2%), 3000-5000 (346, 4.7%), 5000-10000 (556, 7.6%), >10000 (605, 8.3%)
+<30 (2363, 49.1%), 100-500 (944, 19.6%), 500-1000 (134, 2.8%), 1000-3000 (589, 12.2%), 3000-5000 (215, 4.5%), 5000-10000 (237, 4.9%), >10000 (332, 6.9%)
 ================================================================================
 AA length
 --------------------------------------------------------------------------------
-<30 (2544, 34.7%), 30-100 (474, 6.5%), 100-500 (3450, 47.1%), 500-1000 (8, 0.1%), 1000-3000 (509, 6.9%), 3000-5000 (343, 4.7%)
+<30 (30, 0.6%), 30-100 (474, 9.8%), 100-500 (3450, 71.7%), 500-1000 (8, 0.2%), 1000-3000 (509, 10.6%), 3000-5000 (343, 7.1%)
 ================================================================================
 PcntIDs
 --------------------------------------------------------------------------------
-0%-25% (7), 25%-50% (7), 50%-75% (26), 75%-90% (4309), 90%-95% (2498), 95%-100% (481)
+0%-25% (7), 25%-50% (7), 50%-75% (26), 75%-90% (2562), 90%-95% (1843), 95%-100% (369)
 ================================================================================
 End of report
 ================================================================================
@@ -422,7 +352,7 @@ Summarize references with full genomes
 ================================================================================
 Number of References with Full genome:
 --------------------------------------------------------------------------------
-0
+70
 ================================================================================
 End of report
 ================================================================================
