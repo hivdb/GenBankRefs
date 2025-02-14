@@ -22,7 +22,7 @@ Publish Year
 2002 (6)
 2005 (6)
 2011 (5)
-2009 (5)
+2009 (4)
 2003 (3)
 2007 (3)
 NA (2)
@@ -32,12 +32,12 @@ NA (2)
 2001 (2)
 1992 (1)
 --------------------------------------------------------------------------------
-1990-1999 (7) (3.2)%, 2000-2009 (54) (25.0)%, 2010-2019 (106) (49.1)%, 2020-2029 (49) (22.7)%
+1990-1999 (7) (3.3)%, 2000-2009 (53) (24.7)%, 2010-2019 (106) (49.3)%, 2020-2029 (49) (22.8)%
 ================================================================================
 References Num Isolates (Sequences)
 --------------------------------------------------------------------------------
-3 (45)
-2 (32)
+3 (43)
+2 (33)
 1 (31)
 4 (13)
 9 (10)
@@ -47,93 +47,95 @@ References Num Isolates (Sequences)
 15 (6)
 8 (5)
 13 (4)
+36 (4)
 7 (4)
 17 (3)
 14 (3)
 10 (3)
 21 (3)
 12 (3)
-36 (3)
 18 (3)
-40 (2)
-30 (2)
-24 (2)
 55 (2)
 16 (2)
 42 (1)
 44 (1)
 39 (1)
+30 (1)
 45 (1)
+24 (1)
 104 (1)
 715 (1)
 192 (1)
+26 (1)
 50 (1)
 1372 (1)
 134 (1)
 35 (1)
 59 (1)
+20 (1)
 60 (1)
 68 (1)
 186 (1)
+40 (1)
 255 (1)
 215 (1)
 --------------------------------------------------------------------------------
-Total 4822
+Total 4806
 ================================================================================
 End of Report
 ================================================================================
-Total after dropping non-clinical and non_virus: 4822
+Total after dropping non-clinical and non_virus: 4806
 ================================================================================
 Summarize Genbank By Seq
 ================================================================================
 Host
 --------------------------------------------------------------------------------
 Counts:
-Human: 3448
-Tick: 1008
-NA: 254
+Human: 3446
+Tick: 1001
+NA: 249
 ANIMAL and Tick: 55
-ANIMAL: 52
+ANIMAL: 50
 Human and Tick: 4
 ANIMAL and Human and Tick: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Human (71.5%), Tick (20.9%), NA (5.3%), ANIMAL (1.1%), ANIMAL and Tick (1.1%), Human and Tick (0.1%), ANIMAL and Human and Tick (0.0%)
+Human (71.7%), Tick (20.8%), NA (5.2%), ANIMAL and Tick (1.1%), ANIMAL (1.0%), Human and Tick (0.1%), ANIMAL and Human and Tick (0.0%)
 
 ================================================================================
 Specimens
 --------------------------------------------------------------------------------
 Counts:
-Blood: 2637
-Tick: 1008
+Blood: 2635
+Tick: 1001
 Human: 808
-NA: 254
+NA: 249
 Animal and tick: 55
-Animal: 52
+Animal: 50
 Human and tick: 4
 Organs: 3
 Animal and human and tick: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Blood (54.7%), Tick (20.9%), Human (16.8%), NA (5.3%), Animal (1.1%), Animal and tick (1.1%), Organs (0.1%), Human and tick (0.1%), Animal and human and tick (0.0%)
+Blood (54.8%), Tick (20.8%), Human (16.8%), NA (5.2%), Animal and tick (1.1%), Animal (1.0%), Organs (0.1%), Human and tick (0.1%), Animal and human and tick (0.0%)
 
 ================================================================================
 RecordYears
 --------------------------------------------------------------------------------
 Counts:
-2016: 1936
+2016: 1929
 2020: 1046
-2023: 383
+2023: 382
 2024: 300
-2014: 245
-2017: 187
+2014: 240
+2017: 186
 2015: 144
 2021: 106
 2018: 90
 2012: 82
-2022: 59
+2022: 58
 2006: 53
 2019: 52
 2013: 36
@@ -145,9 +147,9 @@ Counts:
 2008: 7
 2001: 7
 1997: 7
-2009: 4
 2003: 4
 2007: 3
+2009: 3
 2002: 3
 1996: 2
 1994: 1
@@ -155,22 +157,22 @@ Counts:
 
 --------------------------------------------------------------------------------
 Percentages:
-2016 (40.1%), 2020 (21.7%), 2023 (7.9%), 2024 (6.2%), 2014 (5.1%), 2017 (3.9%), 2015 (3.0%), 2021 (2.2%), 2018 (1.9%), 2012 (1.7%), 2022 (1.2%), 2019 (1.1%), 2006 (1.1%), 2013 (0.7%), 2011 (0.4%), 2004 (0.3%), 2005 (0.3%), 1995 (0.2%), 2010 (0.2%), 2008 (0.1%), 2007 (0.1%), 2009 (0.1%), 2003 (0.1%), 2001 (0.1%), 1997 (0.1%), 2002 (0.1%), 1996 (0.0%), 1994 (0.0%), 1993 (0.0%)
+2016 (40.1%), 2020 (21.8%), 2023 (7.9%), 2024 (6.2%), 2014 (5.0%), 2017 (3.9%), 2015 (3.0%), 2021 (2.2%), 2018 (1.9%), 2012 (1.7%), 2022 (1.2%), 2019 (1.1%), 2006 (1.1%), 2013 (0.7%), 2011 (0.4%), 2004 (0.3%), 2005 (0.3%), 1995 (0.2%), 2010 (0.2%), 2008 (0.1%), 2007 (0.1%), 2003 (0.1%), 2001 (0.1%), 1997 (0.1%), 2009 (0.1%), 2002 (0.1%), 1996 (0.0%), 1994 (0.0%), 1993 (0.0%)
 
 --------------------------------------------------------------------------------
-1990-1999 (21) (0.4)%, 2000-2009 (110) (2.3)%, 2010-2019 (2797) (58.0)%, 2020-2029 (1894) (39.3)%
+1990-1999 (21) (0.4)%, 2000-2009 (109) (2.3)%, 2010-2019 (2784) (57.9)%, 2020-2029 (1892) (39.4)%
 ================================================================================
 Sample Years
 --------------------------------------------------------------------------------
 Counts:
-2012: 570
-2015: 549
+2012: 564
+2015: 545
 2016: 474
 2013: 354
 NA: 348
 2014: 296
 2019: 275
-2009: 229
+2009: 228
 2008: 224
 2011: 202
 2007: 174
@@ -179,10 +181,10 @@ NA: 348
 2023: 105
 2018: 103
 2020: 97
-2021: 74
-2004: 72
+2021: 73
+2004: 71
 1988: 35
-2005: 35
+2005: 32
 2022: 24
 1968: 22
 1987: 20
@@ -225,10 +227,10 @@ NA: 348
 
 --------------------------------------------------------------------------------
 Percentages:
-2012 (11.8%), 2015 (11.4%), 2016 (9.8%), 2013 (7.3%), NA (7.2%), 2014 (6.1%), 2019 (5.7%), 2009 (4.7%), 2008 (4.6%), 2011 (4.2%), 2007 (3.6%), 2010 (2.7%), 2017 (2.4%), 2023 (2.2%), 2018 (2.1%), 2020 (2.0%), 2021 (1.5%), 2004 (1.5%), 1988 (0.7%), 2005 (0.7%), 2022 (0.5%), 1968 (0.5%), 2024 (0.4%), 1984 (0.4%), 1985 (0.4%), 1987 (0.4%), 1989 (0.4%), 2006 (0.4%), 1967 (0.3%), 1981 (0.3%), 2000 (0.3%), 1990 (0.3%), 1966 (0.2%), 1975 (0.2%), 1979 (0.2%), 1973 (0.2%), 1969 (0.2%), 2001 (0.2%), 1970 (0.1%), 1976 (0.1%), 1977 (0.1%), 1980 (0.1%), 1978 (0.1%), 1998 (0.1%), 1995 (0.1%), 1956 (0.1%), 1965 (0.1%), 1996 (0.1%), 1958 (0.1%), 1971 (0.1%), 1960 (0.1%), 2003 (0.1%), 2002 (0.1%), 1986 (0.1%), 1997 (0.1%), 1972 (0.1%), 1974 (0.0%), 1991 (0.0%), 1999 (0.0%)
+2012 (11.7%), 2015 (11.3%), 2016 (9.9%), 2013 (7.4%), NA (7.2%), 2014 (6.2%), 2019 (5.7%), 2009 (4.7%), 2008 (4.7%), 2011 (4.2%), 2007 (3.6%), 2010 (2.7%), 2017 (2.5%), 2023 (2.2%), 2018 (2.1%), 2020 (2.0%), 2021 (1.5%), 2004 (1.5%), 1988 (0.7%), 2005 (0.7%), 2022 (0.5%), 1968 (0.5%), 2024 (0.4%), 1984 (0.4%), 1985 (0.4%), 1987 (0.4%), 1989 (0.4%), 2006 (0.4%), 1967 (0.3%), 1981 (0.3%), 2000 (0.3%), 1990 (0.3%), 1966 (0.2%), 1975 (0.2%), 1979 (0.2%), 1973 (0.2%), 1969 (0.2%), 2001 (0.2%), 1970 (0.1%), 1976 (0.1%), 1977 (0.1%), 1980 (0.1%), 1978 (0.1%), 1998 (0.1%), 1995 (0.1%), 1956 (0.1%), 1965 (0.1%), 1996 (0.1%), 1958 (0.1%), 1971 (0.1%), 1960 (0.1%), 2003 (0.1%), 2002 (0.1%), 1986 (0.1%), 1997 (0.1%), 1972 (0.1%), 1974 (0.0%), 1991 (0.0%), 1999 (0.0%)
 
 --------------------------------------------------------------------------------
-1950-1959 (10) (0.2)%, 1960-1969 (68) (1.5)%, 1970-1979 (51) (1.1)%, 1980-1989 (135) (3.0)%, 1990-1999 (33) (0.7)%, 2000-2009 (791) (17.7)%, 2010-2019 (3069) (68.6)%, 2020-2029 (317) (7.1)%
+1950-1959 (10) (0.2)%, 1960-1969 (68) (1.5)%, 1970-1979 (51) (1.1)%, 1980-1989 (135) (3.0)%, 1990-1999 (33) (0.7)%, 2000-2009 (786) (17.6)%, 2010-2019 (3059) (68.6)%, 2020-2029 (316) (7.1)%
 ================================================================================
 Countries
 --------------------------------------------------------------------------------
@@ -236,16 +238,16 @@ Counts:
 Russia: 2231
 Turkey: 684
 Pakistan: 278
-India: 237
-Kosovo: 217
+India: 233
+Kosovo: 213
 Iran: 177
-China: 177
+China: 173
 South Africa: 136
 NA: 75
-Uganda: 69
+Uganda: 68
 Spain: 53
-Kazakhstan: 52
-Bulgaria: 48
+Kazakhstan: 51
+Bulgaria: 47
 France: 45
 United Arab Emirates: 34
 Tajikistan: 28
@@ -273,11 +275,11 @@ Yugoslavia: 4
 Georgia: 3
 Saudi Arabia: 3
 United Kingdom: 3
-Mali: 3
 Republic of the Congo: 3
 Mauritania: 3
 Italy: 2
 Algeria: 2
+Mali: 2
 Syria: 2
 Cameroon: 1
 Morocco: 1
@@ -285,49 +287,117 @@ Central African Republic: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Russia (46.3%), Turkey (14.2%), Pakistan (5.8%), India (4.9%), Kosovo (4.5%), Iran (3.7%), China (3.7%), South Africa (2.8%), NA (1.6%), Uganda (1.4%), Spain (1.1%), Kazakhstan (1.1%), Bulgaria (1.0%), France (0.9%), United Arab Emirates (0.7%), Tajikistan (0.6%), Nigeria (0.5%), Greece (0.5%), Sudan (0.4%), Oman (0.4%), North Macedonia (0.3%), Zambia (0.3%), Afghanistan (0.3%), Namibia (0.3%), Guinea (0.2%), Indonesia (0.2%), Kenya (0.2%), Egypt (0.2%), USA (0.2%), Albania (0.2%), Democratic Republic of the Congo (0.2%), Senegal (0.2%), Turkmenistan (0.2%), Iraq (0.1%), Georgia (0.1%), Ghana (0.1%), Saudi Arabia (0.1%), Uzbekistan (0.1%), United Kingdom (0.1%), Mali (0.1%), Yugoslavia (0.1%), Republic of the Congo (0.1%), Mauritania (0.1%), Italy (0.0%), Algeria (0.0%), Cameroon (0.0%), Morocco (0.0%), Syria (0.0%), Central African Republic (0.0%)
+Russia (46.4%), Turkey (14.2%), Pakistan (5.8%), India (4.8%), Kosovo (4.4%), Iran (3.7%), China (3.6%), South Africa (2.8%), NA (1.6%), Uganda (1.4%), Spain (1.1%), Kazakhstan (1.1%), Bulgaria (1.0%), France (0.9%), United Arab Emirates (0.7%), Tajikistan (0.6%), Nigeria (0.5%), Greece (0.5%), Sudan (0.4%), Oman (0.4%), North Macedonia (0.3%), Zambia (0.3%), Afghanistan (0.3%), Namibia (0.3%), Guinea (0.2%), Indonesia (0.2%), Kenya (0.2%), Egypt (0.2%), USA (0.2%), Albania (0.2%), Democratic Republic of the Congo (0.2%), Senegal (0.2%), Turkmenistan (0.2%), Iraq (0.1%), Georgia (0.1%), Ghana (0.1%), Saudi Arabia (0.1%), Uzbekistan (0.1%), United Kingdom (0.1%), Yugoslavia (0.1%), Republic of the Congo (0.1%), Mauritania (0.1%), Italy (0.0%), Algeria (0.0%), Cameroon (0.0%), Morocco (0.0%), Mali (0.0%), Syria (0.0%), Central African Republic (0.0%)
 
 ================================================================================
 Genes
 --------------------------------------------------------------------------------
 Counts:
-S: 2246
-M: 1404
-L: 1171
-NA: 1
+NUCLEOCAPSID: 1336
+L: 1149
+S: 991
+RNA-DEPENDENT RNA POLYMERASE: 977
+ENVELOPE GLYCOPROTEIN: 737
+NUCLEOPROTEIN: 536
+M: 487
+GLYCOPROTEIN PRECURSOR: 342
+ENVELOPE GLYCOPROTEIN PRECURSOR: 147
+N: 97
+GLYCOPROTEIN: 51
+GLYCOPROTEINS PRECURSOR: 41
+GPC: 34
+POLYPROTEIN: 32
+CAPSID: 28
+STRUCTURAL CAPSID: 27
+NP: 27
+RDRP: 17
+RNA POLYMERASE: 17
+GP: 16
+NUCLEOPROTEIN PRECURSOR: 14
+PUTATIVE POLYPROTEIN: 11
+N-PROTEIN: 9
+ENVELOPE GLYCOPROTEIN PRECUSOR: 8
+RNA-DIRECTED RNA POLYMERASE: 5
+POLYMERASE: 3
+RNA-DEPENDENT RNA-POLYMERASE: 3
+RNA DEPENDANT RNA POLYMERASE: 2
+MEMBRANE GLYCOPROTEIN: 2
+G: 1
+RNA-DEPENDENT RNA POLIMERASE: 1
+VIRAL NUCLEOCAPSID: 1
+RNA-DEPENDENT POLYMERASE: 1
+TRANSCRIPTASE: 1
+PREGLYCOPROTEIN: 1
+PUTATIVE RNA POLYMERASE: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-S (46.6%), M (29.1%), L (24.3%), NA (0.0%)
+NUCLEOCAPSID (27.8%), L (23.9%), S (20.6%), RNA-DEPENDENT RNA POLYMERASE (20.3%), ENVELOPE GLYCOPROTEIN (15.3%), NUCLEOPROTEIN (11.2%), M (10.1%), GLYCOPROTEIN PRECURSOR (7.1%), ENVELOPE GLYCOPROTEIN PRECURSOR (3.1%), N (2.0%), GLYCOPROTEIN (1.1%), GLYCOPROTEINS PRECURSOR (0.9%), GPC (0.7%), POLYPROTEIN (0.7%), STRUCTURAL CAPSID (0.6%), NP (0.6%), CAPSID (0.6%), RDRP (0.4%), RNA POLYMERASE (0.4%), GP (0.3%), NUCLEOPROTEIN PRECURSOR (0.3%), PUTATIVE POLYPROTEIN (0.2%), N-PROTEIN (0.2%), ENVELOPE GLYCOPROTEIN PRECUSOR (0.2%), POLYMERASE (0.1%), RNA-DEPENDENT RNA-POLYMERASE (0.1%), RNA-DIRECTED RNA POLYMERASE (0.1%), G (0.0%), RNA-DEPENDENT RNA POLIMERASE (0.0%), RNA DEPENDANT RNA POLYMERASE (0.0%), VIRAL NUCLEOCAPSID (0.0%), RNA-DEPENDENT POLYMERASE (0.0%), TRANSCRIPTASE (0.0%), PREGLYCOPROTEIN (0.0%), PUTATIVE RNA POLYMERASE (0.0%), MEMBRANE GLYCOPROTEIN (0.0%)
 
 --------------------------------------------------------------------------------
 Counts # of genes:
-1: 4821
+1: 2459
+2: 2347
 
 --------------------------------------------------------------------------------
 Percentages # of genes:
-1 (100.0%)
+1 (51.2%), 2 (48.8%)
 
 --------------------------------------------------------------------------------
 Counts genes after combining isolate:
-S: 2244
-M: 1402
-L: 1169
-NA: 1
+NUCLEOCAPSID: 1336
+L: 1147
+S: 989
+RNA-DEPENDENT RNA POLYMERASE: 977
+ENVELOPE GLYCOPROTEIN: 737
+NUCLEOPROTEIN: 536
+M: 487
+GLYCOPROTEIN PRECURSOR: 341
+ENVELOPE GLYCOPROTEIN PRECURSOR: 147
+N: 97
+GLYCOPROTEIN: 51
+GLYCOPROTEINS PRECURSOR: 41
+GPC: 34
+POLYPROTEIN: 32
+CAPSID: 28
+STRUCTURAL CAPSID: 27
+NP: 27
+RDRP: 17
+RNA POLYMERASE: 17
+GP: 16
+NUCLEOPROTEIN PRECURSOR: 14
+PUTATIVE POLYPROTEIN: 11
+N-PROTEIN: 9
+ENVELOPE GLYCOPROTEIN PRECUSOR: 8
+RNA-DIRECTED RNA POLYMERASE: 5
+POLYMERASE: 3
+RNA-DEPENDENT RNA-POLYMERASE: 3
+RNA DEPENDANT RNA POLYMERASE: 2
+MEMBRANE GLYCOPROTEIN: 2
+PUTATIVE RNA POLYMERASE: 1
+PREGLYCOPROTEIN: 1
+TRANSCRIPTASE: 1
+VIRAL NUCLEOCAPSID: 1
+RNA-DEPENDENT POLYMERASE: 1
+RNA-DEPENDENT RNA POLIMERASE: 1
+G: 1
 
 --------------------------------------------------------------------------------
 Percentages genes after combining isolate:
-S (71.9%), M (45.0%), L (37.5%), NA (0.0%)
+NUCLEOCAPSID (43.0%), L (36.9%), S (31.8%), RNA-DEPENDENT RNA POLYMERASE (31.5%), ENVELOPE GLYCOPROTEIN (23.7%), NUCLEOPROTEIN (17.3%), M (15.7%), GLYCOPROTEIN PRECURSOR (11.0%), ENVELOPE GLYCOPROTEIN PRECURSOR (4.7%), N (3.1%), GLYCOPROTEIN (1.6%), GLYCOPROTEINS PRECURSOR (1.3%), GPC (1.1%), POLYPROTEIN (1.0%), STRUCTURAL CAPSID (0.9%), NP (0.9%), CAPSID (0.9%), RDRP (0.5%), RNA POLYMERASE (0.5%), NUCLEOPROTEIN PRECURSOR (0.5%), GP (0.5%), PUTATIVE POLYPROTEIN (0.4%), N-PROTEIN (0.3%), ENVELOPE GLYCOPROTEIN PRECUSOR (0.3%), RNA-DIRECTED RNA POLYMERASE (0.2%), POLYMERASE (0.1%), RNA-DEPENDENT RNA-POLYMERASE (0.1%), RNA DEPENDANT RNA POLYMERASE (0.1%), MEMBRANE GLYCOPROTEIN (0.1%), PUTATIVE RNA POLYMERASE (0.0%), PREGLYCOPROTEIN (0.0%), TRANSCRIPTASE (0.0%), VIRAL NUCLEOCAPSID (0.0%), RNA-DEPENDENT POLYMERASE (0.0%), RNA-DEPENDENT RNA POLIMERASE (0.0%), G (0.0%)
 
 --------------------------------------------------------------------------------
 Counts # of genes after combining isolate:
-1: 2040
-3: 619
-2: 459
+1: 1436
+2: 604
+3: 419
+6: 290
+4: 278
+5: 79
 
 --------------------------------------------------------------------------------
 Percentages # of genes after combining isolate:
-1 (65.4%), 3 (19.8%), 2 (14.7%)
+1 (46.2%), 2 (19.4%), 3 (13.5%), 6 (9.3%), 4 (9.0%), 5 (2.5%)
 
 ================================================================================
 AlignLens
@@ -352,7 +422,7 @@ Summarize references with full genomes
 ================================================================================
 Number of References with Full genome:
 --------------------------------------------------------------------------------
-69
+0
 ================================================================================
 End of report
 ================================================================================

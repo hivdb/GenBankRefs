@@ -75,10 +75,10 @@ def match_pubmed_GB(
         genbank_match, genbank_feature,
         virus_obj.GENES))
 
-    yesno = input('Generate Chord diagram? [y/n]')
-    if yesno == 'y':
-        from chord_diagram import gen_chord_diagram
-        gen_chord_diagram(virus_obj, combined, genbank_feature)
+    # yesno = input('Generate Chord diagram? [y/n]')
+    # if yesno == 'y':
+    #     from chord_diagram import gen_chord_diagram
+    #     gen_chord_diagram(virus_obj, combined, genbank_feature)
 
     return pubmed, pubmed_match
 

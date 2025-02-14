@@ -186,7 +186,7 @@ def summarize_genbank_by_seq(df, genes_df):
 
     # Try to merge on isolateName, the fields should all be the same for same isolate
     # Filter out rows where "IsolateName" is not empty and perform merging
-    df.loc[:, 'Accession_prefix'] = df['Accession'].str[:5]
+    df.loc[:, 'Accession_prefix'] = df['Accession'].astype(str).str[:5]
     df_no_merge = df[df['IsolateName'] == ""].copy()
     df_no_merge.to_excel(f"OutputData/{virus}/excels/tmp_not_merged.xlsx")
 

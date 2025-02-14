@@ -9,7 +9,7 @@ from multiprocessing import Pool
 from pathlib import Path
 from xml.parsers.expat import ExpatError
 from collections import defaultdict
-
+from skbio.alignment import StripedSmithWaterman
 
 Entrez.email = "rshafer.stanford.edu"
 
@@ -237,6 +237,15 @@ def pooled_blast_genes(gene_list, virus_obj, poolsize=20):
         for count, i in enumerate(pool.starmap(blast_gene, parameters)):
             alignment_result.append(i)
 
+    for i in alignment_result:
+        gene_name = virus_obj.translate_cds_name(i['CDS_NAME'])
+        if gene_name:
+            i['Gene'] = gene_name
+            continue
+
+        if i.get('hit_name'):
+            i['Gene'] = i['hit_name']
+
     return alignment_result
 
 
@@ -250,40 +259,39 @@ def local_align_genes(seq, virus_obj):
 
     matched_genes = []
     for gene, ref_seq in gene_dict.items():
-        alignments = pairwise2.align.localms(seq, ref_seq, 2, -3, -5, -2)
+        # alignments = pairwise2.align.localms(seq, ref_seq, 2, -3, -5, -2)
 
-        best_alignment = alignments[0]  # Take the best alignment
-        aligned_seq1, aligned_seq2, align_score, start, end = best_alignment
-        seq1_length = len(aligned_seq1.replace("-", ""))  # Exclude gaps
+        # best_alignment = alignments[0]  # Take the best alignment
+        # aligned_seq1, aligned_seq2, align_score, start, end = best_alignment
+        # seq1_length = len(aligned_seq1.replace("-", ""))  # Exclude gaps
 
-        matches = sum(1 for a, b in zip(aligned_seq1, aligned_seq2) if a == b and a != '-' and b != '-')
-        percent_identity = (matches / len(ref_seq)) * 100 if seq1_length > 0 else 0
+        # matches = sum(1 for a, b in zip(aligned_seq1, aligned_seq2) if a == b and a != '-' and b != '-')
+        # percent_identity = (matches / len(ref_seq)) * 100 if seq1_length > 0 else 0
 
-        if align_score > len(ref_seq) * 0.80:  # 80% similarity threshold
+        query = StripedSmithWaterman(ref_seq)
+        alignment = query(seq)
+
+        if alignment.optimal_alignment_score > len(ref_seq) * 0.80:  # 80% similarity threshold
             matched_genes.append({
                 'Gene': gene,
-                'Alignment Length': aligned_seq1,  # remove gaps?
-                'Percent Identity': round(percent_identity, 2),
-                'NA_len': seq1_length,
-                'AA_len': seq1_length // 3
+                'Alignment Length': len(alignment.aligned_query_sequence),  # remove gaps?
+                'Percent Identity': len(alignment.aligned_query_sequence) / len(ref_seq),
+                'NA_len': len(alignment.aligned_target_sequence),
+                'AA_len': len(alignment.aligned_target_sequence) // 3
             })
 
     return matched_genes
 
 
-def detect_additional_genes(gene_list, virus_obj, poolsize=20):
-
-    genes = [
-        i for i in gene_list
-        if i['CDS_NAME'] not in ('isolate', 'isolate_complete')
-    ]
+def detect_additional_genes(
+        gene_list, gene_list2, virus_obj, poolsize=20):
 
     isolate_genes = defaultdict(list)
-    for i in genes:
-        gene_name = virus_obj.translate_cds_name(i['CDS_NAME'])
-        if not gene_name and i.get('hit_name'):
-            gene_name = i['hit_name']
-        isolate_genes[i['Accession']].append(gene_name)
+    for i in gene_list2:
+        gene_name = i['Gene']
+        if not gene_name:
+            continue
+        isolate_genes[i['Accession']].append(i['Gene'])
 
     isolates = [
         i for i in gene_list
@@ -297,35 +305,47 @@ def detect_additional_genes(gene_list, virus_obj, poolsize=20):
         parameters = [(isolate, isolate_genes[isolate['Accession']],
                        virus_obj.BLAST_NA_DB_PATH) for isolate in isolates]
         for count, blast_results in enumerate(
-                pool.starmap(blast_isolates, parameters)):
+                pool.starmap(blast_addi_isolates, parameters)):
             additional_genes.extend(blast_results)
 
-    # Step 2: Run Local Alignment in Parallel (for Isolates Without BLAST Hits)
+    for i in additional_genes:
+        if not i['Gene'] and i.get('hit_name'):
+            i['Gene'] = i['hit_name']
+
+    return additional_genes
+
+
+# Step 2: Run Local Alignment in Parallel (for Isolates Without BLAST Hits)
+def detect_gene_by_biopython(isolates, virus_obj):
+    additional_genes = []
+
     for isolate in isolates:
         seq = isolate.get('NA_raw_seq', '')
-
         # Attempt gene detection using local alignment
         aligned_genes = local_align_genes(seq, virus_obj)
 
         if aligned_genes:
             for gene in aligned_genes:
+                # print(isolate['Accession'], 'new')
                 new_gene = {
                     'Accession': isolate['Accession'],
                     'Gene': gene["Gene"],
-                    'CDS_NAME': gene["Gene"],
+                    'CDS_NAME': '',
                     'Order': isolate['Order'],
                     'detected_gene': 1,
                     'NA_length': gene["NA_len"],
                     'AA_length': gene["AA_len"],
+                    'NA_raw_seq': seq,
                     'align_len': gene["Alignment Length"],
-                    'PcntIDs': gene["Percent Identity"]
+                    'pcnt_id': gene["Percent Identity"]
                 }
                 additional_genes.append(new_gene)
 
+    # print(len(additional_genes), 'add genes')
     return additional_genes
 
 
-def blast_isolates(isolate, isolate_genes, blast_na_db_path):
+def blast_addi_isolates(isolate, isolate_genes, blast_na_db_path):
 
     blast_result = perform_blast(
         isolate['Accession'], isolate['Order'],
@@ -353,6 +373,7 @@ def blast_isolates(isolate, isolate_genes, blast_na_db_path):
         new_gene = get_new_gene(isolate, blast, {})
         new_gene['detected_gene'] = 1
 
+        new_gene['CDS_NAME'] = ''
         additional_genes.append(new_gene)
 
     return additional_genes

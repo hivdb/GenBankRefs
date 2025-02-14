@@ -5,6 +5,7 @@ from operator import itemgetter
 from GenBankFunctions import filter_by_taxonomy
 from GenBankFunctions import pooled_blast_genes
 from GenBankFunctions import detect_additional_genes
+from GenBankFunctions import detect_gene_by_biopython
 
 from Utilities import extract_year_from_date_fields
 from Utilities import extract_year_from_journal
@@ -147,7 +148,7 @@ def process_one_record(record):
             na_seq = str(aa.location.extract(record.seq))
             genes.append({
                 'Accession': accession,
-                'Gene': gene_name,
+                'Gene': '',
                 'CDS_NAME': gene_name,
                 'Order': idx + 1,
 
@@ -244,11 +245,11 @@ def process_features(feature_list, genes, virus_obj):
         str(virus_obj.genbank_feature_check_file)).fillna('')
 
     # drop non clinical isolate
-    features_df = features_df[
-        features_df["NonClinical"].isna() | (features_df["NonClinical"] == "")]
+    # features_df = features_df[
+    #     features_df["NonClinical"].isna() | (features_df["NonClinical"] == "")]
 
     # Drop sequences with no detected genes
-    features_df = features_df[features_df["Genes"].isna() | (features_df["Genes"] == "")]
+    features_df = features_df[~(features_df["Genes"].isna() | (features_df["Genes"] == ""))]
 
     return features_df
 
@@ -258,9 +259,25 @@ def process_gene_list(gene_list, run_blast, virus_obj):
         virus_obj.build_blast_db()
 
         gene_list2 = pooled_blast_genes(gene_list, virus_obj)
-        additional_gene_list = detect_additional_genes(gene_list, virus_obj)
+        additional_gene_list = detect_additional_genes(
+            gene_list, gene_list2, virus_obj)
 
-        gene_list = gene_list2 + additional_gene_list
+        with_gene_acc = [
+            i['Accession']
+            for i in gene_list2 + additional_gene_list
+            if i['Gene']
+        ]
+        without_gene = [
+            i
+            for i in gene_list
+            if i['Accession'] not in with_gene_acc
+        ]
+        print("Accessions no gene after blast", len(without_gene))
+        print('CDS_NAME', set([i['CDS_NAME'] for i in without_gene]))
+        missing_genes = detect_gene_by_biopython(without_gene, virus_obj)
+        print('Detected missing genes', len(missing_genes))
+        print('Genes', [i['Gene'] for i in missing_genes])
+        gene_list = gene_list2 + additional_gene_list + missing_genes
         gene_list.sort(key=itemgetter('Accession', 'Gene'))
 
         gene_df = pd.DataFrame(gene_list)
@@ -277,7 +294,7 @@ def process_gene_list(gene_list, run_blast, virus_obj):
         gene_df = pd.read_excel(
             str(virus_obj.genbank_gene_file)).fillna('')
 
-    # This statement creates features_df without running BLAST
+    # This statement creates gene df without running BLAST
     else:
         gene_df = pd.DataFrame(gene_list)
         gene_df.to_excel(str(virus_obj.genbank_gene_file), index=False)

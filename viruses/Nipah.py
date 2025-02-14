@@ -33,9 +33,6 @@ class Nipah(Virus):
     def _process_features(self, features_df):
         return process_features(features_df)
 
-    def process_gene_list(self, gene_df):
-        return process_gene_list(self, gene_df)
-
     def process_pubmed(self, pubmed):
         # pubmed['Gene'] = pubmed['Gene'].apply(partial(translate_pubmed_genes, self))
         return categorize_host_specimen(self, pubmed)
@@ -238,16 +235,6 @@ def get_additional_host_data(features_df):
             sorted(list(set(updated_specimen)))) if updated_specimen else ''
 
     return features_df
-
-
-def process_gene_list(virus, gene_df):
-
-    gene_df['Gene'] = gene_df['CDS_NAME'].apply(translate_cds_name)
-
-    for i, row in gene_df.iterrows():
-        if str(row['Gene']) not in virus.GENES:
-            gene_df.at[i, 'Gene'] = row['hit_name']
-    return gene_df
 
 
 def translate_cds_name(cds):

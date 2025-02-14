@@ -202,6 +202,7 @@ class Virus:
     def process_features(self, features_df, genes):
         features_df = self._process_features(features_df)
 
+        # add genes for feature
         for i, row in features_df.iterrows():
             g_list = genes[genes['Accession'] == row['Accession']]
             g_list = set(g_list['Gene'].tolist())

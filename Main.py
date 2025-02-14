@@ -45,6 +45,14 @@ def main():
     features = process_features(features, genes, virus_obj)
 
     print("Number of GenBank References:", len(references))
+    acc_list = features['Accession'].tolist()
+    references = [
+        r for r in references
+        if any([
+            (a.strip() in acc_list) for a in r['accession'].split(',')
+        ])
+    ]
+    print("Number of GenBank References after remove non gene isolates:", len(references))
     references = process_references(references)
 
     references = aggregate_references(references, virus_obj)
