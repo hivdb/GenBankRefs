@@ -184,48 +184,10 @@ def summarize_genbank_by_seq(df, genes_df):
     section.append(f"Counts # of genes:\n{num_gene_distribution_f}\n")
     section.append(f"Percentages # of genes:\n{num_gene_percent_f}\n")
 
-    # Try to merge on isolateName, the fields should all be the same for same isolate
-    # Filter out rows where "IsolateName" is not empty and perform merging
-    df.loc[:, 'Accession_prefix'] = df['Accession'].astype(str).str[:5]
-    df_no_merge = df[df['IsolateName'] == ""].copy()
-    df_no_merge.to_excel(f"OutputData/{virus}/excels/tmp_not_merged.xlsx")
-
-    # Count occurrences of each group, if >3 don't merge
-    # maybe 6 for Nipah, 3 for cchf?
-    # Gene should also be unique
-    df_to_merge = df[df['IsolateName'] != ""].copy()
-    df_to_merge['count'] = df_to_merge.groupby(['Accession_prefix', 'country_region', 'collection_date', 'Host', 'IsolateName'])['Genes'].transform(lambda x: x.nunique())
-
-
-    # Separate groups: ones with <= 6 occurrences (to merge) and ones with > 6 (to keep separate, not merge)
-    valid_groups = df_to_merge[(df_to_merge['count'] <= 6) & (df_to_merge['count'] > 1)]
-    valid_groups.to_excel(f"OutputData/{virus}/excels/tmp_to_merge.xlsx")
-    invalid_groups = df_to_merge[(df_to_merge['count'] > 6) | (df_to_merge['count'] == 1)]
-    # Combine invalid groups back into df_no_merge
-    df_no_merge = pd.concat([df_no_merge, invalid_groups], ignore_index=True)
-    invalid_groups.to_excel(f"OutputData/{virus}/excels/tmp_not_merged_invalid.xlsx", index=False)
-
-    # Merge the valid_groups back with the original DataFrame to retain all columns
-
-    merged_valid_df = (
-        valid_groups.groupby(['Accession_prefix', 'country_region', 'collection_date', 'Host', 'IsolateName'], as_index=False)
-        .agg({
-            'Genes': lambda x: ', '.join(sorted(set(g.strip() for v in x.dropna() for g in v.split(',')))),
-            'Accession': lambda x: ', '.join(sorted(set(x.dropna()))),  # Combine unique Accessions
-            'cds': lambda x: ', '.join(sorted(set(g.strip() for v in x.dropna() for g in v.split(',')))),  # Combine unique cds
-            'isolate_source2': lambda x: ', '.join(sorted(set(x.dropna()))),
-            **{col: 'first' for col in valid_groups.columns if col not in
-            ['country_region', 'collection_date', 'Host', 'IsolateName',
-                'Genes', 'Accession', 'cds', 'isolate_source2',
-                'Description', 'record_date', 'organism', 'segment_source']}
-        })
-    )
-
-    # Combine both datasets
-    final_df = pd.concat([merged_valid_df, df_no_merge], ignore_index=True)
-
-    # print(df.shape[0], final_merged_df.shape[0])
-    final_df.to_excel(f"OutputData/{virus}/excels/tmp_merge_after.xlsx")
+    if virus == 'Nipah':
+        final_df = df
+    else:
+        final_df = merge_segements(df, virus)
 
     total_count_after_na = final_df[final_df['Genes'] != 'NA'].shape[0]
     combined_num_gene_counts = final_df.loc[final_df['Genes'] != 'NA', 'Genes'].apply(
@@ -323,3 +285,51 @@ def summarize_genbank_full_genome(
     summarize_report.append(section)
 
     return summarize_report
+
+
+def merge_segements(df, virus):
+
+    # Try to merge on isolateName, the fields should all be the same for same isolate
+    # Filter out rows where "IsolateName" is not empty and perform merging
+    df.loc[:, 'Accession_prefix'] = df['Accession'].astype(str).str[:5]
+    df_no_merge = df[df['IsolateName'] == ""].copy()
+    df_no_merge.to_excel(f"OutputData/{virus}/excels/tmp_not_merged.xlsx")
+
+    # Count occurrences of each group, if >3 don't merge
+    # maybe 6 for Nipah, 3 for cchf?
+    # Gene should also be unique
+    df_to_merge = df[df['IsolateName'] != ""].copy()
+    df_to_merge['count'] = df_to_merge.groupby(['Accession_prefix', 'country_region', 'collection_date', 'Host', 'IsolateName'])['Genes'].transform(lambda x: x.nunique())
+
+
+    # Separate groups: ones with <= 6 occurrences (to merge) and ones with > 6 (to keep separate, not merge)
+    valid_groups = df_to_merge[(df_to_merge['count'] <= 6) & (df_to_merge['count'] > 1)]
+    valid_groups.to_excel(f"OutputData/{virus}/excels/tmp_to_merge.xlsx")
+    invalid_groups = df_to_merge[(df_to_merge['count'] > 6) | (df_to_merge['count'] == 1)]
+    # Combine invalid groups back into df_no_merge
+    df_no_merge = pd.concat([df_no_merge, invalid_groups], ignore_index=True)
+    invalid_groups.to_excel(f"OutputData/{virus}/excels/tmp_not_merged_invalid.xlsx", index=False)
+
+    # Merge the valid_groups back with the original DataFrame to retain all columns
+
+    merged_valid_df = (
+        valid_groups.groupby(['Accession_prefix', 'country_region', 'collection_date', 'Host', 'IsolateName'], as_index=False)
+        .agg({
+            'Genes': lambda x: ', '.join(sorted(set(g.strip() for v in x.dropna() for g in v.split(',')))),
+            'Accession': lambda x: ', '.join(sorted(set(x.dropna()))),  # Combine unique Accessions
+            'cds': lambda x: ', '.join(sorted(set(g.strip() for v in x.dropna() for g in v.split(',')))),  # Combine unique cds
+            'isolate_source2': lambda x: ', '.join(sorted(set(x.dropna()))),
+            **{col: 'first' for col in valid_groups.columns if col not in
+                ['country_region', 'collection_date', 'Host', 'IsolateName',
+                'Genes', 'Accession', 'cds', 'isolate_source2',
+                'Description', 'record_date', 'organism', 'segment_source']}
+        })
+    )
+
+    # Combine both datasets
+    final_df = pd.concat([merged_valid_df, df_no_merge], ignore_index=True)
+
+    # print(df.shape[0], final_merged_df.shape[0])
+    final_df.to_excel(f"OutputData/{virus}/excels/tmp_merge_after.xlsx")
+
+    return final_df
