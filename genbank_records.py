@@ -258,7 +258,7 @@ def process_features(feature_list, genes, virus_obj):
 
     # Drop sequences with no detected genes
     features_df = features_df[~(features_df["Genes"].isna() | (features_df["Genes"] == ""))]
-
+    print('Total number of isolates included', len(features_df))
 
     return features_df
 
