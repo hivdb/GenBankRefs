@@ -2,7 +2,7 @@ Summarize PubMed
 ================================================================================
 # Sequences
 --------------------------------------------------------------------------------
-3628
+3626
 ================================================================================
 Publish Year
 --------------------------------------------------------------------------------
@@ -44,10 +44,10 @@ Percentages:
 Host
 --------------------------------------------------------------------------------
 Counts:
-Human: 68
+Human: 67
 Ticks: 26
 Human and Ticks: 23
-Sheep and Ticks: 6
+Sheep and Ticks: 7
 NA: 5
 Cattle and Ticks: 5
 Goat and Sheep and Ticks: 4
@@ -97,14 +97,14 @@ Rodent and Sheep and Ticks: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Human (34.7%), Ticks (13.3%), Human and Ticks (11.7%), Sheep and Ticks (3.1%), NA (2.6%), Cattle and Ticks (2.6%), Goat and Sheep and Ticks (2.0%), Camel and Ticks (2.0%), Livestock and Ticks (2.0%), Cattle and Goat and Ticks (1.5%), Goat and Human and Sheep and Ticks (1.5%), Animal and Ticks (1.0%), Cattle and Goat and Sheep and Ticks (1.0%), Animal and Human (1.0%), Human and Livestock and Ticks (1.0%), Cattle and Goat and Livestock and Sheep and Ticks (1.0%), Cattle and Sheep and Ticks (1.0%), Human and Rodent and Ticks (0.5%), sw13 cells (0.5%), Human and Sheep and Ticks (0.5%), Deer and Ticks (0.5%), Animal and Human and Ticks (0.5%), Sheep (0.5%), Rodent and Ticks (0.5%), Cattle and Goat and Human and Livestock and Sheep and Ticks (0.5%), Cow and Goat and Sheep and Ticks (0.5%), Animal and Cattle and Goat and Livestock and Sheep and Ticks (0.5%), Mouse (0.5%), Boar and Cattle and Goat and Hare and Ticks (0.5%), Cow and Goat and Livestock and Sheep and Ticks (0.5%), cell culture (0.5%), Goat and Ticks (0.5%), Cattle and Human and Ticks (0.5%), Cattle and Deer and Ticks (0.5%), Buffalo and Ticks (0.5%), lab strain (0.5%), Boar and Deer and Ticks (0.5%), Cow and Ticks (0.5%), Camel (0.5%), Monkey and Ticks (0.5%), Animal and Buffalo and Cattle and Goat and Sheep and Ticks (0.5%), Camel and Cattle and Ticks (0.5%), Camel and Sheep and Ticks (0.5%), Boar and Cattle and Deer and Goat and Livestock and Sheep and Ticks (0.5%), vero cell (0.5%), Livestock and Rodent and Sheep (0.5%), Cattle and Livestock and Ticks (0.5%), Serow (0.5%), Human and Rodent (0.5%), Rodent and Sheep and Ticks (0.5%)
+Human (34.2%), Ticks (13.3%), Human and Ticks (11.7%), Sheep and Ticks (3.6%), NA (2.6%), Cattle and Ticks (2.6%), Goat and Sheep and Ticks (2.0%), Camel and Ticks (2.0%), Livestock and Ticks (2.0%), Cattle and Goat and Ticks (1.5%), Goat and Human and Sheep and Ticks (1.5%), Animal and Ticks (1.0%), Cattle and Goat and Sheep and Ticks (1.0%), Animal and Human (1.0%), Human and Livestock and Ticks (1.0%), Cattle and Goat and Livestock and Sheep and Ticks (1.0%), Cattle and Sheep and Ticks (1.0%), Human and Rodent and Ticks (0.5%), sw13 cells (0.5%), Human and Sheep and Ticks (0.5%), Deer and Ticks (0.5%), Animal and Human and Ticks (0.5%), Sheep (0.5%), Rodent and Ticks (0.5%), Cattle and Goat and Human and Livestock and Sheep and Ticks (0.5%), Cow and Goat and Sheep and Ticks (0.5%), Animal and Cattle and Goat and Livestock and Sheep and Ticks (0.5%), Mouse (0.5%), Boar and Cattle and Goat and Hare and Ticks (0.5%), Cow and Goat and Livestock and Sheep and Ticks (0.5%), cell culture (0.5%), Goat and Ticks (0.5%), Cattle and Human and Ticks (0.5%), Cattle and Deer and Ticks (0.5%), Buffalo and Ticks (0.5%), lab strain (0.5%), Boar and Deer and Ticks (0.5%), Cow and Ticks (0.5%), Camel (0.5%), Monkey and Ticks (0.5%), Animal and Buffalo and Cattle and Goat and Sheep and Ticks (0.5%), Camel and Cattle and Ticks (0.5%), Camel and Sheep and Ticks (0.5%), Boar and Cattle and Deer and Goat and Livestock and Sheep and Ticks (0.5%), vero cell (0.5%), Livestock and Rodent and Sheep (0.5%), Cattle and Livestock and Ticks (0.5%), Serow (0.5%), Human and Rodent (0.5%), Rodent and Sheep and Ticks (0.5%)
 
 ================================================================================
 Specimen
 --------------------------------------------------------------------------------
 Counts:
-Blood: 60
-Animals and ticks: 56
+Blood: 59
+Animals and ticks: 57
 Ticks: 32
 NA: 17
 Ticks and blood: 15
@@ -118,7 +118,7 @@ Animals and brain: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Blood (30.6%), Animals and ticks (28.6%), Ticks (16.3%), NA (8.7%), Ticks and blood (7.7%), Animals (2.6%), Animals and ticks and blood (2.0%), Animals and ticks and brain (1.0%), Animals and blood (1.0%), Ticks and brain (0.5%), Ticks and blood and spleen (0.5%), Animals and brain (0.5%)
+Blood (30.1%), Animals and ticks (29.1%), Ticks (16.3%), NA (8.7%), Ticks and blood (7.7%), Animals (2.6%), Animals and ticks and blood (2.0%), Animals and ticks and brain (1.0%), Animals and blood (1.0%), Ticks and brain (0.5%), Ticks and blood and spleen (0.5%), Animals and brain (0.5%)
 
 ================================================================================
 Median of Sample Year
@@ -127,12 +127,12 @@ Counts:
 NA: 15
 2012: 15
 2014: 12
+2008: 10
 2016: 10
 2018: 10
-2008: 9
-2015: 9
 2017: 9
 2010: 8
+2015: 8
 2019: 8
 2009: 7
 2020: 7
@@ -168,12 +168,12 @@ NA: 15
 
 --------------------------------------------------------------------------------
 Percentages:
-NA (7.7%), 2012 (7.7%), 2014 (6.1%), 2016 (5.1%), 2018 (5.1%), 2008 (4.6%), 2015 (4.6%), 2017 (4.6%), 2010 (4.1%), 2019 (4.1%), 2009 (3.6%), 2020 (3.6%), 2002 (3.1%), 2007 (3.1%), 2000 (2.6%), 2021 (2.6%), 1990 (2.0%), 2001 (2.0%), 2022 (2.0%), 2005 (2.0%), 2013 (2.0%), 1993 (1.5%), 1995 (1.5%), 1992 (1.5%), 2006 (1.5%), 2004 (1.5%), 1994 (1.0%), 1974 (1.0%), 1978 (1.0%), 2011 (1.0%), 1979 (1.0%), 1971 (0.5%), 1966 (0.5%), 1976 (0.5%), 1973 (0.5%), 1980 (0.5%), 1975 (0.5%), 1981 (0.5%), 1982 (0.5%), 1970 (0.5%), 1996 (0.5%)
+NA (7.7%), 2012 (7.7%), 2014 (6.1%), 2008 (5.1%), 2016 (5.1%), 2018 (5.1%), 2017 (4.6%), 2010 (4.1%), 2015 (4.1%), 2019 (4.1%), 2009 (3.6%), 2020 (3.6%), 2002 (3.1%), 2007 (3.1%), 2000 (2.6%), 2021 (2.6%), 1990 (2.0%), 2001 (2.0%), 2022 (2.0%), 2005 (2.0%), 2013 (2.0%), 1993 (1.5%), 1995 (1.5%), 1992 (1.5%), 2006 (1.5%), 2004 (1.5%), 1994 (1.0%), 1974 (1.0%), 1978 (1.0%), 2011 (1.0%), 1979 (1.0%), 1971 (0.5%), 1966 (0.5%), 1976 (0.5%), 1973 (0.5%), 1980 (0.5%), 1975 (0.5%), 1981 (0.5%), 1982 (0.5%), 1970 (0.5%), 1996 (0.5%)
 
 --------------------------------------------------------------------------------
 Median IQR 2002.0 2012.0 2016.0
 --------------------------------------------------------------------------------
-1960-1969 (1) (0.6)%, 1970-1979 (11) (6.1)%, 1980-1989 (3) (1.7)%, 1990-1999 (16) (8.8)%, 2000-2009 (47) (26.0)%, 2010-2019 (87) (48.1)%, 2020-2029 (16) (8.8)%
+1960-1969 (1) (0.6)%, 1970-1979 (11) (6.1)%, 1980-1989 (3) (1.7)%, 1990-1999 (16) (8.8)%, 2000-2009 (48) (26.5)%, 2010-2019 (86) (47.5)%, 2020-2029 (16) (8.8)%
 ================================================================================
 Country
 --------------------------------------------------------------------------------
@@ -261,13 +261,13 @@ S (42.3%), Other (40.3%), NA (6.6%), M (6.1%), L (4.6%)
 Seq method
 --------------------------------------------------------------------------------
 Counts:
-Sanger: 102
-NA: 51
+Sanger: 101
+NA: 52
 NGS: 43
 
 --------------------------------------------------------------------------------
 Percentages:
-Sanger (52.0%), NA (26.0%), NGS (21.9%)
+Sanger (51.5%), NA (26.5%), NGS (21.9%)
 
 ================================================================================
 End of Report

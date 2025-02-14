@@ -164,7 +164,8 @@ def match(virus, pubmed, genbank, logger):
 
             if ref_id not in genbank_unmatch_list:
                 print(f"Warning: hard link file is matching to a wrong RefID: {ref_id}")
-            del genbank_unmatch_list[ref_id]
+            else:
+                del genbank_unmatch_list[ref_id]
 
     genbank_match_list = (
         match_by_title_list +

@@ -18,7 +18,7 @@ from Utilities import dump_csv
 from GenBankFunctions import is_reference_genome
 
 
-def aggregate_references(references, virus_obj):
+def aggregate_references(references, virus_obj, save_data=False):
 
     # references.to_excel(virus_obj.genbank_raw_ref_file)
 
@@ -72,9 +72,11 @@ def aggregate_references(references, virus_obj):
           len(merged_ref))
 
     # merged_ref['RefID'] = merged_ref.index + 1
-    merged_ref = get_fixed_Ref_ID(virus_obj, merged_ref)
+    merged_ref, fixed_ref = get_fixed_Ref_ID(virus_obj, merged_ref)
 
-    merged_ref.to_excel(str(virus_obj.merged_ref_file), index=False)
+    if save_data:
+        dump_csv(virus_obj.fixed_ref_id_file, fixed_ref)
+        merged_ref.to_excel(str(virus_obj.merged_ref_file), index=False)
 
     return merged_ref
 
@@ -122,9 +124,8 @@ def get_fixed_Ref_ID(virus, references):
         references.at[idx, 'RefID'] = fixed_ref_id
 
     references["RefID"] = references["RefID"].astype(int)
-    dump_csv(virus.fixed_ref_id_file, fixed_ref)
 
-    return references
+    return references, fixed_ref
 
 
 def merge_by_author_title_acc(df):
@@ -251,12 +252,12 @@ def is_same_submission_set(row_i, row_j):
             # journal year, accession
         }
 
-    # title_list = [
-
-    # ]
-    # if row_i['Title'] in title_list and row_j['Title'] in title_list:
-    #     print(multiple_scores)
-    #     print(valid_column)
+    title_list = [
+        'Emerging viruses are an underestimated cause of undiagnosed febrile illness in uganda'
+    ]
+    if row_i['Title'] in title_list and row_j['Title'] in title_list:
+        print(multiple_scores)
+        print(valid_column)
 
     multiple_scores = [
         v

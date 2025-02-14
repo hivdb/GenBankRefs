@@ -325,22 +325,21 @@ def detect_gene_by_biopython(isolates, virus_obj):
         # Attempt gene detection using local alignment
         aligned_genes = local_align_genes(seq, virus_obj)
 
-        if aligned_genes:
-            for gene in aligned_genes:
-                # print(isolate['Accession'], 'new')
-                new_gene = {
-                    'Accession': isolate['Accession'],
-                    'Gene': gene["Gene"],
-                    'CDS_NAME': '',
-                    'Order': isolate['Order'],
-                    'detected_gene': 1,
-                    'NA_length': gene["NA_len"],
-                    'AA_length': gene["AA_len"],
-                    'NA_raw_seq': seq,
-                    'align_len': gene["Alignment Length"],
-                    'pcnt_id': gene["Percent Identity"]
-                }
-                additional_genes.append(new_gene)
+        for gene in aligned_genes:
+            # print(isolate['Accession'], 'new')
+            new_gene = {
+                'Accession': isolate['Accession'],
+                'Gene': gene["Gene"],
+                'CDS_NAME': '',
+                'Order': isolate['Order'],
+                'detected_gene': 1,
+                'NA_length': gene["NA_len"],
+                'AA_length': gene["AA_len"],
+                'NA_raw_seq': seq,
+                'align_len': gene["Alignment Length"],
+                'pcnt_id': gene["Percent Identity"]
+            }
+            additional_genes.append(new_gene)
 
     # print(len(additional_genes), 'add genes')
     return additional_genes

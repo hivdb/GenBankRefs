@@ -30,7 +30,7 @@ def main():
     virus_obj = load_virus_obj(virus)
     run_blast = select_run_blast()
 
-    references, features, genes, nonvirus, nonclinical = parse_genbank_records(
+    total_references, references, features, genes, nonvirus, nonclinical = parse_genbank_records(
         virus_obj.genbank_file)
 
     excludes = pd.DataFrame(nonvirus)
@@ -46,16 +46,25 @@ def main():
 
     print("Number of GenBank References:", len(references))
     acc_list = features['Accession'].tolist()
+
+    print("Number of GenBank References after remove non gene isolates:", len(total_references))
+    total_references = process_references(total_references)
+
+    total_references = aggregate_references(total_references, virus_obj)
+
+    print('-' * 80)
+
     references = [
         r for r in references
         if any([
             (a.strip() in acc_list) for a in r['accession'].split(',')
         ])
     ]
+
     print("Number of GenBank References after remove non gene isolates:", len(references))
     references = process_references(references)
 
-    references = aggregate_references(references, virus_obj)
+    references = aggregate_references(references, virus_obj, save_data=True)
 
     # Combine references and features
     combined_df = combine_refs_and_features(references, features, genes)

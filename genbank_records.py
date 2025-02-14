@@ -33,6 +33,8 @@ def parse_genbank_records(genbank_file):
     nonvirus_list = []
     nonclinical_list = []
 
+    total_ref_list = []
+
     # total_record = 0
 
     exclusion_keywords = [
@@ -68,6 +70,8 @@ def parse_genbank_records(genbank_file):
 
             refs, features, genes = process_one_record(record)
 
+            total_ref_list.extend(refs)
+
             # if 'MAG' in record.annotations['keywords']:
             #     should_exclude = True
             if not should_exclude:
@@ -86,6 +90,7 @@ def parse_genbank_records(genbank_file):
             gene_list.extend(genes)
 
     return (
+        total_ref_list,
         reference_list,
         feature_list,
         gene_list,
@@ -248,8 +253,12 @@ def process_features(feature_list, genes, virus_obj):
     # features_df = features_df[
     #     features_df["NonClinical"].isna() | (features_df["NonClinical"] == "")]
 
+    excluded_features = features_df[(features_df["Genes"].isna() | (features_df["Genes"] == ""))]
+    print('Excluded isolates', len(excluded_features))
+
     # Drop sequences with no detected genes
     features_df = features_df[~(features_df["Genes"].isna() | (features_df["Genes"] == ""))]
+
 
     return features_df
 
