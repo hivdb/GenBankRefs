@@ -196,3 +196,6 @@ ReferenceData/Nipah/Nipah.gb.v2.gb
 
 excels
 db_json
+
+phylogenetic/*_files
+phylogenetic/*.html

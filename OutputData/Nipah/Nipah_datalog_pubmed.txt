@@ -38,75 +38,75 @@ Host
 --------------------------------------------------------------------------------
 Counts:
 Bat: 13
-Human: 12
-Bat and Human: 3
-Bat and Dog and Human and Pig: 1
+Human: 11
+Bat and Human: 2
+293t cells, a human cell line: 1
+Bat and Pig: 1
 Human and Pig: 1
-infected cell cultures​: 1
+Pig: 1
 island flying foxes (pteropus hypomelanus): 1
+pteropus lylei (lyle's flying fox): 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Bat (40.6%), Human (37.5%), Bat and Human (9.4%), Bat and Dog and Human and Pig (3.1%), Human and Pig (3.1%), infected cell cultures​ (3.1%), island flying foxes (pteropus hypomelanus) (3.1%)
+Bat (40.6%), Human (34.4%), Bat and Human (6.2%), 293t cells, a human cell line (3.1%), Bat and Pig (3.1%), Human and Pig (3.1%), Pig (3.1%), island flying foxes (pteropus hypomelanus) (3.1%), pteropus lylei (lyle's flying fox) (3.1%)
 
 ================================================================================
 Specimen
 --------------------------------------------------------------------------------
 Counts:
-NA: 17
-Urine: 3
+NA: 20
 Blood and throat swab and urine: 2
-Brain: 2
 Blood and csf: 1
-Blood and lung: 1
+Blood and csf and oropharyngeal swab and urine: 1
+Blood and csf and throat swab: 1
+Blood and csf and throat swab and urine: 1
+Brain: 1
+Brain and csf and lung and urine: 1
 Csf and oropharyngeal swab and urine: 1
-Csf and throat swab and urine: 1
 Liver and lung and spleen and throat swab: 1
-Lung: 1
-Oropharyngeal swab: 1
 Throat swab and urine: 1
+Urine: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-NA (53.1%), Urine (9.4%), Blood and throat swab and urine (6.2%), Brain (6.2%), Blood and csf (3.1%), Blood and lung (3.1%), Csf and oropharyngeal swab and urine (3.1%), Csf and throat swab and urine (3.1%), Liver and lung and spleen and throat swab (3.1%), Lung (3.1%), Oropharyngeal swab (3.1%), Throat swab and urine (3.1%)
+NA (62.5%), Blood and throat swab and urine (6.2%), Blood and csf (3.1%), Blood and csf and oropharyngeal swab and urine (3.1%), Blood and csf and throat swab (3.1%), Blood and csf and throat swab and urine (3.1%), Brain (3.1%), Brain and csf and lung and urine (3.1%), Csf and oropharyngeal swab and urine (3.1%), Liver and lung and spleen and throat swab (3.1%), Throat swab and urine (3.1%), Urine (3.1%)
 
 ================================================================================
 Median of Sample Year
 --------------------------------------------------------------------------------
 Counts:
-1998: 3
+1998: 4
 2004: 3
 2009: 3
-2015: 3
+2010: 3
+2006: 2
 2007: 2
-2010: 2
 2014: 2
+2015: 2
 2018: 2
 2023: 2
-1999: 1
 2000: 1
 2001: 1
 2003: 1
 2005: 1
-2006: 1
 2019: 1
-2020: 1
 2021: 1
 NA: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-1998 (9.4%), 2004 (9.4%), 2009 (9.4%), 2015 (9.4%), 2007 (6.2%), 2010 (6.2%), 2014 (6.2%), 2018 (6.2%), 2023 (6.2%), 1999 (3.1%), 2000 (3.1%), 2001 (3.1%), 2003 (3.1%), 2005 (3.1%), 2006 (3.1%), 2019 (3.1%), 2020 (3.1%), 2021 (3.1%), NA (3.1%)
+1998 (12.5%), 2004 (9.4%), 2009 (9.4%), 2010 (9.4%), 2006 (6.2%), 2007 (6.2%), 2014 (6.2%), 2015 (6.2%), 2018 (6.2%), 2023 (6.2%), 2000 (3.1%), 2001 (3.1%), 2003 (3.1%), 2005 (3.1%), 2019 (3.1%), 2021 (3.1%), NA (3.1%)
 
 --------------------------------------------------------------------------------
-Median IQR 2004.0 2009.0 2015.0
+Median IQR 2004.0 2009.0 2014.5
 --------------------------------------------------------------------------------
-1990-1999 (4) (12.9)%, 2000-2009 (13) (41.9)%, 2010-2019 (10) (32.3)%, 2020-2029 (4) (12.9)%
+1990-1999 (4) (12.9)%, 2000-2009 (14) (45.2)%, 2010-2019 (10) (32.3)%, 2020-2029 (3) (9.7)%
 ================================================================================
 Country
 --------------------------------------------------------------------------------
 Counts:
-India: 9
+India: 10
 Bangladesh: 6
 Malaysia: 6
 Thailand: 4
@@ -115,28 +115,28 @@ Bangladesh, Cambodia, Malaysia: 1
 Cambodia: 1
 Indonesia: 1
 Multinational: 1
-NA: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-India (28.1%), Bangladesh (18.8%), Malaysia (18.8%), Thailand (12.5%), Bangladesh, Malaysia (6.2%), Bangladesh, Cambodia, Malaysia (3.1%), Cambodia (3.1%), Indonesia (3.1%), Multinational (3.1%), NA (3.1%)
+India (31.2%), Bangladesh (18.8%), Malaysia (18.8%), Thailand (12.5%), Bangladesh, Malaysia (6.2%), Bangladesh, Cambodia, Malaysia (3.1%), Cambodia (3.1%), Indonesia (3.1%), Multinational (3.1%)
 
 --------------------------------------------------------------------------------
-{'Multinational': 1, 'India': 9, 'Bangladesh, Malaysia': 2, 'Thailand': 4, 'Bangladesh': 6, 'NA': 1, 'Indonesia': 1, 'Malaysia': 6, 'Cambodia': 1, 'Bangladesh, Cambodia, Malaysia': 1}
+{'Bangladesh, Malaysia': 2, 'Multinational': 1, 'India': 10, 'Thailand': 4, 'Bangladesh': 6, 'Indonesia': 1, 'Malaysia': 6, 'Cambodia': 1, 'Bangladesh, Cambodia, Malaysia': 1}
 ================================================================================
 Gene
 --------------------------------------------------------------------------------
 Counts:
 N: 30
-G: 18
 M: 18
-P: 18
 F: 17
+G: 17
+P: 17
 L: 16
+P/C/V: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-N (25.6%), G (15.4%), M (15.4%), P (15.4%), F (14.5%), L (13.7%)
+N (25.9%), M (15.5%), F (14.7%), G (14.7%), P (14.7%), L (13.8%), P/C/V (0.9%)
 
 ================================================================================
 Seq method
