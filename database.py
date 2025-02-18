@@ -417,6 +417,30 @@ def creat_views(db_file):
 
     run_create_view(db_file, vGPMatched)
 
+    vGPMatchedMatch = """
+        CREATE VIEW vGPMatchedMatch AS
+        SELECT * FROM vGPMatched
+        WHERE RefID != '' AND PubID != ''
+        ;
+    """
+    run_create_view(db_file, vGPMatchedMatch)
+
+    vGPMatchedNoRef = """
+        CREATE VIEW vGPMatchedNoRef AS
+        SELECT * FROM vGPMatched
+        WHERE RefID == '' AND PubID != ''
+        ;
+    """
+    run_create_view(db_file, vGPMatchedNoRef)
+
+    vGPMatchedNoPub = """
+        CREATE VIEW vGPMatchedNoPub AS
+        SELECT * FROM vGPMatched
+        WHERE RefID != '' AND PubID == ''
+        ;
+    """
+    run_create_view(db_file, vGPMatchedNoPub)
+
     vAccessionPub = """
         CREATE VIEW vAccessionPub AS
         SELECT
@@ -771,7 +795,9 @@ def dump_db_tables(db_path, db_dump_folder):
         # 'tblSubmissionPub'
 
         # 'vNumSuppliedIsolateDataByPubMed',
-        'vGPMatched'
+        'vGPMatchedMatch',
+        'vGPMatchedNoRef',
+        'vGPMatchedNoPub',
     ]
 
     for t in tables:

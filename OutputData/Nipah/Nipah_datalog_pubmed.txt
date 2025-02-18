@@ -8,28 +8,28 @@ Publish Year
 --------------------------------------------------------------------------------
 Counts:
 2021: 4
-2024: 3
 2019: 3
-2020: 2
-2018: 2
-2012: 2
-2010: 2
-2005: 2
+2024: 3
 2001: 2
-2022: 1
-2016: 1
-2013: 1
-2011: 1
-2007: 1
-2006: 1
-2004: 1
-2002: 1
+2005: 2
+2010: 2
+2012: 2
+2018: 2
+2020: 2
 2000: 1
+2002: 1
+2004: 1
+2006: 1
+2007: 1
 2009: 1
+2011: 1
+2013: 1
+2016: 1
+2022: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-2021 (12.5%), 2024 (9.4%), 2019 (9.4%), 2020 (6.2%), 2018 (6.2%), 2012 (6.2%), 2010 (6.2%), 2005 (6.2%), 2001 (6.2%), 2022 (3.1%), 2016 (3.1%), 2013 (3.1%), 2011 (3.1%), 2007 (3.1%), 2006 (3.1%), 2004 (3.1%), 2002 (3.1%), 2000 (3.1%), 2009 (3.1%)
+2021 (12.5%), 2019 (9.4%), 2024 (9.4%), 2001 (6.2%), 2005 (6.2%), 2010 (6.2%), 2012 (6.2%), 2018 (6.2%), 2020 (6.2%), 2000 (3.1%), 2002 (3.1%), 2004 (3.1%), 2006 (3.1%), 2007 (3.1%), 2009 (3.1%), 2011 (3.1%), 2013 (3.1%), 2016 (3.1%), 2022 (3.1%)
 
 --------------------------------------------------------------------------------
 2000-2009 (10) (31.2)%, 2010-2019 (12) (37.5)%, 2020-2029 (10) (31.2)%
@@ -42,12 +42,12 @@ Human: 12
 Bat and Human: 3
 Bat and Dog and Human and Pig: 1
 Human and Pig: 1
-island flying foxes (pteropus hypomelanus): 1
 infected cell cultures​: 1
+island flying foxes (pteropus hypomelanus): 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Bat (40.6%), Human (37.5%), Bat and Human (9.4%), Bat and Dog and Human and Pig (3.1%), Human and Pig (3.1%), island flying foxes (pteropus hypomelanus) (3.1%), infected cell cultures​ (3.1%)
+Bat (40.6%), Human (37.5%), Bat and Human (9.4%), Bat and Dog and Human and Pig (3.1%), Human and Pig (3.1%), infected cell cultures​ (3.1%), island flying foxes (pteropus hypomelanus) (3.1%)
 
 ================================================================================
 Specimen
@@ -57,46 +57,46 @@ NA: 17
 Urine: 3
 Blood and throat swab and urine: 2
 Brain: 2
-Oropharyngeal swab: 1
 Blood and csf: 1
-Throat swab and urine: 1
-Liver and lung and spleen and throat swab: 1
-Csf and throat swab and urine: 1
-Lung: 1
-Csf and oropharyngeal swab and urine: 1
 Blood and lung: 1
+Csf and oropharyngeal swab and urine: 1
+Csf and throat swab and urine: 1
+Liver and lung and spleen and throat swab: 1
+Lung: 1
+Oropharyngeal swab: 1
+Throat swab and urine: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-NA (53.1%), Urine (9.4%), Blood and throat swab and urine (6.2%), Brain (6.2%), Oropharyngeal swab (3.1%), Blood and csf (3.1%), Throat swab and urine (3.1%), Liver and lung and spleen and throat swab (3.1%), Csf and throat swab and urine (3.1%), Lung (3.1%), Csf and oropharyngeal swab and urine (3.1%), Blood and lung (3.1%)
+NA (53.1%), Urine (9.4%), Blood and throat swab and urine (6.2%), Brain (6.2%), Blood and csf (3.1%), Blood and lung (3.1%), Csf and oropharyngeal swab and urine (3.1%), Csf and throat swab and urine (3.1%), Liver and lung and spleen and throat swab (3.1%), Lung (3.1%), Oropharyngeal swab (3.1%), Throat swab and urine (3.1%)
 
 ================================================================================
 Median of Sample Year
 --------------------------------------------------------------------------------
 Counts:
-2015: 3
-2009: 3
-2004: 3
 1998: 3
-2010: 2
-2023: 2
+2004: 3
+2009: 3
+2015: 3
 2007: 2
-2018: 2
+2010: 2
 2014: 2
-2021: 1
-2019: 1
-2020: 1
-2006: 1
-2005: 1
-2001: 1
+2018: 2
+2023: 2
 1999: 1
 2000: 1
+2001: 1
 2003: 1
+2005: 1
+2006: 1
+2019: 1
+2020: 1
+2021: 1
 NA: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-2015 (9.4%), 2009 (9.4%), 2004 (9.4%), 1998 (9.4%), 2010 (6.2%), 2023 (6.2%), 2007 (6.2%), 2018 (6.2%), 2014 (6.2%), 2021 (3.1%), 2019 (3.1%), 2020 (3.1%), 2006 (3.1%), 2005 (3.1%), 2001 (3.1%), 1999 (3.1%), 2000 (3.1%), 2003 (3.1%), NA (3.1%)
+1998 (9.4%), 2004 (9.4%), 2009 (9.4%), 2015 (9.4%), 2007 (6.2%), 2010 (6.2%), 2014 (6.2%), 2018 (6.2%), 2023 (6.2%), 1999 (3.1%), 2000 (3.1%), 2001 (3.1%), 2003 (3.1%), 2005 (3.1%), 2006 (3.1%), 2019 (3.1%), 2020 (3.1%), 2021 (3.1%), NA (3.1%)
 
 --------------------------------------------------------------------------------
 Median IQR 2004.0 2009.0 2015.0
@@ -111,15 +111,15 @@ Bangladesh: 6
 Malaysia: 6
 Thailand: 4
 Bangladesh, Malaysia: 2
+Bangladesh, Cambodia, Malaysia: 1
+Cambodia: 1
+Indonesia: 1
 Multinational: 1
 NA: 1
-Indonesia: 1
-Cambodia: 1
-Bangladesh, Cambodia, Malaysia: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-India (28.1%), Bangladesh (18.8%), Malaysia (18.8%), Thailand (12.5%), Bangladesh, Malaysia (6.2%), Multinational (3.1%), NA (3.1%), Indonesia (3.1%), Cambodia (3.1%), Bangladesh, Cambodia, Malaysia (3.1%)
+India (28.1%), Bangladesh (18.8%), Malaysia (18.8%), Thailand (12.5%), Bangladesh, Malaysia (6.2%), Bangladesh, Cambodia, Malaysia (3.1%), Cambodia (3.1%), Indonesia (3.1%), Multinational (3.1%), NA (3.1%)
 
 --------------------------------------------------------------------------------
 {'Multinational': 1, 'India': 9, 'Bangladesh, Malaysia': 2, 'Thailand': 4, 'Bangladesh': 6, 'NA': 1, 'Indonesia': 1, 'Malaysia': 6, 'Cambodia': 1, 'Bangladesh, Cambodia, Malaysia': 1}
@@ -128,15 +128,15 @@ Gene
 --------------------------------------------------------------------------------
 Counts:
 N: 30
-P: 18
-M: 18
 G: 18
+M: 18
+P: 18
 F: 17
 L: 16
 
 --------------------------------------------------------------------------------
 Percentages:
-N (25.6%), P (15.4%), M (15.4%), G (15.4%), F (14.5%), L (13.7%)
+N (25.6%), G (15.4%), M (15.4%), P (15.4%), F (14.5%), L (13.7%)
 
 ================================================================================
 Seq method
