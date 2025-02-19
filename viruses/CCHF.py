@@ -5,7 +5,7 @@ from .virus import Virus
 import subprocess
 from functools import partial
 
-
+# Define a class for CCHF Virus that inherits from the Virus class
 class CCHF(Virus):
 
     @property
@@ -76,6 +76,7 @@ def build_blast_db(virus):
     with open(ref_aa_file, "w") as output_handle:
         SeqIO.write(aa_seqs, output_handle, "fasta")
 
+    # Run BLAST database creation for protein sequences
     subprocess.run(
         f"makeblastdb -in {ref_aa_file} -dbtype "
         f"prot -out {virus.BLAST_AA_DB_PATH}",
@@ -89,6 +90,7 @@ def build_blast_db(virus):
     with open(ref_na_file, "w") as output_handle:
         SeqIO.write(na_seqs, output_handle, "fasta")
 
+    # Run BLAST database creation for nucleotide sequences
     subprocess.run(
         f"makeblastdb -in {ref_na_file} -dbtype "
         f"nucl -out {virus.BLAST_NA_DB_PATH}",
@@ -116,6 +118,7 @@ def process_features(features_df):
     return features_df
 
 
+# Function to standardize biological terms in feature tables
 def translate_bio_term(features_df):
     name_map = {
         r'\bRhipicephalus\s\w+\b': 'tick',
@@ -157,7 +160,7 @@ def translate_bio_term(features_df):
 
     return features_df
 
-
+# Function to classify host and specimen types based on feature data
 def get_additional_host_data(features_df):
     blood_specimen = ['blood', 'serum', 'plasma', 'sera']
     organs = [
@@ -255,6 +258,10 @@ def translate_pubmed_genes(virus, gene):
 
 
 def categorize_host_specimen(self, pubmed):
+    """
+    This function categorizes host and specimen types from a PubMed dataset.
+    It cleans and standardizes host and specimen information based on known categories.
+    """
 
     for index, row in pubmed.iterrows():
         host = row['Host'].lower()

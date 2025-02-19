@@ -4,7 +4,7 @@ from Bio.SeqRecord import SeqRecord
 from .virus import Virus
 import subprocess
 
-
+# Define a class for Lassa Virus that inherits from the Virus class
 class Nipah(Virus):
 
     @property
@@ -288,6 +288,10 @@ def translate_pubmed_genes(virus, gene):
 
 
 def categorize_host_specimen(self, pubmed):
+    """
+    This function categorizes host and specimen types from a PubMed dataset.
+    It cleans and standardizes host and specimen information based on known categories.
+    """
 
     for index, row in pubmed.iterrows():
         host = row['Host'].lower().strip()
@@ -346,5 +350,3 @@ def categorize_host_specimen(self, pubmed):
         lambda x: x.capitalize() if x.upper() != "NA" else x)
 
     return pubmed
-
-

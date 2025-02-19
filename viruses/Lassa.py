@@ -4,7 +4,7 @@ from Bio.SeqRecord import SeqRecord
 from .virus import Virus
 import subprocess
 
-
+# Define a class for Lassa Virus that inherits from the Virus class
 class Lassa(Virus):
 
     @property
@@ -145,7 +145,7 @@ def process_features(features_df):
 
     return features_df
 
-
+# Function to standardize biological terms in feature tables
 def translate_bio_term(features_df):
     name_map = {
         'Mastomys natalensis': 'rodent',
@@ -177,6 +177,7 @@ def translate_bio_term(features_df):
     return features_df
 
 
+# Function to classify host and specimen types based on feature data
 def get_additional_host_data(features_df):
     blood_specimen = ['blood', 'serum', 'plasma', 'sera']
     organs = [
@@ -307,7 +308,11 @@ def translate_pubmed_genes(virus, gene):
 
 
 def categorize_host_specimen(self, pubmed):
-
+    """
+    This function categorizes host and specimen types from a PubMed dataset.
+    It cleans and standardizes host and specimen information based on known categories.
+    """
+    
     tissue = ['tissue','brain', 'lung', 'spleen', 'kidney', 'liver']
     other_source = [
             'pleural fluid',
