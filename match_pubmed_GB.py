@@ -24,6 +24,19 @@ from AI_match_paper import using_ai_match
 
 def match_pubmed_GB(
         pubmed, genbank_ref, genbank_feature, genbank_genes, virus_obj):
+    """
+    matches PubMed literature with GenBank references, features, and genes,
+    then processes and logs the results. Chord Diagram currently commented out
+
+    Output:
+    pubmed: Dataframe with added columns
+    pubmed_match: Subset of pubmed Dataframe that have a matching GenBank record.
+
+    Excel Files:
+    - pubmed_unmatch_file: Contains PubMed records without a GenBank match.
+    - genbank_unmatch_file: Contains GenBank records without a PubMed match.
+    - pubmed_genbank_combined: A merged file of matched and unmatched data.
+    """
 
     for idx, row in pubmed.iterrows():
         authors = row['Authors']
@@ -84,6 +97,10 @@ def match_pubmed_GB(
 
 
 def match(virus, pubmed, genbank, logger):
+    """
+    Matches PubMed records with GenBank references based on PMID, accession numbers, and title similarity.
+    Also processes hard-linked matches, logs match statistics, and returns matched and unmatched records.
+    """
 
     match_by_pmid_list = []
     match_by_title_list = []
@@ -144,6 +161,8 @@ def match(virus, pubmed, genbank, logger):
         if not match_by_title:
             genbank_unmatch_list[row['RefID']] = row
 
+    # Given the hardlink excel, link the GenBank with literature
+    # even when no match based on above criteria
     hard_link_list = []
 
     if virus.pubmed_genbank_hardlink:
@@ -218,7 +237,8 @@ def match(virus, pubmed, genbank, logger):
     logger.info('Pubmed match total:', len(pubmed_match))
 
     pubmed_unmatch = pubmed[~pubmed['PubID'].isin(matched_pub_id)]
-
+    
+    # Process Unmatched GenBank Records Using AI
     genbank_unmatch_list = pd.DataFrame(genbank_unmatch_list.values())
     genbank_unmatch_list = using_ai_match(virus, genbank_unmatch_list)
 

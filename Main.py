@@ -25,11 +25,21 @@ Entrez.email = "rshafer.stanford.edu"
 
 
 def main():
+    """
+    Main function to process virus-related genomic and literature data.
+    1. Loads virus object.
+    2. Parses GenBank records and processes gene data.
+    3. Processes features and references, filtering non-gene isolates.
+    4. Aggregates references and integrates GenBank and PubMed data.
+    5. Creates a database with processed genomic and literature information.
+    """
     virus = select_virus()
     # The virus_obj contains links to pubmed tables, genbank tables
     virus_obj = load_virus_obj(virus)
     run_blast = select_run_blast()
 
+    # Parse GenBank records into references, features, genes
+    # Filtering out those that are not in the same virus category or are not clinical isolates
     total_references, references, features, genes, nonvirus, nonclinical = parse_genbank_records(
         virus_obj.genbank_file)
 
@@ -38,22 +48,27 @@ def main():
     print('Number of non clinical records:', len(nonclinical))
     # excludes.to_excel(str(virus_obj.exclude_seq_file), index=False)
 
+    # Extract genes from all blast entries and additional detected via local alignment
     genes = process_gene_list(genes, run_blast, virus_obj)
     print("Number of Genes:", len(genes))
 
+    # Extract features from all GenBank entries, filtering out isolates without detected genes in the features_df
     print('Number of GenBank records:', len(features))
     features = process_features(features, genes, virus_obj)
 
     print("Number of GenBank References:", len(references))
     acc_list = features['Accession'].tolist()
 
-    print("Number of GenBank References after remove non gene isolates:", len(total_references))
+    # Extract reference (Author, Title, Journal, Year, Accessions) and combine
+    # those that are from the same submission (title, author, pmid match)
+    print("Number of GenBank References:", len(total_references))
     total_references = process_references(total_references)
-
     total_references = aggregate_references(total_references, virus_obj)
 
     print('-' * 80)
 
+    # Filters the references list, keeping only those references that contains
+    # at least one accession number found in features' acc_list (accessions with genes)
     references = [
         r for r in references
         if any([
@@ -63,7 +78,6 @@ def main():
 
     print("Number of GenBank References after remove non gene isolates:", len(references))
     references = process_references(references)
-
     references = aggregate_references(references, virus_obj, save_data=True)
 
     # Combine references and features
@@ -74,6 +88,7 @@ def main():
     # saved_combined_df = pd.read_excel(str(virus_obj.comparison_file), na_values=[''])
     # compare_output_files(saved_combined_df, combined_df)
 
+    # Summarize GenBank and PubMed data, see outut in datalog_genbank.txt and datalog_pubmed.txt
     summarize_genbank(references, features, genes, virus_obj)
 
     pubmed = summarize_pubmed(virus_obj.pubmed_file, virus_obj)
@@ -88,9 +103,12 @@ def main():
     if literature.empty or not lit_ref_match:
         return
 
+    # Updates gene DataFrame with corresponding metadata from features DataFrame based on matching accession numbers
     genes = update_genes_by_features(genes, features)
+    # Pick sequences for genes in each virus and generate phylogenetic tree - requirements vary for each
     virus_obj.pick_phylo_sequence(genes)
 
+    # Updates features & genes DataFrame based on PubMed data on same accessions
     features = update_genbank_by_pubmed(features, lit_ref_match)
     features.to_excel(virus_obj.genbank_feature_filled_file)
 

@@ -302,6 +302,12 @@ def add_feature_from_non_pubmed_paper(virus, features_df):
 
 
 def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
+    """
+    Filters nucleotide sequences based on gene name, clinical relevance, sequence coverage, and uniqueness.
+    Extracts metadata (Host, Country, Year) and formats it.
+    Saves processed sequences into FASTA and metadata CSV files.
+    Optionally runs alignment and phylogenetic tree analysis.
+    """
     genes = genes.to_dict(orient='records')
 
     sampleYr_range = {

@@ -213,6 +213,18 @@ def extract_features(features, accession):
 
 
 def process_references(references):
+    """
+    Processes reference data from GenBank
+
+    Steps:
+    1. Converts reference list into a DataFrame.
+    2. Extracts the publication year from the 'Journal' field.
+    3. Cleans and standardizes the 'Journal' field by removing submission dates and simplifying patent references.
+    4. Processes the 'Authors' field for standard formatting.
+
+    Returns:
+    DataFrame: Processed reference dataset with cleaned metadata.
+    """
     references = pd.DataFrame(references)
     references['Year'] = references['Journal'].apply(
         extract_year_from_journal)
@@ -235,6 +247,19 @@ def process_references(references):
 
 
 def process_features(feature_list, genes, virus_obj):
+    """
+    Processes genomic feature data for a given virus.
+
+    Steps:
+    1. Converts feature list into a DataFrame.
+    2. Cleans and processes the feature data using the virus-specific module.
+    3. Extracts isolate and record years from date fields.
+    4. Saves and reloads the processed feature data.
+    5. Filters out isolates that lack detected genes.
+
+    Returns:
+    DataFrame: Cleaned and filtered genomic features.
+    """
     features_df = pd.DataFrame(feature_list)
     # This uses data in the imported virus module to clean data in the feature table
     features_df = virus_obj.process_features(features_df, genes)
@@ -249,10 +274,6 @@ def process_features(feature_list, genes, virus_obj):
     features_df = pd.read_excel(
         str(virus_obj.genbank_feature_check_file)).fillna('')
 
-    # drop non clinical isolate
-    # features_df = features_df[
-    #     features_df["NonClinical"].isna() | (features_df["NonClinical"] == "")]
-
     excluded_features = features_df[(features_df["Genes"].isna() | (features_df["Genes"] == ""))]
     print('Excluded isolates', len(excluded_features))
 
@@ -264,6 +285,20 @@ def process_features(feature_list, genes, virus_obj):
 
 
 def process_gene_list(gene_list, run_blast, virus_obj):
+    """
+    Processes the list of genes associated with a virus, optionally running BLAST to detect additional genes.
+
+    Steps:
+    1. If BLAST is enabled (run_blast == 1), build a BLAST database and detect additional genes.
+    2. Identify genes that were missed initially and attempt detection using Biopython.
+    3. Sort and store the gene data into an Excel file.
+    4. If BLAST isn't enabled, check if a previously processed gene excel file exists and load it.
+    5. If no pre-existing file is found, create a new gene dataset and save it.
+    6. If BLAST isn't enabled & no gene excel file, load directly from gene_list (check)
+
+    Returns:
+    DataFrame: Processed gene dataset.
+    """
     if run_blast == 1:
         virus_obj.build_blast_db()
 
