@@ -5,6 +5,7 @@ import subprocess
 import pandas as pd
 from bioinfo import dump_fasta
 from bioinfo import load_fasta
+from collections import defaultdict
 
 
 timestamp = datetime.now().strftime('%m_%d')
@@ -386,7 +387,14 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
         print(f"{virus.name} Gene {gene_name} unpicked sequence:", len(genes) - len(g_list))
         print(f"{virus.name} Gene {gene_name} duplicated sequence:", num_dump)
 
+
+        choice = input('One per pattern? [y/n]')
+        if choice.lower() == 'y':
+            metadata, g_list = get_sequences_one_pattern_each(metadata, g_list)
+
         pd.DataFrame(metadata).to_csv(virus.phylo_folder / f"{gene_name}_metadata.csv", index=False)
+
+
 
         dump_fasta(virus.phylo_folder / f"{gene_name}_ref_na.fasta", {gene_name: ref_na})
         dump_fasta(virus.phylo_folder / f'{gene_name}_isolates.fasta', g_list)
@@ -412,3 +420,34 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
             # text=True,
             shell=True
         )
+
+
+def get_sequences_one_pattern_each(metadata, g_list):
+    # print(len(g_list))
+    pattern_acc = defaultdict(list)
+
+    for i in metadata:
+        pattern_acc[(
+            i['Host'],
+            i['Country'],
+            i['SampleYr']
+        )].append(i)
+
+    metadata = [
+        acc_list[0]
+        for p, acc_list in pattern_acc.items()
+    ]
+
+    keep_acc = [
+        acc['label']
+        for acc in metadata
+    ]
+
+    g_list = {
+        k: v
+        for k, v in g_list.items()
+        if k in keep_acc
+    }
+
+    # print(len(g_list))
+    return metadata, g_list
