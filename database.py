@@ -373,12 +373,12 @@ def creat_views(db_file):
         WHERE
             a.RefID = b.RefID
             AND b.PubID = c.PubID
-            AND LOWER(a.Title) NOT LIKE '%patent%'
-            AND LOWER(a.Title) NOT LIKE '%direct submission%'
-            AND LOWER(a.Title) NOT LIKE '%construct%'
-            AND LOWER(a.Journal) NOT LIKE '%patent%'
-            AND LOWER(a.Journal) NOT LIKE '%direct submission%'
-            AND LOWER(a.Journal) NOT LIKE '%construct%'
+            -- AND LOWER(a.Title) NOT LIKE '%patent%'
+            -- AND LOWER(a.Title) NOT LIKE '%direct submission%'
+            -- AND LOWER(a.Title) NOT LIKE '%construct%'
+            -- AND LOWER(a.Journal) NOT LIKE '%patent%'
+            -- AND LOWER(a.Journal) NOT LIKE '%direct submission%'
+            -- AND LOWER(a.Journal) NOT LIKE '%construct%'
         UNION
         SELECT
             a.RefID as RefID,
@@ -393,12 +393,12 @@ def creat_views(db_file):
             temp_GBRef a
         WHERE
             a.RefID NOT IN (SELECT RefID FROM tblGBPubRefLink)
-            AND LOWER(a.Title) NOT LIKE '%patent%'
-            AND LOWER(a.Title) NOT LIKE '%direct submission%'
-            AND LOWER(a.Title) NOT LIKE '%construct%'
-            AND LOWER(a.Journal) NOT LIKE '%patent%'
-            AND LOWER(a.Journal) NOT LIKE '%direct submission%'
-            AND LOWER(a.Journal) NOT LIKE '%construct%'
+            -- AND LOWER(a.Title) NOT LIKE '%patent%'
+            -- AND LOWER(a.Title) NOT LIKE '%direct submission%'
+            -- AND LOWER(a.Title) NOT LIKE '%construct%'
+            -- AND LOWER(a.Journal) NOT LIKE '%patent%'
+            -- AND LOWER(a.Journal) NOT LIKE '%direct submission%'
+            -- AND LOWER(a.Journal) NOT LIKE '%construct%'
         UNION
         SELECT
             '' as RefID,
