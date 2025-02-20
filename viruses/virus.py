@@ -387,14 +387,11 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
         print(f"{virus.name} Gene {gene_name} unpicked sequence:", len(genes) - len(g_list))
         print(f"{virus.name} Gene {gene_name} duplicated sequence:", num_dump)
 
-
         choice = input('One per pattern? [y/n]')
         if choice.lower() == 'y':
             metadata, g_list = get_sequences_one_pattern_each(metadata, g_list)
 
         pd.DataFrame(metadata).to_csv(virus.phylo_folder / f"{gene_name}_metadata.csv", index=False)
-
-
 
         dump_fasta(virus.phylo_folder / f"{gene_name}_ref_na.fasta", {gene_name: ref_na})
         dump_fasta(virus.phylo_folder / f'{gene_name}_isolates.fasta', g_list)
@@ -437,6 +434,19 @@ def get_sequences_one_pattern_each(metadata, g_list):
         acc_list[0]
         for p, acc_list in pattern_acc.items()
     ]
+
+    from countryinfo import CountryInfo
+    mapper = {
+        'Yugoslavia': 'Europe',
+        'Kosovo': 'Europe',
+        'North Macedonia': 'Europe',
+    }
+    for i in metadata:
+        # print(i['Country'])
+        if i['Country'] in mapper:
+            i['Country'] = mapper[i['Country']]
+            continue
+        i['Country'] = CountryInfo(i['Country']).region()
 
     keep_acc = [
         acc['label']
