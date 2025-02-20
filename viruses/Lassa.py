@@ -22,11 +22,11 @@ class Lassa(Virus):
 
     @property
     def pubmed_file(self):
-        return self.pubmed_folder / "Reference_Summary_Jan31.xlsx"
+        return self.pubmed_folder / "Reference_Summary_Feb12.xlsx"
 
     @property
     def pubmed_additional_from_gb(self):
-        return self.pubmed_folder / "ReferenceSummary_Genbank_Dec17.xlsx"
+        return self.pubmed_folder / "ReferenceSummary_Genbank_Feb19.xlsx"
 
     @property
     def pubmed_genbank_hardlink(self):
@@ -34,7 +34,7 @@ class Lassa(Virus):
 
     @property
     def pubmed_search_missing(self):
-        return self.pubmed_folder / "ReferenceSummary_PubMed_Missing_Jan31.xlsx"
+        return self.pubmed_folder / "ReferenceSummary_PubMed_Missing_Feb19.xlsx"
 
     def build_blast_db(self):
         build_blast_db(self)
@@ -312,7 +312,7 @@ def categorize_host_specimen(self, pubmed):
     This function categorizes host and specimen types from a PubMed dataset.
     It cleans and standardizes host and specimen information based on known categories.
     """
-    
+
     tissue = ['tissue','brain', 'lung', 'spleen', 'kidney', 'liver']
     other_source = [
             'pleural fluid',

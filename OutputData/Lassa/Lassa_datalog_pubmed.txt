@@ -43,27 +43,32 @@ Percentages:
 Host
 --------------------------------------------------------------------------------
 Counts:
-Human: 35
-Rodent: 17
+Human: 33
+Rodent: 16
 Human and Rodent: 6
-NA: 3
 pig: 2
 Dog and Goat and Lizard: 1
-cavia porcellus: 1
+guinea pig (hartley strain): 1
+guinea pigs: 1
+human dendritic cell and macrophage: 1
+infected cell : 1
 mice: 1
+outbred hartley guinea pigs: 1
+possibley, mamalian cell lines (vero cells): 1
 recombinant: 1
+recombinant lassa virus l protein: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Human (52.2%), Rodent (25.4%), Human and Rodent (9.0%), NA (4.5%), pig (3.0%), Dog and Goat and Lizard (1.5%), cavia porcellus (1.5%), mice (1.5%), recombinant (1.5%)
+Human (49.3%), Rodent (23.9%), Human and Rodent (9.0%), pig (3.0%), Dog and Goat and Lizard (1.5%), guinea pig (hartley strain) (1.5%), guinea pigs (1.5%), human dendritic cell and macrophage (1.5%), infected cell  (1.5%), mice (1.5%), outbred hartley guinea pigs (1.5%), possibley, mamalian cell lines (vero cells) (1.5%), recombinant (1.5%), recombinant lassa virus l protein (1.5%)
 
 ================================================================================
 Specimen
 --------------------------------------------------------------------------------
 Counts:
-NA: 26
-Blood and human: 24
-Human: 10
+NA: 28
+Blood and human: 23
+Human: 9
 Blood and human and tissue & organ: 3
 Blood and human and csf: 1
 Blood and human and tissue & organ and csf: 1
@@ -72,7 +77,7 @@ Human and tissue & organ: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-NA (38.8%), Blood and human (35.8%), Human (14.9%), Blood and human and tissue & organ (4.5%), Blood and human and csf (1.5%), Blood and human and tissue & organ and csf (1.5%), Human and csf (1.5%), Human and tissue & organ (1.5%)
+NA (41.8%), Blood and human (34.3%), Human (13.4%), Blood and human and tissue & organ (4.5%), Blood and human and csf (1.5%), Blood and human and tissue & organ and csf (1.5%), Human and csf (1.5%), Human and tissue & organ (1.5%)
 
 ================================================================================
 Median of Sample Year
@@ -82,13 +87,12 @@ NA: 7
 2018: 6
 2004: 5
 2010: 5
+2014: 5
 2015: 5
 2016: 5
 2012: 4
-2014: 4
 2006: 3
 1980: 2
-1991: 2
 1997: 2
 2000: 2
 2009: 2
@@ -97,6 +101,7 @@ NA: 7
 1976: 1
 1984: 1
 1989: 1
+1991: 1
 1994: 1
 1996: 1
 2002: 1
@@ -106,25 +111,26 @@ NA: 7
 
 --------------------------------------------------------------------------------
 Percentages:
-NA (10.4%), 2018 (9.0%), 2004 (7.5%), 2010 (7.5%), 2015 (7.5%), 2016 (7.5%), 2012 (6.0%), 2014 (6.0%), 2006 (4.5%), 1980 (3.0%), 1991 (3.0%), 1997 (3.0%), 2000 (3.0%), 2009 (3.0%), 2013 (3.0%), 2019 (3.0%), 1976 (1.5%), 1984 (1.5%), 1989 (1.5%), 1994 (1.5%), 1996 (1.5%), 2002 (1.5%), 2008 (1.5%), 2011 (1.5%), 2022 (1.5%)
+NA (10.4%), 2018 (9.0%), 2004 (7.5%), 2010 (7.5%), 2014 (7.5%), 2015 (7.5%), 2016 (7.5%), 2012 (6.0%), 2006 (4.5%), 1980 (3.0%), 1997 (3.0%), 2000 (3.0%), 2009 (3.0%), 2013 (3.0%), 2019 (3.0%), 1976 (1.5%), 1984 (1.5%), 1989 (1.5%), 1991 (1.5%), 1994 (1.5%), 1996 (1.5%), 2002 (1.5%), 2008 (1.5%), 2011 (1.5%), 2022 (1.5%)
 
 --------------------------------------------------------------------------------
-Median IQR 2004.0 2010.5 2015.0
+Median IQR 2004.0 2011.5 2015.0
 --------------------------------------------------------------------------------
-1970-1979 (1) (1.7)%, 1980-1989 (4) (6.7)%, 1990-1999 (6) (10.0)%, 2000-2009 (14) (23.3)%, 2010-2019 (34) (56.7)%, 2020-2029 (1) (1.7)%
+1970-1979 (1) (1.7)%, 1980-1989 (4) (6.7)%, 1990-1999 (5) (8.3)%, 2000-2009 (14) (23.3)%, 2010-2019 (35) (58.3)%, 2020-2029 (1) (1.7)%
 ================================================================================
 Country
 --------------------------------------------------------------------------------
 Counts:
-Nigeria: 19
+Nigeria: 18
 Sierra leone: 10
 Guinea: 5
-Multinational: 5
+Multinational: 4
 NA: 4
 Mali: 3
 Benin: 2
 Côte d’ivoire: 2
 Ghana: 2
+Guinea, Nigeria: 2
 Liberia: 2
 Benin republic: 1
 Côte d'ivoire, Guinea: 1
@@ -132,8 +138,8 @@ Germany: 1
 Ghana, Nigeria, Sierra leone: 1
 Guinea, Liberia: 1
 Guinea, Liberia, Sierra leone: 1
-Guinea, Nigeria: 1
 Guinea, Sierra leone: 1
+Liberia and nigeria: 1
 Liberia, Sierra leone: 1
 Nigeria, Sierra leone: 1
 Nigeria, Togo: 1
@@ -142,10 +148,10 @@ West africa: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Nigeria (28.4%), Sierra leone (14.9%), Guinea (7.5%), Multinational (7.5%), NA (6.0%), Mali (4.5%), Benin (3.0%), Côte d’ivoire (3.0%), Ghana (3.0%), Liberia (3.0%), Benin republic (1.5%), Côte d'ivoire, Guinea (1.5%), Germany (1.5%), Ghana, Nigeria, Sierra leone (1.5%), Guinea, Liberia (1.5%), Guinea, Liberia, Sierra leone (1.5%), Guinea, Nigeria (1.5%), Guinea, Sierra leone (1.5%), Liberia, Sierra leone (1.5%), Nigeria, Sierra leone (1.5%), Nigeria, Togo (1.5%), Togo (1.5%), West africa (1.5%)
+Nigeria (26.9%), Sierra leone (14.9%), Guinea (7.5%), Multinational (6.0%), NA (6.0%), Mali (4.5%), Benin (3.0%), Côte d’ivoire (3.0%), Ghana (3.0%), Guinea, Nigeria (3.0%), Liberia (3.0%), Benin republic (1.5%), Côte d'ivoire, Guinea (1.5%), Germany (1.5%), Ghana, Nigeria, Sierra leone (1.5%), Guinea, Liberia (1.5%), Guinea, Liberia, Sierra leone (1.5%), Guinea, Sierra leone (1.5%), Liberia and nigeria (1.5%), Liberia, Sierra leone (1.5%), Nigeria, Sierra leone (1.5%), Nigeria, Togo (1.5%), Togo (1.5%), West africa (1.5%)
 
 --------------------------------------------------------------------------------
-{'Nigeria': 19, 'Guinea, Sierra leone': 1, 'Guinea, Liberia, Sierra leone': 1, 'Guinea': 5, 'Sierra leone': 10, 'Benin': 2, 'Multinational': 5, 'Guinea, Liberia': 1, 'Benin republic': 1, 'Togo': 1, 'Germany': 1, 'Guinea, Nigeria': 1, 'Liberia': 2, 'Côte d’ivoire': 2, "Côte d'ivoire, Guinea": 1, 'Mali': 3, 'Ghana, Nigeria, Sierra leone': 1, 'Ghana': 2, 'Liberia, Sierra leone': 1, 'West africa': 1, 'Nigeria, Sierra leone': 1, 'NA': 4, 'Nigeria, Togo': 1}
+{'Nigeria': 18, 'Sierra leone': 10, 'Multinational': 4, 'Ghana': 2, 'Ghana, Nigeria, Sierra leone': 1, 'Guinea': 5, 'Liberia and nigeria': 1, 'Mali': 3, 'Liberia': 2, 'Guinea, Nigeria': 2, "Côte d'ivoire, Guinea": 1, 'Côte d’ivoire': 2, 'Germany': 1, 'Togo': 1, 'Liberia, Sierra leone': 1, 'Benin': 2, 'Benin republic': 1, 'Guinea, Liberia': 1, 'Guinea, Liberia, Sierra leone': 1, 'Guinea, Sierra leone': 1, 'Nigeria, Sierra leone': 1, 'West africa': 1, 'NA': 4, 'Nigeria, Togo': 1}
 ================================================================================
 Gene
 --------------------------------------------------------------------------------
