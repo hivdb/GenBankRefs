@@ -121,7 +121,7 @@ Percentages:
 India (31.2%), Bangladesh (18.8%), Malaysia (18.8%), Thailand (12.5%), Bangladesh, Malaysia (6.2%), Bangladesh, Cambodia, Malaysia (3.1%), Cambodia (3.1%), Indonesia (3.1%), Multinational (3.1%)
 
 --------------------------------------------------------------------------------
-{'Bangladesh, Malaysia': 2, 'Multinational': 1, 'India': 10, 'Thailand': 4, 'Bangladesh': 6, 'Indonesia': 1, 'Malaysia': 6, 'Cambodia': 1, 'Bangladesh, Cambodia, Malaysia': 1}
+{'Malaysia': 6, 'Cambodia': 1, 'Bangladesh': 6, 'India': 10, 'Thailand': 4, 'Bangladesh, Malaysia': 2, 'Indonesia': 1, 'Bangladesh, Cambodia, Malaysia': 1, 'Multinational': 1}
 ================================================================================
 Gene
 --------------------------------------------------------------------------------

@@ -641,9 +641,9 @@ def creat_views(db_file):
     WITH temp_selection AS (
         SELECT *
         FROM
-            vIsolateOrig
-            JOIN tblSequences ON vIsolateOrig.Accession = tblSequences.Accession
-            JOIN tblGBRefLink ON vIsolateOrig.Accession = tblGBRefLink.Accession
+            tblIsolates
+            JOIN tblSequences ON tblIsolates.Accession = tblSequences.Accession
+            JOIN tblGBRefLink ON tblIsolates.Accession = tblGBRefLink.Accession
             JOIN vGPMatched ON tblGBRefLink.RefID = vGPMatched.RefID
         WHERE
             NonClinical == ''
@@ -652,14 +652,14 @@ def creat_views(db_file):
         Host,
         Country,
         IsolateYear,
-        CASE
-            WHEN IsolateYear BETWEEN 1900 AND 1990 THEN '<1990'
-            WHEN IsolateYear BETWEEN 1991 AND 2000 THEN '1991-2000'
-            WHEN IsolateYear BETWEEN 2001 AND 2010 THEN '2001-2010'
-            WHEN IsolateYear BETWEEN 2011 AND 2020 THEN '2011-2020'
-            WHEN IsolateYear BETWEEN 2021 AND 2025 THEN '2021-2025'
-            ELSE ''
-        END AS IsolateYr,
+        -- CASE
+        --    WHEN IsolateYear BETWEEN 1900 AND 1990 THEN '<1990'
+        --     WHEN IsolateYear BETWEEN 1991 AND 2000 THEN '1991-2000'
+        --     WHEN IsolateYear BETWEEN 2001 AND 2010 THEN '2001-2010'
+        --     WHEN IsolateYear BETWEEN 2011 AND 2020 THEN '2011-2020'
+        --     WHEN IsolateYear BETWEEN 2021 AND 2025 THEN '2021-2025'
+        --     ELSE ''
+        -- END AS IsolateYr,
         Gene,
         COUNT(DISTINCT temp_selection.ShortName) AS NumPublications,
         GROUP_CONCAT(DISTINCT temp_selection.ShortName) AS Publications,
@@ -676,14 +676,16 @@ def creat_views(db_file):
     GROUP BY
         Host,
         Country,
-        IsolateYr,
+        IsolateYear,
+        -- IsolateYr,
         Gene,
         ShortName
     ORDER BY
         "#" DESC,
         Host,
         Country,
-        IsolateYr,
+        IsolateYear,
+        -- IsolateYr,
         Gene;
     """
     run_create_view(db_file, vIsolateMetadataSummary)
@@ -816,11 +818,10 @@ def dump_table_to_json(json_file_path, db_path, table_name):
 
     data = [dict(zip(column_names, row)) for row in rows]
 
-    with open(json_file_path, 'w') as json_file:
-        json.dump(data, json_file, indent=4)
-
-    # print(
-    #     f"Data from view '{table_name}' has been exported to {json_file_path}")
+    with open(json_file_path, 'w', encoding='utf-8') as json_file:
+        json.dump(data, json_file, indent=4, ensure_ascii=False)
+    print(
+        f"Data from view '{table_name}' has been exported to {json_file_path}")
 
     conn.commit()
     conn.close()
