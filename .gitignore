@@ -199,3 +199,5 @@ db_json
 
 phylogenetic/*_files
 phylogenetic/*.html
+
+*.db
