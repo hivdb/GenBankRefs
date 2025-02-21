@@ -6,6 +6,9 @@ import pandas as pd
 from bioinfo import dump_fasta
 from bioinfo import load_fasta
 from collections import defaultdict
+import matplotlib as mpl
+from distinctipy import get_colors
+from operator import itemgetter
 
 
 timestamp = datetime.now().strftime('%m_%d')
@@ -319,6 +322,18 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
         (2021, 2025): '2021-2025',
     }
 
+    host_palette = mpl.colormaps['Set2'].colors
+    sampleyr_palette = mpl.colormaps['Set3'].colors
+    num_country = len(set(j['Country'] for j in genes))
+    if num_country <= 20:
+        country_palatte = mpl.colormaps['tab20'].colors
+    else:
+        country_palatte = get_colors(num_country)
+
+    host_color_map = {'NA': '#555555'}
+    sampleyr_color_map = {'NA': '#555555'}
+    country_color_map = {'NA': '#555555'}
+
     for gene_name in picked_genes:
         ref_na = virus.ref_na_gene_map[gene_name]
 
@@ -335,7 +350,10 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
             if j['NonClinical']:
                 continue
 
-            if (int(j['NA_length']) < (len(ref_na) * coverage_pcnt)):
+            if int(j['NA_length']):
+                if (int(j['NA_length']) < (len(ref_na) * coverage_pcnt)):
+                    continue
+            elif int(j['NA_raw_length']) < (len(ref_na) * coverage_pcnt * 0.98):
                 continue
 
             if j['NA_raw_seq'] in dedup_na:
@@ -344,9 +362,6 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
 
             label = j['Accession']
             # label = f"N{idx}"
-
-            g_list[label] = j['NA_raw_seq']
-            dedup_na.append(j['NA_raw_seq'])
 
             host = j['Host'] if j["Host"] else 'NA'
             host = host.rstrip('*').strip()
@@ -374,11 +389,33 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
                         sampleyr = sampleYr_name
                         break
 
+            if host == 'NA' and country == 'NA' and sampleyr == 'NA':
+                continue
+
+            g_list[label] = j['NA_raw_seq']
+            dedup_na.append(j['NA_raw_seq'])
+
+            host_color_map[host] = host_color_map.get(
+                host,
+                mpl.colors.to_hex(host_palette[len(host_color_map)])
+            )
+            country_color_map[country] = country_color_map.get(
+                country,
+                mpl.colors.to_hex(country_palatte[len(country_color_map)])
+            )
+            sampleyr_color_map[sampleyr] = sampleyr_color_map.get(
+                sampleyr,
+                mpl.colors.to_hex(sampleyr_palette[len(sampleyr_color_map)])
+            )
+
             metadata.append({
                 'label': label,
                 'Host': host,
                 'Country': country,
                 'SampleYr': sampleyr,
+                'Host_color': host_color_map[host],
+                'Country_color': country_color_map[country],
+                'SampleYr_color': sampleyr_color_map[sampleyr],
                 # 'Source': j['isolate_source'] if j["isolate_source"] else 'NA',
             })
             idx += 1
@@ -389,7 +426,13 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
 
         choice = input('One per pattern? [y/n]')
         if choice.lower() == 'y':
-            metadata, g_list = get_sequences_one_pattern_each(metadata, g_list)
+            choise2 = input('Change country to region? [y/n]')
+            if choise2.lower() == 'y':
+                metadata, g_list = get_sequences_limited_pattern_each(
+                    metadata, g_list, region=True)
+            else:
+                metadata, g_list = get_sequences_limited_pattern_each(
+                    metadata, g_list)
 
         pd.DataFrame(metadata).to_csv(virus.phylo_folder / f"{gene_name}_metadata.csv", index=False)
 
@@ -419,34 +462,52 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
         )
 
 
-def get_sequences_one_pattern_each(metadata, g_list):
+def get_sequences_limited_pattern_each(metadata, g_list, region=False):
     # print(len(g_list))
     pattern_acc = defaultdict(list)
 
     for i in metadata:
+
         pattern_acc[(
             i['Host'],
             i['Country'],
             i['SampleYr']
         )].append(i)
 
+    num_pattern = 1
+    if len(pattern_acc) < 50:
+        num_pattern = 4
+    elif (len(pattern_acc) < 200):
+        num_pattern = 2
+
     metadata = [
-        acc_list[0]
+        j
         for p, acc_list in pattern_acc.items()
+        for j in sorted(acc_list, key=itemgetter('label'))[0: num_pattern]
     ]
 
-    from countryinfo import CountryInfo
-    mapper = {
-        'Yugoslavia': 'Europe',
-        'Kosovo': 'Europe',
-        'North Macedonia': 'Europe',
-    }
-    for i in metadata:
-        # print(i['Country'])
-        if i['Country'] in mapper:
-            i['Country'] = mapper[i['Country']]
-            continue
-        i['Country'] = CountryInfo(i['Country']).region()
+    if region:
+        country_palatte = mpl.colormaps['tab20'].colors
+        country_color_map = {'NA': '#555555'}
+        from countryinfo import CountryInfo
+        mapper = {
+            'Yugoslavia': 'Europe',
+            'Kosovo': 'Europe',
+            'North Macedonia': 'Europe',
+        }
+        for i in metadata:
+            # print(i['Country'])
+            if i['Country'] in mapper:
+                i['Country'] = mapper[i['Country']]
+            else:
+                i['Country'] = CountryInfo(i['Country']).region()
+
+            country = i['Country']
+            country_color_map[country] = country_color_map.get(
+                country,
+                mpl.colors.to_hex(country_palatte[len(country_color_map)])
+            )
+            i['Country_color'] = country_color_map[country]
 
     keep_acc = [
         acc['label']
@@ -459,5 +520,5 @@ def get_sequences_one_pattern_each(metadata, g_list):
         if k in keep_acc
     }
 
-    # print(len(g_list))
+    print('Phylogenetic tree based on', len(g_list))
     return metadata, g_list

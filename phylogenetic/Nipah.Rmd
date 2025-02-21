@@ -23,7 +23,6 @@ library(stringr)
 ```
 
 ```{r message=FALSE, warning=FALSE}
-
 # from https://dmnfarrell.github.io/r/ggtree-heatmaps
 
 get_color_mapping <- function(data, col, cmap){
@@ -53,6 +52,8 @@ df <- df %>%
   mutate(Country = as.character(Country)) %>%
   mutate(SampleYr = as.character(SampleYr))
 
+df <- df[df$label %in% tree$tip.label, ]
+
 tree2 = full_join(tree, df, by='label')
 df2 = as_tibble(tree2)
 
@@ -61,84 +62,90 @@ df2 = df2 %>%
 
 country_data = df2$Country
 country_data = data.frame(Country=country_data, row.names = tree$tip.label)
-country_colors = get_color_mapping(country_data, 'Country', 'Set2')
+country_df = df2 %>% distinct(Country_color, Country)
+country_colors = (list(colors=country_df$Country_color, names=country_df$Country))
+
 
 p <- ggtree(tree2, layout="rect") +
   new_scale_fill()
 
-p = p + 
-  geom_tippoint(aes(color=Country)) + 
+p = p +
+  geom_tippoint(aes(color=Country)) +
   scale_color_manual(
     breaks=country_colors$names,
     values=country_colors$colors) +
-  guides(color = "none") 
+  guides(color = "none")
 
 p = p +
   geom_tiplab(
-    size=10,  
-    as_ylab=TRUE, 
-    color='firebrick', 
+    size=10,
+    as_ylab=TRUE,
+    color='firebrick',
     offset=-0.01)
 
 p = p +
   geom_treescale(
-    fontsize=3, 
-    linesize=1, 
+    fontsize=3,
+    linesize=1,
     offset=1)
 
 p <- gheatmap(
-  p, 
-  country_data, 
-  offset=0, 
-  width=0.1, 
-  colnames_position = 'top', 
-  font.size = 3.5, 
+  p,
+  country_data,
+  offset=0,
+  width=0.1,
+  colnames_position = 'top',
+  font.size = 3.5,
   colnames_offset_y = 0.4
-  ) + 
+  ) +
   scale_fill_manual(
     breaks=country_colors$names,
-    values=country_colors$colors, name='Country') + 
+    values=country_colors$colors,
+    name='Country') +
   new_scale_fill()
 
 host_data = df2$Host
 host_data = data.frame(Host=host_data, row.names = tree$tip.label)
-host_colors = get_color_mapping(host_data, 'Host', 'Set1')
-
+host_df = df2 %>% distinct(Host_color, Host)
+host_colors = (list(colors=host_df$Host_color, names=host_df$Host))
 
 p <- gheatmap(
-  p, 
+  p,
   host_data,
   offset=0.01,
-  width=0.1, 
-  colnames_position = 'top', 
-  font.size = 3.5, 
-  colnames_offset_y = 0.4) + 
+  width=0.1,
+  colnames_position = 'top',
+  font.size = 3.5,
+  colnames_offset_y = 0.4) +
   scale_fill_manual(
-    values=host_colors$colors, 
-    name='Host') + 
+    breaks=host_colors$names,
+    values=host_colors$colors,
+    name='Host') +
   new_scale_fill()
 
 sample_yr_data = df2$SampleYr
 sample_yr_data = data.frame(SampleYr=sample_yr_data, row.names = tree$tip.label)
-sample_yr_colors = get_color_mapping(sample_yr_data, 'SampleYr', 'Set3')
+sample_yr_df = df2 %>% distinct(SampleYr_color, SampleYr)
+sample_yr_colors = (list(colors=sample_yr_df$SampleYr_color, names=sample_yr_df$SampleYr))
 
 p <- gheatmap(
-  p, 
-  sample_yr_data, 
+  p,
+  sample_yr_data,
   offset=0.02,
-  width=0.1, 
-  colnames_position = 'top', 
-  font.size = 3.5, 
-  colnames_offset_y = 0.4) + 
+  width=0.1,
+  colnames_position = 'top',
+  font.size = 3.5,
+  colnames_offset_y = 0.4) +
   scale_fill_manual(
+    breaks=sample_yr_colors$names,
     values=sample_yr_colors$colors,
-    name='SampleYr') + 
+    name='SampleYr') +
   new_scale_fill()
 
 p <- p + theme(
-  legend.position='left', 
+  legend.position='left',
   # legend.direction = "horizontal",
-  legend.text=element_text(size=10), 
+  legend.text=element_text(size=10),
   legend.key.size=unit(0.6, "cm")
   )
 
