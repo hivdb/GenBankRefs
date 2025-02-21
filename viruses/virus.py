@@ -59,7 +59,8 @@ class Virus:
 
     @property
     def DB_FILE(self):
-        return self.output_dir / f"{self.name}.db"
+        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+        return self.output_dir / f"{self.name}-{timestamp}.db"
 
     @property
     def output_dir(self):
