@@ -651,9 +651,9 @@ def creat_views(db_file):
             NonClinical == ''
     )
     SELECT DISTINCT
-        REPLACE(Host, '*', ''),
-        REPLACE(Country, '*', ''),
-        REPLACE(IsolateYear, '*', ''),
+        RTRIM(RTRIM(Host, '*'), ' ') AS Host,
+        RTRIM(RTRIM(Country, '*'), ' ') As Country,
+        RTRIM(RTRIM(IsolateYear, '*'), ' ') AS IsolateYear,
         -- CASE
         --    WHEN IsolateYear BETWEEN 1900 AND 1990 THEN '<1990'
         --     WHEN IsolateYear BETWEEN 1991 AND 2000 THEN '1991-2000'
