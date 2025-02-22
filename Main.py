@@ -110,7 +110,7 @@ def main():
     virus_obj.pick_phylo_sequence(genes)
 
     # Updates features & genes DataFrame based on PubMed data on same accessions
-    features = update_genbank_by_pubmed(features, genbank2pubmed)
+    # features = update_genbank_by_pubmed(features, genbank2pubmed)
     features.to_excel(virus_obj.genbank_feature_filled_file)
 
     genes = update_genes_by_features(genes, features)

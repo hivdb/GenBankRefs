@@ -50,7 +50,10 @@ def match_pubmed_GB(
             first_author_surname = ' '.join(first_author.split()[:-1])
         pubmed.at[idx, 'FirstAuthorSurname'] = first_author_surname
 
-        short_name = f"{first_author_surname} ({row['Year']}, {row['PMID']})"
+        if str(row['PMID']).isdigit():
+            short_name = f"{first_author_surname} ({row['Year']}, {row['PMID']})"
+        else:
+            short_name = f"{first_author_surname} ({row['Year']}"
         pubmed.at[idx, 'ShortName'] = short_name
 
     logger = virus_obj.get_logger('compare_matched')
