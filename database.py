@@ -641,31 +641,56 @@ def creat_views(db_file):
     vIsolateMetadataSummary = """
     CREATE VIEW vIsolateMetadataSummary AS
     WITH temp_selection AS (
-        SELECT *
+        SELECT
+            match.ShortName,
+            iso.Accession,
+            CASE
+                WHEN iso.Host != 'Not available' THEN iso.Host
+                WHEN pData.Host != '' THEN pData.Host
+                ELSE iso.Host
+            END AS Host,
+            CASE
+                WHEN iso.Country != 'Not available' THEN iso.Country
+                WHEN pData.Country != '' THEN pData.Country
+                ELSE iso.Country
+            END AS Country,
+            CASE
+                WHEN iso.IsolateYear != 'Not available' THEN iso.IsolateYear
+                WHEN pData.SampleYr != '' THEN pData.SampleYr
+                ELSE iso.IsolateYear
+            END AS IsolateYear,
+            seq.Gene
         FROM
-            tblIsolates
-            JOIN tblSequences ON tblIsolates.Accession = tblSequences.Accession
-            JOIN tblGBRefLink ON tblIsolates.Accession = tblGBRefLink.Accession
-            JOIN vGPMatched ON tblGBRefLink.RefID = vGPMatched.RefID
+            tblIsolates iso
+            JOIN tblSequences seq ON iso.Accession = seq.Accession
+            JOIN tblGBRefLink ON iso.Accession = tblGBRefLink.Accession
+            JOIN vGPMatched match ON tblGBRefLink.RefID = match.RefID
+            JOIN tblPubLicationData pData ON match.PubID = pData.PubID
         WHERE
             NonClinical == ''
+        ORDER BY
+            match.ShortName,
+            iso.Accession,
+            seq.Gene
     )
     SELECT DISTINCT
+        COUNT(DISTINCT temp_selection.ShortName) AS NumPublications,
+        GROUP_CONCAT(DISTINCT temp_selection.ShortName) AS Publications,
+
         RTRIM(RTRIM(Host, '*'), ' ') AS Host,
         RTRIM(RTRIM(Country, '*'), ' ') As Country,
         RTRIM(RTRIM(IsolateYear, '*'), ' ') AS IsolateYear,
         -- CASE
-        --    WHEN IsolateYear BETWEEN 1900 AND 1990 THEN '<1990'
+        --     WHEN IsolateYear BETWEEN 1900 AND 1990 THEN '<1990'
         --     WHEN IsolateYear BETWEEN 1991 AND 2000 THEN '1991-2000'
         --     WHEN IsolateYear BETWEEN 2001 AND 2010 THEN '2001-2010'
         --     WHEN IsolateYear BETWEEN 2011 AND 2020 THEN '2011-2020'
         --     WHEN IsolateYear BETWEEN 2021 AND 2025 THEN '2021-2025'
         --     ELSE ''
         -- END AS IsolateYr,
-        Gene,
-        COUNT(DISTINCT temp_selection.ShortName) AS NumPublications,
-        GROUP_CONCAT(DISTINCT temp_selection.ShortName) AS Publications,
-        GROUP_CONCAT(Accession) AS Accessions,
+        GROUP_CONCAT(DISTINCT Gene) AS Gene,
+
+        -- GROUP_CONCAT(Accession) AS Accessions,
         COUNT(DISTINCT Accession) AS "#" ,
         (SELECT COUNT(DISTINCT Accession) from temp_selection) AS Total,
         ROUND(
@@ -677,19 +702,18 @@ def creat_views(db_file):
     FROM
         temp_selection
     GROUP BY
+        ShortName,
         Host,
         Country,
-        IsolateYear,
-        -- IsolateYr,
-        Gene,
-        ShortName
+        IsolateYear
+        -- IsolateYr
     ORDER BY
         "#" DESC,
         Host,
         Country,
-        IsolateYear,
-        -- IsolateYr,
-        Gene;
+        IsolateYear
+        -- IsolateYr
+        ;
     """
     run_create_view(db_file, vIsolateMetadataSummary)
 

@@ -510,6 +510,12 @@ def get_sequences_limited_pattern_each(metadata, g_list, region=False):
             )
             i['Country_color'] = country_color_map[country]
 
+        metadata = [
+            i
+            for i in metadata
+            if not i['Country'].lower().startswith('america')
+        ]
+
     keep_acc = [
         acc['label']
         for acc in metadata
