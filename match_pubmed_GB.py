@@ -54,7 +54,7 @@ def match_pubmed_GB(
         pubmed.at[idx, 'ShortName'] = short_name
 
     logger = virus_obj.get_logger('compare_matched')
-    pubmed_match, genbank_match, pubmed_unmatch, genbank_unmatch = match(
+    pubmed_match, genbank2pubmed, genbank_match, pubmed_unmatch, genbank_unmatch = match(
         virus_obj, pubmed, genbank_ref, logger)
 
     # won't use
@@ -93,7 +93,7 @@ def match_pubmed_GB(
     #     from chord_diagram import gen_chord_diagram
     #     gen_chord_diagram(virus_obj, combined, genbank_feature)
 
-    return pubmed, pubmed_match
+    return pubmed, pubmed_match, genbank2pubmed
 
 
 def match(virus, pubmed, genbank, logger):
@@ -193,6 +193,8 @@ def match(virus, pubmed, genbank, logger):
         hard_link_list
     )
 
+    genbank_match_list = keep_most_related_match(genbank_match_list)
+
     paired_pub_id_ref_id = []
     for _, paired_pubmed, ref_id, _ in genbank_match_list:
         for _, p_pubmed in paired_pubmed.iterrows():
@@ -209,18 +211,24 @@ def match(virus, pubmed, genbank, logger):
             list(set(paired_pub_id_ref_id)))
     ]
     paired_pub_id_ref_id.sort(key=itemgetter('RefID', 'PubID'))
-    pd.DataFrame(paired_pub_id_ref_id).to_csv(virus.paired_pub_id_ref_id_track, index=False)
+    pd.DataFrame(paired_pub_id_ref_id).to_csv(
+        virus.paired_pub_id_ref_id_track, index=False)
 
     # TODO, should be a small data structure
-    logger.info("Genbank match by pmid:", len(set(i[-2] for i in match_by_pmid_list)))
-    logger.info("Genbank match by title:", len(set(i[-2] for i in match_by_title_list)))
-    logger.info("Genbank match by acc:", len(set(i[-2] for i in match_by_acc_list)))
-    logger.info("Genbank match by acc or title not by pubmed:", len(
-        set(i[-2] for i in (match_by_acc_list + match_by_title_list))
-        -
-        set(i[-2] for i in match_by_pmid_list)
-    ))
-    logger.info('Genbank match total:', len(set(i[-2] for i in genbank_match_list)))
+    logger.info("Genbank match by pmid:",
+                len(set(i[-2] for i in match_by_pmid_list)))
+    logger.info("Genbank match by title:",
+                len(set(i[-2] for i in match_by_title_list)))
+    logger.info("Genbank match by acc:",
+                len(set(i[-2] for i in match_by_acc_list)))
+    logger.info("Genbank match by acc or title not by pubmed:",
+                len(
+                    set(i[-2] for i in (match_by_acc_list + match_by_title_list))
+                    -
+                    set(i[-2] for i in match_by_pmid_list)
+                ))
+    logger.info('Genbank match total:',
+                len(set(i[-2] for i in genbank_match_list)))
     logger.info('-' * 80)
 
     pubmed_match = match_pubmed2genbank(genbank_match_list)
@@ -231,18 +239,95 @@ def match(virus, pubmed, genbank, logger):
 
     genbank_match = genbank_match.values()
 
-    logger.info("Pubmed match by pmid:", len(match_pubmed2genbank(match_by_pmid_list)))
-    logger.info("Pubmed match by title:", len(match_pubmed2genbank(match_by_title_list)))
-    logger.info("Pubmed match by acc:", len(match_pubmed2genbank(match_by_acc_list)))
-    logger.info('Pubmed match total:', len(pubmed_match))
+    logger.info("Pubmed match by pmid:",
+                len(match_pubmed2genbank(match_by_pmid_list)))
+    logger.info("Pubmed match by title:",
+                len(match_pubmed2genbank(match_by_title_list)))
+    logger.info("Pubmed match by acc:",
+                len(match_pubmed2genbank(match_by_acc_list)))
+    logger.info('Pubmed match total:',
+                len(pubmed_match))
 
     pubmed_unmatch = pubmed[~pubmed['PubID'].isin(matched_pub_id)]
-    
+
     # Process Unmatched GenBank Records Using AI
     genbank_unmatch_list = pd.DataFrame(genbank_unmatch_list.values())
     genbank_unmatch_list = using_ai_match(virus, genbank_unmatch_list)
 
-    return pubmed_match, pd.DataFrame(genbank_match), pubmed_unmatch, genbank_unmatch_list
+    return (
+        pubmed_match,
+        genbank_match_list,
+        pd.DataFrame(genbank_match),
+        pubmed_unmatch, genbank_unmatch_list)
+
+
+def keep_most_related_match(genbank_match_list):
+    genbank_link = defaultdict(list)
+    for gen, publist, ref_id, method in genbank_match_list:
+        for _, pub in publist.iterrows():
+            genbank_link[ref_id].append((gen, pub, ref_id, method))
+
+    keep_link = []
+    discard_link = []
+    method_order = ['PMID', 'Hardlink', 'ACCESSION', 'Title']
+    for ref_id, links in genbank_link.items():
+        for order in method_order:
+            item = [
+                i
+                for i in links
+                if i[-1] == order
+            ]
+            other = [
+                i
+                for i in links
+                if i[-1] != order
+            ]
+            if item:
+                keep_link.append(item[0])
+                discard_link.extend(other + item[1:])
+                break
+
+    processed_pub_id = sorted([
+        i[1]['PubID']
+        for i in keep_link
+    ])
+
+    pubmed_link = defaultdict(list)
+    for gen, pub, ref_id, method in discard_link:
+        pub_id = pub['PubID']
+        pubmed_link[pub_id].append((gen, pub, ref_id, method))
+
+    # print(sorted(processed_pub_id))
+    # print(pubmed_link.keys())
+    for pub_id, links in pubmed_link.items():
+        if pub_id in processed_pub_id:
+            continue
+
+        # print(pub_id, [i[-1] for i in links])
+        for order in method_order:
+            item = [
+                i
+                for i in links
+                if i[-1] == order
+            ]
+            if item:
+                keep_link.append(item[0])
+                break
+
+    ref_id_method_group = defaultdict(list)
+    for (gen, pub, ref_id, method) in keep_link:
+        ref_id_method_group[(ref_id, method)].append((gen, pub, ref_id, method))
+
+    final_link = []
+    for (ref_id, method), links in ref_id_method_group.items():
+        pub_list = pd.DataFrame([
+            i[1]
+            for i in links
+        ])
+
+        final_link.append((links[0][0], pub_list, ref_id, method))
+
+    return final_link
 
 
 def search_by_accession(pubmed, accession_list):
@@ -294,14 +379,16 @@ def match_pubmed2genbank(genbank_match):
             if 'genbank' not in pubmed_match[r]:
                 pubmed_match[r]['genbank'] = []
 
+            g = g.copy()
+            g['match_method'] = method
             pubmed_match[r]['genbank'].append(g)
 
-            if 'method' not in pubmed_match[r]:
-                pubmed_match[r]['method'] = []
-            pubmed_match[r]['method'].append(method)
+            # if 'method' not in pubmed_match[r]:
+            #     pubmed_match[r]['method'] = []
+            # pubmed_match[r]['method'].append(method)
 
     pubmed_match = [
-        (v['pubmed'], v['genbank'], set(v['method']))
+        (v['pubmed'], v['genbank'])
         for v in pubmed_match.values()
     ]
 
@@ -459,7 +546,7 @@ def combine_file(
         ):
 
     result = []
-    for pubmed, genbank_list, method in pubmed_match:
+    for pubmed, genbank_list in pubmed_match:
         accessions = set([
              j.strip()
              for i in genbank_list
@@ -514,7 +601,7 @@ def combine_file(
             'NumSubSeqs': features_stat['NumSubSeqs'],
             'AlignLens (GB)': features_stat['AlignLens'],
             'PcntIDs (GB)': features_stat['PcntIDs'],
-            'Combine Method': ','.join(list(method)),
+            # 'Combine Method': ','.join(list(method)),
         }
 
         result.append(row)

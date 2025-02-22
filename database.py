@@ -114,6 +114,7 @@ def create_tables(db_file):
         CREATE TABLE "tblGBPubRefLink" (
             "PubID" INTEGER,
             "RefID" TEXT,
+            "Method" TEXT,
             FOREIGN KEY (PubID) REFERENCES tblPublications (PubID),
             FOREIGN KEY (RefID) REFERENCES tblGBRefs (RefID)
         )
@@ -222,12 +223,13 @@ def create_database(virus_obj, references, features, genes, pubmed,
     fill_in_table(virus_obj.DB_FILE, 'tblPublicationData', tblPublicationData)
 
     tblPubRefLink = []
-    for pubmed, genbank_list, method in pubmed_genbank:
+    for pubmed, genbank_list in pubmed_genbank:
         for g in genbank_list:
-            tblPubRefLink.append((pubmed['PubID'], g['RefID']))
+            tblPubRefLink.append(
+                (pubmed['PubID'], g['RefID'], g['match_method']))
 
     tblPubRefLink = list(set(tblPubRefLink))
-    tblPubRefLink = [{'PubID': i, 'RefID': j} for i, j in tblPubRefLink]
+    tblPubRefLink = [{'PubID': i, 'RefID': j, 'Method': k} for i, j, k in tblPubRefLink]
 
     fill_in_table(virus_obj.DB_FILE, 'tblGBPubRefLink',
                   pd.DataFrame(tblPubRefLink))
@@ -649,9 +651,9 @@ def creat_views(db_file):
             NonClinical == ''
     )
     SELECT DISTINCT
-        Host,
-        Country,
-        IsolateYear,
+        REPLACE(Host, '*', ''),
+        REPLACE(Country, '*', ''),
+        REPLACE(IsolateYear, '*', ''),
         -- CASE
         --    WHEN IsolateYear BETWEEN 1900 AND 1990 THEN '<1990'
         --     WHEN IsolateYear BETWEEN 1991 AND 2000 THEN '1991-2000'
@@ -663,6 +665,7 @@ def creat_views(db_file):
         Gene,
         COUNT(DISTINCT temp_selection.ShortName) AS NumPublications,
         GROUP_CONCAT(DISTINCT temp_selection.ShortName) AS Publications,
+        GROUP_CONCAT(Accession) AS Accessions,
         COUNT(DISTINCT Accession) AS "#" ,
         (SELECT COUNT(DISTINCT Accession) from temp_selection) AS Total,
         ROUND(

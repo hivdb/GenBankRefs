@@ -1,5 +1,6 @@
 from Bio import Entrez
 import pandas as pd
+from collections import defaultdict
 
 from viruses.load_virus import load_virus_obj
 from viruses.load_virus import select_virus
@@ -98,7 +99,7 @@ def main():
 
     # The virus_obj contains links to pubmed tables, genbank tables
     # the return values are: pubmed (the pubmed data file), pubmed_genbank (Pubmed and GenBank matches)
-    literature, lit_ref_match = match_pubmed_GB(pubmed, references, features, genes, virus_obj)
+    literature, lit_ref_match, genbank2pubmed = match_pubmed_GB(pubmed, references, features, genes, virus_obj)
 
     if literature.empty or not lit_ref_match:
         return
@@ -109,7 +110,7 @@ def main():
     virus_obj.pick_phylo_sequence(genes)
 
     # Updates features & genes DataFrame based on PubMed data on same accessions
-    features = update_genbank_by_pubmed(features, lit_ref_match)
+    features = update_genbank_by_pubmed(features, genbank2pubmed)
     features.to_excel(virus_obj.genbank_feature_filled_file)
 
     genes = update_genes_by_features(genes, features)
@@ -125,24 +126,40 @@ def main():
         literature, lit_ref_match)
 
 
+def update_genbank_by_pubmed(features, genbank2pubmed):
+    # Pick best pubmed for update the accesion meta data
 
-
-def update_genbank_by_pubmed(features, matched):
-
-    for pubmed, genbank_list, method in matched:
+    feature_match_pub = defaultdict(list)
+    for gen, publist, ref_id, method in genbank2pubmed:
         acc_list = [
             i.strip()
-            for g in genbank_list
-            for i in g['accession'].split(',')
+            for i in gen['accession'].split(',')
         ]
+        for acc in acc_list:
+            for _, pub in publist.iterrows():
+                feature_match_pub[acc].append((pub, method))
+
+    method_order = ['PMID', 'Hardlink', 'ACCESSION', 'Title']
+    for acc, links in feature_match_pub.items():
+
+        for order in method_order:
+            link = [
+                i
+                for i in links
+                if i[-1] == order
+            ]
+            if link:
+                break
+
+        (pubmed, method) = link[0]
+
+        process_feature = features[features['Accession'] == acc]
 
         for key in ['Country', 'Host', 'IsolateType', 'SampleYr']:
             if not pubmed[key].strip() or pubmed[key].upper() == 'NA':
                 pubmed[key] = ''
 
-        for i, row in features.iterrows():
-            if row['Accession'] not in acc_list:
-                continue
+        for i, row in process_feature.iterrows():
 
             if not row['Country'] and pubmed['Country']:
                 features.at[i, 'Country'] = pubmed['Country'] + ' *'
