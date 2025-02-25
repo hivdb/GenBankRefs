@@ -53,7 +53,7 @@ def match_pubmed_GB(
         if str(row['PMID']).isdigit():
             short_name = f"{first_author_surname} ({row['Year']}, {row['PMID']})"
         else:
-            short_name = f"{first_author_surname} ({row['Year']}"
+            short_name = f"{first_author_surname} ({row['Year']})"
         pubmed.at[idx, 'ShortName'] = short_name
 
     logger = virus_obj.get_logger('compare_matched')
