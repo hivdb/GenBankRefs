@@ -662,10 +662,10 @@ def creat_views(db_file):
             seq.Gene
         FROM
             tblIsolates iso
-            JOIN tblSequences seq ON iso.Accession = seq.Accession
+            LEFT JOIN tblSequences seq ON iso.Accession = seq.Accession
             JOIN tblGBRefLink ON iso.Accession = tblGBRefLink.Accession
             JOIN vGPMatched match ON tblGBRefLink.RefID = match.RefID
-            JOIN tblPubLicationData pData ON match.PubID = pData.PubID
+            LEFT JOIN tblPubLicationData pData ON match.PubID = pData.PubID
         WHERE
             NonClinical == ''
         ORDER BY
@@ -673,9 +673,8 @@ def creat_views(db_file):
             iso.Accession,
             seq.Gene
     )
-    SELECT DISTINCT
-        COUNT(DISTINCT temp_selection.ShortName) AS NumPublications,
-        GROUP_CONCAT(DISTINCT temp_selection.ShortName) AS Publications,
+    SELECT
+        temp_selection.ShortName AS Publications,
 
         RTRIM(RTRIM(Host, '*'), ' ') AS Host,
         RTRIM(RTRIM(Country, '*'), ' ') As Country,
@@ -688,9 +687,9 @@ def creat_views(db_file):
         --     WHEN IsolateYear BETWEEN 2021 AND 2025 THEN '2021-2025'
         --     ELSE ''
         -- END AS IsolateYr,
-        GROUP_CONCAT(DISTINCT Gene) AS Gene,
 
-        -- GROUP_CONCAT(Accession) AS Accessions,
+        Gene,
+        GROUP_CONCAT(Accession) AS Accessions,
         COUNT(DISTINCT Accession) AS "#" ,
         (SELECT COUNT(DISTINCT Accession) from temp_selection) AS Total,
         ROUND(
@@ -705,14 +704,14 @@ def creat_views(db_file):
         ShortName,
         Host,
         Country,
-        IsolateYear
-        -- IsolateYr
+        IsolateYear,
+        Gene
     ORDER BY
-        "#" DESC,
         Host,
         Country,
-        IsolateYear
-        -- IsolateYr
+        IsolateYear,
+        Gene,
+        "#" DESC
         ;
     """
     run_create_view(db_file, vIsolateMetadataSummary)

@@ -47,7 +47,11 @@ def match_pubmed_GB(
         first_author_surname = ''
         if authors:
             first_author = authors[0]
-            first_author_surname = ' '.join(first_author.split()[:-1])
+            first_author_name_list = first_author.split()
+            if first_author_name_list[0].isupper():
+                first_author_surname = ' '.join(first_author_name_list[1:])
+            else:
+                first_author_surname = ' '.join(first_author_name_list[:-1])
         pubmed.at[idx, 'FirstAuthorSurname'] = first_author_surname
 
         if str(row['PMID']).isdigit():
