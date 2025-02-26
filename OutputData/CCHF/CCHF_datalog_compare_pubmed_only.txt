@@ -35,8 +35,9 @@ Percentages:
 Host
 --------------------------------------------------------------------------------
 Counts:
-Ticks: 9
+Ticks: 10
 Human: 6
+Cattle and Goat and Sheep and Ticks: 2
 Animal and Human: 1
 Animal and Human and Ticks: 1
 Camel: 1
@@ -45,64 +46,59 @@ Cattle and Goat and Ticks: 1
 Deer and Ticks: 1
 Goat and Sheep and Ticks: 1
 Human and Livestock and Ticks: 1
-Human and Rodent: 1
-Livestock and Ticks: 1
-NA: 1
+Human and Rodent and Ticks: 1
 Rodent and Sheep and Ticks: 1
-Sheep and Ticks: 1
-lab strain: 1
+pediatric hepatoblastoma and an adult hepatocarcinoma biopsy: 1
 vero cell: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Ticks (30.0%), Human (20.0%), Animal and Human (3.3%), Animal and Human and Ticks (3.3%), Camel (3.3%), Camel and Cattle and Ticks (3.3%), Cattle and Goat and Ticks (3.3%), Deer and Ticks (3.3%), Goat and Sheep and Ticks (3.3%), Human and Livestock and Ticks (3.3%), Human and Rodent (3.3%), Livestock and Ticks (3.3%), NA (3.3%), Rodent and Sheep and Ticks (3.3%), Sheep and Ticks (3.3%), lab strain (3.3%), vero cell (3.3%)
+Ticks (33.3%), Human (20.0%), Cattle and Goat and Sheep and Ticks (6.7%), Animal and Human (3.3%), Animal and Human and Ticks (3.3%), Camel (3.3%), Camel and Cattle and Ticks (3.3%), Cattle and Goat and Ticks (3.3%), Deer and Ticks (3.3%), Goat and Sheep and Ticks (3.3%), Human and Livestock and Ticks (3.3%), Human and Rodent and Ticks (3.3%), Rodent and Sheep and Ticks (3.3%), pediatric hepatoblastoma and an adult hepatocarcinoma biopsy (3.3%), vero cell (3.3%)
 
 ================================================================================
 Specimen
 --------------------------------------------------------------------------------
 Counts:
-Ticks: 9
-Animals and ticks: 7
+Ticks: 10
+Animals and ticks: 8
 Blood: 6
-NA: 3
 Animals and ticks and blood: 2
+NA: 2
 Animals: 1
 Animals and blood: 1
-Animals and brain: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Ticks (30.0%), Animals and ticks (23.3%), Blood (20.0%), NA (10.0%), Animals and ticks and blood (6.7%), Animals (3.3%), Animals and blood (3.3%), Animals and brain (3.3%)
+Ticks (33.3%), Animals and ticks (26.7%), Blood (20.0%), Animals and ticks and blood (6.7%), NA (6.7%), Animals (3.3%), Animals and blood (3.3%)
 
 ================================================================================
 Median of Sample Year
 --------------------------------------------------------------------------------
 Counts:
+NA: 6
 2018: 5
-NA: 5
+2004: 3
 2008: 3
-2009: 2
-2017: 2
 2019: 2
 2022: 2
-1979: 1
-2004: 1
-2005: 1
+1978: 1
+2009: 1
 2010: 1
 2011: 1
-2012: 1
+2013: 1
 2014: 1
 2016: 1
+2017: 1
 2021: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-2018 (16.7%), NA (16.7%), 2008 (10.0%), 2009 (6.7%), 2017 (6.7%), 2019 (6.7%), 2022 (6.7%), 1979 (3.3%), 2004 (3.3%), 2005 (3.3%), 2010 (3.3%), 2011 (3.3%), 2012 (3.3%), 2014 (3.3%), 2016 (3.3%), 2021 (3.3%)
+NA (20.0%), 2018 (16.7%), 2004 (10.0%), 2008 (10.0%), 2019 (6.7%), 2022 (6.7%), 1978 (3.3%), 2009 (3.3%), 2010 (3.3%), 2011 (3.3%), 2013 (3.3%), 2014 (3.3%), 2016 (3.3%), 2017 (3.3%), 2021 (3.3%)
 
 --------------------------------------------------------------------------------
-Median IQR 2009.0 2016.0 2018.0
+Median IQR 2008.0 2015.0 2018.0
 --------------------------------------------------------------------------------
-1970-1979 (1) (4.0)%, 2000-2009 (7) (28.0)%, 2010-2019 (14) (56.0)%, 2020-2029 (3) (12.0)%
+1970-1979 (1) (4.2)%, 2000-2009 (7) (29.2)%, 2010-2019 (13) (54.2)%, 2020-2029 (3) (12.5)%
 ================================================================================
 Country
 --------------------------------------------------------------------------------
@@ -111,6 +107,7 @@ China: 3
 Iran: 3
 Spain: 3
 Mauritania: 2
+Multinational: 2
 NA: 2
 Pakistan: 2
 Senegal: 2
@@ -118,21 +115,19 @@ Uganda: 2
 Afghanistan, Pakistan: 1
 Albania: 1
 Balkan peninsula: 1
-Greece: 1
 Hungary: 1
 India: 1
 Mongolia: 1
-Multinational: 1
 Russia: 1
 Sanegal: 1
 Uae: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-China (10.0%), Iran (10.0%), Spain (10.0%), Mauritania (6.7%), NA (6.7%), Pakistan (6.7%), Senegal (6.7%), Uganda (6.7%), Afghanistan, Pakistan (3.3%), Albania (3.3%), Balkan peninsula (3.3%), Greece (3.3%), Hungary (3.3%), India (3.3%), Mongolia (3.3%), Multinational (3.3%), Russia (3.3%), Sanegal (3.3%), Uae (3.3%)
+China (10.0%), Iran (10.0%), Spain (10.0%), Mauritania (6.7%), Multinational (6.7%), NA (6.7%), Pakistan (6.7%), Senegal (6.7%), Uganda (6.7%), Afghanistan, Pakistan (3.3%), Albania (3.3%), Balkan peninsula (3.3%), Hungary (3.3%), India (3.3%), Mongolia (3.3%), Russia (3.3%), Sanegal (3.3%), Uae (3.3%)
 
 --------------------------------------------------------------------------------
-{'Multinational': 1, 'Albania': 1, 'Iran': 3, 'NA': 2, 'Spain': 3, 'India': 1, 'Greece': 1, 'Pakistan': 2, 'Afghanistan, Pakistan': 1, 'Mongolia': 1, 'Senegal': 2, 'Uae': 1, 'Mauritania': 2, 'Balkan peninsula': 1, 'Uganda': 2, 'China': 3, 'Sanegal': 1, 'Hungary': 1, 'Russia': 1}
+{'Iran': 3, 'Multinational': 2, 'Albania': 1, 'NA': 2, 'Spain': 3, 'India': 1, 'Pakistan': 2, 'Afghanistan, Pakistan': 1, 'Mongolia': 1, 'Senegal': 2, 'Uae': 1, 'Mauritania': 2, 'Balkan peninsula': 1, 'Uganda': 2, 'China': 3, 'Sanegal': 1, 'Hungary': 1, 'Russia': 1}
 ================================================================================
 Gene
 --------------------------------------------------------------------------------

@@ -5,6 +5,7 @@ from .virus import Virus
 import subprocess
 from functools import partial
 
+
 # Define a class for CCHF Virus that inherits from the Virus class
 class CCHF(Virus):
 
@@ -22,15 +23,15 @@ class CCHF(Virus):
 
     @property
     def pubmed_file(self):
-        return self.pubmed_folder / "ReferenceSummary_Feb14.xlsx"
+        return self.pubmed_folder / "ReferenceSummary_Feb25.xlsx"
 
     @property
     def pubmed_additional_from_gb(self):
-        return self.pubmed_folder / "ReferenceSummary_Genbank_Jan13.xlsx"
+        return self.pubmed_folder / "ReferenceSummary_Genbank_Feb25.xlsx"
 
     @property
     def pubmed_search_missing(self):
-        return self.pubmed_folder / "ReferenceSummary_PubMed_Missing_Jan31.xlsx"
+        return self.pubmed_folder / "ReferenceSummary_PubMed_Missing_Feb25.xlsx"
 
     @property
     def pubmed_genbank_hardlink(self):

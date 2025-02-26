@@ -1,12 +1,12 @@
 Genbank match by pmid: 117
 Genbank match by title: 2
-Genbank match by acc: 176
-Genbank match by acc or title not by pubmed: 67
+Genbank match by acc: 177
+Genbank match by acc or title not by pubmed: 68
 Genbank match total: 186
 --------------------------------------------------------------------------------
 Pubmed match by pmid: 117
 Pubmed match by title: 2
-Pubmed match by acc: 174
+Pubmed match by acc: 175
 Pubmed match total: 188
 Summarize PubMed GenBank Match
 ================================================================================
@@ -50,11 +50,11 @@ Hosts num seq 235
 --------------------------------------------------------------------------------
 Specimen 17
 --------------------------------------------------------------------------------
-Specimen num seq 207
+Specimen num seq 196
 --------------------------------------------------------------------------------
-SampleYr 37
+SampleYr 38
 --------------------------------------------------------------------------------
-SampleYr num seq 294
+SampleYr num seq 302
 --------------------------------------------------------------------------------
 Countries 8
 --------------------------------------------------------------------------------
