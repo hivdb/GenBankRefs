@@ -390,7 +390,7 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
                         sampleyr = sampleYr_name
                         break
 
-            if host == 'NA' and country == 'NA' and sampleyr == 'NA':
+            if host == 'NA' or country == 'NA' or sampleyr == 'NA':
                 continue
 
             g_list[label] = j['NA_raw_seq']
@@ -478,6 +478,8 @@ def get_sequences_limited_pattern_each(metadata, g_list, region=False):
     num_pattern = 1
     if len(pattern_acc) < 50:
         num_pattern = 4
+    elif (len(pattern_acc) < 100):
+        num_pattern = 3
     elif (len(pattern_acc) < 200):
         num_pattern = 2
 
@@ -488,32 +490,53 @@ def get_sequences_limited_pattern_each(metadata, g_list, region=False):
     ]
 
     if region:
-        country_palatte = mpl.colormaps['tab20'].colors
+        # Define subregions and their assigned colors
+        subregion_colors = {
+            "Central Asia": '#0D4A70',
+            "Eastern Asia": '#226E9C',
+            "Northern Asia": '#3C93C2',
+            "Southern Asia": '#6CB0D6',
+            "Western Asia": '#9EC9E2',
+
+            "Eastern Africa": '#06592A',
+            "Middle Africa": '#22bb3b',
+            "Northern Africa": '#40ad5a',
+            "Southern Africa": '#6cba7d',
+            "Western Africa": '#9ccea7',
+
+            "Central Europe": '#8f003b',
+            "Eastern Europe": '#c40f5b',
+            "Northern Europe": '#e32977',
+            "Southern Europe": '#e95694',
+            "Western Europe": '#ed85b0',
+
+
+            'Northern America': '#ffffff',
+        }
         country_color_map = {'NA': '#555555'}
         from countryinfo import CountryInfo
         mapper = {
-            'Yugoslavia': 'Europe',
-            'Kosovo': 'Europe',
-            'North Macedonia': 'Europe',
+            'Yugoslavia': 'Southern Europe',
+            'Kosovo': 'Southern Europe',
+            'North Macedonia': 'Southern Europe',
         }
         for i in metadata:
             # print(i['Country'])
             if i['Country'] in mapper:
                 i['Country'] = mapper[i['Country']]
             else:
-                i['Country'] = CountryInfo(i['Country']).region()
+                i['Country'] = CountryInfo(i['Country']).subregion()
 
             country = i['Country']
-            country_color_map[country] = country_color_map.get(
-                country,
-                mpl.colors.to_hex(country_palatte[len(country_color_map)])
-            )
+            country_color_map[country] = subregion_colors[country]
             i['Country_color'] = country_color_map[country]
+
+            i['Country'] = country.split()[-1] + f' ({country.split()[0]})'
 
         metadata = [
             i
             for i in metadata
-            if not i['Country'].lower().startswith('america')
+            if 'america' not in i['Country'].lower()
         ]
 
     keep_acc = [
