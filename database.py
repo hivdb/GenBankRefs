@@ -9,7 +9,7 @@ def create_tables(db_file):
     conn = sqlite3.connect(db_file)
 
     conn.execute("""
-        CREATE TABLE "tblGBRefs" (
+        CREATE TABLE "tblGBSubmissionSets" (
             "RefID" INTEGER PRIMARY KEY,
             "Authors" TEXT,
             "FirstAuthorSurname" TEXT,
@@ -39,7 +39,7 @@ def create_tables(db_file):
         CREATE TABLE "tblGBRefLink" (
             "RefID" INTEGER,
             "Accession" TEXT,
-            FOREIGN KEY (RefID) REFERENCES tblGBRefs (RefID),
+            FOREIGN KEY (RefID) REFERENCES tblGBSubmissionSets (RefID),
             FOREIGN KEY (Accession) REFERENCES tblIsolates (Accession)
         )
     """)
@@ -116,7 +116,7 @@ def create_tables(db_file):
             "RefID" TEXT,
             "Method" TEXT,
             FOREIGN KEY (PubID) REFERENCES tblPublications (PubID),
-            FOREIGN KEY (RefID) REFERENCES tblGBRefs (RefID)
+            FOREIGN KEY (RefID) REFERENCES tblGBSubmissionSets (RefID)
         )
     """)
 
@@ -131,7 +131,7 @@ def create_database(virus_obj, references, features, genes, pubmed,
     create_tables(virus_obj.DB_FILE)
 
     # GenBank Tables
-    tblGBRefs = references[[
+    tblGBSubmissionSets = references[[
         'RefID',
         'Authors',
         'FirstAuthorSurname',
@@ -141,7 +141,7 @@ def create_database(virus_obj, references, features, genes, pubmed,
         'Year',
         'ShortName',
     ]]
-    fill_in_table(virus_obj.DB_FILE, 'tblGBRefs', tblGBRefs)
+    fill_in_table(virus_obj.DB_FILE, 'tblGBSubmissionSets', tblGBSubmissionSets)
 
     create_ref_link(virus_obj, references)
 
@@ -257,7 +257,7 @@ def creat_views(db_file):
     vGBRefIsolates = """
         CREATE VIEW vGBRefIsolates AS
         SELECT a.*, c.*
-        FROM tblGBRefs a, tblGBRefLink b, tblIsolates c
+        FROM tblGBSubmissionSets a, tblGBRefLink b, tblIsolates c
         WHERE a.RefID = b.RefID
         AND b.Accession = c.Accession;
     """
@@ -280,7 +280,7 @@ def creat_views(db_file):
         SELECT
             a.*, c.*
         FROM
-            tblGBRefs a,
+            tblGBSubmissionSets a,
             tblGBPubRefLink b,
             tblPublications c
         WHERE
@@ -309,7 +309,7 @@ def creat_views(db_file):
                 COUNT(DISTINCT c.ACCESSION) AS num_Isolate,
                 'https://www.ncbi.nlm.nih.gov/nuccore?cmd=Search&doptcmdl=Summary&term=' || GROUP_CONCAT('"' || c.ACCESSION || '"%5BACCN%5D', "%20OR%20") AS gb_search
             FROM
-                tblGBRefs a,
+                tblGBSubmissionSets a,
                 tblGBRefLink b,
                 temp_isolate c
             WHERE
@@ -324,7 +324,7 @@ def creat_views(db_file):
                 c.Gene,
                 COUNT(c.Gene) AS num_Gene
             FROM
-                tblGBRefs a,
+                tblGBSubmissionSets a,
                 tblGBRefLink b,
                 temp_isolate c
             WHERE
@@ -351,7 +351,7 @@ def creat_views(db_file):
                 b.gb_search,
                 c.Genes
             FROM
-                tblGBRefs a
+                tblGBSubmissionSets a
                 LEFT JOIN temp_num_isolate b ON a.RefID = b.RefID
                 LEFT JOIN temp_num_gene_str c ON a.RefID = c.RefID
         )
@@ -497,7 +497,7 @@ def creat_views(db_file):
     # SELECT
     #     COUNT(DISTINCT RefID) AS NumSubmissionSets
     # FROM
-    #     tblGBRefs;
+    #     tblGBSubmissionSets;
     # """
     # run_create_view(db_file, vNumSubmissionSets)
 
@@ -530,7 +530,7 @@ def creat_views(db_file):
     SELECT
         *
     FROM
-        tblGBRefs
+        tblGBSubmissionSets
     WHERE
         RefID NOT IN (
             SELECT RefID from tblGBPubRefLink
@@ -543,7 +543,7 @@ def creat_views(db_file):
     SELECT
         *
     FROM
-        tblGBRefs
+        tblGBSubmissionSets
     WHERE
         RefID NOT IN (
             SELECT RefID from tblGBPubRefLink
@@ -556,7 +556,7 @@ def creat_views(db_file):
     # SELECT
     #     (SELECT COUNT(DISTINCT RefID) FROM tblGBPubRefLink) as num_submission_set,
     #     (SELECT COUNT(DISTINCT PubID) FROM tblGBPubRefLink) as num_publication,
-    #     (SELECT COUNT(DISTINCT RefID) FROM tblGBRefs WHERE
+    #     (SELECT COUNT(DISTINCT RefID) FROM tblGBSubmissionSets WHERE
     #         RefID NOT IN (SELECT DISTINCT RefID FROM tblGBPubRefLink)
     #     ) as num_submission_not_match
     # ;
@@ -732,7 +732,7 @@ def creat_views(db_file):
         FROM
             tblGBPubRefLink gbprl
         JOIN
-            tblGBRefs gbr ON gbprl.RefID = gbr.RefID
+            tblGBSubmissionSets gbr ON gbprl.RefID = gbr.RefID
         JOIN
             tblPublications pub ON gbprl.pubID = pub.pubID
         JOIN
@@ -813,7 +813,7 @@ def get_table_schema_sql(db_file):
 
 def dump_db_tables(db_path, db_dump_folder):
     tables = [
-        # 'tblGBRefs',
+        # 'tblGBSubmissionSets',
         'vIsolateMissingData',
         # 'vSubMissionNotMatch',
         'vIsolateMetadataSummary',
