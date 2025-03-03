@@ -126,6 +126,12 @@ p <- gheatmap(
 sample_yr_data = df2$SampleYr
 sample_yr_data = data.frame(SampleYr=sample_yr_data, row.names = tree$tip.label)
 sample_yr_df = df2 %>% distinct(SampleYr_color, SampleYr)
+
+sample_yr_df = sample_yr_df %>%
+  mutate(sort_key = as.integer(sub(".*(\\d{4})$", "\\1", SampleYr))) %>%
+  arrange(sort_key) %>%
+  select(-sort_key) 
+
 sample_yr_colors = (list(colors=sample_yr_df$SampleYr_color, names=sample_yr_df$SampleYr))
 
 p <- gheatmap(
