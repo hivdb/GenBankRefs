@@ -846,8 +846,8 @@ def dump_table_to_json(json_file_path, db_path, table_name):
 
     with open(json_file_path, 'w', encoding='utf-8') as json_file:
         json.dump(data, json_file, indent=4, ensure_ascii=False)
-    print(
-        f"Data from view '{table_name}' has been exported to {json_file_path}")
+    # print(
+    #     f"Data from view '{table_name}' has been exported to {json_file_path}")
 
     conn.commit()
     conn.close()
