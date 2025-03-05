@@ -296,7 +296,7 @@ def categorize_host_specimen(self, pubmed):
                 updated_host.append('Animal')
                 updated_specimen.append('Animal')
 
-        for a in ['cell', 'vero', 'biopsy']:
+        for a in ['cell', 'vero', 'biopsy', 'lab', 'culture']:
             if a in specimen:
                 updated_host.append("Lab")
                 # updated_specimen.append("Lab")

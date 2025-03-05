@@ -112,14 +112,14 @@ India: 1
 Mongolia: 1
 Russia: 1
 Sanegal: 1
-Uae: 1
+United arab emirates: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-China (10.0%), Iran (10.0%), Spain (10.0%), Mauritania (6.7%), Multinational (6.7%), NA (6.7%), Pakistan (6.7%), Senegal (6.7%), Uganda (6.7%), Afghanistan, Pakistan (3.3%), Albania (3.3%), Balkan peninsula (3.3%), Hungary (3.3%), India (3.3%), Mongolia (3.3%), Russia (3.3%), Sanegal (3.3%), Uae (3.3%)
+China (10.0%), Iran (10.0%), Spain (10.0%), Mauritania (6.7%), Multinational (6.7%), NA (6.7%), Pakistan (6.7%), Senegal (6.7%), Uganda (6.7%), Afghanistan, Pakistan (3.3%), Albania (3.3%), Balkan peninsula (3.3%), Hungary (3.3%), India (3.3%), Mongolia (3.3%), Russia (3.3%), Sanegal (3.3%), United arab emirates (3.3%)
 
 --------------------------------------------------------------------------------
-{'Iran': 3, 'Multinational': 2, 'Albania': 1, 'NA': 2, 'Spain': 3, 'India': 1, 'Pakistan': 2, 'Afghanistan, Pakistan': 1, 'Mongolia': 1, 'Senegal': 2, 'Uae': 1, 'Mauritania': 2, 'Balkan peninsula': 1, 'Uganda': 2, 'China': 3, 'Sanegal': 1, 'Hungary': 1, 'Russia': 1}
+{'Iran': 3, 'Multinational': 2, 'Albania': 1, 'NA': 2, 'Spain': 3, 'India': 1, 'Pakistan': 2, 'Afghanistan, Pakistan': 1, 'Mongolia': 1, 'Senegal': 2, 'United arab emirates': 1, 'Mauritania': 2, 'Balkan peninsula': 1, 'Uganda': 2, 'China': 3, 'Sanegal': 1, 'Hungary': 1, 'Russia': 1}
 ================================================================================
 Gene
 --------------------------------------------------------------------------------

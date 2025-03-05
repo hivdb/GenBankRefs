@@ -46,23 +46,21 @@ Host
 Counts:
 Human: 61
 Animal and Tick: 50
-Tick: 26
+Tick: 25
 Human and Tick: 17
 Animal and Human and Tick: 7
 Animal: 5
+Lab: 5
 Human and Lab: 3
-Lab: 3
+Lab and Tick: 3
 Human and Lab and Tick: 2
-Lab and Tick: 2
 Animal and Human: 1
 Animal and Human and Lab and Tick: 1
 Animal and Lab and Tick: 1
-lab strain: 1
-unified culture collection: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Human (33.7%), Animal and Tick (27.6%), Tick (14.4%), Human and Tick (9.4%), Animal and Human and Tick (3.9%), Animal (2.8%), Human and Lab (1.7%), Lab (1.7%), Human and Lab and Tick (1.1%), Lab and Tick (1.1%), Animal and Human (0.6%), Animal and Human and Lab and Tick (0.6%), Animal and Lab and Tick (0.6%), lab strain (0.6%), unified culture collection (0.6%)
+Human (33.7%), Animal and Tick (27.6%), Tick (13.8%), Human and Tick (9.4%), Animal and Human and Tick (3.9%), Animal (2.8%), Lab (2.8%), Human and Lab (1.7%), Lab and Tick (1.7%), Human and Lab and Tick (1.1%), Animal and Human (0.6%), Animal and Human and Lab and Tick (0.6%), Animal and Lab and Tick (0.6%)
 
 ================================================================================
 Specimen
@@ -160,12 +158,12 @@ Afghanistan: 3
 Albania: 3
 Sudan: 3
 Tajikistan: 3
+United arab emirates: 3
 Kazakhstan: 2
 Kenya: 2
 Mauritania: 2
 Nigeria: 2
 Senegal: 2
-Uae: 2
 Afghanistan, Pakistan: 1
 Algeria: 1
 Balkan peninsula: 1
@@ -190,18 +188,17 @@ Russia, Tajikista: 1
 Russia, Tajikistan: 1
 Sanegal: 1
 Saudi arabia: 1
-Somalia and uae: 1
 Somalia, Sudan: 1
+Somalia, United arab emirates: 1
 Syria and turkey: 1
-United arab emirates: 1
 Zambia: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Turkey (11.0%), China (8.8%), Iran (8.8%), Multinational (8.3%), Spain (5.5%), Bulgaria (4.4%), Kosovo (4.4%), Pakistan (4.4%), Russia (3.9%), NA (3.3%), Greece (2.8%), Uganda (2.8%), India (2.2%), Afghanistan (1.7%), Albania (1.7%), Sudan (1.7%), Tajikistan (1.7%), Kazakhstan (1.1%), Kenya (1.1%), Mauritania (1.1%), Nigeria (1.1%), Senegal (1.1%), Uae (1.1%), Afghanistan, Pakistan (0.6%), Algeria (0.6%), Balkan peninsula (0.6%), Cameroon (0.6%), China, Pakistan (0.6%), Crimea (0.6%), Drc (0.6%), Ghana (0.6%), Hungary (0.6%), Iran and turkey (0.6%), Iraq, Pakistan, Uzbekistan (0.6%), Italy (0.6%), Mali (0.6%), Mongolia (0.6%), Namibia, Pakistan, Southern africa (0.6%), Namibia, South africa (0.6%), Namibia, South africa, Turkey (0.6%), Nigeria, Pakistan (0.6%), Oman (0.6%), Pakistan and afghanistan (0.6%), Russia, Tajikista (0.6%), Russia, Tajikistan (0.6%), Sanegal (0.6%), Saudi arabia (0.6%), Somalia and uae (0.6%), Somalia, Sudan (0.6%), Syria and turkey (0.6%), United arab emirates (0.6%), Zambia (0.6%)
+Turkey (11.0%), China (8.8%), Iran (8.8%), Multinational (8.3%), Spain (5.5%), Bulgaria (4.4%), Kosovo (4.4%), Pakistan (4.4%), Russia (3.9%), NA (3.3%), Greece (2.8%), Uganda (2.8%), India (2.2%), Afghanistan (1.7%), Albania (1.7%), Sudan (1.7%), Tajikistan (1.7%), United arab emirates (1.7%), Kazakhstan (1.1%), Kenya (1.1%), Mauritania (1.1%), Nigeria (1.1%), Senegal (1.1%), Afghanistan, Pakistan (0.6%), Algeria (0.6%), Balkan peninsula (0.6%), Cameroon (0.6%), China, Pakistan (0.6%), Crimea (0.6%), Drc (0.6%), Ghana (0.6%), Hungary (0.6%), Iran and turkey (0.6%), Iraq, Pakistan, Uzbekistan (0.6%), Italy (0.6%), Mali (0.6%), Mongolia (0.6%), Namibia, Pakistan, Southern africa (0.6%), Namibia, South africa (0.6%), Namibia, South africa, Turkey (0.6%), Nigeria, Pakistan (0.6%), Oman (0.6%), Pakistan and afghanistan (0.6%), Russia, Tajikista (0.6%), Russia, Tajikistan (0.6%), Sanegal (0.6%), Saudi arabia (0.6%), Somalia, Sudan (0.6%), Somalia, United arab emirates (0.6%), Syria and turkey (0.6%), Zambia (0.6%)
 
 --------------------------------------------------------------------------------
-{'Iran': 16, 'Turkey': 20, 'Nigeria': 2, 'China, Pakistan': 1, 'Uae': 2, 'Somalia and uae': 1, 'China': 16, 'Kosovo': 8, 'Nigeria, Pakistan': 1, 'Albania': 3, 'Russia': 7, 'Multinational': 15, 'Russia, Tajikistan': 1, 'NA': 6, 'Iraq, Pakistan, Uzbekistan': 1, 'Bulgaria': 8, 'Tajikistan': 3, 'Pakistan': 8, 'Russia, Tajikista': 1, 'Greece': 5, 'Namibia, Pakistan, Southern africa': 1, 'Afghanistan': 3, 'Sudan': 3, 'Drc': 1, 'Somalia, Sudan': 1, 'Spain': 10, 'India': 4, 'Iran and turkey': 1, 'Pakistan and afghanistan': 1, 'Syria and turkey': 1, 'Mali': 1, 'Namibia, South africa': 1, 'Afghanistan, Pakistan': 1, 'Algeria': 1, 'Namibia, South africa, Turkey': 1, 'Uganda': 5, 'Crimea': 1, 'Mongolia': 1, 'Kazakhstan': 2, 'Oman': 1, 'Italy': 1, 'Kenya': 2, 'Senegal': 2, 'Zambia': 1, 'Mauritania': 2, 'Saudi arabia': 1, 'United arab emirates': 1, 'Balkan peninsula': 1, 'Cameroon': 1, 'Sanegal': 1, 'Ghana': 1, 'Hungary': 1}
+{'Iran': 16, 'Turkey': 20, 'Nigeria': 2, 'China, Pakistan': 1, 'United arab emirates': 3, 'Somalia, United arab emirates': 1, 'China': 16, 'Kosovo': 8, 'Nigeria, Pakistan': 1, 'Albania': 3, 'Russia': 7, 'Multinational': 15, 'Russia, Tajikistan': 1, 'NA': 6, 'Iraq, Pakistan, Uzbekistan': 1, 'Bulgaria': 8, 'Tajikistan': 3, 'Pakistan': 8, 'Russia, Tajikista': 1, 'Greece': 5, 'Namibia, Pakistan, Southern africa': 1, 'Afghanistan': 3, 'Sudan': 3, 'Drc': 1, 'Somalia, Sudan': 1, 'Spain': 10, 'India': 4, 'Iran and turkey': 1, 'Pakistan and afghanistan': 1, 'Syria and turkey': 1, 'Mali': 1, 'Namibia, South africa': 1, 'Afghanistan, Pakistan': 1, 'Algeria': 1, 'Namibia, South africa, Turkey': 1, 'Uganda': 5, 'Crimea': 1, 'Mongolia': 1, 'Kazakhstan': 2, 'Oman': 1, 'Italy': 1, 'Kenya': 2, 'Senegal': 2, 'Zambia': 1, 'Mauritania': 2, 'Saudi arabia': 1, 'Balkan peninsula': 1, 'Cameroon': 1, 'Sanegal': 1, 'Ghana': 1, 'Hungary': 1}
 ================================================================================
 Gene
 --------------------------------------------------------------------------------
