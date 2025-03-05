@@ -336,6 +336,12 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
     country_color_map = {'NA': '#555555'}
 
     for gene_name in picked_genes:
+
+        run_command = input(f'Run alignment and phylogenetic tree for {gene_name}? [y/n]')
+        if run_command == 'n':
+            print('Choose not run phylogenetic tree')
+            continue
+
         ref_na = virus.ref_na_gene_map[gene_name]
 
         dedup_na = []
@@ -439,11 +445,6 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
 
         dump_fasta(virus.phylo_folder / f"{gene_name}_ref_na.fasta", {gene_name: ref_na})
         dump_fasta(virus.phylo_folder / f'{gene_name}_isolates.fasta', g_list)
-
-        run_command = input('Run alignment and phylogenetic tree? [y/n]')
-        if run_command == 'n':
-            print('Choose not run phylogenetic tree')
-            return
 
         cmds = (
             f"cd {virus.phylo_folder}; "
