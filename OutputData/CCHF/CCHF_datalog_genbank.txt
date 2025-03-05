@@ -94,14 +94,14 @@ Counts:
 Human: 3446
 Tick: 1001
 NA: 249
-ANIMAL and Tick: 55
-ANIMAL: 50
+Animal and Tick: 55
+Animal: 50
 Human and Tick: 4
-ANIMAL and Human and Tick: 1
+Animal and Human and Tick: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Human (71.7%), Tick (20.8%), NA (5.2%), ANIMAL and Tick (1.1%), ANIMAL (1.0%), Human and Tick (0.1%), ANIMAL and Human and Tick (0.0%)
+Human (71.7%), Tick (20.8%), NA (5.2%), Animal and Tick (1.1%), Animal (1.0%), Human and Tick (0.1%), Animal and Human and Tick (0.0%)
 
 ================================================================================
 Specimens

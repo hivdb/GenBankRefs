@@ -43,24 +43,19 @@ Percentages:
 Host
 --------------------------------------------------------------------------------
 Counts:
-Human: 33
+Human: 27
 Rodent: 16
+Lab: 7
+Human and Lab: 6
 Human and Rodent: 6
 pig: 2
 Dog and Goat and Lizard: 1
-guinea pig (hartley strain): 1
-guinea pigs: 1
-human dendritic cell and macrophage: 1
-infected cell : 1
 mice: 1
 outbred hartley guinea pigs: 1
-possibley, mamalian cell lines (vero cells): 1
-recombinant: 1
-recombinant lassa virus l protein: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Human (49.3%), Rodent (23.9%), Human and Rodent (9.0%), pig (3.0%), Dog and Goat and Lizard (1.5%), guinea pig (hartley strain) (1.5%), guinea pigs (1.5%), human dendritic cell and macrophage (1.5%), infected cell  (1.5%), mice (1.5%), outbred hartley guinea pigs (1.5%), possibley, mamalian cell lines (vero cells) (1.5%), recombinant (1.5%), recombinant lassa virus l protein (1.5%)
+Human (40.3%), Rodent (23.9%), Lab (10.4%), Human and Lab (9.0%), Human and Rodent (9.0%), pig (3.0%), Dog and Goat and Lizard (1.5%), mice (1.5%), outbred hartley guinea pigs (1.5%)
 
 ================================================================================
 Specimen

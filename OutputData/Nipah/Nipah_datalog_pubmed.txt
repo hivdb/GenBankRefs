@@ -40,16 +40,16 @@ Counts:
 Bat: 13
 Human: 11
 Bat and Human: 2
-293t cells, a human cell line: 1
 Bat and Pig: 1
 Human and Pig: 1
+Lab: 1
 Pig: 1
 island flying foxes (pteropus hypomelanus): 1
 pteropus lylei (lyle's flying fox): 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Bat (40.6%), Human (34.4%), Bat and Human (6.2%), 293t cells, a human cell line (3.1%), Bat and Pig (3.1%), Human and Pig (3.1%), Pig (3.1%), island flying foxes (pteropus hypomelanus) (3.1%), pteropus lylei (lyle's flying fox) (3.1%)
+Bat (40.6%), Human (34.4%), Bat and Human (6.2%), Bat and Pig (3.1%), Human and Pig (3.1%), Lab (3.1%), Pig (3.1%), island flying foxes (pteropus hypomelanus) (3.1%), pteropus lylei (lyle's flying fox) (3.1%)
 
 ================================================================================
 Specimen

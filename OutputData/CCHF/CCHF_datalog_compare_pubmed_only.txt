@@ -35,41 +35,33 @@ Percentages:
 Host
 --------------------------------------------------------------------------------
 Counts:
-Ticks: 10
+Tick: 10
+Animal and Tick: 7
 Human: 6
-Cattle and Goat and Sheep and Ticks: 2
+Animal and Human and Tick: 3
+Lab: 2
+Animal: 1
 Animal and Human: 1
-Animal and Human and Ticks: 1
-Camel: 1
-Camel and Cattle and Ticks: 1
-Cattle and Goat and Ticks: 1
-Deer and Ticks: 1
-Goat and Sheep and Ticks: 1
-Human and Livestock and Ticks: 1
-Human and Rodent and Ticks: 1
-Rodent and Sheep and Ticks: 1
-pediatric hepatoblastoma and an adult hepatocarcinoma biopsy: 1
-vero cell: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Ticks (33.3%), Human (20.0%), Cattle and Goat and Sheep and Ticks (6.7%), Animal and Human (3.3%), Animal and Human and Ticks (3.3%), Camel (3.3%), Camel and Cattle and Ticks (3.3%), Cattle and Goat and Ticks (3.3%), Deer and Ticks (3.3%), Goat and Sheep and Ticks (3.3%), Human and Livestock and Ticks (3.3%), Human and Rodent and Ticks (3.3%), Rodent and Sheep and Ticks (3.3%), pediatric hepatoblastoma and an adult hepatocarcinoma biopsy (3.3%), vero cell (3.3%)
+Tick (33.3%), Animal and Tick (23.3%), Human (20.0%), Animal and Human and Tick (10.0%), Lab (6.7%), Animal (3.3%), Animal and Human (3.3%)
 
 ================================================================================
 Specimen
 --------------------------------------------------------------------------------
 Counts:
-Ticks: 10
-Animals and ticks: 8
+Tick: 10
+Animal and tick: 8
 Blood: 6
-Animals and ticks and blood: 2
+Animal and tick and blood: 2
 NA: 2
-Animals: 1
-Animals and blood: 1
+Animal: 1
+Animal and blood: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Ticks (33.3%), Animals and ticks (26.7%), Blood (20.0%), Animals and ticks and blood (6.7%), NA (6.7%), Animals (3.3%), Animals and blood (3.3%)
+Tick (33.3%), Animal and tick (26.7%), Blood (20.0%), Animal and tick and blood (6.7%), NA (6.7%), Animal (3.3%), Animal and blood (3.3%)
 
 ================================================================================
 Median of Sample Year

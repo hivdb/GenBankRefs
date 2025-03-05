@@ -223,18 +223,18 @@ def get_additional_host_data(features_df):
         for a in animal_host:
             if a in specimen:
                 if a == 'tick':
-                    updated_host.append(a.capitalize())
+                    updated_host.append("Tick")
                     updated_specimen.append("Tick")
                 # just put animal for other animals
                 else:
-                    updated_host.append("ANIMAL")
+                    updated_host.append("Animal")
                     updated_specimen.append("Animal")
             elif a in host:
                 if a == 'tick':
-                    updated_host.append(a.capitalize())
+                    updated_host.append("Tick")
                     updated_specimen.append("Tick")
                 else:
-                    updated_host.append("ANIMAL")
+                    updated_host.append("Animal")
                     updated_specimen.append("Animal")
 
         if not updated_host and host:
@@ -285,16 +285,23 @@ def categorize_host_specimen(self, pubmed):
 
         # For ticks specimen & hosts are both
         if 'tick' in host or 'tick' in specimen:
-            updated_host.append('Ticks')
-            updated_specimen.append('Ticks')
+            updated_host.append('Tick')
+            updated_specimen.append('Tick')
 
         # Rest of the animals
         for a in ['animal', 'sheep', 'cattle', 'goat', 'mouse', 'boar', 'hare',
                   'livestock', 'cow', 'sheep', 'camel', 'monkey', 'deer', 'buffalo',
                   'rodent', 'serow']:
             if a in host:
-                updated_host.append(a.capitalize())
-                updated_specimen.append('Animals')
+                updated_host.append('Animal')
+                updated_specimen.append('Animal')
+
+        for a in ['cell', 'vero', 'biopsy']:
+            if a in specimen:
+                updated_host.append("Lab")
+                # updated_specimen.append("Lab")
+            if a in host:
+                updated_host.append("Lab")
 
         if not updated_host and host and host != 'NA'.lower():
             # updated_host.append('Other')

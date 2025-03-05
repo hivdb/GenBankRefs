@@ -179,11 +179,10 @@ def get_additional_host_data(features_df):
         'intestine',
         'urine',
         'throat swab',
-        ]
+    ]
     human_host = ['patient', 'human', 'homo sapiens']
-    animal_host = [
-        'bat', 'pig', 'dog']
-
+    animal_host = ['bat', 'pig', 'dog', 'flying foxes']
+    
     for index, row in features_df.iterrows():
 
         host = row['Host2'].lower().strip()
@@ -195,7 +194,9 @@ def get_additional_host_data(features_df):
         updated_host = []
         updated_specimen = []
 
-        if any(key in specimen for key in human_host) or any(key in host for key in human_host):
+        if any(key in specimen
+               for key in human_host) or any(key in host
+                                             for key in human_host):
             updated_host.append("Human")
             found_specimen = False
             for key in blood_specimen:
@@ -218,7 +219,12 @@ def get_additional_host_data(features_df):
                 updated_host.append(a.capitalize())
                 updated_specimen.append(a)
             if a in host:
-                updated_host.append(a.capitalize())
+                if a == 'flying foxes':
+                    updated_host.append("Bat")
+                else:
+                    updated_host.append(a.capitalize())
+
+
 
         if not updated_host and host:
             updated_host = ['Other']
@@ -304,25 +310,32 @@ def categorize_host_specimen(self, pubmed):
         if 'homo sapiens' in host:
             updated_host.append('Human')
             for s in [
-                'brain',
-                'breast milk',
-                'csf',
-                'heart',
-                'intestine',
-                'kidney',
-                'liver',
-                'spleen',
-                'lung',
-                'oropharyngeal swab',
-                'urine',
-                'throat swab',
-                ]:
+                    'brain',
+                    'breast milk',
+                    'csf',
+                    'heart',
+                    'intestine',
+                    'kidney',
+                    'liver',
+                    'spleen',
+                    'lung',
+                    'oropharyngeal swab',
+                    'urine',
+                    'throat swab',
+            ]:
                 if s in specimen:
                     updated_specimen.append(s)
 
         for a in ['bat', 'pig', 'dog']:
             if a in host:
                 updated_host.append(a.capitalize())
+
+        for a in ['cell']:
+            if a in specimen:
+                updated_host.append("Lab")
+                # updated_specimen.append("Lab")
+            if a in host:
+                updated_host.append("Lab")
 
         if not updated_host and host and host != 'NA'.lower():
             # updated_host.append('Other')
@@ -346,7 +359,7 @@ def categorize_host_specimen(self, pubmed):
     pubmed['Host'] = pubmed['CleanedHost']
     pubmed['Specimen'] = pubmed['CleanedSpecimen']
 
-    pubmed['Specimen'] = pubmed['Specimen'].apply(
-        lambda x: x.capitalize() if x.upper() != "NA" else x)
+    pubmed['Specimen'] = pubmed['Specimen'].apply(lambda x: x.capitalize()
+                                                  if x.upper() != "NA" else x)
 
     return pubmed

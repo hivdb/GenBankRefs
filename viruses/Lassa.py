@@ -203,7 +203,8 @@ def get_additional_host_data(features_df):
         # 'rat',
         # 'goat', 'dog',
         # 'lizard'
-        ]
+    ]
+
 
     for index, row in features_df.iterrows():
 
@@ -216,7 +217,9 @@ def get_additional_host_data(features_df):
         updated_host = []
         updated_specimen = []
 
-        if any(key in specimen for key in human_host) or any(key in host for key in human_host):
+        if any(key in specimen
+               for key in human_host) or any(key in host
+                                             for key in human_host):
             updated_host.append("Human")
             found_specimen = False
             for key in blood_specimen:
@@ -241,7 +244,6 @@ def get_additional_host_data(features_df):
             if a in host:
                 updated_host.append(a.capitalize())
                 updated_specimen.append(a)
-
 
         if not updated_host and host:
             updated_host = ['Other']
@@ -313,14 +315,10 @@ def categorize_host_specimen(self, pubmed):
     It cleans and standardizes host and specimen information based on known categories.
     """
 
-    tissue = ['tissue','brain', 'lung', 'spleen', 'kidney', 'liver']
+    tissue = ['tissue', 'brain', 'lung', 'spleen', 'kidney', 'liver']
     other_source = [
-            'pleural fluid',
-            'urine',
-            'csf',
-            'breast milk',
-            'rectal swab',
-            'feces']
+        'pleural fluid', 'urine', 'csf', 'breast milk', 'rectal swab', 'feces'
+    ]
     for index, row in pubmed.iterrows():
         host = row['Host'].lower()
         specimen = row['IsolateType'].lower()
@@ -342,11 +340,16 @@ def categorize_host_specimen(self, pubmed):
                 if i in specimen:
                     updated_specimen.append('Blood')
 
-        for a in [
-                'rodent', 'mouse', 'rat',
-                'goat', 'dog', 'lizard']:
+        for a in ['rodent', 'mouse', 'rat', 'goat', 'dog', 'lizard']:
             if a in host:
                 updated_host.append(a.capitalize())
+
+        for a in ['cell', 'vero', 'recombinant']:
+            if a in specimen:
+                updated_host.append("Lab")
+                # updated_specimen.append("Lab")
+            if a in host:
+                updated_host.append("Lab")
 
         if not updated_host and host and host != 'NA'.lower():
             # updated_host.append('Other')
@@ -365,7 +368,7 @@ def categorize_host_specimen(self, pubmed):
 
     pubmed['Host'] = pubmed['CleanedHost']
     pubmed['Specimen'] = pubmed['CleanedSpecimen']
-    pubmed['Specimen'] = pubmed['Specimen'].apply(
-        lambda x: x.capitalize() if x.upper() != "NA" else x)
+    pubmed['Specimen'] = pubmed['Specimen'].apply(lambda x: x.capitalize()
+                                                  if x.upper() != "NA" else x)
 
     return pubmed

@@ -25,12 +25,11 @@ Host
 --------------------------------------------------------------------------------
 Counts:
 Human: 4
-possibley, mamalian cell lines (vero cells): 1
-recombinant lassa virus l protein: 1
+Lab: 2
 
 --------------------------------------------------------------------------------
 Percentages:
-Human (66.7%), possibley, mamalian cell lines (vero cells) (16.7%), recombinant lassa virus l protein (16.7%)
+Human (66.7%), Lab (33.3%)
 
 ================================================================================
 Specimen

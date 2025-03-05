@@ -44,76 +44,45 @@ Percentages:
 Host
 --------------------------------------------------------------------------------
 Counts:
-Human: 64
-Ticks: 28
-Human and Ticks: 19
-Cattle and Goat and Sheep and Ticks: 9
-Sheep and Ticks: 5
-Cattle and Ticks: 4
-Goat and Sheep and Ticks: 4
-Camel and Ticks: 3
-Cattle and Goat and Ticks: 3
-Cow and Goat and Sheep and Ticks: 2
-Goat and Human and Sheep and Ticks: 2
-Goat and Ticks: 2
-Human and Livestock and Ticks: 2
-Human and Rodent and Ticks: 2
-Animal and Buffalo and Cattle and Goat and Sheep and Ticks: 1
+Human: 61
+Animal and Tick: 50
+Tick: 26
+Human and Tick: 17
+Animal and Human and Tick: 7
+Animal: 5
+Human and Lab: 3
+Lab: 3
+Human and Lab and Tick: 2
+Lab and Tick: 2
 Animal and Human: 1
-Animal and Human and Ticks: 1
-Boar and Cattle and Deer and Goat and Livestock and Sheep and Ticks: 1
-Boar and Cattle and Goat and Hare and Ticks: 1
-Boar and Deer and Ticks: 1
-Buffalo and Camel and Cattle and Goat and Sheep and Ticks: 1
-Camel: 1
-Camel and Cattle and Goat and Sheep and Ticks: 1
-Camel and Cattle and Ticks: 1
-Camel and Sheep and Ticks: 1
-Cattle and Deer and Ticks: 1
-Cattle and Goat and Livestock and Sheep and Ticks: 1
-Cattle and Human and Ticks: 1
-Cattle and Livestock and Ticks: 1
-Cattle and Sheep and Ticks: 1
-Cow and Goat and Livestock and Sheep and Ticks: 1
-Cow and Ticks: 1
-Deer and Ticks: 1
-Livestock and Rodent and Sheep: 1
-Livestock and Ticks: 1
-Monkey and Ticks: 1
-Mouse: 1
-Rodent and Sheep and Ticks: 1
-Rodent and Ticks: 1
-Serow: 1
-Sheep: 1
+Animal and Human and Lab and Tick: 1
+Animal and Lab and Tick: 1
 lab strain: 1
-pediatric hepatoblastoma and an adult hepatocarcinoma biopsy: 1
-sw13 cells: 1
 unified culture collection: 1
-vero cell: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Human (35.4%), Ticks (15.5%), Human and Ticks (10.5%), Cattle and Goat and Sheep and Ticks (5.0%), Sheep and Ticks (2.8%), Cattle and Ticks (2.2%), Goat and Sheep and Ticks (2.2%), Camel and Ticks (1.7%), Cattle and Goat and Ticks (1.7%), Cow and Goat and Sheep and Ticks (1.1%), Goat and Human and Sheep and Ticks (1.1%), Goat and Ticks (1.1%), Human and Livestock and Ticks (1.1%), Human and Rodent and Ticks (1.1%), Animal and Buffalo and Cattle and Goat and Sheep and Ticks (0.6%), Animal and Human (0.6%), Animal and Human and Ticks (0.6%), Boar and Cattle and Deer and Goat and Livestock and Sheep and Ticks (0.6%), Boar and Cattle and Goat and Hare and Ticks (0.6%), Boar and Deer and Ticks (0.6%), Buffalo and Camel and Cattle and Goat and Sheep and Ticks (0.6%), Camel (0.6%), Camel and Cattle and Goat and Sheep and Ticks (0.6%), Camel and Cattle and Ticks (0.6%), Camel and Sheep and Ticks (0.6%), Cattle and Deer and Ticks (0.6%), Cattle and Goat and Livestock and Sheep and Ticks (0.6%), Cattle and Human and Ticks (0.6%), Cattle and Livestock and Ticks (0.6%), Cattle and Sheep and Ticks (0.6%), Cow and Goat and Livestock and Sheep and Ticks (0.6%), Cow and Ticks (0.6%), Deer and Ticks (0.6%), Livestock and Rodent and Sheep (0.6%), Livestock and Ticks (0.6%), Monkey and Ticks (0.6%), Mouse (0.6%), Rodent and Sheep and Ticks (0.6%), Rodent and Ticks (0.6%), Serow (0.6%), Sheep (0.6%), lab strain (0.6%), pediatric hepatoblastoma and an adult hepatocarcinoma biopsy (0.6%), sw13 cells (0.6%), unified culture collection (0.6%), vero cell (0.6%)
+Human (33.7%), Animal and Tick (27.6%), Tick (14.4%), Human and Tick (9.4%), Animal and Human and Tick (3.9%), Animal (2.8%), Human and Lab (1.7%), Lab (1.7%), Human and Lab and Tick (1.1%), Lab and Tick (1.1%), Animal and Human (0.6%), Animal and Human and Lab and Tick (0.6%), Animal and Lab and Tick (0.6%), lab strain (0.6%), unified culture collection (0.6%)
 
 ================================================================================
 Specimen
 --------------------------------------------------------------------------------
 Counts:
 Blood: 56
-Animals and ticks: 53
-Ticks: 32
+Animal and tick: 53
+Tick: 32
 NA: 13
-Ticks and blood: 11
-Animals: 5
-Animals and ticks and blood: 4
-Ticks and brain: 3
-Animals and ticks and brain: 2
-Animals and blood: 1
-Ticks and blood and spleen: 1
+Tick and blood: 11
+Animal: 5
+Animal and tick and blood: 4
+Tick and brain: 3
+Animal and tick and brain: 2
+Animal and blood: 1
+Tick and blood and spleen: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Blood (30.9%), Animals and ticks (29.3%), Ticks (17.7%), NA (7.2%), Ticks and blood (6.1%), Animals (2.8%), Animals and ticks and blood (2.2%), Ticks and brain (1.7%), Animals and ticks and brain (1.1%), Animals and blood (0.6%), Ticks and blood and spleen (0.6%)
+Blood (30.9%), Animal and tick (29.3%), Tick (17.7%), NA (7.2%), Tick and blood (6.1%), Animal (2.8%), Animal and tick and blood (2.2%), Tick and brain (1.7%), Animal and tick and brain (1.1%), Animal and blood (0.6%), Tick and blood and spleen (0.6%)
 
 ================================================================================
 Median of Sample Year
