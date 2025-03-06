@@ -333,12 +333,11 @@ def categorize_host_specimen(self, pubmed):
         if 'flying fox' in host:
             updated_host.append('Bat')
 
-        for a in ['cell']:
+        for a in ['cell', 'vero', 'biopsy', 'lab', 'culture', 'recombinant']:
             if a in specimen:
-                updated_host.append("Lab")
-                # updated_specimen.append("Lab")
+                updated_host.append("Lab Sample")
             if a in host:
-                updated_host.append("Lab")
+                updated_host.append("Lab Sample")
 
         # if not updated_host and host and host != 'NA'.lower():
         #     # updated_host.append('Other')
