@@ -197,8 +197,8 @@ class Virus:
     def get_logger(self, logger_name):
         logger_file = f'{self.name}_datalog_{logger_name}.txt'
         if not getattr(self, logger_file, None):
-            setattr(self, logger_file, get_logger(
-                self.output_dir / logger_file))
+            setattr(self, logger_file,
+                    get_logger(self.output_dir / logger_file))
         return getattr(self, logger_file)
 
     def build_blast_db(self):
@@ -217,12 +217,27 @@ class Virus:
             g_list = ', '.join(sorted(list(g_list)))
             features_df.loc[i, 'Genes'] = g_list
 
-        features_df['Country'] = features_df[
-            'country_region'].str.split(":").str[0]
+        country_mapping = {
+            "Republic of the Congo": "Democratic Republic of the Congo",
+            "United States of America": "United States",
+            "USA": "United States",
+            "UK": "United Kingdom",
+            "Great Britain": "United Kingdom",
+            "South Korea": "Korea",
+            "North Korea": "Korea",
+            "Cote d'Ivoire": "Côte d'Ivoire"
+            # "Russia": "Russian Federation",
+        }
+        features_df['Country'] = features_df['country_region'].str.split(
+            ":").str[0]
+        features_df['Country'] = features_df['Country'].str.strip()
+        features_df['Country'] = features_df['Country'].replace(
+            country_mapping)
 
         features_df = add_feature_from_non_pubmed_paper(self, features_df)
 
-        features_df['isolate_source'] = features_df['isolate_source'].str.capitalize()
+        features_df['isolate_source'] = features_df[
+            'isolate_source'].str.capitalize()
 
         features_df['NonClinical'] = ''
         # for i, row in features_df.iterrows():
@@ -265,7 +280,10 @@ class Virus:
         return load_fasta(self.reference_folder / f"{self.name}_RefNAs.fasta")
 
     def pick_phylo_sequence(self, genes, picked_genes=[], coverage_pcnt=1):
-        return pick_phylo_sequence(self, genes, picked_genes, coverage_pcnt=coverage_pcnt)
+        return pick_phylo_sequence(self,
+                                   genes,
+                                   picked_genes,
+                                   coverage_pcnt=coverage_pcnt)
 
 
 Virus('default')

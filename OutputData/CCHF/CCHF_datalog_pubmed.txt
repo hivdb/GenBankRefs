@@ -45,42 +45,76 @@ Host
 --------------------------------------------------------------------------------
 Counts:
 Human: 61
-Animal and Tick: 50
 Tick: 25
-Human and Tick: 17
-Animal and Human and Tick: 7
-Animal: 5
+Human, Tick: 17
+Cattle, Goat, Sheep, Tick: 9
 Lab: 5
-Human and Lab: 3
-Lab and Tick: 3
-Human and Lab and Tick: 2
-Animal and Human: 1
-Animal and Human and Lab and Tick: 1
-Animal and Lab and Tick: 1
+Cattle, Tick: 4
+Goat, Sheep, Tick: 4
+Sheep, Tick: 4
+Camel, Tick: 3
+Cattle, Goat, Tick: 3
+Human, Lab: 3
+Lab, Tick: 3
+Cow, Goat, Sheep, Tick: 2
+Goat, Tick: 2
+Human, Lab, Tick: 2
+Human, Livestock, Tick: 2
+Human, Rodent, Tick: 2
+Animal, Buffalo, Cattle, Goat, Sheep, Tick: 1
+Animal, Human: 1
+Animal, Human, Tick: 1
+Boar, Cattle, Deer, Goat, Livestock, Sheep, Tick: 1
+Boar, Cattle, Goat, Hare, Tick: 1
+Boar, Deer, Tick: 1
+Buffalo, Camel, Cattle, Goat, Sheep, Tick: 1
+Camel: 1
+Camel, Cattle, Goat, Sheep, Tick: 1
+Camel, Cattle, Tick: 1
+Camel, Sheep, Tick: 1
+Cattle, Deer, Tick: 1
+Cattle, Goat, Livestock, Sheep, Tick: 1
+Cattle, Human, Tick: 1
+Cattle, Livestock, Tick: 1
+Cattle, Sheep, Tick: 1
+Cow, Goat, Livestock, Sheep, Tick: 1
+Cow, Tick: 1
+Deer, Tick: 1
+Goat, Human, Lab, Sheep, Tick: 1
+Goat, Human, Sheep, Tick: 1
+Lab, Sheep, Tick: 1
+Livestock, Rodent, Sheep: 1
+Livestock, Tick: 1
+Monkey, Tick: 1
+Mouse: 1
+Rodent, Sheep, Tick: 1
+Rodent, Tick: 1
+Serow: 1
+Sheep: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Human (33.7%), Animal and Tick (27.6%), Tick (13.8%), Human and Tick (9.4%), Animal and Human and Tick (3.9%), Animal (2.8%), Lab (2.8%), Human and Lab (1.7%), Lab and Tick (1.7%), Human and Lab and Tick (1.1%), Animal and Human (0.6%), Animal and Human and Lab and Tick (0.6%), Animal and Lab and Tick (0.6%)
+Human (33.7%), Tick (13.8%), Human, Tick (9.4%), Cattle, Goat, Sheep, Tick (5.0%), Lab (2.8%), Cattle, Tick (2.2%), Goat, Sheep, Tick (2.2%), Sheep, Tick (2.2%), Camel, Tick (1.7%), Cattle, Goat, Tick (1.7%), Human, Lab (1.7%), Lab, Tick (1.7%), Cow, Goat, Sheep, Tick (1.1%), Goat, Tick (1.1%), Human, Lab, Tick (1.1%), Human, Livestock, Tick (1.1%), Human, Rodent, Tick (1.1%), Animal, Buffalo, Cattle, Goat, Sheep, Tick (0.6%), Animal, Human (0.6%), Animal, Human, Tick (0.6%), Boar, Cattle, Deer, Goat, Livestock, Sheep, Tick (0.6%), Boar, Cattle, Goat, Hare, Tick (0.6%), Boar, Deer, Tick (0.6%), Buffalo, Camel, Cattle, Goat, Sheep, Tick (0.6%), Camel (0.6%), Camel, Cattle, Goat, Sheep, Tick (0.6%), Camel, Cattle, Tick (0.6%), Camel, Sheep, Tick (0.6%), Cattle, Deer, Tick (0.6%), Cattle, Goat, Livestock, Sheep, Tick (0.6%), Cattle, Human, Tick (0.6%), Cattle, Livestock, Tick (0.6%), Cattle, Sheep, Tick (0.6%), Cow, Goat, Livestock, Sheep, Tick (0.6%), Cow, Tick (0.6%), Deer, Tick (0.6%), Goat, Human, Lab, Sheep, Tick (0.6%), Goat, Human, Sheep, Tick (0.6%), Lab, Sheep, Tick (0.6%), Livestock, Rodent, Sheep (0.6%), Livestock, Tick (0.6%), Monkey, Tick (0.6%), Mouse (0.6%), Rodent, Sheep, Tick (0.6%), Rodent, Tick (0.6%), Serow (0.6%), Sheep (0.6%)
 
 ================================================================================
 Specimen
 --------------------------------------------------------------------------------
 Counts:
 Blood: 56
-Animal and tick: 53
+Animal, tick: 53
 Tick: 32
 NA: 13
-Tick and blood: 11
+Tick, blood: 11
 Animal: 5
-Animal and tick and blood: 4
-Tick and brain: 3
-Animal and tick and brain: 2
-Animal and blood: 1
-Tick and blood and spleen: 1
+Animal, tick, blood: 4
+Tick, brain: 3
+Animal, tick, brain: 2
+Animal, blood: 1
+Tick, blood, spleen: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Blood (30.9%), Animal and tick (29.3%), Tick (17.7%), NA (7.2%), Tick and blood (6.1%), Animal (2.8%), Animal and tick and blood (2.2%), Tick and brain (1.7%), Animal and tick and brain (1.1%), Animal and blood (0.6%), Tick and blood and spleen (0.6%)
+Blood (30.9%), Animal, tick (29.3%), Tick (17.7%), NA (7.2%), Tick, blood (6.1%), Animal (2.8%), Animal, tick, blood (2.2%), Tick, brain (1.7%), Animal, tick, brain (1.1%), Animal, blood (0.6%), Tick, blood, spleen (0.6%)
 
 ================================================================================
 Median of Sample Year
@@ -144,10 +178,10 @@ Counts:
 Turkey: 20
 China: 16
 Iran: 16
-Multinational: 15
+Multinational: 14
 Spain: 10
+Kosovo: 9
 Bulgaria: 8
-Kosovo: 8
 Pakistan: 8
 Russia: 7
 NA: 6
@@ -166,14 +200,14 @@ Nigeria: 2
 Senegal: 2
 Afghanistan, Pakistan: 1
 Algeria: 1
-Balkan peninsula: 1
 Cameroon: 1
 China, Pakistan: 1
 Crimea: 1
-Drc: 1
+Democratic republic of the congo: 1
 Ghana: 1
+Greece, Italy: 1
 Hungary: 1
-Iran and turkey: 1
+Iran, Turkey: 1
 Iraq, Pakistan, Uzbekistan: 1
 Italy: 1
 Mali: 1
@@ -195,10 +229,10 @@ Zambia: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Turkey (11.0%), China (8.8%), Iran (8.8%), Multinational (8.3%), Spain (5.5%), Bulgaria (4.4%), Kosovo (4.4%), Pakistan (4.4%), Russia (3.9%), NA (3.3%), Greece (2.8%), Uganda (2.8%), India (2.2%), Afghanistan (1.7%), Albania (1.7%), Sudan (1.7%), Tajikistan (1.7%), United arab emirates (1.7%), Kazakhstan (1.1%), Kenya (1.1%), Mauritania (1.1%), Nigeria (1.1%), Senegal (1.1%), Afghanistan, Pakistan (0.6%), Algeria (0.6%), Balkan peninsula (0.6%), Cameroon (0.6%), China, Pakistan (0.6%), Crimea (0.6%), Drc (0.6%), Ghana (0.6%), Hungary (0.6%), Iran and turkey (0.6%), Iraq, Pakistan, Uzbekistan (0.6%), Italy (0.6%), Mali (0.6%), Mongolia (0.6%), Namibia, Pakistan, Southern africa (0.6%), Namibia, South africa (0.6%), Namibia, South africa, Turkey (0.6%), Nigeria, Pakistan (0.6%), Oman (0.6%), Pakistan and afghanistan (0.6%), Russia, Tajikista (0.6%), Russia, Tajikistan (0.6%), Sanegal (0.6%), Saudi arabia (0.6%), Somalia, Sudan (0.6%), Somalia, United arab emirates (0.6%), Syria and turkey (0.6%), Zambia (0.6%)
+Turkey (11.0%), China (8.8%), Iran (8.8%), Multinational (7.7%), Spain (5.5%), Kosovo (5.0%), Bulgaria (4.4%), Pakistan (4.4%), Russia (3.9%), NA (3.3%), Greece (2.8%), Uganda (2.8%), India (2.2%), Afghanistan (1.7%), Albania (1.7%), Sudan (1.7%), Tajikistan (1.7%), United arab emirates (1.7%), Kazakhstan (1.1%), Kenya (1.1%), Mauritania (1.1%), Nigeria (1.1%), Senegal (1.1%), Afghanistan, Pakistan (0.6%), Algeria (0.6%), Cameroon (0.6%), China, Pakistan (0.6%), Crimea (0.6%), Democratic republic of the congo (0.6%), Ghana (0.6%), Greece, Italy (0.6%), Hungary (0.6%), Iran, Turkey (0.6%), Iraq, Pakistan, Uzbekistan (0.6%), Italy (0.6%), Mali (0.6%), Mongolia (0.6%), Namibia, Pakistan, Southern africa (0.6%), Namibia, South africa (0.6%), Namibia, South africa, Turkey (0.6%), Nigeria, Pakistan (0.6%), Oman (0.6%), Pakistan and afghanistan (0.6%), Russia, Tajikista (0.6%), Russia, Tajikistan (0.6%), Sanegal (0.6%), Saudi arabia (0.6%), Somalia, Sudan (0.6%), Somalia, United arab emirates (0.6%), Syria and turkey (0.6%), Zambia (0.6%)
 
 --------------------------------------------------------------------------------
-{'Iran': 16, 'Turkey': 20, 'Nigeria': 2, 'China, Pakistan': 1, 'United arab emirates': 3, 'Somalia, United arab emirates': 1, 'China': 16, 'Kosovo': 8, 'Nigeria, Pakistan': 1, 'Albania': 3, 'Russia': 7, 'Multinational': 15, 'Russia, Tajikistan': 1, 'NA': 6, 'Iraq, Pakistan, Uzbekistan': 1, 'Bulgaria': 8, 'Tajikistan': 3, 'Pakistan': 8, 'Russia, Tajikista': 1, 'Greece': 5, 'Namibia, Pakistan, Southern africa': 1, 'Afghanistan': 3, 'Sudan': 3, 'Drc': 1, 'Somalia, Sudan': 1, 'Spain': 10, 'India': 4, 'Iran and turkey': 1, 'Pakistan and afghanistan': 1, 'Syria and turkey': 1, 'Mali': 1, 'Namibia, South africa': 1, 'Afghanistan, Pakistan': 1, 'Algeria': 1, 'Namibia, South africa, Turkey': 1, 'Uganda': 5, 'Crimea': 1, 'Mongolia': 1, 'Kazakhstan': 2, 'Oman': 1, 'Italy': 1, 'Kenya': 2, 'Senegal': 2, 'Zambia': 1, 'Mauritania': 2, 'Saudi arabia': 1, 'Balkan peninsula': 1, 'Cameroon': 1, 'Sanegal': 1, 'Ghana': 1, 'Hungary': 1}
+{'Iran': 16, 'Turkey': 20, 'Nigeria': 2, 'China, Pakistan': 1, 'United arab emirates': 3, 'Somalia, United arab emirates': 1, 'China': 16, 'Kosovo': 9, 'Nigeria, Pakistan': 1, 'Albania': 3, 'Russia': 7, 'Multinational': 14, 'Russia, Tajikistan': 1, 'NA': 6, 'Iraq, Pakistan, Uzbekistan': 1, 'Bulgaria': 8, 'Tajikistan': 3, 'Pakistan': 8, 'Russia, Tajikista': 1, 'Greece': 5, 'Namibia, Pakistan, Southern africa': 1, 'Afghanistan': 3, 'Sudan': 3, 'Democratic republic of the congo': 1, 'Somalia, Sudan': 1, 'Spain': 10, 'India': 4, 'Iran, Turkey': 1, 'Greece, Italy': 1, 'Pakistan and afghanistan': 1, 'Syria and turkey': 1, 'Mali': 1, 'Namibia, South africa': 1, 'Afghanistan, Pakistan': 1, 'Algeria': 1, 'Namibia, South africa, Turkey': 1, 'Uganda': 5, 'Crimea': 1, 'Mongolia': 1, 'Kazakhstan': 2, 'Oman': 1, 'Italy': 1, 'Kenya': 2, 'Senegal': 2, 'Zambia': 1, 'Mauritania': 2, 'Saudi arabia': 1, 'Cameroon': 1, 'Sanegal': 1, 'Ghana': 1, 'Hungary': 1}
 ================================================================================
 Gene
 --------------------------------------------------------------------------------

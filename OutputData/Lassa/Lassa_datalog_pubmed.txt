@@ -121,13 +121,12 @@ Sierra leone: 10
 Guinea: 5
 Multinational: 4
 NA: 4
+Benin: 3
 Mali: 3
-Benin: 2
 Côte d’ivoire: 2
 Ghana: 2
 Guinea, Nigeria: 2
 Liberia: 2
-Benin republic: 1
 Côte d'ivoire, Guinea: 1
 Germany: 1
 Ghana, Nigeria, Sierra leone: 1
@@ -143,10 +142,10 @@ West africa: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Nigeria (26.9%), Sierra leone (14.9%), Guinea (7.5%), Multinational (6.0%), NA (6.0%), Mali (4.5%), Benin (3.0%), Côte d’ivoire (3.0%), Ghana (3.0%), Guinea, Nigeria (3.0%), Liberia (3.0%), Benin republic (1.5%), Côte d'ivoire, Guinea (1.5%), Germany (1.5%), Ghana, Nigeria, Sierra leone (1.5%), Guinea, Liberia (1.5%), Guinea, Liberia, Sierra leone (1.5%), Guinea, Sierra leone (1.5%), Liberia and nigeria (1.5%), Liberia, Sierra leone (1.5%), Nigeria, Sierra leone (1.5%), Nigeria, Togo (1.5%), Togo (1.5%), West africa (1.5%)
+Nigeria (26.9%), Sierra leone (14.9%), Guinea (7.5%), Multinational (6.0%), NA (6.0%), Benin (4.5%), Mali (4.5%), Côte d’ivoire (3.0%), Ghana (3.0%), Guinea, Nigeria (3.0%), Liberia (3.0%), Côte d'ivoire, Guinea (1.5%), Germany (1.5%), Ghana, Nigeria, Sierra leone (1.5%), Guinea, Liberia (1.5%), Guinea, Liberia, Sierra leone (1.5%), Guinea, Sierra leone (1.5%), Liberia and nigeria (1.5%), Liberia, Sierra leone (1.5%), Nigeria, Sierra leone (1.5%), Nigeria, Togo (1.5%), Togo (1.5%), West africa (1.5%)
 
 --------------------------------------------------------------------------------
-{'Nigeria': 18, 'Sierra leone': 10, 'Multinational': 4, 'Ghana': 2, 'Ghana, Nigeria, Sierra leone': 1, 'Guinea': 5, 'Liberia and nigeria': 1, 'Mali': 3, 'Liberia': 2, 'Guinea, Nigeria': 2, "Côte d'ivoire, Guinea": 1, 'Côte d’ivoire': 2, 'Germany': 1, 'Togo': 1, 'Liberia, Sierra leone': 1, 'Benin': 2, 'Benin republic': 1, 'Guinea, Liberia': 1, 'Guinea, Liberia, Sierra leone': 1, 'Guinea, Sierra leone': 1, 'Nigeria, Sierra leone': 1, 'West africa': 1, 'NA': 4, 'Nigeria, Togo': 1}
+{'Nigeria': 18, 'Sierra leone': 10, 'Multinational': 4, 'Ghana': 2, 'Ghana, Nigeria, Sierra leone': 1, 'Guinea': 5, 'Liberia and nigeria': 1, 'Mali': 3, 'Liberia': 2, 'Guinea, Nigeria': 2, "Côte d'ivoire, Guinea": 1, 'Côte d’ivoire': 2, 'Germany': 1, 'Togo': 1, 'Liberia, Sierra leone': 1, 'Benin': 3, 'Guinea, Liberia': 1, 'Guinea, Liberia, Sierra leone': 1, 'Guinea, Sierra leone': 1, 'Nigeria, Sierra leone': 1, 'West africa': 1, 'NA': 4, 'Nigeria, Togo': 1}
 ================================================================================
 Gene
 --------------------------------------------------------------------------------

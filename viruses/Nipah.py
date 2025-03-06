@@ -182,7 +182,7 @@ def get_additional_host_data(features_df):
     ]
     human_host = ['patient', 'human', 'homo sapiens']
     animal_host = ['bat', 'pig', 'dog', 'flying foxes']
-    
+
     for index, row in features_df.iterrows():
 
         host = row['Host2'].lower().strip()
@@ -329,6 +329,9 @@ def categorize_host_specimen(self, pubmed):
         for a in ['bat', 'pig', 'dog']:
             if a in host:
                 updated_host.append(a.capitalize())
+
+        if 'flying fox' in host:
+            updated_host.append('Bat')
 
         for a in ['cell']:
             if a in specimen:

@@ -36,32 +36,39 @@ Host
 --------------------------------------------------------------------------------
 Counts:
 Tick: 10
-Animal and Tick: 7
 Human: 6
-Animal and Human and Tick: 3
+Cattle, Goat, Sheep, Tick: 2
 Lab: 2
-Animal: 1
-Animal and Human: 1
+Animal, Human: 1
+Animal, Human, Tick: 1
+Camel: 1
+Camel, Cattle, Tick: 1
+Cattle, Goat, Tick: 1
+Deer, Tick: 1
+Goat, Sheep, Tick: 1
+Human, Livestock, Tick: 1
+Human, Rodent, Tick: 1
+Rodent, Sheep, Tick: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Tick (33.3%), Animal and Tick (23.3%), Human (20.0%), Animal and Human and Tick (10.0%), Lab (6.7%), Animal (3.3%), Animal and Human (3.3%)
+Tick (33.3%), Human (20.0%), Cattle, Goat, Sheep, Tick (6.7%), Lab (6.7%), Animal, Human (3.3%), Animal, Human, Tick (3.3%), Camel (3.3%), Camel, Cattle, Tick (3.3%), Cattle, Goat, Tick (3.3%), Deer, Tick (3.3%), Goat, Sheep, Tick (3.3%), Human, Livestock, Tick (3.3%), Human, Rodent, Tick (3.3%), Rodent, Sheep, Tick (3.3%)
 
 ================================================================================
 Specimen
 --------------------------------------------------------------------------------
 Counts:
 Tick: 10
-Animal and tick: 8
+Animal, tick: 8
 Blood: 6
-Animal and tick and blood: 2
+Animal, tick, blood: 2
 NA: 2
 Animal: 1
-Animal and blood: 1
+Animal, blood: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Tick (33.3%), Animal and tick (26.7%), Blood (20.0%), Animal and tick and blood (6.7%), NA (6.7%), Animal (3.3%), Animal and blood (3.3%)
+Tick (33.3%), Animal, tick (26.7%), Blood (20.0%), Animal, tick, blood (6.7%), NA (6.7%), Animal (3.3%), Animal, blood (3.3%)
 
 ================================================================================
 Median of Sample Year
@@ -99,27 +106,28 @@ China: 3
 Iran: 3
 Spain: 3
 Mauritania: 2
-Multinational: 2
 NA: 2
 Pakistan: 2
 Senegal: 2
 Uganda: 2
 Afghanistan, Pakistan: 1
 Albania: 1
-Balkan peninsula: 1
+Greece, Italy: 1
 Hungary: 1
 India: 1
+Kosovo: 1
 Mongolia: 1
+Multinational: 1
 Russia: 1
 Sanegal: 1
 United arab emirates: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-China (10.0%), Iran (10.0%), Spain (10.0%), Mauritania (6.7%), Multinational (6.7%), NA (6.7%), Pakistan (6.7%), Senegal (6.7%), Uganda (6.7%), Afghanistan, Pakistan (3.3%), Albania (3.3%), Balkan peninsula (3.3%), Hungary (3.3%), India (3.3%), Mongolia (3.3%), Russia (3.3%), Sanegal (3.3%), United arab emirates (3.3%)
+China (10.0%), Iran (10.0%), Spain (10.0%), Mauritania (6.7%), NA (6.7%), Pakistan (6.7%), Senegal (6.7%), Uganda (6.7%), Afghanistan, Pakistan (3.3%), Albania (3.3%), Greece, Italy (3.3%), Hungary (3.3%), India (3.3%), Kosovo (3.3%), Mongolia (3.3%), Multinational (3.3%), Russia (3.3%), Sanegal (3.3%), United arab emirates (3.3%)
 
 --------------------------------------------------------------------------------
-{'Iran': 3, 'Multinational': 2, 'Albania': 1, 'NA': 2, 'Spain': 3, 'India': 1, 'Pakistan': 2, 'Afghanistan, Pakistan': 1, 'Mongolia': 1, 'Senegal': 2, 'United arab emirates': 1, 'Mauritania': 2, 'Balkan peninsula': 1, 'Uganda': 2, 'China': 3, 'Sanegal': 1, 'Hungary': 1, 'Russia': 1}
+{'Iran': 3, 'Multinational': 1, 'Albania': 1, 'NA': 2, 'Spain': 3, 'India': 1, 'Greece, Italy': 1, 'Pakistan': 2, 'Afghanistan, Pakistan': 1, 'Mongolia': 1, 'Senegal': 2, 'United arab emirates': 1, 'Mauritania': 2, 'Kosovo': 1, 'Uganda': 2, 'China': 3, 'Sanegal': 1, 'Hungary': 1, 'Russia': 1}
 ================================================================================
 Gene
 --------------------------------------------------------------------------------

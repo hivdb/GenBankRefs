@@ -192,13 +192,13 @@ NA: 89
 Liberia: 83
 Benin: 32
 Mali: 25
-Cote d'Ivoire: 6
+Côte d'Ivoire: 6
 Togo: 6
 Ghana: 3
 
 --------------------------------------------------------------------------------
 Percentages:
-Nigeria (56.8%), Guinea (19.2%), Sierra Leone (14.1%), NA (3.6%), Liberia (3.4%), Benin (1.3%), Mali (1.0%), Cote d'Ivoire (0.2%), Togo (0.2%), Ghana (0.1%)
+Nigeria (56.8%), Guinea (19.2%), Sierra Leone (14.1%), NA (3.6%), Liberia (3.4%), Benin (1.3%), Mali (1.0%), Côte d'Ivoire (0.2%), Togo (0.2%), Ghana (0.1%)
 
 ================================================================================
 Genes

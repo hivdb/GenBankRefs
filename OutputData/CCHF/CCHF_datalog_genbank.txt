@@ -94,14 +94,28 @@ Counts:
 Human: 3446
 Tick: 1001
 NA: 249
-Animal and Tick: 55
-Animal: 50
-Human and Tick: 4
-Animal and Human and Tick: 1
+Cattle, Tick: 17
+Goat, Tick: 12
+Camel, Tick: 11
+Cattle: 11
+Sheep: 11
+Sheep, Tick: 10
+Goat: 6
+Mouse: 6
+Animal: 4
+Human, Tick: 4
+Buffalo: 3
+Camel: 3
+Jerboa, Tick: 3
+Serow: 3
+Rat: 2
+Tick, Tortoise: 2
+Calf, Human, Rat, Tick: 1
+Tortoise: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Human (71.7%), Tick (20.8%), NA (5.2%), Animal and Tick (1.1%), Animal (1.0%), Human and Tick (0.1%), Animal and Human and Tick (0.0%)
+Human (71.7%), Tick (20.8%), NA (5.2%), Cattle, Tick (0.4%), Camel, Tick (0.2%), Cattle (0.2%), Goat, Tick (0.2%), Sheep (0.2%), Sheep, Tick (0.2%), Animal (0.1%), Buffalo (0.1%), Camel (0.1%), Goat (0.1%), Human, Tick (0.1%), Jerboa, Tick (0.1%), Mouse (0.1%), Serow (0.1%), Calf, Human, Rat, Tick (0.0%), Rat (0.0%), Tick, Tortoise (0.0%), Tortoise (0.0%)
 
 ================================================================================
 Specimens
@@ -111,15 +125,15 @@ Blood: 2635
 Tick: 1001
 Human: 808
 NA: 249
-Animal and tick: 55
+Animal, tick: 55
 Animal: 50
-Human and tick: 4
+Human, tick: 4
 Organs: 3
-Animal and human and tick: 1
+Animal, human, tick: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Blood (54.8%), Tick (20.8%), Human (16.8%), NA (5.2%), Animal and tick (1.1%), Animal (1.0%), Human and tick (0.1%), Organs (0.1%), Animal and human and tick (0.0%)
+Blood (54.8%), Tick (20.8%), Human (16.8%), NA (5.2%), Animal, tick (1.1%), Animal (1.0%), Human, tick (0.1%), Organs (0.1%), Animal, human, tick (0.0%)
 
 ================================================================================
 RecordYears
@@ -261,11 +275,11 @@ North Macedonia: 15
 Zambia: 13
 Senegal: 12
 Albania: 11
+Democratic Republic of the Congo: 11
 Indonesia: 10
 Kenya: 10
 Egypt: 9
-USA: 9
-Democratic Republic of the Congo: 8
+United States: 9
 Guinea: 8
 Turkmenistan: 8
 Uzbekistan: 7
@@ -274,7 +288,6 @@ Iraq: 6
 Yugoslavia: 4
 Georgia: 3
 Mauritania: 3
-Republic of the Congo: 3
 Saudi Arabia: 3
 United Kingdom: 3
 Algeria: 2
@@ -287,7 +300,7 @@ Morocco: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Russia (46.4%), Turkey (14.2%), Pakistan (5.8%), India (4.8%), Kosovo (4.4%), Iran (3.7%), China (3.6%), South Africa (2.8%), NA (1.6%), Uganda (1.4%), Kazakhstan (1.1%), Spain (1.1%), Bulgaria (1.0%), France (0.9%), United Arab Emirates (0.7%), Tajikistan (0.6%), Greece (0.5%), Nigeria (0.5%), Oman (0.4%), Sudan (0.4%), Afghanistan (0.3%), Namibia (0.3%), North Macedonia (0.3%), Zambia (0.3%), Albania (0.2%), Democratic Republic of the Congo (0.2%), Egypt (0.2%), Guinea (0.2%), Indonesia (0.2%), Kenya (0.2%), Senegal (0.2%), Turkmenistan (0.2%), USA (0.2%), Georgia (0.1%), Ghana (0.1%), Iraq (0.1%), Mauritania (0.1%), Republic of the Congo (0.1%), Saudi Arabia (0.1%), United Kingdom (0.1%), Uzbekistan (0.1%), Yugoslavia (0.1%), Algeria (0.0%), Cameroon (0.0%), Central African Republic (0.0%), Italy (0.0%), Mali (0.0%), Morocco (0.0%), Syria (0.0%)
+Russia (46.4%), Turkey (14.2%), Pakistan (5.8%), India (4.8%), Kosovo (4.4%), Iran (3.7%), China (3.6%), South Africa (2.8%), NA (1.6%), Uganda (1.4%), Kazakhstan (1.1%), Spain (1.1%), Bulgaria (1.0%), France (0.9%), United Arab Emirates (0.7%), Tajikistan (0.6%), Greece (0.5%), Nigeria (0.5%), Oman (0.4%), Sudan (0.4%), Afghanistan (0.3%), Namibia (0.3%), North Macedonia (0.3%), Zambia (0.3%), Albania (0.2%), Democratic Republic of the Congo (0.2%), Egypt (0.2%), Guinea (0.2%), Indonesia (0.2%), Kenya (0.2%), Senegal (0.2%), Turkmenistan (0.2%), United States (0.2%), Georgia (0.1%), Ghana (0.1%), Iraq (0.1%), Mauritania (0.1%), Saudi Arabia (0.1%), United Kingdom (0.1%), Uzbekistan (0.1%), Yugoslavia (0.1%), Algeria (0.0%), Cameroon (0.0%), Central African Republic (0.0%), Italy (0.0%), Mali (0.0%), Morocco (0.0%), Syria (0.0%)
 
 ================================================================================
 Genes
