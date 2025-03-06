@@ -45,34 +45,34 @@ Host
 Counts:
 Human: 27
 Rodent: 16
-Lab: 7
-Human and Lab: 6
-Human and Rodent: 6
-pig: 2
-Dog and Goat and Lizard: 1
-mice: 1
-outbred hartley guinea pigs: 1
+Human, Lab: 6
+Human, Rodent: 6
+Lab: 5
+Pig: 3
+Lab, Pig: 2
+Dog, Goat, Lizard, Pig: 1
+Mouse: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Human (40.3%), Rodent (23.9%), Lab (10.4%), Human and Lab (9.0%), Human and Rodent (9.0%), pig (3.0%), Dog and Goat and Lizard (1.5%), mice (1.5%), outbred hartley guinea pigs (1.5%)
+Human (40.3%), Rodent (23.9%), Human, Lab (9.0%), Human, Rodent (9.0%), Lab (7.5%), Pig (4.5%), Lab, Pig (3.0%), Dog, Goat, Lizard, Pig (1.5%), Mouse (1.5%)
 
 ================================================================================
 Specimen
 --------------------------------------------------------------------------------
 Counts:
 NA: 28
-Blood and human: 23
+Blood, human: 23
 Human: 9
-Blood and human and tissue & organ: 3
-Blood and human and csf: 1
-Blood and human and tissue & organ and csf: 1
-Human and csf: 1
-Human and tissue & organ: 1
+Blood, human, tissue & organ: 3
+Blood, human, csf: 1
+Blood, human, tissue & organ, csf: 1
+Human, csf: 1
+Human, tissue & organ: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-NA (41.8%), Blood and human (34.3%), Human (13.4%), Blood and human and tissue & organ (4.5%), Blood and human and csf (1.5%), Blood and human and tissue & organ and csf (1.5%), Human and csf (1.5%), Human and tissue & organ (1.5%)
+NA (41.8%), Blood, human (34.3%), Human (13.4%), Blood, human, tissue & organ (4.5%), Blood, human, csf (1.5%), Blood, human, tissue & organ, csf (1.5%), Human, csf (1.5%), Human, tissue & organ (1.5%)
 
 ================================================================================
 Median of Sample Year

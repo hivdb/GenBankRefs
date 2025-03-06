@@ -3,6 +3,7 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from .virus import Virus
 import subprocess
+import re
 
 # Define a class for Lassa Virus that inherits from the Virus class
 class Lassa(Virus):
@@ -205,7 +206,6 @@ def get_additional_host_data(features_df):
         # 'lizard'
     ]
 
-
     for index, row in features_df.iterrows():
 
         host = row['Host2'].lower().strip()
@@ -246,7 +246,11 @@ def get_additional_host_data(features_df):
                 updated_specimen.append(a)
 
         if not updated_host and host:
-            updated_host = ['Other']
+            match = re.search(r"\(([^)]+)\)", host)
+            if match:
+                updated_host.append(match.group(1).capitalize())
+            else:
+                updated_host.append(host.capitalize())  # ['Other']
 
         if not updated_specimen and specimen:
             # specieman other and NA are the same
@@ -254,9 +258,9 @@ def get_additional_host_data(features_df):
 
         # features_df.at[index, 'Host'] = ",".join(sorted(list(set(updated_host))))
         # features_df.at[index, 'isolate_source'] = ",".join(sorted(list(set(updated_specimen))))
-        features_df.at[index, 'Host2'] = ' and '.join(
+        features_df.at[index, 'Host2'] = ', '.join(
             sorted(list(set(updated_host)))) if updated_host else ''
-        features_df.at[index, 'isolate_source2'] = ' and '.join(
+        features_df.at[index, 'isolate_source2'] = ', '.join(
             sorted(list(set(updated_specimen)))) if updated_specimen else ''
 
     return features_df
@@ -340,7 +344,10 @@ def categorize_host_specimen(self, pubmed):
                 if i in specimen:
                     updated_specimen.append('Blood')
 
-        for a in ['rodent', 'mouse', 'rat', 'goat', 'dog', 'lizard']:
+        if 'mice' in host:
+            updated_host.append("Mouse")
+
+        for a in ['rodent', 'mouse', 'rat', 'goat', 'dog', 'lizard', 'pig']:
             if a in host:
                 updated_host.append(a.capitalize())
 
@@ -351,19 +358,18 @@ def categorize_host_specimen(self, pubmed):
             if a in host:
                 updated_host.append("Lab")
 
-        if not updated_host and host and host != 'NA'.lower():
-            # updated_host.append('Other')
-            updated_host.append(host)
-
         if not updated_host:
-            updated_host.append('NA')
+            if host and host != 'NA'.lower():
+                updated_host.append(host)
+            else:
+                updated_host.append('NA')
 
         if not updated_specimen:
             updated_specimen.append('NA')
 
-        pubmed.at[index, 'CleanedHost'] = ' and '.join(
+        pubmed.at[index, 'CleanedHost'] = ', '.join(
             sorted(list(set(updated_host))))
-        pubmed.at[index, 'CleanedSpecimen'] = ' and '.join(
+        pubmed.at[index, 'CleanedSpecimen'] = ', '.join(
             sorted(list(set(updated_specimen))))
 
     pubmed['Host'] = pubmed['CleanedHost']

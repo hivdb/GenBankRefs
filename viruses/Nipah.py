@@ -340,12 +340,15 @@ def categorize_host_specimen(self, pubmed):
             if a in host:
                 updated_host.append("Lab")
 
-        if not updated_host and host and host != 'NA'.lower():
-            # updated_host.append('Other')
-            updated_host.append(host)
+        # if not updated_host and host and host != 'NA'.lower():
+        #     # updated_host.append('Other')
+        #     updated_host.append(host)
 
         if not updated_host:
-            updated_host.append('NA')
+            if host and host != 'NA'.lower():
+                updated_host.append(host.capitalize())
+            else:
+                updated_host.append('NA')
 
         for i in ['serum', 'blood', 'plasma', 'sera']:
             if i in specimen:
@@ -354,9 +357,9 @@ def categorize_host_specimen(self, pubmed):
         if not updated_specimen:
             updated_specimen.append('NA')
 
-        pubmed.at[index, 'CleanedHost'] = ' and '.join(
+        pubmed.at[index, 'CleanedHost'] = ', '.join(
             sorted(list(set(updated_host))))
-        pubmed.at[index, 'CleanedSpecimen'] = ' and '.join(
+        pubmed.at[index, 'CleanedSpecimen'] = ', '.join(
             sorted(list(set(updated_specimen))))
 
     pubmed['Host'] = pubmed['CleanedHost']

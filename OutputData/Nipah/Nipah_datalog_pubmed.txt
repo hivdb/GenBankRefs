@@ -39,36 +39,36 @@ Host
 Counts:
 Bat: 15
 Human: 11
-Bat and Human: 2
-Bat and Pig: 1
-Human and Pig: 1
+Bat, Human: 2
+Bat, Pig: 1
+Human, Pig: 1
 Lab: 1
 Pig: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Bat (46.9%), Human (34.4%), Bat and Human (6.2%), Bat and Pig (3.1%), Human and Pig (3.1%), Lab (3.1%), Pig (3.1%)
+Bat (46.9%), Human (34.4%), Bat, Human (6.2%), Bat, Pig (3.1%), Human, Pig (3.1%), Lab (3.1%), Pig (3.1%)
 
 ================================================================================
 Specimen
 --------------------------------------------------------------------------------
 Counts:
 NA: 20
-Blood and throat swab and urine: 2
-Blood and csf: 1
-Blood and csf and oropharyngeal swab and urine: 1
-Blood and csf and throat swab: 1
-Blood and csf and throat swab and urine: 1
+Blood, throat swab, urine: 2
+Blood, csf: 1
+Blood, csf, oropharyngeal swab, urine: 1
+Blood, csf, throat swab: 1
+Blood, csf, throat swab, urine: 1
 Brain: 1
-Brain and csf and lung and urine: 1
-Csf and oropharyngeal swab and urine: 1
-Liver and lung and spleen and throat swab: 1
-Throat swab and urine: 1
+Brain, csf, lung, urine: 1
+Csf, oropharyngeal swab, urine: 1
+Liver, lung, spleen, throat swab: 1
+Throat swab, urine: 1
 Urine: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-NA (62.5%), Blood and throat swab and urine (6.2%), Blood and csf (3.1%), Blood and csf and oropharyngeal swab and urine (3.1%), Blood and csf and throat swab (3.1%), Blood and csf and throat swab and urine (3.1%), Brain (3.1%), Brain and csf and lung and urine (3.1%), Csf and oropharyngeal swab and urine (3.1%), Liver and lung and spleen and throat swab (3.1%), Throat swab and urine (3.1%), Urine (3.1%)
+NA (62.5%), Blood, throat swab, urine (6.2%), Blood, csf (3.1%), Blood, csf, oropharyngeal swab, urine (3.1%), Blood, csf, throat swab (3.1%), Blood, csf, throat swab, urine (3.1%), Brain (3.1%), Brain, csf, lung, urine (3.1%), Csf, oropharyngeal swab, urine (3.1%), Liver, lung, spleen, throat swab (3.1%), Throat swab, urine (3.1%), Urine (3.1%)
 
 ================================================================================
 Median of Sample Year

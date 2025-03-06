@@ -237,8 +237,8 @@ def get_additional_host_data(features_df):
                     updated_host.append(a.capitalize())
                     updated_specimen.append("Animal")
 
-        # if not updated_host and host:
-        #     updated_host = host #['Other']
+        if not updated_host and host:
+            updated_host.append(host)  # ['Other']
 
         if not updated_specimen and specimen:
             # specimen other and NA are the same
@@ -308,7 +308,10 @@ def categorize_host_specimen(self, pubmed):
             updated_host.append(host)
 
         if not updated_host:
-            updated_host.append('NA')
+            if host and host != 'NA'.lower():
+                updated_host.append(host)
+            else:
+                updated_host.append('NA')
 
         if not updated_specimen:
             updated_specimen.append('NA')
