@@ -44,18 +44,19 @@ Host
 --------------------------------------------------------------------------------
 Counts:
 Human: 27
-Rodent: 16
-Human, Lab: 6
+Rodent: 15
+Human, Lab Sample: 6
 Human, Rodent: 6
-Lab: 5
+Lab Sample: 5
 Pig: 3
-Lab, Pig: 2
+Lab Sample, Pig: 2
 Dog, Goat, Lizard, Pig: 1
+Lab Sample, Rodent: 1
 Mouse: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Human (40.3%), Rodent (23.9%), Human, Lab (9.0%), Human, Rodent (9.0%), Lab (7.5%), Pig (4.5%), Lab, Pig (3.0%), Dog, Goat, Lizard, Pig (1.5%), Mouse (1.5%)
+Human (40.3%), Rodent (22.4%), Human, Lab Sample (9.0%), Human, Rodent (9.0%), Lab Sample (7.5%), Pig (4.5%), Lab Sample, Pig (3.0%), Dog, Goat, Lizard, Pig (1.5%), Lab Sample, Rodent (1.5%), Mouse (1.5%)
 
 ================================================================================
 Specimen

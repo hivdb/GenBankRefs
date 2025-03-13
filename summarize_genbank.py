@@ -25,7 +25,7 @@ def summarize_genbank(genbank_ref, genbank_feature, genbank_genes, virus_obj):
     logger.report(summarize_genbank_by_ref(genbank_ref))
 
     logger.report(summarize_genbank_by_seq(
-        genbank_feature, genbank_genes))
+        genbank_feature, genbank_genes, file_prefix='isolates_'))
 
     logger.report(summarize_genbank_full_genome(
         genbank_ref, genbank_feature,
@@ -89,7 +89,7 @@ def summarize_genbank_by_ref(df):
     return summarize_report
 
 
-def summarize_genbank_by_seq(df, genes_df):
+def summarize_genbank_by_seq(df, genes_df, file_prefix):
     summarize_report = []
 
     virus = df.iloc[0]['organism']
@@ -163,7 +163,7 @@ def summarize_genbank_by_seq(df, genes_df):
 
     section = ['Genes']
 
-    df[df['Genes'] == 'NA'].to_excel(f"OutputData/{virus}/excels/gene_missing.xlsx")
+    df[df['Genes'] == 'NA'].to_excel(f"OutputData/{virus}/excels/isolates_without_genes.xlsx", index=False)
     genes = Counter()
     for row in df['Genes']:
         unique_genes = set(row.split(', '))
@@ -184,7 +184,7 @@ def summarize_genbank_by_seq(df, genes_df):
     section.append(f"Counts # of genes:\n{num_gene_distribution_f}\n")
     section.append(f"Percentages # of genes:\n{num_gene_percent_f}\n")
 
-    final_df = merge_segements(df, virus)
+    final_df = merge_segements(df, virus, file_prefix)
 
     total_count_after_na = final_df[final_df['Genes'] != 'NA'].shape[0]
     combined_num_gene_counts = final_df.loc[final_df['Genes'] != 'NA', 'Genes'].apply(
@@ -284,13 +284,13 @@ def summarize_genbank_full_genome(
     return summarize_report
 
 
-def merge_segements(df, virus):
+def merge_segements(df, virus, file_prefix):
 
     # Try to merge on isolateName, the fields should all be the same for same isolate
     # Filter out rows where "IsolateName" is not empty and perform merging
     df.loc[:, 'Accession_prefix'] = df['Accession'].astype(str).str[:7]
     df_no_merge = df[df['IsolateName'] == ""].copy()
-    df_no_merge.to_excel(f"OutputData/{virus}/excels/tmp_not_merged.xlsx")
+    # df_no_merge.to_excel(f"OutputData/{virus}/excels/{file_prefix}_G1.xlsx")
 
     # Count occurrences of each group, if >3 don't merge
     # maybe 6 for Nipah, 3 for cchf?
@@ -309,11 +309,11 @@ def merge_segements(df, virus):
     ])['Genes'].transform(count_genes)
 
     valid_groups = df_to_merge[(df_to_merge['count'] > 1)]
-    valid_groups.to_excel(f"OutputData/{virus}/excels/tmp_to_merge.xlsx")
+    valid_groups.to_excel(f"OutputData/{virus}/excels/{virus}_{file_prefix}_merge.xlsx")
     invalid_groups = df_to_merge[(df_to_merge['count'] == 1)]
     # Combine invalid groups back into df_no_merge
     df_no_merge = pd.concat([df_no_merge, invalid_groups], ignore_index=True)
-    invalid_groups.to_excel(f"OutputData/{virus}/excels/tmp_not_merged_invalid.xlsx", index=False)
+    invalid_groups.to_excel(f"OutputData/{virus}/excels/{virus}_{file_prefix}_no_merge.xlsx", index=False)
 
     # Merge the valid_groups back with the original DataFrame to retain all columns
 
@@ -335,6 +335,6 @@ def merge_segements(df, virus):
     final_df = pd.concat([merged_valid_df, df_no_merge], ignore_index=True)
 
     # print(df.shape[0], final_merged_df.shape[0])
-    final_df.to_excel(f"OutputData/{virus}/excels/tmp_merge_after.xlsx")
+    final_df.to_excel(f"OutputData/{virus}/excels/{virus}_{file_prefix}_merge_result.xlsx")
 
     return final_df

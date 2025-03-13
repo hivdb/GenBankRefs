@@ -48,17 +48,17 @@ Human: 61
 Tick: 25
 Human, Tick: 17
 Cattle, Goat, Sheep, Tick: 9
-Lab: 5
+Lab Sample: 5
 Cattle, Tick: 4
 Goat, Sheep, Tick: 4
 Sheep, Tick: 4
 Camel, Tick: 3
 Cattle, Goat, Tick: 3
-Human, Lab: 3
-Lab, Tick: 3
+Human, Lab Sample: 3
+Lab Sample, Tick: 3
 Cow, Goat, Sheep, Tick: 2
 Goat, Tick: 2
-Human, Lab, Tick: 2
+Human, Lab Sample, Tick: 2
 Human, Livestock, Tick: 2
 Human, Rodent, Tick: 2
 Animal, Buffalo, Cattle, Goat, Sheep, Tick: 1
@@ -80,9 +80,9 @@ Cattle, Sheep, Tick: 1
 Cow, Goat, Livestock, Sheep, Tick: 1
 Cow, Tick: 1
 Deer, Tick: 1
-Goat, Human, Lab, Sheep, Tick: 1
+Goat, Human, Lab Sample, Sheep, Tick: 1
 Goat, Human, Sheep, Tick: 1
-Lab, Sheep, Tick: 1
+Lab Sample, Sheep, Tick: 1
 Livestock, Rodent, Sheep: 1
 Livestock, Tick: 1
 Monkey, Tick: 1
@@ -94,7 +94,7 @@ Sheep: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Human (33.7%), Tick (13.8%), Human, Tick (9.4%), Cattle, Goat, Sheep, Tick (5.0%), Lab (2.8%), Cattle, Tick (2.2%), Goat, Sheep, Tick (2.2%), Sheep, Tick (2.2%), Camel, Tick (1.7%), Cattle, Goat, Tick (1.7%), Human, Lab (1.7%), Lab, Tick (1.7%), Cow, Goat, Sheep, Tick (1.1%), Goat, Tick (1.1%), Human, Lab, Tick (1.1%), Human, Livestock, Tick (1.1%), Human, Rodent, Tick (1.1%), Animal, Buffalo, Cattle, Goat, Sheep, Tick (0.6%), Animal, Human (0.6%), Animal, Human, Tick (0.6%), Boar, Cattle, Deer, Goat, Livestock, Sheep, Tick (0.6%), Boar, Cattle, Goat, Hare, Tick (0.6%), Boar, Deer, Tick (0.6%), Buffalo, Camel, Cattle, Goat, Sheep, Tick (0.6%), Camel (0.6%), Camel, Cattle, Goat, Sheep, Tick (0.6%), Camel, Cattle, Tick (0.6%), Camel, Sheep, Tick (0.6%), Cattle, Deer, Tick (0.6%), Cattle, Goat, Livestock, Sheep, Tick (0.6%), Cattle, Human, Tick (0.6%), Cattle, Livestock, Tick (0.6%), Cattle, Sheep, Tick (0.6%), Cow, Goat, Livestock, Sheep, Tick (0.6%), Cow, Tick (0.6%), Deer, Tick (0.6%), Goat, Human, Lab, Sheep, Tick (0.6%), Goat, Human, Sheep, Tick (0.6%), Lab, Sheep, Tick (0.6%), Livestock, Rodent, Sheep (0.6%), Livestock, Tick (0.6%), Monkey, Tick (0.6%), Mouse (0.6%), Rodent, Sheep, Tick (0.6%), Rodent, Tick (0.6%), Serow (0.6%), Sheep (0.6%)
+Human (33.7%), Tick (13.8%), Human, Tick (9.4%), Cattle, Goat, Sheep, Tick (5.0%), Lab Sample (2.8%), Cattle, Tick (2.2%), Goat, Sheep, Tick (2.2%), Sheep, Tick (2.2%), Camel, Tick (1.7%), Cattle, Goat, Tick (1.7%), Human, Lab Sample (1.7%), Lab Sample, Tick (1.7%), Cow, Goat, Sheep, Tick (1.1%), Goat, Tick (1.1%), Human, Lab Sample, Tick (1.1%), Human, Livestock, Tick (1.1%), Human, Rodent, Tick (1.1%), Animal, Buffalo, Cattle, Goat, Sheep, Tick (0.6%), Animal, Human (0.6%), Animal, Human, Tick (0.6%), Boar, Cattle, Deer, Goat, Livestock, Sheep, Tick (0.6%), Boar, Cattle, Goat, Hare, Tick (0.6%), Boar, Deer, Tick (0.6%), Buffalo, Camel, Cattle, Goat, Sheep, Tick (0.6%), Camel (0.6%), Camel, Cattle, Goat, Sheep, Tick (0.6%), Camel, Cattle, Tick (0.6%), Camel, Sheep, Tick (0.6%), Cattle, Deer, Tick (0.6%), Cattle, Goat, Livestock, Sheep, Tick (0.6%), Cattle, Human, Tick (0.6%), Cattle, Livestock, Tick (0.6%), Cattle, Sheep, Tick (0.6%), Cow, Goat, Livestock, Sheep, Tick (0.6%), Cow, Tick (0.6%), Deer, Tick (0.6%), Goat, Human, Lab Sample, Sheep, Tick (0.6%), Goat, Human, Sheep, Tick (0.6%), Lab Sample, Sheep, Tick (0.6%), Livestock, Rodent, Sheep (0.6%), Livestock, Tick (0.6%), Monkey, Tick (0.6%), Mouse (0.6%), Rodent, Sheep, Tick (0.6%), Rodent, Tick (0.6%), Serow (0.6%), Sheep (0.6%)
 
 ================================================================================
 Specimen

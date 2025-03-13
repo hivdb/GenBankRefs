@@ -38,7 +38,7 @@ Counts:
 Tick: 10
 Human: 6
 Cattle, Goat, Sheep, Tick: 2
-Lab: 2
+Lab Sample: 2
 Animal, Human: 1
 Animal, Human, Tick: 1
 Camel: 1
@@ -52,7 +52,7 @@ Rodent, Sheep, Tick: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Tick (33.3%), Human (20.0%), Cattle, Goat, Sheep, Tick (6.7%), Lab (6.7%), Animal, Human (3.3%), Animal, Human, Tick (3.3%), Camel (3.3%), Camel, Cattle, Tick (3.3%), Cattle, Goat, Tick (3.3%), Deer, Tick (3.3%), Goat, Sheep, Tick (3.3%), Human, Livestock, Tick (3.3%), Human, Rodent, Tick (3.3%), Rodent, Sheep, Tick (3.3%)
+Tick (33.3%), Human (20.0%), Cattle, Goat, Sheep, Tick (6.7%), Lab Sample (6.7%), Animal, Human (3.3%), Animal, Human, Tick (3.3%), Camel (3.3%), Camel, Cattle, Tick (3.3%), Cattle, Goat, Tick (3.3%), Deer, Tick (3.3%), Goat, Sheep, Tick (3.3%), Human, Livestock, Tick (3.3%), Human, Rodent, Tick (3.3%), Rodent, Sheep, Tick (3.3%)
 
 ================================================================================
 Specimen

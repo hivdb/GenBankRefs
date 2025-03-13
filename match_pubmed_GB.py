@@ -527,7 +527,7 @@ def summarize_combined_data(combined, features, genes, logger):
 
     logger.report(summarize_report)
 
-    logger.report(summarize_genbank_by_seq(features, genes))
+    logger.report(summarize_genbank_by_seq(features, genes, 'isolate_with_pubmed_'))
 
 
 def summarize_similarity(df, col_name):

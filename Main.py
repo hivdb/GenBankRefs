@@ -77,7 +77,7 @@ def main():
         ])
     ]
 
-    print("Number of GenBank References after remove non gene isolates:", len(references))
+    print("Number of GenBank References after remove non clinical isolates:", len(references))
     references = process_references(references)
     references = aggregate_references(references, virus_obj, save_data=True)
 

@@ -42,12 +42,12 @@ Human: 11
 Bat, Human: 2
 Bat, Pig: 1
 Human, Pig: 1
-Lab: 1
+Lab Sample: 1
 Pig: 1
 
 --------------------------------------------------------------------------------
 Percentages:
-Bat (46.9%), Human (34.4%), Bat, Human (6.2%), Bat, Pig (3.1%), Human, Pig (3.1%), Lab (3.1%), Pig (3.1%)
+Bat (46.9%), Human (34.4%), Bat, Human (6.2%), Bat, Pig (3.1%), Human, Pig (3.1%), Lab Sample (3.1%), Pig (3.1%)
 
 ================================================================================
 Specimen
