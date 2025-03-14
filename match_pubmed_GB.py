@@ -257,9 +257,14 @@ def match(virus, pubmed, genbank, logger):
 
     pubmed_unmatch = pubmed[~pubmed['PubID'].isin(matched_pub_id)]
 
+    genbank_no_pmid_list = genbank[genbank['PMID'] == '']
+    print('# submission sets without PMID:', len(genbank_no_pmid_list))
+    using_ai_match(virus, genbank_no_pmid_list, file_suffix='using_AI_find_paper')
+
     # Process Unmatched GenBank Records Using AI
     genbank_unmatch_list = pd.DataFrame(genbank_unmatch_list.values())
-    genbank_unmatch_list = using_ai_match(virus, genbank_unmatch_list)
+
+    genbank_unmatch_list = using_ai_match(virus, genbank_unmatch_list, file_suffix='algo_unmatch')
 
     return (
         pubmed_match,

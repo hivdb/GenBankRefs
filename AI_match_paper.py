@@ -3,14 +3,13 @@ from pathlib import Path
 from openai import OpenAI, OpenAIError
 import os
 import time
-from Utilities import load_csv
-from Utilities import dump_csv
+import pandas as pd
 
 
 load_dotenv()
 
 TEMPLATE = """
-    can you help me find the publication for this paper:
+    find the publication for this paper, and just give me the result:
     Title: {Title}
     Authors: {Authors}
     Journal: {Journal}
@@ -41,16 +40,22 @@ def chat_openai(messages, model='gpt-4o', temperature=0):
     client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
     try:
-        response = client.chat.completions.create(
+        response = client.responses.create(
             model=model,
-            messages=messages,
+            input=messages,
+            tools=[{"type": "web_search_preview"}],
             temperature=temperature,
         )
     except OpenAIError as e:
         print(e)
         return []
 
-    return response.choices
+    resp = [
+        i
+        for i in response.output
+        if 'content' in i.model_fields
+    ]
+    return resp
 
 
 def ask_ai(prompt):
@@ -60,33 +65,21 @@ def ask_ai(prompt):
     if len(response) == 0:
         return 'No response'
     else:
-        return response[0].message.content
+        return response[0].content[0].text
 
 
-def using_ai_match(virus, genbank_unmatched):
-    system_prompt = f"""
-        You are an AI expert in virology with specialized
-        knowledge in {virus.name} virus, including its transmission,
-        pathogenesis, and clinical management.
-        You are also skilled in systematic review methods,
-        capable of synthesizing research findings
-        and providing evidence-based insights.
-        For every GenBank submission set provided, try your best to find
-        the matching paper. Do not give steps to find the paper, but directly provide
-        the pmid, or when it's not in pubmed, provide the doi or the website by
-        searching on the web. Do not give recommendations like look in the journal.
-        Even if the entry says "Unpublished", it could be published recently,
-        so give a result regardless.
-        Do not consider asking authors as a possible solution.
-    """
+def using_ai_match(virus, genbank_unmatched, file_suffix, overwrite=False):
+    system_prompt = open(
+        Path(__file__).resolve().parent / 'AI_match_template.txt').read().format(
+            virus_name=virus.name)
 
-    cache_file = virus.output_excel_dir / 'AI_cache.csv'
+    cache_file = virus.output_excel_dir / f'{virus.name}_{file_suffix}.xlsx'
     answers = []
-    if cache_file.exists():
-        answers = load_csv(cache_file)
+    if cache_file.exists() and not overwrite:
+        answers = pd.read_excel(cache_file)
         answer_map = {
             int(i['RefID']): i['AI_answer']
-            for i in answers
+            for _, i in answers.iterrows()
         }
         for idx, row in genbank_unmatched.iterrows():
             genbank_unmatched.at[idx, 'AI_answer'] = answer_map.get(row['RefID'], '')
@@ -94,28 +87,35 @@ def using_ai_match(virus, genbank_unmatched):
     for idx, row in genbank_unmatched.iterrows():
         if 'AI_answer' in row:
             continue
-        if 'Direct Submission' in row['Title']:
-            continue
-        if 'Patent' in row['Journal']:
-            continue
+        # if 'Direct Submission' in row['Title']:
+        #     continue
+        # if 'Patent' in row['Journal']:
+        #     continue
 
         prompt = build_prompts(system_prompt, {
             'Title': row['Title'],
             'Authors': row['Authors'],
-            'Journal': row['Journal'],
-            'Year': row['Year'],
+            'Journal': row['Journal'] if row['Journal'].lower() != 'unpublished' else '',
+            'Year': row['Year'] if row['Year'] else '',
             'Accession': row['accession']
         })
         # print(prompt)
+        # raise
 
         answer = ask_ai(prompt)
-        genbank_unmatched.at[idx, 'AI_answer'] = answer
+        genbank_unmatched.loc[idx, 'AI_answer'] = answer
 
         answers.append({
             'RefID': row['RefID'],
+            'Title': row['Title'],
+            'Authors': row['Authors'],
+            'Journal': row['Journal'] if row['Journal'].lower() != 'unpublished' else '',
+            'Year': row['Year'] if row['Year'] else '',
+            'Accession': row['accession'],
             'AI_answer': answer,
         })
+        print(idx, 'done')
 
-    dump_csv(cache_file, answers)
+    pd.DataFrame(answers).to_excel(cache_file, index=False)
 
     return genbank_unmatched
