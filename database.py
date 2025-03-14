@@ -747,7 +747,7 @@ def creat_views(db_file):
     run_create_view(db_file, vMatchNotByPMID)
 
     vSubmissionPubLinkedSeqData = """
-        CREATE VIEW vSubmissionPubLinkedSeqData AS
+    CREATE VIEW vSubmissionPubLinkedSeqData AS
         SELECT
             match.SubmissionSet,  
             match.Publication,  
@@ -776,9 +776,29 @@ def creat_views(db_file):
         JOIN tblPubLicationData pData  
     WHERE
         NonClinical = ''
+    
     """
 
     run_create_view(db_file, vSubmissionPubLinkedSeqData)
+
+    vSubmissionPubLinkedSeqDataAgg = """
+    CREATE VIEW IF NOT EXISTS vSubmissionPubLinkedSeqDataAgg AS
+    SELECT
+        COUNT(DISTINCT SubmissionSet) AS NumSubmissions,
+        SubmissionSet,
+        GROUP_CONCAT(DISTINCT Publication) AS Publications,
+        REPLACE(COALESCE(Host, ''), '*', '') AS Host,
+        REPLACE(COALESCE(Country, ''), '*', '') AS Country,
+        REPLACE(COALESCE(IsolateYear, ''), '*', '') AS IsolateYear,
+        GROUP_CONCAT(DISTINCT Gene) AS Genes,
+        GROUP_CONCAT(DISTINCT IsolateAccession) AS Accessions,  
+        COUNT(DISTINCT IsolateAccession) AS NumAccessions
+    FROM
+        vSubmissionPubLinkedSeqData
+    GROUP BY
+        SubmissionSet;
+    """
+    run_create_view(db_file, vSubmissionPubLinkedSeqDataAgg)
 
 
 
