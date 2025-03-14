@@ -746,6 +746,41 @@ def creat_views(db_file):
     """
     run_create_view(db_file, vMatchNotByPMID)
 
+    vSubmissionPubLinkedSeqData = """
+        CREATE VIEW vSubmissionPubLinkedSeqData AS
+        SELECT
+            match.SubmissionSet,  
+            match.Publication,  
+            seq.Accession AS IsolateAccession,  
+        CASE
+            WHEN iso.Host != 'Not available' THEN iso.Host
+            WHEN pData.Host IS NOT NULL AND pData.Host != '' THEN pData.Host
+            ELSE iso.Host
+        END AS Host,
+        CASE
+            WHEN iso.Country != 'Not available' THEN iso.Country
+            WHEN pData.Country IS NOT NULL AND pData.Country != '' THEN pData.Country
+            ELSE iso.Country
+        END AS Country,
+        CASE
+            WHEN iso.IsolateYear != 'Not available' THEN iso.IsolateYear
+            WHEN pData.SampleYr IS NOT NULL AND pData.SampleYr != '' THEN pData.SampleYr
+            ELSE iso.IsolateYear
+        END AS IsolateYear,
+        seq.Gene
+    FROM
+        tblIsolates iso
+        LEFT JOIN tblSequences seq ON iso.Accession = seq.Accession
+        JOIN tblGBRefLink ON iso.Accession = tblGBRefLink.Accession
+        JOIN vGPMatched match ON tblGBRefLink.RefID = match.RefID
+        JOIN tblPubLicationData pData  
+    WHERE
+        NonClinical = ''
+    """
+
+    run_create_view(db_file, vSubmissionPubLinkedSeqData)
+
+
 
 def fill_in_table(db_file, table_name, table):
     conn = sqlite3.connect(str(db_file))
