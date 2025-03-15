@@ -51,7 +51,7 @@ class CCHF(Virus):
         return super().pick_phylo_sequence(genes, picked_genes, coverage_pcnt=0.85)
 
 
-CCHF("CCHF")
+CCHF("CCHF", full_name="Crimean–Congo hemorrhagic fever virus")
 
 
 def build_blast_db(virus):

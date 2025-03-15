@@ -69,9 +69,11 @@ def ask_ai(prompt):
 
 
 def using_ai_match(virus, genbank_unmatched, file_suffix, overwrite=False):
+    virus_name = virus.full_name if virus.full_name else virus.name
+
     system_prompt = open(
         Path(__file__).resolve().parent / 'AI_match_template.txt').read().format(
-            virus_name=virus.name)
+            virus_name=virus_name)
 
     cache_file = virus.output_excel_dir / f'{virus.name}_{file_suffix}.xlsx'
     answers = []

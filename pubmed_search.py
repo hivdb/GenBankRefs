@@ -7,7 +7,8 @@ Entrez.email = "rshafer.stanford.edu"
 
 def search_pubmed(query):
     time.sleep(0.1)
-    handle = Entrez.esearch(db="pubmed", term=query, retmax=3)
+    handle = Entrez.esearch(db="pmc", term=query, retmax=3)
+    # handle = Entrez.esearch(db="pubmed", term=query, retmax=3)
     record = Entrez.read(handle)
     handle.close()
     return record["IdList"]
