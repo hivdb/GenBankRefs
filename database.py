@@ -749,9 +749,9 @@ def creat_views(db_file):
     vSubmissionPubLinkedSeqData = """
     CREATE VIEW vSubmissionPubLinkedSeqData AS
         SELECT
-            match.SubmissionSet,  
-            match.Publication,  
-            seq.Accession AS IsolateAccession,  
+            match.SubmissionSet,
+            match.Publication,
+            seq.Accession AS IsolateAccession,
         CASE
             WHEN iso.Host != 'Not available' THEN iso.Host
             WHEN pData.Host IS NOT NULL AND pData.Host != '' THEN pData.Host
@@ -773,16 +773,16 @@ def creat_views(db_file):
         LEFT JOIN tblSequences seq ON iso.Accession = seq.Accession
         JOIN tblGBRefLink ON iso.Accession = tblGBRefLink.Accession
         JOIN vGPMatched match ON tblGBRefLink.RefID = match.RefID
-        JOIN tblPubLicationData pData  
+        JOIN tblPubLicationData pData
     WHERE
         NonClinical = ''
-    
+
     """
 
     run_create_view(db_file, vSubmissionPubLinkedSeqData)
 
     vSubmissionPubLinkedSeqDataAgg = """
-    CREATE VIEW IF NOT EXISTS vSubmissionPubLinkedSeqDataAgg AS
+    CREATE TABLE IF NOT EXISTS vSubmissionPubLinkedSeqDataAgg AS
     SELECT
         COUNT(DISTINCT SubmissionSet) AS NumSubmissions,
         SubmissionSet,
@@ -791,7 +791,7 @@ def creat_views(db_file):
         REPLACE(COALESCE(Country, ''), '*', '') AS Country,
         REPLACE(COALESCE(IsolateYear, ''), '*', '') AS IsolateYear,
         GROUP_CONCAT(DISTINCT Gene) AS Genes,
-        GROUP_CONCAT(DISTINCT IsolateAccession) AS Accessions,  
+        GROUP_CONCAT(DISTINCT IsolateAccession) AS Accessions,
         COUNT(DISTINCT IsolateAccession) AS NumAccessions
     FROM
         vSubmissionPubLinkedSeqData
