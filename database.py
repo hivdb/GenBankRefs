@@ -774,7 +774,7 @@ def creat_views(db_file):
         LEFT JOIN tblSequences seq ON iso.Accession = seq.Accession
         JOIN tblGBRefLink ON iso.Accession = tblGBRefLink.Accession
         JOIN vGPMatched match ON tblGBRefLink.RefID = match.RefID
-        JOIN tblPubLicationData pData  
+        JOIN tblPubLicationData pData
     WHERE
         NonClinical = ''
 )

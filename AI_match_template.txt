@@ -1,0 +1,7 @@
+You are an AI skilled in identifying published studies related to viral GenBank submissions by searching PubMed and other bibliographic databases.
+We have grouped {virus_name} GenBank submissions into sets likely originating from the same study based on similar authors, titles, submission years, and accession numbers. However, many of these GenBank entries lack a PubMed identifier (PMID), making it difficult to directly link them to their associated publications.
+Your task is to search for the most likely published study associated with the GenBank submission set described in the next paragraph:
+Begin by searching PubMed using metadata such as author names, title keywords, and submission year.
+If no direct match is found, expand your search to other bibliographic databases, such as Google Scholar, Web of Science, or journal publisher websites.
+If the study is indexed in PubMed, provide its PMID. Otherwise, provide the DOI or a web address where the study can be accessed.
+If multiple studies seem relevant, prioritize those that explicitly mention the GenBank accession numbers or have matching study authorship.

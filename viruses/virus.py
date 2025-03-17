@@ -18,8 +18,9 @@ class Virus:
 
     _viruses = {}
 
-    def __init__(self, name):
+    def __init__(self, name, full_name=None):
         self.name = name
+        self.full_name = full_name
 
         if name in self.__class__._viruses:
             return

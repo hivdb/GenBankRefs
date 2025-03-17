@@ -31,7 +31,7 @@ class CCHF(Virus):
 
     @property
     def pubmed_search_missing(self):
-        return self.pubmed_folder / "ReferenceSummary_PubMed_Missing_Feb25.xlsx"
+        return self.pubmed_folder / "ReferenceSummary_PubMed_Missing_Mar17.xlsx"
 
     @property
     def pubmed_genbank_hardlink(self):
@@ -51,7 +51,7 @@ class CCHF(Virus):
         return super().pick_phylo_sequence(genes, picked_genes, coverage_pcnt=0.85)
 
 
-CCHF("CCHF")
+CCHF("CCHF", full_name="Crimean–Congo hemorrhagic fever virus")
 
 
 def build_blast_db(virus):

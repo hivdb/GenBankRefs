@@ -20,6 +20,7 @@ from openpyxl import load_workbook
 from openpyxl.styles import Alignment
 from DataFrameLogic import merge_feature_rows
 from AI_match_paper import using_ai_match
+from pubmed_search import search_submission_sets_without_PMID
 
 
 def match_pubmed_GB(
@@ -257,9 +258,16 @@ def match(virus, pubmed, genbank, logger):
 
     pubmed_unmatch = pubmed[~pubmed['PubID'].isin(matched_pub_id)]
 
+    genbank_no_pmid_list = genbank[genbank['PMID'] == '']
+    print('# submission sets without PMID:', len(genbank_no_pmid_list))
+    using_ai_match(virus, genbank_no_pmid_list, file_suffix='using_AI_find_paper')
+
     # Process Unmatched GenBank Records Using AI
     genbank_unmatch_list = pd.DataFrame(genbank_unmatch_list.values())
-    genbank_unmatch_list = using_ai_match(virus, genbank_unmatch_list)
+
+    genbank_unmatch_list = using_ai_match(virus, genbank_unmatch_list, file_suffix='algo_unmatch')
+
+    search_submission_sets_without_PMID(virus, genbank_no_pmid_list)
 
     return (
         pubmed_match,
