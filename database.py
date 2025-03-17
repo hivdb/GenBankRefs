@@ -746,12 +746,13 @@ def creat_views(db_file):
     """
     run_create_view(db_file, vMatchNotByPMID)
 
-    vSubmissionPubLinkedSeqData = """
-    CREATE VIEW vSubmissionPubLinkedSeqData AS
-        SELECT
-            match.SubmissionSet,  
-            match.Publication,  
-            seq.Accession AS IsolateAccession,  
+    vSubmissionPubLinkedSeqDataAgg = """
+    CREATE TABLE vSubmissionPubLinkedSeqDataAgg AS
+    WITH temp_selection AS (
+    SELECT
+        match.SubmissionSet,  
+        COALESCE(match.Publication, '') AS Publication, 
+        seq.Accession AS IsolateAccession,  
         CASE
             WHEN iso.Host != 'Not available' THEN iso.Host
             WHEN pData.Host IS NOT NULL AND pData.Host != '' THEN pData.Host
@@ -776,27 +777,29 @@ def creat_views(db_file):
         JOIN tblPubLicationData pData  
     WHERE
         NonClinical = ''
-    
-    """
+)
+SELECT
+    COUNT(DISTINCT temp_selection.SubmissionSet) AS NumSubmissions,
 
-    run_create_view(db_file, vSubmissionPubLinkedSeqData)
+    temp_selection.SubmissionSet AS SubmissionSet,
 
-    vSubmissionPubLinkedSeqDataAgg = """
-    CREATE VIEW IF NOT EXISTS vSubmissionPubLinkedSeqDataAgg AS
-    SELECT
-        COUNT(DISTINCT SubmissionSet) AS NumSubmissions,
-        SubmissionSet,
-        GROUP_CONCAT(DISTINCT Publication) AS Publications,
-        REPLACE(COALESCE(Host, ''), '*', '') AS Host,
-        REPLACE(COALESCE(Country, ''), '*', '') AS Country,
-        REPLACE(COALESCE(IsolateYear, ''), '*', '') AS IsolateYear,
-        GROUP_CONCAT(DISTINCT Gene) AS Genes,
-        GROUP_CONCAT(DISTINCT IsolateAccession) AS Accessions,  
-        COUNT(DISTINCT IsolateAccession) AS NumAccessions
+    GROUP_CONCAT(DISTINCT temp_selection.Publication) AS Publications,
+
+    REPLACE(COALESCE(Host, ''), '*', '') AS Host,
+    REPLACE(COALESCE(Country, ''), '*', '') AS Country,
+    REPLACE(COALESCE(IsolateYear, ''), '*', '') AS IsolateYear,
+
+    GROUP_CONCAT(DISTINCT Gene) AS Genes,
+
+    GROUP_CONCAT(DISTINCT IsolateAccession) AS Accessions,  
+
+    COUNT(DISTINCT IsolateAccession) AS NumAccessions
+
+
     FROM
-        vSubmissionPubLinkedSeqData
+        temp_selection
     GROUP BY
-        SubmissionSet;
+        temp_selection.SubmissionSet;
     """
     run_create_view(db_file, vSubmissionPubLinkedSeqDataAgg)
 
