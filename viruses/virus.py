@@ -171,6 +171,14 @@ class Virus:
         return self.timestamp_dir / f"{self.name}_pubmed_unmatch_{timestamp}.xlsx"
 
     @property
+    def pubmed_search_result(self):
+        return self.pubmed_folder / f"{self.name}_pubmed_search_checked.xlsx"
+
+    @property
+    def AI_search_result(self):
+        return self.pubmed_folder / f"{self.name}_AI_search_checked.xlsx"
+
+    @property
     def chord_diagram_file(self):
         return self.timestamp_dir / f"{self.name}_chord1_{timestamp}.html"
 

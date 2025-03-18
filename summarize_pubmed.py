@@ -12,10 +12,6 @@ from Utilities import dump_csv
 
 def summarize_pubmed(pubmed_file, virus_obj):
 
-    if not pubmed_file.exists():
-        print('Pubmed file not found')
-        return pd.DataFrame()
-
     pubmed = pd.read_excel(pubmed_file, dtype=str).fillna('')
 
     pubmed['ref_source'] = 'PubMed search'
