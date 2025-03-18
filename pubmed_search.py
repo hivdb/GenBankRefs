@@ -5,10 +5,9 @@ import time
 Entrez.email = "rshafer.stanford.edu"
 
 
-def search_pubmed(query):
-    time.sleep(0.1)
-    handle = Entrez.esearch(db="pmc", term=query, retmax=3)
-    # handle = Entrez.esearch(db="pubmed", term=query, retmax=3)
+def search_pubmed(query, db='pubmed', retmax=1):
+    time.sleep(1)
+    handle = Entrez.esearch(db=db, term=query, retmax=retmax)
     record = Entrez.read(handle)
     handle.close()
     return record["IdList"]
@@ -41,7 +40,8 @@ def fetch_pubmed_details(pubmed_ids):
     return articles
 
 
-def search_submission_sets_without_PMID(virus, genbank_unmatched, overwrite=False):
+def search_by_pubmed_API(
+        virus, genbank_unmatched, overwrite=False):
 
     cache_file = virus.output_excel_dir / f'{virus.name}_pubmed_search.xlsx'
 
@@ -61,11 +61,15 @@ def search_submission_sets_without_PMID(virus, genbank_unmatched, overwrite=Fals
             continue
 
         authors = row['Authors']
-        author_pmid = search_pubmed(authors)
+        author_pmid = search_pubmed(authors, retmax=3)
 
         accession_pmids = []
         for i in row['accession'].split(','):
-            accession_pmids.extend(search_pubmed(i.strip()))
+            accession_pmids.extend(search_pubmed(i.strip(), retmax=3))
+
+        # accession_pmids_2 = []
+        # for i in row['accession'].split(','):
+        #     accession_pmids_2.extend(search_pubmed(i.strip(), db='pmc'))
 
         pmid = list(sorted(set(author_pmid) | set(accession_pmids)))
 
@@ -80,6 +84,9 @@ def search_submission_sets_without_PMID(virus, genbank_unmatched, overwrite=Fals
             'Year': row['Year'] if row['Year'] else '',
             'Accession': row['accession'],
             'PMID': ', '.join([str(p) for p in pmid]),
+            'PMID_author': ', '.join([str(p) for p in set(author_pmid)]),
+            'PMID_acc': ', '.join([str(p) for p in set(accession_pmids)]),
+            # 'PMID_acc2': ', '.join([str(p) for p in set(accession_pmids_2)]),
         })
         print('pubmed search', idx)
 

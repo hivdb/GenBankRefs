@@ -17,6 +17,9 @@ from DataFrameLogic import combine_refs_and_features
 from summarize_genbank import summarize_genbank
 from summarize_pubmed import summarize_pubmed
 from match_pubmed_GB import match_pubmed_GB
+from pubmed_search import search_by_pubmed_API
+from AI_match_paper import using_ai_match
+
 
 from database import create_database
 
@@ -28,20 +31,47 @@ Entrez.email = "rshafer.stanford.edu"
 def main():
     """
     Main function to process virus-related genomic and literature data.
-    1. Loads virus object.
-    2. Parses GenBank records and processes gene data.
-    3. Processes features and references, filtering non-gene isolates.
-    4. Aggregates references and integrates GenBank and PubMed data.
-    5. Creates a database with processed genomic and literature information.
+    - Loads virus object.
+    - Parses GenBank records and processes gene data.
+    - Processes features and references, filtering non-gene isolates.
+    - Search publications using PubMed API, or GPT-4o API
+    - Creates a database with processed genomic and literature information.
+    - Aggregates references and integrates GenBank and PubMed data.
     """
     virus = select_virus()
     # The virus_obj contains links to pubmed tables, genbank tables
     virus_obj = load_virus_obj(virus)
+
+    references, features, genes = extract_genbank_ref_feature_gene(virus_obj)
+
+    references = find_publications_by_PubMed(virus_obj, references)
+
+    references = find_publications_by_AI(virus_obj, references)
+
+    literature, lit_ref_match, genbank2pubmed = find_publication_by_sys_review(
+        virus_obj, references, features, genes)
+
+    update_genbank_by_publication(virus_obj, features, genes, genbank2pubmed)
+
+    # Create database using tables:
+    #   GenBank Submission Set
+    #   GenBank Features
+    #   Pubmed literatures
+    #   Pubmed GenBank Matches
+    create_database(
+        virus_obj, references, features, genes,
+        literature, lit_ref_match)
+
+
+def extract_genbank_ref_feature_gene(virus_obj):
     run_blast = select_run_blast()
 
     # Parse GenBank records into references, features, genes
     # Filtering out those that are not in the same virus category or are not clinical isolates
-    total_references, references, features, genes, nonvirus, nonclinical = parse_genbank_records(
+    (
+        total_references, references,
+        features, genes, nonvirus, nonclinical
+    ) = parse_genbank_records(
         virus_obj.genbank_file)
 
     excludes = pd.DataFrame(nonvirus)
@@ -62,7 +92,7 @@ def main():
 
     # Extract reference (Author, Title, Journal, Year, Accessions) and combine
     # those that are from the same submission (title, author, pmid match)
-    print("Number of GenBank References:", len(total_references))
+    print("Number of Total GenBank References:", len(total_references))
     total_references = process_references(total_references)
     total_references = aggregate_references(total_references, virus_obj)
 
@@ -92,38 +122,98 @@ def main():
     # Summarize GenBank and PubMed data, see outut in datalog_genbank.txt and datalog_pubmed.txt
     summarize_genbank(references, features, genes, virus_obj)
 
-    pubmed = summarize_pubmed(virus_obj.pubmed_file, virus_obj)
-
-    if pubmed.empty:
-        return
-
-    # The virus_obj contains links to pubmed tables, genbank tables
-    # the return values are: pubmed (the pubmed data file), pubmed_genbank (Pubmed and GenBank matches)
-    literature, lit_ref_match, genbank2pubmed = match_pubmed_GB(pubmed, references, features, genes, virus_obj)
-
-    if literature.empty or not lit_ref_match:
-        return
-
     # Updates gene DataFrame with corresponding metadata from features DataFrame based on matching accession numbers
     genes = update_genes_by_features(genes, features)
     # Pick sequences for genes in each virus and generate phylogenetic tree - requirements vary for each
+
     virus_obj.pick_phylo_sequence(genes)
 
-    # Updates features & genes DataFrame based on PubMed data on same accessions
-    # features = update_genbank_by_pubmed(features, genbank2pubmed)
-    features.to_excel(virus_obj.genbank_feature_filled_file)
+    return references, features, genes
 
+
+def find_publications_by_PubMed(virus, genbank):
+
+    if not virus.pubmed_search_result:
+        genbank_no_pmid_list = genbank[genbank['PMID'] == '']
+        search_by_pubmed_API(virus, genbank_no_pmid_list)
+        print('Please check PubMed Search result by hand.')
+        exit()
+
+    pubmed_result = pd.read_excel(virus.pubmed_search_result)
+
+    counter = 0
+    for idx, g in genbank.iterrows():
+        if g['PMID']:
+            continue
+        search_r = pubmed_result[pubmed_result['RefID'] == g['RefID']]
+        if search_r.empty:
+            print('RefID', g['RefID'], 'is not found in file', virus.pubmed_search_result)
+        pmid = search_r.iloc[0]['PMID']
+        if not pd.isna(pmid):
+            try:
+                genbank.loc[idx, 'PMID'] = str(int(pmid))
+            except ValueError:
+                genbank.loc[idx, 'PMID'] = str(pmid)
+            counter += 1
+
+    print(counter, 'sets find publications by PubMed API.')
+    return genbank
+
+
+def find_publications_by_AI(virus, genbank):
+
+    if not virus.AI_search_result:
+
+        genbank_no_pmid_list = genbank[genbank['PMID'] == '']
+        # print('# submission sets without PMID:', len(genbank_no_pmid_list))
+        using_ai_match(virus, genbank_no_pmid_list, file_suffix='using_AI_find_paper')
+
+        print('Please check AI Search result by hand.')
+        exit()
+
+    pubmed_result = pd.read_excel(virus.AI_search_result)
+
+    counter = 0
+    for idx, g in genbank.iterrows():
+        if g['PMID']:
+            continue
+        search_r = pubmed_result[pubmed_result['RefID'] == g['RefID']]
+        if search_r.empty:
+            print('RefID', g['RefID'], 'is not found in file',
+                  virus.AI_search_result)
+        pmid = search_r.iloc[0]['PMID']
+        if not pd.isna(pmid):
+            try:
+                genbank.loc[idx, 'PMID'] = str(int(pmid))
+            except ValueError:
+                genbank.loc[idx, 'PMID'] = str(pmid)
+            counter += 1
+
+    print(counter, 'sets find publications by AI.')
+    return genbank
+
+
+def find_publication_by_sys_review(virus_obj, references, features, genes):
+    if not virus_obj.pubmed_file.exists():
+        print('Please prepare a file with extract metadata from publications')
+        exit()
+
+    pubmed = summarize_pubmed(virus_obj.pubmed_file, virus_obj)
+
+    # The virus_obj contains links to pubmed tables, genbank tables
+    # the return values are: pubmed (the pubmed data file), pubmed_genbank (Pubmed and GenBank matches)
+    literature, lit_ref_match, genbank2pubmed = match_pubmed_GB(
+        pubmed, references, features, genes, virus_obj)
+
+    return literature, lit_ref_match, genbank2pubmed
+
+
+def update_genbank_by_publication(virus_obj, features, genes, genbank2pubmed):
+    # Updates features & genes DataFrame based on PubMed data on same accessions
+    features = update_genbank_by_pubmed(features, genbank2pubmed)
+    features.to_excel(virus_obj.genbank_feature_filled_file)
     genes = update_genes_by_features(genes, features)
     genes.to_excel(virus_obj.genbank_gene_filled_file)
-
-    # Create database using tables:
-    #   GenBank Submission Set
-    #   GenBank Features
-    #   Pubmed literatures
-    #   Pubmed GenBank Matches
-    create_database(
-        virus_obj, references, features, genes,
-        literature, lit_ref_match)
 
 
 def update_genbank_by_pubmed(features, genbank2pubmed):
