@@ -133,13 +133,7 @@ def extract_genbank_ref_feature_gene(virus_obj):
 
 def find_publications_by_PubMed(virus, genbank):
 
-    if not virus.pubmed_search_result:
-        genbank_no_pmid_list = genbank[genbank['PMID'] == '']
-        search_by_pubmed_API(virus, genbank_no_pmid_list)
-        print('Please check PubMed Search result by hand.')
-        exit()
-
-    pubmed_result = pd.read_excel(virus.pubmed_search_result)
+    pubmed_result = search_by_pubmed_API(virus, genbank)
 
     counter = 0
     for idx, g in genbank.iterrows():

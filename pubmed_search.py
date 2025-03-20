@@ -41,9 +41,18 @@ def fetch_pubmed_details(pubmed_ids):
 
 
 def search_by_pubmed_API(
-        virus, genbank_unmatched, overwrite=False):
+        virus, genbank, overwrite=False):
+
+    if virus.pubmed_search_result.exists() and not overwrite:
+        return pd.read_excel(virus.pubmed_search_result)
 
     cache_file = virus.output_excel_dir / f'{virus.name}_pubmed_search.xlsx'
+
+    if (
+            not virus.pubmed_search_result.exists()
+            and (cache_file.exists() and not overwrite)):
+        print('Please check PubMed Search result by hand.')
+        exit()
 
     answers = []
 
@@ -53,12 +62,18 @@ def search_by_pubmed_API(
             int(i['RefID']): i['PMID']
             for _, i in answers.iterrows()
         }
-        for idx, row in genbank_unmatched.iterrows():
-            genbank_unmatched.at[idx, 'PMID'] = answer_map.get(row['RefID'], '')
+        for idx, row in genbank.iterrows():
+            genbank.at[idx, 'PMID'] = answer_map.get(row['RefID'], '')
 
-    for idx, row in genbank_unmatched.iterrows():
+    for idx, row in genbank.iterrows():
         if 'PMID' in row and row['PMID']:
             continue
+
+        title = row['Title'].replace('Direct Submission', '').strip()
+
+        title_pmid = []
+        if title:
+            title_pmid = search_pubmed(title, retmax=1)
 
         authors = row['Authors']
         author_pmid = search_pubmed(authors, retmax=3)
@@ -73,7 +88,7 @@ def search_by_pubmed_API(
 
         pmid = list(sorted(set(author_pmid) | set(accession_pmids)))
 
-        genbank_unmatched.loc[idx, 'PMID'] = ', '.join(
+        genbank.loc[idx, 'PMID'] = ', '.join(
             [str(p) for p in pmid])
 
         answers.append({
@@ -84,6 +99,7 @@ def search_by_pubmed_API(
             'Year': row['Year'] if row['Year'] else '',
             'Accession': row['accession'],
             'PMID': ', '.join([str(p) for p in pmid]),
+            'PMID_title': ', '.join([str(p) for p in title_pmid]),
             'PMID_author': ', '.join([str(p) for p in set(author_pmid)]),
             'PMID_acc': ', '.join([str(p) for p in set(accession_pmids)]),
             # 'PMID_acc2': ', '.join([str(p) for p in set(accession_pmids_2)]),
@@ -91,3 +107,5 @@ def search_by_pubmed_API(
         print('pubmed search', idx)
 
     pd.DataFrame(answers).to_excel(cache_file, index=False)
+
+    return genbank
