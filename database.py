@@ -22,7 +22,7 @@ def create_tables(db_file):
     """)
 
     conn.execute("""
-        CREATE TABLE "tblIsolates" (
+        CREATE TABLE "tblEntries" (
             "Accession" TEXT PRIMARY KEY,
             "Country" TEXT,
             "RecordYear" INTEGER,
@@ -36,11 +36,19 @@ def create_tables(db_file):
     """)
 
     conn.execute("""
+        CREATE TABLE "tblIsolates" (
+            "IsolateID" INTEGER,
+            "Accession" TEXT,
+            FOREIGN KEY (Accession) REFERENCES tblEntries (Accession)
+        )
+    """)
+
+    conn.execute("""
         CREATE TABLE "tblGBRefLink" (
             "RefID" INTEGER,
             "Accession" TEXT,
             FOREIGN KEY (RefID) REFERENCES tblGBSubmissionSets (RefID),
-            FOREIGN KEY (Accession) REFERENCES tblIsolates (Accession)
+            FOREIGN KEY (Accession) REFERENCES tblEntries (Accession)
         )
     """)
 
@@ -123,7 +131,7 @@ def create_tables(db_file):
     conn.close()
 
 
-def create_database(virus_obj, references, features, genes, pubmed,
+def create_database(virus_obj, references, isolates, features, genes, pubmed,
                     pubmed_genbank):
 
     virus_obj.DB_FILE.unlink(missing_ok=True)
@@ -151,27 +159,28 @@ def create_database(virus_obj, references, features, genes, pubmed,
     if 'NonClinical' not in features.columns:
         features['NonClinical'] = ""
 
-    tblIsolates = features[[
+    tblEntries = features[[
         'Accession', 'Country', 'RecordYear', 'IsolateYear', 'Host',
         'Specimen', 'IsolateName', 'SeqLength', 'NonClinical'
     ]]
 
-    for i, row in tblIsolates.iterrows():
-        tblIsolates.at[i, 'Host'] = row['Host'] if row['Host'] else (
+    for i, row in tblEntries.iterrows():
+        tblEntries.at[i, 'Host'] = row['Host'] if row['Host'] else (
             'Not applicable' if row['NonClinical'] else 'Not available')
-        tblIsolates.at[i,
-                       'Specimen'] = row['Specimen'] if row['Specimen'] else (
+        tblEntries.at[i, 'Specimen'] = row['Specimen'] if row['Specimen'] else (
                            'Not applicable'
                            if row['NonClinical'] else 'Not available')
-        tblIsolates.at[
+        tblEntries.at[
             i, 'IsolateYear'] = row['IsolateYear'] if row['IsolateYear'] else (
                 'Not applicable' if row['NonClinical'] else 'Not available')
-        tblIsolates.at[i, 'Country'] = row['Country'] if row['Country'] else (
+        tblEntries.at[i, 'Country'] = row['Country'] if row['Country'] else (
             'Not applicable' if row['NonClinical'] else 'Not available')
 
-    fill_in_table(virus_obj.DB_FILE, 'tblIsolates', tblIsolates)
+    fill_in_table(virus_obj.DB_FILE, 'tblEntries', tblEntries)
 
     genes['PcntMatch'] = genes['pcnt_id']
+
+    fill_in_table(virus_obj.DB_FILE, 'tblIsolates', isolates)
 
     tblGBSequences = genes[[
         'Accession',
@@ -257,7 +266,7 @@ def creat_views(db_file):
     vGBRefIsolates = """
         CREATE VIEW vGBRefIsolates AS
         SELECT a.*, c.*
-        FROM tblGBSubmissionSets a, tblGBRefLink b, tblIsolates c
+        FROM tblGBSubmissionSets a, tblGBRefLink b, tblEntries c
         WHERE a.RefID = b.RefID
         AND b.Accession = c.Accession;
     """
@@ -268,7 +277,7 @@ def creat_views(db_file):
         SELECT
             *
         FROM
-            tblIsolates
+            tblEntries
         WHERE
             NonClinical IS NOT ""
     ;
@@ -296,7 +305,7 @@ def creat_views(db_file):
                 iso.*,
                 seq.Gene
             FROM
-                tblIsolates iso,
+                tblEntries iso,
                 tblSequences seq
             WHERE
                 iso.Accession = seq.Accession
@@ -449,7 +458,7 @@ def creat_views(db_file):
             d.*,
             a.*
         FROM
-            tblIsolates a,
+            tblEntries a,
             tblGBRefLink b,
             tblGBPubRefLink c,
             tblPublications d
@@ -469,7 +478,7 @@ def creat_views(db_file):
             d.*,
             a.*
         FROM
-            tblIsolates a,
+            tblEntries a,
             tblGBRefLink b,
             tblGBPubRefLink c,
             (SELECT * FROM tblPublications i LEFT JOIN tblPublicationData j ON i.PubID = j.PubID) d
@@ -488,7 +497,7 @@ def creat_views(db_file):
     # SELECT
     #     COUNT(DISTINCT Accession) AS NumAccessions
     # FROM
-    #     tblIsolates;
+    #     tblEntries;
     # """
     # run_create_view(db_file, vNumAccessions)
 
@@ -505,7 +514,7 @@ def creat_views(db_file):
     CREATE VIEW vIsolateMissingData AS
     SELECT
         *
-    FROM tblIsolates
+    FROM tblEntries
     WHERE
         NonClinical IS ""
     AND
@@ -568,46 +577,46 @@ def creat_views(db_file):
     SELECT
         COUNT(
             DISTINCT
-            CASE WHEN tblIsolates.Host LIKE '%*%'
+            CASE WHEN tblEntries.Host LIKE '%*%'
                 THEN tblGBRefLink.RefID
             END) AS submission_host,
         COUNT(
             DISTINCT
-            CASE WHEN tblIsolates.Host LIKE '%*%'
-                THEN tblIsolates.Accession
+            CASE WHEN tblEntries.Host LIKE '%*%'
+                THEN tblEntries.Accession
             END) AS isolate_host,
         COUNT(
             DISTINCT
-            CASE WHEN tblIsolates.Specimen LIKE '%*%'
+            CASE WHEN tblEntries.Specimen LIKE '%*%'
                 THEN tblGBRefLink.RefID
             END) AS submission_specimen,
         COUNT(
             DISTINCT
-            CASE WHEN tblIsolates.Specimen LIKE '%*%'
-                THEN tblIsolates.Accession
+            CASE WHEN tblEntries.Specimen LIKE '%*%'
+                THEN tblEntries.Accession
             END) AS isolate_specimen,
         COUNT(
             DISTINCT
-            CASE WHEN tblIsolates.Country LIKE '%*%'
+            CASE WHEN tblEntries.Country LIKE '%*%'
                 THEN tblGBRefLink.RefID
             END) AS submission_country,
         COUNT(
             DISTINCT
-            CASE WHEN tblIsolates.Country LIKE '%*%'
-                THEN tblIsolates.Accession
+            CASE WHEN tblEntries.Country LIKE '%*%'
+                THEN tblEntries.Accession
             END) AS isolate_country,
         COUNT(
-            DISTINCT CASE WHEN tblIsolates.IsolateYear LIKE '%*%'
+            DISTINCT CASE WHEN tblEntries.IsolateYear LIKE '%*%'
                 THEN tblGBRefLink.RefID
             END) AS submission_IsolateYear,
         COUNT(
-            DISTINCT CASE WHEN tblIsolates.IsolateYear LIKE '%*%'
-                THEN tblIsolates.Accession
+            DISTINCT CASE WHEN tblEntries.IsolateYear LIKE '%*%'
+                THEN tblEntries.Accession
             END) AS isolate_IsolateYear
     FROM
         tblGBRefLink
     JOIN
-        tblIsolates ON tblGBRefLink.Accession = tblIsolates.Accession
+        tblEntries ON tblGBRefLink.Accession = tblEntries.Accession
     ;
     """
 
@@ -634,7 +643,7 @@ def creat_views(db_file):
             ELSE Country
         END AS Country,
         NonClinical
-    FROM tblIsolates;
+    FROM tblEntries;
     """
     run_create_view(db_file, vIsolateOrig)
 
@@ -661,7 +670,7 @@ def creat_views(db_file):
             END AS IsolateYear,
             seq.Gene
         FROM
-            tblIsolates iso
+            tblEntries iso
             LEFT JOIN tblSequences seq ON iso.Accession = seq.Accession
             JOIN tblGBRefLink ON iso.Accession = tblGBRefLink.Accession
             JOIN vGPMatched match ON tblGBRefLink.RefID = match.RefID
@@ -750,9 +759,9 @@ def creat_views(db_file):
     CREATE TABLE vSubmissionPubLinkedSeqDataAgg AS
     WITH temp_selection AS (
     SELECT
-        match.SubmissionSet,  
-        COALESCE(match.Publication, '') AS Publication, 
-        seq.Accession AS IsolateAccession,  
+        match.SubmissionSet,
+        COALESCE(match.Publication, '') AS Publication,
+        seq.Accession AS IsolateAccession,
         CASE
             WHEN iso.Host != 'Not available' THEN iso.Host
             WHEN pData.Host IS NOT NULL AND pData.Host != '' THEN pData.Host
@@ -770,7 +779,7 @@ def creat_views(db_file):
         END AS IsolateYear,
         seq.Gene
     FROM
-        tblIsolates iso
+        tblEntries iso
         LEFT JOIN tblSequences seq ON iso.Accession = seq.Accession
         JOIN tblGBRefLink ON iso.Accession = tblGBRefLink.Accession
         JOIN vGPMatched match ON tblGBRefLink.RefID = match.RefID
@@ -791,7 +800,7 @@ SELECT
 
     GROUP_CONCAT(DISTINCT Gene) AS Genes,
 
-    GROUP_CONCAT(DISTINCT IsolateAccession) AS Accessions,  
+    GROUP_CONCAT(DISTINCT IsolateAccession) AS Accessions,
 
     COUNT(DISTINCT IsolateAccession) AS NumAccessions
 
@@ -802,7 +811,6 @@ SELECT
         temp_selection.SubmissionSet;
     """
     run_create_view(db_file, vSubmissionPubLinkedSeqDataAgg)
-
 
 
 def fill_in_table(db_file, table_name, table):

@@ -42,7 +42,7 @@ def main():
     # The virus_obj contains links to pubmed tables, genbank tables
     virus_obj = load_virus_obj(virus)
 
-    references, features, genes = extract_genbank_ref_feature_gene(virus_obj)
+    references, isolates, features, genes = extract_genbank_ref_feature_gene(virus_obj)
 
     references = find_publications_by_PubMed(virus_obj, references)
 
@@ -59,7 +59,7 @@ def main():
     #   Pubmed literatures
     #   Pubmed GenBank Matches
     create_database(
-        virus_obj, references, features, genes,
+        virus_obj, references, isolates, features, genes,
         literature, lit_ref_match)
 
 
@@ -122,13 +122,24 @@ def extract_genbank_ref_feature_gene(virus_obj):
     # Summarize GenBank and PubMed data, see outut in datalog_genbank.txt and datalog_pubmed.txt
     summarize_genbank(references, features, genes, virus_obj)
 
+    isolates = pd.read_excel(virus_obj.isolate_file)
+
+    isolates = pd.DataFrame([
+        {
+            'IsolateID': idx + 1,
+            'Accession': acc.strip(),
+        }
+        for idx, row in isolates.iterrows()
+        for acc in row['Accession'].split(',')
+    ])
+
     # Updates gene DataFrame with corresponding metadata from features DataFrame based on matching accession numbers
     genes = update_genes_by_features(genes, features)
     # Pick sequences for genes in each virus and generate phylogenetic tree - requirements vary for each
 
     virus_obj.pick_phylo_sequence(genes)
 
-    return references, features, genes
+    return references, isolates, features, genes
 
 
 def find_publications_by_PubMed(virus, genbank):

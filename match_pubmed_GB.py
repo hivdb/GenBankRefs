@@ -88,7 +88,7 @@ def match_pubmed_GB(
 
     logger = virus_obj.get_logger('compare_matched')
     summarize_combined_data(
-        combined, genbank_feature, genbank_genes, logger)
+        virus_obj, combined, genbank_feature, genbank_genes, logger)
 
     logger.report(summarize_genbank_full_genome(
         genbank_match, genbank_feature,
@@ -407,7 +407,7 @@ def match_pubmed2genbank(genbank_match):
     return pubmed_match
 
 
-def summarize_combined_data(combined, features, genes, logger):
+def summarize_combined_data(virus_obj, combined, features, genes, logger):
     summarize_report = []
 
     section = ['Summarize PubMed GenBank Match']
@@ -532,7 +532,7 @@ def summarize_combined_data(combined, features, genes, logger):
 
     logger.report(summarize_report)
 
-    logger.report(summarize_genbank_by_seq(features, genes, 'isolate_with_pubmed_'))
+    logger.report(summarize_genbank_by_seq(virus_obj, features, genes, 'isolate_with_pubmed_'))
 
 
 def summarize_similarity(df, col_name):

@@ -73,6 +73,10 @@ class Virus:
         return self.output_dir / 'excels'
 
     @property
+    def isolate_file(self):
+        return self.output_excel_dir / f"{self.name}_isolates.xlsx"
+
+    @property
     def timestamp_dir(self):
         d = self.output_excel_dir / timestamp
         d.mkdir(exist_ok=True)
