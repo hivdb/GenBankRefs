@@ -29,7 +29,7 @@ def aggregate_references(references, virus_obj, save_data=False):
 
     grouped_ref['accession'] = grouped_ref['accession'].apply(
         lambda x: ', '.join(x))
-    print("Number of entries following aggregation by exact matches: ",
+    print("Number of Submission sets following aggregation by exact matches: ",
           len(grouped_ref))
 
     grouped_ref['RowID'] = grouped_ref.index + 1
@@ -68,7 +68,7 @@ def aggregate_references(references, virus_obj, save_data=False):
 
         merged_ref.at[idx, 'ShortName'] = short_name
 
-    print("Number of entries following aggregation by similarity: ",
+    print("Number of Submission sets following aggregation by similarity: ",
           len(merged_ref))
 
     # merged_ref['RefID'] = merged_ref.index + 1
@@ -79,6 +79,41 @@ def aggregate_references(references, virus_obj, save_data=False):
         merged_ref.to_excel(str(virus_obj.merged_ref_file), index=False)
 
     return merged_ref
+
+
+def remove_no_pmid_ref_by_linked_accession(virus, ref):
+    ref_with_pmid = ref[ref['PMID'] != '']
+    acc_in_ref_with_pmid = set([
+        acc.strip()
+        for idx, row in ref_with_pmid.iterrows()
+        for acc in row['accession'].split(',')
+    ])
+    # print(acc_in_ref_with_pmid[:3], len(acc_in_ref_with_pmid))
+    ref_without_pmid = ref[ref['PMID'] == '']
+    # print(len(ref_with_pmid), len(ref_without_pmid))
+
+    remove_ref = []
+    keep_ref = []
+    for idx, row in ref_without_pmid.iterrows():
+        acc_list = [
+            acc.strip()
+            for acc in row['accession'].split(',')
+        ]
+        acc_checked = [
+            acc
+            for acc in acc_list
+            if acc in acc_in_ref_with_pmid
+        ]
+
+        if (len(acc_checked) / len(acc_list)) == 1:
+            remove_ref.append(row)
+        else:
+            keep_ref.append(row)
+
+    keep_ref = pd.concat([ref_with_pmid, pd.DataFrame(keep_ref)])
+    print('Number of Submission sets after remove duplicated Acc:', len(keep_ref))
+    pd.DataFrame(remove_ref).to_excel(virus.output_excel_dir / f'{virus.name}_remove_submissions.xlsx')
+    return keep_ref
 
 
 def get_fixed_Ref_ID(virus, references):

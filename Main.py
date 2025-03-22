@@ -12,6 +12,7 @@ from genbank_records import process_features
 from genbank_records import process_gene_list
 
 from DataFrameLogic import aggregate_references
+from DataFrameLogic import remove_no_pmid_ref_by_linked_accession
 from DataFrameLogic import combine_refs_and_features
 
 from summarize_genbank import summarize_genbank
@@ -93,8 +94,8 @@ def extract_genbank_ref_feature_gene(virus_obj):
     # Extract reference (Author, Title, Journal, Year, Accessions) and combine
     # those that are from the same submission (title, author, pmid match)
     print("Number of Total GenBank References:", len(total_references))
-    total_references = process_references(total_references)
-    total_references = aggregate_references(total_references, virus_obj)
+    # total_references = process_references(total_references)
+    # total_references = aggregate_references(total_references, virus_obj)
 
     print('-' * 80)
 
@@ -110,6 +111,7 @@ def extract_genbank_ref_feature_gene(virus_obj):
     print("Number of GenBank References after remove non clinical isolates:", len(references))
     references = process_references(references)
     references = aggregate_references(references, virus_obj, save_data=True)
+    references = remove_no_pmid_ref_by_linked_accession(virus_obj, references)
 
     # Combine references and features
     combined_df = combine_refs_and_features(references, features, genes)
