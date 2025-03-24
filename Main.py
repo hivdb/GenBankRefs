@@ -82,14 +82,16 @@ def extract_genbank_ref_feature_gene(virus_obj):
 
     # Extract genes from all blast entries and additional detected via local alignment
     genes = process_gene_list(genes, run_blast, virus_obj)
-    print("Number of Genes:", len(genes))
 
     # Extract features from all GenBank entries, filtering out isolates without detected genes in the features_df
-    print('Number of GenBank records:', len(features))
+    print('Number of GenBank Accessions:', len(features))
     features = process_features(features, genes, virus_obj)
 
-    print("Number of GenBank References:", len(references))
     acc_list = features['Accession'].tolist()
+    genes = genes[genes['Accession'].isin(acc_list)]
+    print("Number of Genes:", len(genes))
+
+    print("Number of GenBank References:", len(references))
 
     # Extract reference (Author, Title, Journal, Year, Accessions) and combine
     # those that are from the same submission (title, author, pmid match)
