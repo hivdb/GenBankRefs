@@ -10,6 +10,7 @@ from Utilities import (get_pcnt_authors_overlap,
                        dict_to_sorted_string,
                        convert_dict_to_list_of_sets,
                        combine_items_in_different_lists,
+                       combine_authors_in_different_lists,
                        create_binned_seq_lens,
                        create_binned_pcnts)
 from Utilities import load_csv
@@ -113,6 +114,7 @@ def remove_no_pmid_ref_by_linked_accession(virus, ref):
     keep_ref = pd.concat([ref_with_pmid, pd.DataFrame(keep_ref)])
     print('Number of Submission sets after remove duplicated Acc:', len(keep_ref))
     pd.DataFrame(remove_ref).to_excel(virus.output_excel_dir / f'{virus.name}_remove_submissions.xlsx')
+    keep_ref.to_excel(virus.output_excel_dir / f'{virus.name}_keep_submissions.xlsx')
     return keep_ref
 
 
@@ -445,8 +447,11 @@ def merge_rows(df, merged_rowID):
     new_row = {}
     rows = df[df['RowID'].isin(merged_rowID)]
 
-    authors_list = rows['Authors'].tolist()
-    new_row['Authors'] = combine_items_in_different_lists(authors_list, spliter=',')
+    authors_list = list(set(rows['Authors'].tolist()))
+    if len(authors_list) == 1:
+        new_row['Authors'] = authors_list[0]
+    else:
+        new_row['Authors'] = combine_authors_in_different_lists(authors_list, spliter=',')
 
     titles_list = rows['Title'].tolist()
     titles_list = [i.capitalize() for i in titles_list if i != 'Direct Submission']

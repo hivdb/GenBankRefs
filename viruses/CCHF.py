@@ -33,9 +33,9 @@ class CCHF(Virus):
     def pubmed_search_missing(self):
         return self.pubmed_folder / "ReferenceSummary_PubMed_Missing_Mar17.xlsx"
 
-    @property
-    def pubmed_genbank_hardlink(self):
-        return self.pubmed_folder / "Reference_Hardlink_Jan31.xlsx"
+    # @property
+    # def pubmed_genbank_hardlink(self):
+    #     return self.pubmed_folder / "Reference_Hardlink_Jan31.xlsx"
 
     def build_blast_db(self):
         build_blast_db(self)
