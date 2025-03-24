@@ -338,4 +338,4 @@ Pubmed Literatures, likely: 32
 Pubmed Literatures, both unlikely: 0
 Only from GenBank Search: 2
 Pubmed Literature with additional Literature from GenBank Only: 34
-Not found in PubMed or GenBank Search: 4
+Not found in PubMed or GenBank Search: 3

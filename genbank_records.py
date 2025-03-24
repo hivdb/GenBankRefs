@@ -34,6 +34,7 @@ def parse_genbank_records(genbank_file):
     nonclinical_list = []
 
     total_ref_list = []
+    lab_host_list = []
 
     # total_record = 0
 
@@ -85,9 +86,16 @@ def parse_genbank_records(genbank_file):
                 nonclinical_list.append(record)
                 continue
 
+            if features['lab_host']:
+                lab_host_list.append(record)
+                nonclinical_list.append(record)
+                continue
+
             reference_list.extend(refs)
             feature_list.append(features)
             gene_list.extend(genes)
+
+    print('# Lab host accessions:', len(lab_host_list))
 
     return (
         total_ref_list,
@@ -122,6 +130,8 @@ def process_one_record(record):
         'geo_loc_name_source', '')
     features['collection_date'] = feature_data.get(
         'collection_date_source', '')
+
+    features['lab_host'] = feature_data.get('lab_host_source', '')
 
     features['Seq'] = str(record.seq)
     features['SeqLength'] = len(record.seq)
