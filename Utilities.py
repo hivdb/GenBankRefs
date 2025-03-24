@@ -64,6 +64,7 @@ def process_author_field(names):
         # Take only the first character of the initials
         first_initial = initials[0]
         processed_name = last_name + ' ' + first_initial + '.'
+        # processed_name = last_name + ' ' + initials.replace('.', '')
         processed_names.append(processed_name)
 
     processed_names = ', '.join(processed_names)
@@ -116,6 +117,50 @@ def combine_items_in_different_lists(lists, spliter=None):
 
     unique_items = ', '.join(sorted(list(unique_value)))
     return unique_items
+
+
+def combine_authors_in_different_lists(lists, spliter=None):
+
+    lists = sorted(lists)
+
+    firsts = []
+    middles = []
+    lasts = []
+    for value in lists:
+        value = str(value)
+        value_list = [
+                i.strip()
+                for i in value.split(spliter)
+                if i.strip()
+            ]
+        if len(value_list) < 1:
+            first = []
+            middle = []
+            last = []
+        elif len(value_list) == 1:
+            first = value_list
+            middle = []
+            last = []
+        else:
+            first = value_list[:1]
+            middle = value_list[1:-1]
+            last = value_list[-1:]
+
+        firsts.extend(first)
+        middles.extend(middle)
+        lasts.extend(last)
+
+    firsts = list(dict.fromkeys(firsts))
+    lasts = list(dict.fromkeys(lasts))
+    middles = [
+        i
+        for i in middles
+        if (i not in firsts) and (i not in lasts)
+    ]
+    # middles = list(dict.fromkeys(middles))
+
+    authors = firsts + middles + lasts
+    return ', '.join(authors)
 
 
 # Convert {key: [values], key: [values]] to a list of sets comprising {key, values}

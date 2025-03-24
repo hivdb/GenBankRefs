@@ -29,9 +29,9 @@ class Lassa(Virus):
     def pubmed_additional_from_gb(self):
         return self.pubmed_folder / "ReferenceSummary_Genbank_Feb19.xlsx"
 
-    @property
-    def pubmed_genbank_hardlink(self):
-        return self.pubmed_folder / "Reference_Hardlink_Jan31.xlsx"
+    # @property
+    # def pubmed_genbank_hardlink(self):
+    #     return self.pubmed_folder / "Reference_Hardlink_Jan31.xlsx"
 
     @property
     def pubmed_search_missing(self):
