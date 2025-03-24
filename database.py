@@ -299,7 +299,7 @@ def creat_views(db_file):
     run_create_view(db_file, vSubmissionPub)
 
     vGPMatched = """
-        CREATE VIEW vGPMatched AS
+        CREATE TABLE vGPMatched AS
         WITH temp_isolate AS (
             SELECT
                 iso.*,
@@ -755,13 +755,13 @@ def creat_views(db_file):
     """
     run_create_view(db_file, vMatchNotByPMID)
 
-    vSubmissionPubLinkedSeqDataAgg = """
-    CREATE TABLE vSubmissionPubLinkedSeqDataAgg AS
-    WITH temp_selection AS (
+    tblSubmissionPubLinkedSeqData = """
+    CREATE TABLE vSubmissionPubLinkedSeqData AS
     SELECT
         match.SubmissionSet,
         COALESCE(match.Publication, '') AS Publication,
         seq.Accession AS IsolateAccession,
+        iso2.IsolateID,
         CASE
             WHEN iso.Host != 'Not available' THEN iso.Host
             WHEN pData.Host IS NOT NULL AND pData.Host != '' THEN pData.Host
@@ -781,36 +781,41 @@ def creat_views(db_file):
     FROM
         tblEntries iso
         LEFT JOIN tblSequences seq ON iso.Accession = seq.Accession
+        LEFT JOIN tblIsolates iso2 ON iso.Accession = iso2.Accession
         JOIN tblGBRefLink ON iso.Accession = tblGBRefLink.Accession
         JOIN vGPMatched match ON tblGBRefLink.RefID = match.RefID
-        JOIN tblPubLicationData pData
-    WHERE
-        NonClinical = ''
-)
-SELECT
-    COUNT(DISTINCT temp_selection.SubmissionSet) AS NumSubmissions,
+        JOIN tblPublicationData pData ON match.PubID = pData.PubID
 
-    temp_selection.SubmissionSet AS SubmissionSet,
+    """
+    run_create_view(db_file, tblSubmissionPubLinkedSeqData)
 
-    GROUP_CONCAT(DISTINCT temp_selection.Publication) AS Publications,
+    tblSubmissionPubLinkedSeqDataAgg = """
+    CREATE TABLE vSubmissionPubLinkedSeqDataAgg AS
+    SELECT
+        SubmissionSet,
 
-    REPLACE(COALESCE(Host, ''), '*', '') AS Host,
-    REPLACE(COALESCE(Country, ''), '*', '') AS Country,
-    REPLACE(COALESCE(IsolateYear, ''), '*', '') AS IsolateYear,
+        COUNT(DISTINCT SubmissionSet) AS NumSubmissions,
 
-    GROUP_CONCAT(DISTINCT Gene) AS Genes,
+        GROUP_CONCAT(DISTINCT Publication) AS Publications,
 
-    GROUP_CONCAT(DISTINCT IsolateAccession) AS Accessions,
+        REPLACE(COALESCE(Host, ''), '*', '') AS Host,
+        REPLACE(COALESCE(Country, ''), '*', '') AS Country,
+        REPLACE(COALESCE(IsolateYear, ''), '*', '') AS IsolateYear,
 
-    COUNT(DISTINCT IsolateAccession) AS NumAccessions
+        GROUP_CONCAT(DISTINCT Gene) AS Genes,
 
+        GROUP_CONCAT(DISTINCT IsolateAccession) AS Accessions,
+        COUNT(DISTINCT IsolateAccession) AS NumAccessions,
+
+        GROUP_CONCAT(DISTINCT IsolateID) AS IsolateIDs,
+        COUNT(DISTINCT IsolateID) AS NumIsolate
 
     FROM
-        temp_selection
+        vSubmissionPubLinkedSeqData
     GROUP BY
-        temp_selection.SubmissionSet;
+        SubmissionSet;
     """
-    run_create_view(db_file, vSubmissionPubLinkedSeqDataAgg)
+    run_create_view(db_file, tblSubmissionPubLinkedSeqDataAgg)
 
 
 def fill_in_table(db_file, table_name, table):
