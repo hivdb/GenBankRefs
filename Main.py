@@ -76,7 +76,7 @@ def extract_genbank_ref_feature_gene(virus_obj):
         virus_obj.genbank_file)
 
     excludes = pd.DataFrame(nonvirus)
-    print("Number of excluded records:", len(excludes))
+    print("Number of excluded non virus records:", len(excludes))
     print('Number of non clinical records:', len(nonclinical))
     # excludes.to_excel(str(virus_obj.exclude_seq_file), index=False)
 
