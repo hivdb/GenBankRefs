@@ -292,7 +292,7 @@ def process_features(feature_list, genes, virus_obj):
         str(virus_obj.genbank_feature_check_file)).fillna('')
 
     excluded_features = features_df[(features_df["Genes"].isna() | (features_df["Genes"] == ""))]
-    print('Excluded isolates', len(excluded_features))
+    print('Excluded isolates without Gene', len(excluded_features))
 
     # Drop sequences with no detected genes
     features_df = features_df[~(features_df["Genes"].isna() | (features_df["Genes"] == ""))]
