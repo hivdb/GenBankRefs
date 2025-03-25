@@ -29,7 +29,7 @@ def aggregate_references(references, virus_obj, save_data=False):
             'accession'].apply(list).reset_index()
 
     grouped_ref['accession'] = grouped_ref['accession'].apply(
-        lambda x: ', '.join(x))
+        lambda x: ', '.join(sorted(list(set(x)))))
     print("Number of Submission sets following aggregation by exact matches: ",
           len(grouped_ref))
 
