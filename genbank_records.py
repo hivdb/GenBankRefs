@@ -91,6 +91,11 @@ def parse_genbank_records(genbank_file):
                 nonclinical_list.append(record)
                 continue
 
+            if 'mouse-adapted' in features['note']:
+                lab_host_list.append(record)
+                nonclinical_list.append(record)
+                continue
+
             reference_list.extend(refs)
             feature_list.append(features)
             gene_list.extend(genes)
@@ -135,6 +140,8 @@ def process_one_record(record):
 
     features['Seq'] = str(record.seq)
     features['SeqLength'] = len(record.seq)
+
+    features['note'] = feature_data.get('note_source', '')
 
     gene_seq = [
         i
