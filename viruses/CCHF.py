@@ -23,15 +23,15 @@ class CCHF(Virus):
 
     @property
     def pubmed_file(self):
-        return self.pubmed_folder / "ReferenceSummary_Feb25.xlsx"
+        return self.pubmed_folder / "ReferenceSummary_Mar25.xlsx"
 
     @property
     def pubmed_additional_from_gb(self):
-        return self.pubmed_folder / "ReferenceSummary_Genbank_Feb25.xlsx"
+        return self.pubmed_folder / "ReferenceSummary_Genbank_Mar25.xlsx"
 
     @property
     def pubmed_search_missing(self):
-        return self.pubmed_folder / "ReferenceSummary_PubMed_Missing_Mar17.xlsx"
+        return self.pubmed_folder / "ReferenceSummary_PubMed_Missing_Mar25.xlsx"
 
     # @property
     # def pubmed_genbank_hardlink(self):
