@@ -30,7 +30,7 @@ def aggregate_references(references, virus_obj, save_data=False):
 
     grouped_ref['accession'] = grouped_ref['accession'].apply(
         lambda x: ', '.join(sorted(list(set(x)))))
-    print("Number of Submission sets following aggregation by exact matches: ",
+    print("# Submission sets following aggregation by exact matches: ",
           len(grouped_ref))
 
     grouped_ref['RowID'] = grouped_ref.index + 1
@@ -69,7 +69,7 @@ def aggregate_references(references, virus_obj, save_data=False):
 
         merged_ref.at[idx, 'ShortName'] = short_name
 
-    print("Number of Submission sets following aggregation by similarity: ",
+    print("# Submission sets following aggregation by similarity: ",
           len(merged_ref))
 
     # merged_ref['RefID'] = merged_ref.index + 1
@@ -112,7 +112,7 @@ def remove_no_pmid_ref_by_linked_accession(virus, ref):
             keep_ref.append(row)
 
     keep_ref = pd.concat([ref_with_pmid, pd.DataFrame(keep_ref)])
-    print('Number of Submission sets after remove duplicated Acc:', len(keep_ref))
+    print('# Submission sets after remove duplicated Acc:', len(keep_ref))
     pd.DataFrame(remove_ref).to_excel(virus.output_excel_dir / f'{virus.name}_remove_submissions.xlsx')
     keep_ref.to_excel(virus.output_excel_dir / f'{virus.name}_keep_submissions.xlsx')
     return keep_ref

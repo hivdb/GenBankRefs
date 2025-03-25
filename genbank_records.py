@@ -30,13 +30,12 @@ def parse_genbank_records(genbank_file):
     reference_list = []
     feature_list = []
     gene_list = []
+
     nonvirus_list = []
     nonclinical_list = []
-
-    total_ref_list = []
     lab_host_list = []
 
-    # total_record = 0
+    total_ref_list = []
 
     exclusion_keywords = [
         'patent',
@@ -83,32 +82,37 @@ def parse_genbank_records(genbank_file):
                     should_exclude = True
 
             if should_exclude:
-                nonclinical_list.append(record)
+                nonclinical_list.append(features)
                 continue
 
             if features['lab_host']:
-                lab_host_list.append(record)
-                nonclinical_list.append(record)
+                lab_host_list.append(features)
+                nonclinical_list.append(features)
                 continue
 
             if 'mouse-adapted' in features['note']:
-                lab_host_list.append(record)
-                nonclinical_list.append(record)
+                lab_host_list.append(features)
+                nonclinical_list.append(features)
                 continue
 
             reference_list.extend(refs)
             feature_list.append(features)
             gene_list.extend(genes)
 
+    print('# Total accessions:', len(feature_list) + len(nonvirus_list) + len(nonclinical_list))
     print('# Lab host accessions:', len(lab_host_list))
+
+    print("# excluded non virus records:", len(nonvirus_list))
+    print('# non clinical records (including lab host):', len(nonclinical_list))
+
+    exclude_list = nonvirus_list + nonclinical_list
 
     return (
         total_ref_list,
         reference_list,
         feature_list,
         gene_list,
-        nonvirus_list,
-        nonclinical_list
+        pd.DataFrame(exclude_list)
         )
 
 
@@ -292,13 +296,13 @@ def process_features(feature_list, genes, virus_obj):
         str(virus_obj.genbank_feature_check_file)).fillna('')
 
     excluded_features = features_df[(features_df["Genes"].isna() | (features_df["Genes"] == ""))]
-    print('Excluded isolates without Gene', len(excluded_features))
+    print('# Excluded isolates without Gene', len(excluded_features))
 
     # Drop sequences with no detected genes
     features_df = features_df[~(features_df["Genes"].isna() | (features_df["Genes"] == ""))]
-    print('Total number of isolates included', len(features_df))
+    print('# Accessions included', len(features_df))
 
-    return features_df
+    return features_df, excluded_features
 
 
 def process_gene_list(gene_list, run_blast, virus_obj):

@@ -71,31 +71,37 @@ def extract_genbank_ref_feature_gene(virus_obj):
     # Filtering out those that are not in the same virus category or are not clinical isolates
     (
         total_references, references,
-        features, genes, nonvirus, nonclinical
+        features, genes, exclude_acc_list
     ) = parse_genbank_records(
         virus_obj.genbank_file)
-
-    excludes = pd.DataFrame(nonvirus)
-    print("Number of excluded non virus records:", len(excludes))
-    print('Number of non clinical records:', len(nonclinical))
-    # excludes.to_excel(str(virus_obj.exclude_seq_file), index=False)
 
     # Extract genes from all blast entries and additional detected via local alignment
     genes = process_gene_list(genes, run_blast, virus_obj)
 
     # Extract features from all GenBank entries, filtering out isolates without detected genes in the features_df
-    print('Number of GenBank Accessions:', len(features))
-    features = process_features(features, genes, virus_obj)
+    print('# GenBank Accessions:', len(features))
+    features, exclude_features = process_features(features, genes, virus_obj)
+
+    exclude_acc_list = pd.concat([exclude_acc_list, exclude_features])
+    print('# Total exclude accessions:', len(exclude_acc_list))
 
     acc_list = features['Accession'].tolist()
     genes = genes[genes['Accession'].isin(acc_list)]
-    print("Number of Genes:", len(genes))
+    print("# Genes:", len(genes))
 
-    print("Number of GenBank References:", len(references))
+    print('-' * 80)
+
+    print("# Total GenBank References:", len(total_references))
+
+    before_reference = references.copy()
+    print("# Before excluding GenBank References:", len(before_reference))
+
+    before_reference = process_references(before_reference)
+    before_reference = aggregate_references(before_reference, virus_obj, save_data=False)
+    before_reference = remove_no_pmid_ref_by_linked_accession(virus_obj, before_reference)
 
     # Extract reference (Author, Title, Journal, Year, Accessions) and combine
     # those that are from the same submission (title, author, pmid match)
-    print("Number of Total GenBank References:", len(total_references))
     # total_references = process_references(total_references)
     # total_references = aggregate_references(total_references, virus_obj)
 
@@ -110,7 +116,8 @@ def extract_genbank_ref_feature_gene(virus_obj):
         ])
     ]
 
-    print("Number of GenBank References after remove non clinical isolates:", len(references))
+    print("# GenBank References after remove excluded accessions:", len(references))
+
     references = process_references(references)
     references = aggregate_references(references, virus_obj, save_data=True)
     references = remove_no_pmid_ref_by_linked_accession(virus_obj, references)
