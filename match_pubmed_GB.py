@@ -210,7 +210,8 @@ def match(virus, pubmed, genbank, logger):
 
     dump_data = []
     for gen, pub_list, _, _ in genbank_match_list:
-        gen['Pub_PMID'] = ', '.join(pub_list['PMID'].to_list())
+        gen = gen.copy()
+        gen['Pub_PMID'] = ', '.join(pub_list['PMID'].tolist())
         dump_data.append(gen)
 
     pd.DataFrame(dump_data).to_excel(virus.output_excel_dir / f'{virus.name}_Genbank_match_PMID.xlsx')
