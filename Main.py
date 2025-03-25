@@ -45,6 +45,11 @@ def main():
 
     references, isolates, features, genes = extract_genbank_ref_feature_gene(virus_obj)
 
+    for idx, row in references.iterrows():
+        if row['PMID']:
+            references.loc[idx, 'PMID_Source'] = 'GenBank'
+        else:
+            references.loc[idx, 'PMID_Source'] = ''
     references = find_publications_by_PubMed(virus_obj, references)
 
     references = find_publications_by_AI(virus_obj, references)
@@ -171,6 +176,7 @@ def find_publications_by_PubMed(virus, genbank):
             except ValueError:
                 genbank.loc[idx, 'PMID'] = str(pmid)
             counter += 1
+            genbank.loc[idx, 'PMID_Source'] = 'PubMed'
 
     print(counter, 'sets find publications by PubMed API.')
     return genbank
@@ -204,6 +210,7 @@ def find_publications_by_AI(virus, genbank):
             except ValueError:
                 genbank.loc[idx, 'PMID'] = str(pmid)
             counter += 1
+            genbank.loc[idx, 'PMID_Source'] = 'AI'
 
     print(counter, 'sets find publications by AI.')
     return genbank
