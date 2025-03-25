@@ -1,12 +1,12 @@
 Genbank match by pmid: 31
 Genbank match by title: 0
-Genbank match by acc: 26
+Genbank match by acc: 27
 Genbank match by acc or title not by pubmed: 0
 Genbank match total: 31
 --------------------------------------------------------------------------------
 Pubmed match by pmid: 30
 Pubmed match by title: 0
-Pubmed match by acc: 27
+Pubmed match by acc: 28
 Pubmed match total: 33
 Summarize PubMed GenBank Match
 ================================================================================
