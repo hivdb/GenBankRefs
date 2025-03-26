@@ -414,7 +414,7 @@ def create_binnned_year(years):
     percentages = {label: round((count / total_count) * 100, 1) for label, count in non_zero_counts.items()}
 
     result_str = ", ".join(
-        [f"{label} ({count}) ({percentages[label]})%" for label, count in non_zero_counts.items()])
+        [f"{label} ({count}) ({percentages[label]}%)" for label, count in non_zero_counts.items()])
 
     return result_str
 
