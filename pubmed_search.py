@@ -62,8 +62,10 @@ def search_by_pubmed_API(
 
         answers = answers.to_dict(orient='records')
 
+    genbank['PMID'] = genbank['PMID'].fillna('').astype(str)
+
     for idx, row in genbank.iterrows():
-        if 'PMID' in row and row['PMID']:
+        if 'PMID' in row and row['PMID'].strip():
             continue
 
         title_pmid = []
@@ -74,7 +76,7 @@ def search_by_pubmed_API(
         author_pmid = []
         authors = row['Authors']
         if authors != 'NCBI':
-            author_pmid += search_pubmed(authors, retmax=3)
+            author_pmid += search_pubmed(authors, retmax=5)
             authors = list(set([
                 i.strip()
                 for i in authors.split(',')
@@ -83,7 +85,7 @@ def search_by_pubmed_API(
             # print('# Combo', len(combo))
             for a1, a2 in combo:
                 search_term = f'{a1} and {a2} and {virus.name}'
-                author_pmid += search_pubmed(search_term, retmax=3)
+                author_pmid += search_pubmed(search_term, retmax=5)
 
         accession_pmids = []
         for i in row['accession'].split(','):
@@ -111,10 +113,9 @@ def search_by_pubmed_API(
             'PMID_acc': ', '.join([str(p) for p in set(accession_pmids)]),
             # 'PMID_acc2': ', '.join([str(p) for p in set(accession_pmids_2)]),
         })
-        print('pubmed search', idx)
+        print('pubmed search', row['RefID'])
 
         pd.DataFrame(answers).to_excel(cache_file, index=False)
 
     print('Please check PubMed Search result by hand.')
-
-    return genbank
+    exit()
