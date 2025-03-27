@@ -1,6 +1,7 @@
 from Bio import Entrez
 import pandas as pd
 import time
+from itertools import combinations
 
 Entrez.email = "rshafer.stanford.edu"
 
@@ -48,15 +49,9 @@ def search_by_pubmed_API(
 
     cache_file = virus.output_excel_dir / f'{virus.name}_pubmed_search.xlsx'
 
-    if (
-            not virus.pubmed_search_result.exists()
-            and (cache_file.exists() and not overwrite)):
-        print('Please check PubMed Search result by hand.')
-        exit()
-
     answers = []
 
-    if cache_file.exists() and not overwrite:
+    if cache_file.exists():
         answers = pd.read_excel(cache_file)
         answer_map = {
             int(i['RefID']): i['PMID']
@@ -65,18 +60,30 @@ def search_by_pubmed_API(
         for idx, row in genbank.iterrows():
             genbank.at[idx, 'PMID'] = answer_map.get(row['RefID'], '')
 
+        answers = answers.to_dict(orient='records')
+
     for idx, row in genbank.iterrows():
         if 'PMID' in row and row['PMID']:
             continue
 
-        title = row['Title'].replace('Direct Submission', '').strip()
-
         title_pmid = []
+        title = row['Title'].replace('Direct Submission', '').strip()
         if title:
             title_pmid = search_pubmed(title, retmax=1)
 
+        author_pmid = []
         authors = row['Authors']
-        author_pmid = search_pubmed(authors, retmax=3)
+        if authors != 'NCBI':
+            author_pmid += search_pubmed(authors, retmax=3)
+            authors = list(set([
+                i.strip()
+                for i in authors.split(',')
+            ]))
+            combo = list(combinations(authors, 2))
+            # print('# Combo', len(combo))
+            for a1, a2 in combo:
+                search_term = f'{a1} and {a2} and {virus.name}'
+                author_pmid += search_pubmed(search_term, retmax=3)
 
         accession_pmids = []
         for i in row['accession'].split(','):
@@ -106,6 +113,8 @@ def search_by_pubmed_API(
         })
         print('pubmed search', idx)
 
-    pd.DataFrame(answers).to_excel(cache_file, index=False)
+        pd.DataFrame(answers).to_excel(cache_file, index=False)
+
+    print('Please check PubMed Search result by hand.')
 
     return genbank
