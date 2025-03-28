@@ -1,7 +1,7 @@
-Genbank match by pmid: 63
+Genbank match by pmid: 64
 Genbank match by title: 0
 Genbank match by acc: 58
-Genbank match by acc or title not by pubmed: 1
+Genbank match by acc or title not by pubmed: 0
 Genbank match total: 64
 --------------------------------------------------------------------------------
 Pubmed match by pmid: 62

@@ -285,22 +285,32 @@ def is_same_submission_set(row_i, row_j):
             ('Authors', 'Journal', 'Year'): author_score and journal_score and year_score,
             ('Authors', 'Year', 'Accession'): author_score and year_score and acc_score,
             ('Authors', 'Journal', 'Accession'): author_score and journal_score and acc_score,
-            ('Authors', 'Accession'): author_score and closed_accession_group(accessions_i, accessions_j, 1) and (len(accessions_i) >= 10)
+            ('Authors', 'Accession'): author_score and closed_accession_group(accessions_i, accessions_j, 1) and (len(accessions_i) >= 10),
+            ('Accession',): (
+                closed_accession_group(accessions_i, accessions_j, 1)
+                and (row_i['Title'].upper() == 'Direct Submission'.upper())
+                and (row_j['Title'].upper() == 'Direct Submission'.upper())
+            )
             # journal year, accession
         }
 
-    title_list = [
-        'Emerging viruses are an underestimated cause of undiagnosed febrile illness in uganda'
-    ]
-    if row_i['Title'] in title_list and row_j['Title'] in title_list:
-        print(multiple_scores)
-        print(valid_column)
+    # if (row_i['RowID'] in (71, 82)) and (row_j['RowID'] in (71, 82)):
+    #     print(multiple_scores)
+    #     print(valid_column)
+
+    # title_list = [
+    #     'Emerging viruses are an underestimated cause of undiagnosed febrile illness in uganda'
+    # ]
+    # if row_i['Title'] in title_list and row_j['Title'] in title_list:
+    #     print(multiple_scores)
+    #     print(valid_column)
 
     multiple_scores = [
         v
         for k, v in multiple_scores.items()
         if set(k).issubset(valid_column)
     ]
+
     if any(multiple_scores):
         return 1
 

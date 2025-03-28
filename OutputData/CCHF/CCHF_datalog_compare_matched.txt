@@ -1,10 +1,10 @@
-Genbank match by pmid: 155
+Genbank match by pmid: 160
 Genbank match by title: 0
 Genbank match by acc: 160
-Genbank match by acc or title not by pubmed: 14
+Genbank match by acc or title not by pubmed: 9
 Genbank match total: 169
 --------------------------------------------------------------------------------
-Pubmed match by pmid: 154
+Pubmed match by pmid: 156
 Pubmed match by title: 0
 Pubmed match by acc: 171
 Pubmed match total: 184
