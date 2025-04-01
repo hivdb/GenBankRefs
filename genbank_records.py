@@ -14,16 +14,18 @@ from Utilities import process_author_field
 
 # This is called by the main function to allow users to determine whether
 # BLAST is run
-def select_run_blast(default=None):
-    if default is not None:
-        return default
+def select_run_blast(message='Run blast?', show_option=True):
 
-    result = input('Run blast? [y/n]: ')
-    result = result.lower()
-    assert (result in ['y', 'n']), "Please use y/n."
+    option = input(f'{message} [y/n]: ')
+    option = option.lower()
 
-    print('\n')
-    return 1 if result == 'y' else 0
+    option = option == 'y'
+    if show_option:
+        if option:
+            print('=> Choose Yes')
+        else:
+            print('=> Choose No')
+    return option
 
 
 def parse_genbank_records(genbank_file):
@@ -310,7 +312,7 @@ def process_gene_list(gene_list, run_blast, virus_obj):
     Processes the list of genes associated with a virus, optionally running BLAST to detect additional genes.
 
     Steps:
-    1. If BLAST is enabled (run_blast == 1), build a BLAST database and detect additional genes.
+    1. If BLAST is enabled (run_blast == True), build a BLAST database and detect additional genes.
     2. Identify genes that were missed initially and attempt detection using Biopython.
     3. Sort and store the gene data into an Excel file.
     4. If BLAST isn't enabled, check if a previously processed gene excel file exists and load it.
@@ -320,7 +322,7 @@ def process_gene_list(gene_list, run_blast, virus_obj):
     Returns:
     DataFrame: Processed gene dataset.
     """
-    if run_blast == 1:
+    if run_blast:
         virus_obj.build_blast_db()
 
         gene_list2 = pooled_blast_genes(gene_list, virus_obj)
