@@ -10,11 +10,7 @@ from Utilities import load_csv
 from Utilities import dump_csv
 
 
-def summarize_pubmed(pubmed_file, virus_obj):
-
-    pubmed = pd.read_excel(pubmed_file, dtype=str).fillna('')
-
-    pubmed['ref_source'] = 'PubMed search'
+def summarize_pubmed(pubmed, virus_obj):
 
     summarize_pubmed_reviewer_gpt(pubmed, virus_obj.get_logger('pubmed_workflow'))
 

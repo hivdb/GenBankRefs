@@ -583,3 +583,21 @@ def format_counts_and_percentages(data_dict, total=None):
                     for key, percentage in count_rev_sorter(percentages.items())])
 
     return counts_formatted, percentages_formatted
+
+
+def yes_no(message, show_option=False, skip=False):
+
+    if skip:
+        return True
+
+    option = input(f"{message} [y/n]:")
+
+    option = option.lower()
+
+    option = option == 'y'
+    if show_option:
+        if option:
+            print('=> Choose Yes')
+        else:
+            print('=> Choose No')
+    return option

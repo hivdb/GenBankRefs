@@ -465,7 +465,7 @@ def summarize_combined_data(virus_obj, combined, features, genes, logger):
     section.append(num_seq)
     summarize_report.append(section)
 
-    features = features[features['Accession'].isin(list(accessions))]
+    features = features[features['Accession'].isin(list(accessions))].copy()
 
     genes = genes[genes['Accession'].isin(list(accessions))]
 

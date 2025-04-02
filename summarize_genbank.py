@@ -285,7 +285,11 @@ def summarize_genbank_full_genome(
 def merge_segements(virus_obj, df, file_prefix):
     # Try to merge on isolateName, the fields should all be the same for same isolate
     # Filter out rows where "IsolateName" is not empty and perform merging
-    df.loc[:, 'Accession_prefix'] = df['Accession'].astype(str).str[:7]
+
+    for idx, row in df.iterrows():
+        accession_prefix = str(row['Accession'])[:7]
+        df.loc[idx, 'Accession_prefix'] = accession_prefix
+
     df_no_merge = df[df['IsolateName'] == ""].copy()
     # df_no_merge.to_excel(f"OutputData/{virus}/excels/{file_prefix}_G1.xlsx")
 

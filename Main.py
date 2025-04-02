@@ -21,8 +21,9 @@ from match_pubmed_GB import match_pubmed_GB
 from pubmed_search import search_by_pubmed_API
 from AI_match_paper import using_ai_match
 
-
 from database import create_database
+
+from Utilities import yes_no
 
 # Silences the warnings that occur when empty cells are replaced with 'NA'
 pd.set_option('future.no_silent_downcasting', True)
@@ -136,7 +137,9 @@ def extract_genbank_ref_feature_gene(virus_obj):
     # compare_output_files(saved_combined_df, combined_df)
 
     # Summarize GenBank and PubMed data, see outut in datalog_genbank.txt and datalog_pubmed.txt
-    summarize_genbank(references, features, genes, virus_obj)
+
+    if yes_no('Summarize GenBank data?', True):
+        summarize_genbank(references, features, genes, virus_obj)
 
     isolates = pd.read_excel(virus_obj.isolate_file)
 
@@ -153,7 +156,8 @@ def extract_genbank_ref_feature_gene(virus_obj):
     genes = update_genes_by_features(genes, features)
     # Pick sequences for genes in each virus and generate phylogenetic tree - requirements vary for each
 
-    virus_obj.pick_phylo_sequence(genes)
+    if yes_no('Generate phylogenetics?', True):
+        virus_obj.pick_phylo_sequence(genes)
 
     return references, isolates, features, genes
 
@@ -221,7 +225,10 @@ def find_publication_by_sys_review(virus_obj, references, features, genes):
         print('Please prepare a file with extract metadata from publications')
         exit()
 
-    pubmed = summarize_pubmed(virus_obj.pubmed_file, virus_obj)
+    pubmed = pd.read_excel(virus_obj.pubmed_file, dtype=str).fillna('')
+    pubmed['ref_source'] = 'PubMed search'
+    if yes_no('Summarize pubmed systematic review?'):
+        pubmed = summarize_pubmed(pubmed, virus_obj)
 
     # The virus_obj contains links to pubmed tables, genbank tables
     # the return values are: pubmed (the pubmed data file), pubmed_genbank (Pubmed and GenBank matches)
