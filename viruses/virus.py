@@ -354,8 +354,18 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
         (2021, 2025): '2021-2025',
     }
 
-    host_palette = mpl.colormaps['Set2'].colors
-    sampleyr_palette = mpl.colormaps['Set3'].colors
+    num_host = len(set(j['Host'] for j in genes))
+    if num_host <= len(mpl.colormaps['Set2'].colors):
+        host_palette = mpl.colormaps['Set2'].colors
+    else:
+        host_palette = get_colors(num_host)
+
+    num_sampleyr = len(set(j['IsolateYear'] for j in genes))
+    if num_sampleyr <= len(mpl.colormaps['Set3'].colors):
+        sampleyr_palette = mpl.colormaps['Set3'].colors
+    else:
+        sampleyr_palette = get_colors(num_sampleyr)
+
     num_country = len(set(j['Country'] for j in genes))
     if num_country <= 20:
         country_palatte = mpl.colormaps['tab20'].colors
@@ -462,15 +472,19 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
         print(f"{virus.name} Gene {gene_name} unpicked sequence:", len(genes) - len(g_list))
         print(f"{virus.name} Gene {gene_name} duplicated sequence:", num_dump)
 
-        choice = input('One per pattern? [y/n]')
-        if choice.lower() == 'y':
-            choise2 = input('Change country to region? [y/n]')
-            if choise2.lower() == 'y':
-                metadata, g_list = get_sequences_limited_pattern_each(
+        option_one_per_pattern = input('One per pattern? [y/n]') == 'y'
+
+        if option_one_per_pattern:
+            metadata, g_list = get_sequences_limited_pattern_each(
                     metadata, g_list, region=True)
-            else:
-                metadata, g_list = get_sequences_limited_pattern_each(
-                    metadata, g_list)
+
+        option_country_to_region = input('Change country to region? [y/n]') == 'y'
+        if option_country_to_region:
+            metadata = convert_country_to_region(metadata)
+
+        print('=' * 80)
+        print('# Sequences for building phylogenetic tree:', len(g_list))
+        print('=' * 80)
 
         pd.DataFrame(metadata).to_csv(virus.phylo_folder / f"{gene_name}_metadata.csv", index=False)
 
@@ -486,16 +500,28 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
         )
         print('Run command:')
         print(cmds)
-        subprocess.run(
-            cmds,
-            # stdout=subprocess.PIPE,
-            # stderr=subprocess.PIPE,
-            # text=True,
-            shell=True
-        )
+
+        option_no_output = input("Show tree building details? [y/n]") == 'y'
+        if option_no_output:
+            subprocess.run(
+                cmds,
+                # stdout=subprocess.PIPE,
+                # stderr=subprocess.PIPE,
+                text=True,
+                shell=True
+            )
+        else:
+            subprocess.run(
+                cmds,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                # text=True,
+                shell=True
+            )
 
 
-def get_sequences_limited_pattern_each(metadata, g_list, region=False):
+
+def get_sequences_limited_pattern_each(metadata, g_list):
     # print(len(g_list))
     pattern_acc = defaultdict(list)
 
@@ -521,56 +547,6 @@ def get_sequences_limited_pattern_each(metadata, g_list, region=False):
         for j in sorted(acc_list, key=itemgetter('label'))[0: num_pattern]
     ]
 
-    if region:
-        # Define subregions and their assigned colors
-        subregion_colors = {
-            "Central Asia": '#0D4A70',
-            "Eastern Asia": '#226E9C',
-            "Northern Asia": '#3C93C2',
-            "Southern Asia": '#6CB0D6',
-            "Western Asia": '#9EC9E2',
-
-            "Eastern Africa": '#06592A',
-            "Middle Africa": '#22bb3b',
-            "Northern Africa": '#40ad5a',
-            "Southern Africa": '#6cba7d',
-            "Western Africa": '#9ccea7',
-
-            "Central Europe": '#8f003b',
-            "Eastern Europe": '#c40f5b',
-            "Northern Europe": '#e32977',
-            "Southern Europe": '#e95694',
-            "Western Europe": '#ed85b0',
-
-
-            'Northern America': '#ffffff',
-        }
-        country_color_map = {'NA': '#555555'}
-        from countryinfo import CountryInfo
-        mapper = {
-            'Yugoslavia': 'Southern Europe',
-            'Kosovo': 'Southern Europe',
-            'North Macedonia': 'Southern Europe',
-        }
-        for i in metadata:
-            # print(i['Country'])
-            if i['Country'] in mapper:
-                i['Country'] = mapper[i['Country']]
-            else:
-                i['Country'] = CountryInfo(i['Country']).subregion()
-
-            country = i['Country']
-            country_color_map[country] = subregion_colors[country]
-            i['Country_color'] = country_color_map[country]
-
-            i['Country'] = country.split()[-1] + f' ({country.split()[0]})'
-
-        metadata = [
-            i
-            for i in metadata
-            if 'america' not in i['Country'].lower()
-        ]
-
     keep_acc = [
         acc['label']
         for acc in metadata
@@ -582,5 +558,58 @@ def get_sequences_limited_pattern_each(metadata, g_list, region=False):
         if k in keep_acc
     }
 
-    print('Phylogenetic tree based on', len(g_list))
     return metadata, g_list
+
+
+def convert_country_to_region(metadata):
+
+    # Define subregions and their assigned colors
+    subregion_colors = {
+        "Central Asia": '#0D4A70',
+        "Eastern Asia": '#226E9C',
+        "Northern Asia": '#3C93C2',
+        "Southern Asia": '#6CB0D6',
+        "Western Asia": '#9EC9E2',
+
+        "Eastern Africa": '#06592A',
+        "Middle Africa": '#22bb3b',
+        "Northern Africa": '#40ad5a',
+        "Southern Africa": '#6cba7d',
+        "Western Africa": '#9ccea7',
+
+        "Central Europe": '#8f003b',
+        "Eastern Europe": '#c40f5b',
+        "Northern Europe": '#e32977',
+        "Southern Europe": '#e95694',
+        "Western Europe": '#ed85b0',
+
+
+        'Northern America': '#ffffff',
+    }
+    country_color_map = {'NA': '#555555'}
+    from countryinfo import CountryInfo
+    mapper = {
+        'Yugoslavia': 'Southern Europe',
+        'Kosovo': 'Southern Europe',
+        'North Macedonia': 'Southern Europe',
+    }
+    for i in metadata:
+        # print(i['Country'])
+        if i['Country'] in mapper:
+            i['Country'] = mapper[i['Country']]
+        else:
+            i['Country'] = CountryInfo(i['Country']).subregion()
+
+        country = i['Country']
+        country_color_map[country] = subregion_colors[country]
+        i['Country_color'] = country_color_map[country]
+
+        i['Country'] = country.split()[-1] + f' ({country.split()[0]})'
+
+    metadata = [
+        i
+        for i in metadata
+        if 'america' not in i['Country'].lower()
+    ]
+
+    return metadata

@@ -1,0 +1,191 @@
+---
+title: "Nipah"
+output:
+  html_document:
+    self_contained: false
+date: "2025-01-18"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+
+library(ggtree)
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(tibble)
+library(waffle)
+library(RColorBrewer)
+library(ggnewscale)
+library(stringr)
+
+```
+
+```{r message=FALSE, warning=FALSE}
+# from https://dmnfarrell.github.io/r/ggtree-heatmaps
+
+get_color_mapping <- function(data, col, cmap){
+    labels <- (data[[col]])
+    names <- levels(as.factor(labels))
+    n <- length(names)
+    if (n<10){
+        colors <- suppressWarnings(c(brewer.pal(n, cmap)))[1:n]
+    }
+    else {
+        colors <- colorRampPalette(brewer.pal(8, cmap))(n)
+    }
+    names(colors) = names
+    return (list(colors=colors, names=names))
+}
+```
+
+```{r message=FALSE, warning=FALSE}
+
+draw_phylotree_for_gene <- function(tree_file, metadata_file) {
+tree <- read.tree(tree_file)
+
+df <- read.csv(metadata_file)
+df <- df %>%
+  mutate(label = as.character(label))  %>%
+  mutate(Host = as.character(Host)) %>%
+  mutate(Country = as.character(Country)) %>%
+  mutate(SampleYr = as.character(SampleYr))
+
+df <- df[df$label %in% tree$tip.label, ]
+
+tree2 = full_join(tree, df, by='label')
+df2 = as_tibble(tree2)
+
+df2 = df2 %>%
+  filter(str_detect(label, "^[A-Za-z]"))
+
+country_data = df2$Country
+country_data = data.frame(Country=country_data, row.names = tree$tip.label)
+country_df = df2 %>% distinct(Country_color, Country)
+country_colors = (list(colors=country_df$Country_color, names=country_df$Country))
+
+
+# p <- ggtree(tree2, layout="rect") +
+p <- ggtree(tree2, layout="circular") +
+  new_scale_fill()
+
+p = p +
+  geom_tippoint(aes(color=Country)) +
+  scale_color_manual(
+    breaks=country_colors$names,
+    values=country_colors$colors) +
+  guides(color = "none")
+
+
+# p = p +
+#  geom_tiplab2(
+#    size=3,
+#    as_ylab=TRUE,
+#    color='firebrick',
+#    offset=0.002)
+
+p = p +
+  geom_treescale(
+    fontsize=3,
+    linesize=1,
+    offset=1)
+
+
+p <- gheatmap(
+  p,
+  country_data,
+  offset=0,
+  width=0.1,
+  # colnames_position = 'top',
+  font.size = 0,
+  colnames=FALSE
+  # colnames_offset_y = 0.4
+  ) +
+  scale_fill_manual(
+    breaks=country_colors$names,
+    values=country_colors$colors,
+    name='Country') +
+  new_scale_fill() +
+  scale_y_continuous(expand = c(0,0))
+
+# host_data = df2$Host
+# host_data = data.frame(Host=host_data, row.names = tree$tip.label)
+# host_df = df2 %>% distinct(Host_color, Host)
+# host_colors = (list(colors=host_df$Host_color, names=host_df$Host))
+
+# p <- gheatmap(
+#  p,
+#  host_data,
+#  offset=0.01,
+#  width=0.1,
+#  # colnames_position = 'top',
+#  font.size = 3.5,
+#  colnames=FALSE
+#  # colnames_offset_y = 0.4
+#  ) +
+#  scale_fill_manual(
+#    breaks=host_colors$names,
+#    values=host_colors$colors,
+#    name='Host') +
+#  new_scale_fill()
+
+# sample_yr_data = df2$SampleYr
+# sample_yr_data = data.frame(SampleYr=sample_yr_data, row.names = tree$tip.label)
+# sample_yr_df = df2 %>% distinct(SampleYr_color, SampleYr)
+
+# sample_yr_df = sample_yr_df %>%
+#   mutate(sort_key = as.integer(sub(".*(\\d{4})$", "\\1", SampleYr))) %>%
+#   arrange(sort_key) %>%
+#   select(-sort_key) 
+
+# sample_yr_colors = (list(colors=sample_yr_df$SampleYr_color, names=sample_yr_df$SampleYr))
+
+# p <- gheatmap(
+#   p,
+#   sample_yr_data,
+#   offset=0.02,
+#  width=0.1,
+  # colnames_position = 'top',
+#   font.size = 3.5,
+#  colnames=FALSE
+  # colnames_offset_y = 0.4
+#  ) +
+#  scale_fill_manual(
+#    breaks=sample_yr_colors$names,
+#    values=sample_yr_colors$colors,
+#    name='SampleYr') +
+#  new_scale_fill()
+
+p <- p + theme(
+  legend.position='left',
+  # legend.direction = "horizontal",
+  legend.text=element_text(size=10),
+  legend.key.size=unit(0.6, "cm")
+  )
+
+return (p)
+}
+
+```
+## L gene
+
+```{r L_gene, message=FALSE, warning=FALSE, fig.width=12, fig.height=15, dpi=300}
+tree_file <- "../OutputData/Nipah/excels/phylo/output_L/L_isolates.fasta.aln.treefile"
+metadata_file <- "../OutputData/Nipah/excels//phylo/L_metadata.csv"
+
+p <- draw_phylotree_for_gene(tree_file, metadata_file)
+p
+```
+
+## N Gene
+
+```{r N_gene, message=FALSE, warning=FALSE, fig.width=12, fig.height=15, dpi=300}
+tree_file <- "../OutputData/Nipah/excels/phylo/output_N/N_isolates.fasta.aln.treefile"
+metadata_file <- "../OutputData/Nipah/excels/phylo/N_metadata.csv"
+
+p <- draw_phylotree_for_gene(tree_file, metadata_file)
+p
+```
+
+
