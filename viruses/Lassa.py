@@ -23,11 +23,11 @@ class Lassa(Virus):
 
     @property
     def pubmed_file(self):
-        return self.pubmed_folder / "Reference_Summary_Mar25.xlsx"
+        return self.pubmed_folder / "Reference_Summary_Apr7.xlsx"
 
     @property
     def pubmed_additional_from_gb(self):
-        return self.pubmed_folder / "ReferenceSummary_Genbank_Feb19.xlsx"
+        return self.pubmed_folder / "ReferenceSummary_Genbank_Apr7.xlsx"
 
     # @property
     # def pubmed_genbank_hardlink(self):
@@ -35,7 +35,7 @@ class Lassa(Virus):
 
     @property
     def pubmed_search_missing(self):
-        return self.pubmed_folder / "ReferenceSummary_PubMed_Missing_Feb19.xlsx"
+        return self.pubmed_folder / "ReferenceSummary_PubMed_Missing_Apr7.xlsx"
 
     def build_blast_db(self):
         build_blast_db(self)

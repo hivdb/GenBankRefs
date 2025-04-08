@@ -232,7 +232,7 @@ Percentages:
 Turkey (11.0%), China (8.8%), Iran (8.8%), Multinational (7.7%), Spain (5.5%), Kosovo (5.0%), Bulgaria (4.4%), Pakistan (4.4%), Russia (3.9%), NA (3.3%), Greece (2.8%), Uganda (2.8%), India (2.2%), Afghanistan (1.7%), Albania (1.7%), Sudan (1.7%), Tajikistan (1.7%), United arab emirates (1.7%), Kazakhstan (1.1%), Kenya (1.1%), Mauritania (1.1%), Nigeria (1.1%), Senegal (1.1%), Afghanistan, Pakistan (0.6%), Algeria (0.6%), Cameroon (0.6%), China, Pakistan (0.6%), Crimea (0.6%), Democratic republic of the congo (0.6%), Ghana (0.6%), Greece, Italy (0.6%), Hungary (0.6%), Iran, Turkey (0.6%), Iraq, Pakistan, Uzbekistan (0.6%), Italy (0.6%), Mali (0.6%), Mongolia (0.6%), Namibia, Pakistan, Southern africa (0.6%), Namibia, South africa (0.6%), Namibia, South africa, Turkey (0.6%), Nigeria, Pakistan (0.6%), Oman (0.6%), Pakistan and afghanistan (0.6%), Russia, Tajikista (0.6%), Russia, Tajikistan (0.6%), Sanegal (0.6%), Saudi arabia (0.6%), Somalia, Sudan (0.6%), Somalia, United arab emirates (0.6%), Syria and turkey (0.6%), Zambia (0.6%)
 
 --------------------------------------------------------------------------------
-{'Iran': 16, 'Turkey': 20, 'Nigeria': 2, 'China, Pakistan': 1, 'United arab emirates': 3, 'Somalia, United arab emirates': 1, 'China': 16, 'Kosovo': 9, 'Nigeria, Pakistan': 1, 'Albania': 3, 'Russia': 7, 'Multinational': 14, 'Russia, Tajikistan': 1, 'NA': 6, 'Iraq, Pakistan, Uzbekistan': 1, 'Bulgaria': 8, 'Tajikistan': 3, 'Pakistan': 8, 'Russia, Tajikista': 1, 'Greece': 5, 'Namibia, Pakistan, Southern africa': 1, 'Afghanistan': 3, 'Sudan': 3, 'Democratic republic of the congo': 1, 'Somalia, Sudan': 1, 'Spain': 10, 'India': 4, 'Iran, Turkey': 1, 'Greece, Italy': 1, 'Pakistan and afghanistan': 1, 'Syria and turkey': 1, 'Mali': 1, 'Namibia, South africa': 1, 'Afghanistan, Pakistan': 1, 'Algeria': 1, 'Namibia, South africa, Turkey': 1, 'Uganda': 5, 'Crimea': 1, 'Mongolia': 1, 'Kazakhstan': 2, 'Oman': 1, 'Italy': 1, 'Kenya': 2, 'Senegal': 2, 'Zambia': 1, 'Mauritania': 2, 'Saudi arabia': 1, 'Cameroon': 1, 'Sanegal': 1, 'Ghana': 1, 'Hungary': 1}
+{'China, Pakistan': 1, 'United arab emirates': 3, 'Somalia, United arab emirates': 1, 'China': 16, 'Kosovo': 9, 'Nigeria, Pakistan': 1, 'Albania': 3, 'Multinational': 14, 'Russia': 7, 'Nigeria': 2, 'Russia, Tajikistan': 1, 'NA': 6, 'Iraq, Pakistan, Uzbekistan': 1, 'Iran': 16, 'Bulgaria': 8, 'Tajikistan': 3, 'Pakistan': 8, 'Russia, Tajikista': 1, 'Turkey': 20, 'Greece': 5, 'Namibia, Pakistan, Southern africa': 1, 'Afghanistan': 3, 'Sudan': 3, 'Democratic republic of the congo': 1, 'Somalia, Sudan': 1, 'Spain': 10, 'India': 4, 'Iran, Turkey': 1, 'Greece, Italy': 1, 'Pakistan and afghanistan': 1, 'Syria and turkey': 1, 'Mali': 1, 'Namibia, South africa': 1, 'Afghanistan, Pakistan': 1, 'Algeria': 1, 'Crimea': 1, 'Namibia, South africa, Turkey': 1, 'Uganda': 5, 'Mongolia': 1, 'Kazakhstan': 2, 'Oman': 1, 'Italy': 1, 'Senegal': 2, 'Kenya': 2, 'Zambia': 1, 'Mauritania': 2, 'Saudi arabia': 1, 'Cameroon': 1, 'Sanegal': 1, 'Ghana': 1, 'Hungary': 1}
 ================================================================================
 Gene
 --------------------------------------------------------------------------------
@@ -251,13 +251,14 @@ S (43.6%), Other (39.8%), M (6.6%), NA (5.5%), L (4.4%)
 Seq method
 --------------------------------------------------------------------------------
 Counts:
-Sanger: 98
-NA: 44
-NGS: 39
+Sanger: 108
+NGS: 36
+NA: 33
+Sanger and NGS: 4
 
 --------------------------------------------------------------------------------
 Percentages:
-Sanger (54.1%), NA (24.3%), NGS (21.5%)
+Sanger (59.7%), NGS (19.9%), NA (18.2%), Sanger and NGS (2.2%)
 
 ================================================================================
 End of Report

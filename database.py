@@ -31,7 +31,8 @@ def create_tables(db_file):
             "Specimen" TEXT,
             "IsolateName" TEXT,
             "SeqLength" INTEGER,
-            "NonClinical" TEXT
+            "NonClinical" TEXT,
+            "SeqMethod" TEXT
         )
     """)
 
@@ -161,7 +162,7 @@ def create_database(virus_obj, references, isolates, features, genes, pubmed,
 
     tblEntries = features[[
         'Accession', 'Country', 'RecordYear', 'IsolateYear', 'Host',
-        'Specimen', 'IsolateName', 'SeqLength', 'NonClinical'
+        'Specimen', 'IsolateName', 'SeqLength', 'NonClinical', 'SeqMethod',
     ]]
 
     for i, row in tblEntries.iterrows():

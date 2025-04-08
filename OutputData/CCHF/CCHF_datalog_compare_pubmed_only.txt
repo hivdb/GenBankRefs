@@ -133,7 +133,7 @@ Percentages:
 China (13.9%), Iran (11.1%), NA (8.3%), Spain (8.3%), Turkey (8.3%), Mauritania (5.6%), Pakistan (5.6%), Senegal (5.6%), Uganda (5.6%), Afghanistan, Pakistan (2.8%), Albania (2.8%), Greece, Italy (2.8%), Hungary (2.8%), Kosovo (2.8%), Mongolia (2.8%), Multinational (2.8%), Russia (2.8%), Sanegal (2.8%), United arab emirates (2.8%)
 
 --------------------------------------------------------------------------------
-{'Iran': 4, 'Multinational': 1, 'Albania': 1, 'Turkey': 3, 'NA': 3, 'Spain': 3, 'Greece, Italy': 1, 'Pakistan': 2, 'China': 5, 'Afghanistan, Pakistan': 1, 'Mongolia': 1, 'Senegal': 2, 'United arab emirates': 1, 'Mauritania': 2, 'Kosovo': 1, 'Uganda': 2, 'Sanegal': 1, 'Hungary': 1, 'Russia': 1}
+{'China': 5, 'Multinational': 1, 'Albania': 1, 'Iran': 4, 'Turkey': 3, 'NA': 3, 'Spain': 3, 'Greece, Italy': 1, 'Pakistan': 2, 'Russia': 1, 'Afghanistan, Pakistan': 1, 'Mongolia': 1, 'Senegal': 2, 'United arab emirates': 1, 'Mauritania': 2, 'Kosovo': 1, 'Uganda': 2, 'Sanegal': 1, 'Hungary': 1}
 ================================================================================
 Gene
 --------------------------------------------------------------------------------
@@ -152,13 +152,13 @@ Other (50.0%), S (27.8%), NA (16.7%), L (2.8%), M (2.8%)
 Seq method
 --------------------------------------------------------------------------------
 Counts:
-Sanger: 15
-NGS: 12
-NA: 9
+Sanger: 16
+NGS: 13
+NA: 7
 
 --------------------------------------------------------------------------------
 Percentages:
-Sanger (41.7%), NGS (33.3%), NA (25.0%)
+Sanger (44.4%), NGS (36.1%), NA (19.4%)
 
 ================================================================================
 End of Report

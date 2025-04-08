@@ -51,6 +51,8 @@ def parse_genbank_records(genbank_file):
         # 'Chain',
     ]
 
+    seq_methods = parse_seq_method(genbank_file)
+
     with open(genbank_file, "r") as handle:
         for record in SeqIO.parse(handle, "genbank"):
             # total_record += 1
@@ -71,6 +73,9 @@ def parse_genbank_records(genbank_file):
             )
 
             refs, features, genes = process_one_record(record)
+
+            acc = record.id.split('.')[0]
+            features['SeqMethod'] = seq_methods.get(acc, '')
 
             total_ref_list.extend(refs)
 
@@ -371,3 +376,55 @@ def process_gene_list(gene_list, run_blast, virus_obj):
     gene_df.to_excel(str(virus_obj.genbank_gene_file), index=False)
 
     return gene_df
+
+
+def parse_seq_method(genbank_file):
+
+    matches = {}
+    acc = None
+    with open(genbank_file, "r") as fd:
+        for line in fd.readlines():
+            if line.startswith('ACCESSION'):
+                acc = line.strip().split()[-1]
+            elif 'Sequencing Technology ::' in line:
+                matches[acc] = line.split('::')[-1].strip()
+
+    matches = {
+        k: translate_seq_method(v)
+        for k, v in matches.items()
+    }
+
+    return matches
+
+
+def translate_seq_method(seq_method):
+    seq_method_list = set()
+    if 'Sanger dideoxy sequencing' in seq_method:
+        seq_method_list.add('Sanger')
+
+    NGS_methods = [
+        'Illumina',
+        'ONT',
+        'Oxford Nanopore',
+        'IonTorrent',
+        'Oxford Nanopore Technologies',
+        '454',
+        'MGISEQ-2000',
+        'MinIon',
+        'Illumina MiSeq and MiSeq FGx',
+        'NexSeq500',
+        'Illumina HiSeq 2500',
+        'Illumina MiSeq',
+        'Oxford Nanopore MinION',
+        'Illumina NovaSeq, HiSeq 2500 and MiSeq',
+        'Illumina HiSeq1500',
+        'HotShot'
+    ]
+    for i in NGS_methods:
+        if i in seq_method:
+            seq_method_list.add('NGS')
+
+    if len(seq_method_list) == 2:
+        return 'Sanger and NGS'
+    else:
+        return ''.join(list(seq_method_list))

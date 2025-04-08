@@ -146,7 +146,7 @@ Percentages:
 Nigeria (26.9%), Sierra leone (14.9%), Guinea (7.5%), Multinational (6.0%), NA (6.0%), Benin (4.5%), Mali (4.5%), Côte d’ivoire (3.0%), Ghana (3.0%), Guinea, Nigeria (3.0%), Liberia (3.0%), Côte d'ivoire, Guinea (1.5%), Germany (1.5%), Ghana, Nigeria, Sierra leone (1.5%), Guinea, Liberia (1.5%), Guinea, Liberia, Sierra leone (1.5%), Guinea, Sierra leone (1.5%), Liberia and nigeria (1.5%), Liberia, Sierra leone (1.5%), Nigeria, Sierra leone (1.5%), Nigeria, Togo (1.5%), Togo (1.5%), West africa (1.5%)
 
 --------------------------------------------------------------------------------
-{'Nigeria': 18, 'Sierra leone': 10, 'Multinational': 4, 'Ghana': 2, 'Ghana, Nigeria, Sierra leone': 1, 'Guinea': 5, 'Liberia and nigeria': 1, 'Mali': 3, 'Liberia': 2, 'Guinea, Nigeria': 2, "Côte d'ivoire, Guinea": 1, 'Côte d’ivoire': 2, 'Germany': 1, 'Togo': 1, 'Liberia, Sierra leone': 1, 'Benin': 3, 'Guinea, Liberia': 1, 'Guinea, Liberia, Sierra leone': 1, 'Guinea, Sierra leone': 1, 'Nigeria, Sierra leone': 1, 'West africa': 1, 'NA': 4, 'Nigeria, Togo': 1}
+{'Sierra leone': 10, 'Nigeria': 18, 'Ghana': 2, 'Ghana, Nigeria, Sierra leone': 1, 'Mali': 3, 'Liberia': 2, 'Côte d’ivoire': 2, 'Germany': 1, 'Togo': 1, 'Guinea': 5, 'Multinational': 4, 'Liberia, Sierra leone': 1, 'Liberia and nigeria': 1, "Côte d'ivoire, Guinea": 1, 'Guinea, Nigeria': 2, 'Guinea, Sierra leone': 1, 'Guinea, Liberia, Sierra leone': 1, 'Guinea, Liberia': 1, 'Benin': 3, 'Nigeria, Sierra leone': 1, 'West africa': 1, 'NA': 4, 'Nigeria, Togo': 1}
 ================================================================================
 Gene
 --------------------------------------------------------------------------------
@@ -170,14 +170,14 @@ NP (28.5%), GPC (25.8%), LP (21.9%), Z (9.3%), L (4.6%), GP (4.0%), NA (4.0%), N
 Seq method
 --------------------------------------------------------------------------------
 Counts:
-Sanger: 39
-NGS: 19
-Sanger and NGS: 5
-NA: 4
+Sanger: 34
+NGS: 15
+NA: 11
+Sanger and NGS: 7
 
 --------------------------------------------------------------------------------
 Percentages:
-Sanger (58.2%), NGS (28.4%), Sanger and NGS (7.5%), NA (6.0%)
+Sanger (50.7%), NGS (22.4%), NA (16.4%), Sanger and NGS (10.4%)
 
 ================================================================================
 End of Report

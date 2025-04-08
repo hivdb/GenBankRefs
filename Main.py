@@ -275,7 +275,7 @@ def update_genbank_by_pubmed(features, genbank2pubmed):
 
         process_feature = features[features['Accession'] == acc]
 
-        for key in ['Country', 'Host', 'IsolateType', 'SampleYr']:
+        for key in ['Country', 'Host', 'IsolateType', 'SampleYr', 'SeqMethod']:
             if not pubmed[key].strip() or pubmed[key].upper() == 'NA':
                 pubmed[key] = ''
 
@@ -292,6 +292,9 @@ def update_genbank_by_pubmed(features, genbank2pubmed):
 
             if not row['IsolateYear'] and pubmed['SampleYr']:
                 features.at[i, 'IsolateYear'] = pubmed['SampleYr'] + ' *'
+
+            if not row['SeqMethod'] and pubmed['SeqMethod']:
+                features.at[i, 'SeqMethod'] = pubmed['SeqMethod'] + ' *'
 
     return features
 
