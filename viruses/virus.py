@@ -35,6 +35,10 @@ class Virus:
             return cls._viruses['default']
 
     @property
+    def special_accessions(self):
+        return []
+
+    @property
     def GENES(self):
         return []
 

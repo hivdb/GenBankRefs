@@ -78,8 +78,7 @@ def extract_genbank_ref_feature_gene(virus_obj):
     (
         total_references, references,
         features, genes, exclude_acc_list
-    ) = parse_genbank_records(
-        virus_obj.genbank_file)
+    ) = parse_genbank_records(virus_obj)
 
     # Extract genes from all blast entries and additional detected via local alignment
     genes = process_gene_list(genes, run_blast, virus_obj)

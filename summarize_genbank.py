@@ -207,26 +207,41 @@ def summarize_genbank_by_seq(virus_obj, df, genes_df, file_prefix=''):
 
     summarize_report.append(section)
 
-    section = ['AlignLens']
-    aligns = [int(v['align_len']) for i, v in genes_df.iterrows()]
-    section.append(create_binned_seq_lens(aligns))
-    summarize_report.append(section)
+    for i in virus_obj.GENES:
+        summarize_report.append([f"Gene {i}"])
 
-    section = ['NA length']
-    num_na = [int(v['NA_length']) for i, v in genes_df.iterrows()]
-    section.append(create_binned_seq_lens(num_na))
-    summarize_report.append(section)
+        sub_gene_df = genes_df[genes_df['Gene'] == i]
 
-    section = ['AA length']
-    num_aa = [int(v['AA_length']) for i, v in genes_df.iterrows()]
-    section.append(create_binned_seq_lens(num_aa))
-    summarize_report.append(section)
+        section = ['AlignLens']
+        aligns = [int(v['align_len']) for i, v in sub_gene_df.iterrows()]
+        section.append(create_binned_seq_lens(aligns))
+        summarize_report.append(section)
 
-    section = ['PcntIDs']
-    pcnt_ident = [float(v['pcnt_id']) for i, v in genes_df.iterrows()]
-    section.append(create_binned_pcnts(pcnt_ident))
+        section = ['NA length']
+        num_na = [int(v['NA_length']) for i, v in sub_gene_df.iterrows()]
+        section.append(create_binned_seq_lens(num_na))
+        summarize_report.append(section)
 
-    summarize_report.append(section)
+        section = ['NA start']
+        num_na = [int(v['NA_start']) for i, v in sub_gene_df.iterrows()]
+        section.append(create_binned_seq_lens(num_na))
+        summarize_report.append(section)
+
+        section = ['NA stop']
+        num_na = [int(v['NA_stop']) for i, v in sub_gene_df.iterrows()]
+        section.append(create_binned_seq_lens(num_na))
+        summarize_report.append(section)
+
+        section = ['AA length']
+        num_aa = [int(v['AA_length']) for i, v in sub_gene_df.iterrows()]
+        section.append(create_binned_seq_lens(num_aa))
+        summarize_report.append(section)
+
+        section = ['PcntIDs']
+        pcnt_ident = [float(v['pcnt_id']) for i, v in sub_gene_df.iterrows()]
+        section.append(create_binned_pcnts(pcnt_ident))
+        summarize_report.append(section)
+
     section = ['End of report']
     summarize_report.append(section)
 

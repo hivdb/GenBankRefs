@@ -131,7 +131,7 @@ def perform_blast(acc, order, query_seq, db_name, func, blast_name):
                 'hit_name': alignment.hit_def,
                 "e_value": hsp.expect,
                 'score': hsp.score,
-                "pcnt_id": percent_identity,
+                "pcnt_id": int(percent_identity),
                 "align_len": alignment_length,
                 'blast_name': blast_name,
                 'query_seq': query_seq,
@@ -155,7 +155,7 @@ def perform_blast(acc, order, query_seq, db_name, func, blast_name):
     return blast_result
 
 
-def blast_gene(gene, blast_aa_db_path, blast_na_db_path):
+def blast_gene(gene, blast_aa_db_path, blast_na_db_path, gene_na_dict, virus_obj):
     """
         Try blastn, blastp, blastx for detecting the genes or segments of an isolate
         This function will decide the best blast result by alignment length of nucleic acid,
@@ -199,6 +199,45 @@ def blast_gene(gene, blast_aa_db_path, blast_na_db_path):
 
     new_gene = get_new_gene(gene, blast_na, blast_aa)
 
+    if not new_gene['NA_seq']:
+        na_seq = gene['NA_raw_seq']
+        if na_seq[-3:] in ['TAG', 'TGA', 'TAA']:
+            na_seq = na_seq[:-3]
+        # aa_seq = gene['AA_raw_seq']
+
+        # new_gene['AA_seq'] = aa_seq
+        # new_gene['AA_length'] = len(aa_seq)
+        new_gene['NA_seq'] = na_seq
+        new_gene['NA_length'] = len(na_seq)
+        # new_gene['translation_issue'] = ''
+
+        # new_gene['NA_blast_failed'] = ''
+        # new_gene['AA_blast_failed'] = ''
+
+    gene_name = virus_obj.translate_cds_name(new_gene['CDS_NAME'])
+
+    if gene_name and gene_name in virus_obj.GENES:
+        new_gene['Gene'] = gene_name
+    elif new_gene.get('hit_name'):
+        new_gene['Gene'] = new_gene['hit_name']
+
+    if not new_gene['Gene']:
+        return new_gene
+
+    ref_na_seq = gene_na_dict[new_gene['Gene']]
+
+    # do align to get na start, na stop, aa start, aa_stop, gloal align
+    # NA_start, NA_stop, num_ins, num_del, pcnt_id, hitname
+
+    # query is the references
+
+    if not new_gene['NA_start']:
+        query = StripedSmithWaterman(ref_na_seq)
+        alignment = query(new_gene['NA_seq'])
+        new_gene['NA_start'] = alignment.query_begin + 1
+        new_gene['NA_stop'] = alignment.query_end + 1
+
+    print(new_gene['Accession'])
     return new_gene
 
 
@@ -228,24 +267,26 @@ def pooled_blast_genes(gene_list, virus_obj, poolsize=20):
         if i['CDS_NAME'] not in ('isolate', 'isolate_complete')
     ]
 
+    gene_na_dict = {}
+    with open(virus_obj.ref_na_path) as fasta_file:
+        for record in SeqIO.parse(fasta_file, "fasta"):
+            gene_na_dict[record.id] = str(record.seq)
+    # gene_aa_dict = {}
+    # with open(virus_obj.ref_na_path) as fasta_file:
+    #     for record in SeqIO.parse(fasta_file, "fasta"):
+    #         gene_aa_dict[record.id] = str(record.seq)
+
     with Pool(poolsize) as pool:
         parameters = [
-            (gene, virus_obj.BLAST_AA_DB_PATH, virus_obj.BLAST_NA_DB_PATH)
+            (gene,
+             virus_obj.BLAST_AA_DB_PATH, virus_obj.BLAST_NA_DB_PATH,
+             gene_na_dict,
+             virus_obj)
             for gene in gene_list
         ]
         alignment_result = []
         for count, i in enumerate(pool.starmap(blast_gene, parameters)):
             alignment_result.append(i)
-
-    for i in alignment_result:
-        gene_name = virus_obj.translate_cds_name(i['CDS_NAME'])
-
-        if gene_name and gene_name in virus_obj.GENES:
-            i['Gene'] = gene_name
-            continue
-
-        if i.get('hit_name'):
-            i['Gene'] = i['hit_name']
 
     return alignment_result
 
@@ -269,16 +310,23 @@ def local_align_genes(seq, virus_obj):
         # matches = sum(1 for a, b in zip(aligned_seq1, aligned_seq2) if a == b and a != '-' and b != '-')
         # percent_identity = (matches / len(ref_seq)) * 100 if seq1_length > 0 else 0
 
+        # alignment.query is the ref_seq
         query = StripedSmithWaterman(ref_seq)
         alignment = query(seq)
 
         if alignment.optimal_alignment_score > len(ref_seq) * 0.80:  # 80% similarity threshold
+
+            start = min(alignment.query_begin + 1, alignment.query_end + 1)
+            stop = max(alignment.query_begin + 1, alignment.query_end + 1)
             matched_genes.append({
                 'Gene': gene,
                 'Alignment Length': len(alignment.aligned_query_sequence),  # remove gaps?
                 'Percent Identity': len(alignment.aligned_query_sequence) / len(ref_seq),
+                'NA_Seq': alignment.aligned_target_sequence,
                 'NA_len': len(alignment.aligned_target_sequence),
-                'AA_len': len(alignment.aligned_target_sequence) // 3
+                'AA_len': len(alignment.aligned_target_sequence) // 3,
+                'NA_start': start,
+                'NA_stop': stop,
             })
 
     return matched_genes
@@ -333,12 +381,19 @@ def detect_gene_by_biopython(isolates, virus_obj):
                 'CDS_NAME': '',
                 'Order': isolate['Order'],
                 'detected_gene': 1,
+
+                'NA_Seq': gene['NA_Seq'],
                 'NA_length': gene["NA_len"],
-                'AA_length': gene["AA_len"],
+                'NA_start': gene['NA_start'],
+                'NA_stop': gene['NA_stop'],
+
                 'NA_raw_seq': seq,
+
+                'AA_length': gene["AA_len"],
                 'align_len': gene["Alignment Length"],
-                'pcnt_id': gene["Percent Identity"]
+                'pcnt_id': int(gene["Percent Identity"])
             }
+
             additional_genes.append(new_gene)
 
     # print(len(additional_genes), 'add genes')
@@ -446,11 +501,7 @@ def get_new_gene(gene, blast_na, blast_aa):
     #     gene['NA_seq'] = gene['NA_raw_seq'][gene['NA_start'] - 1: gene['NA_stop']]
     #     gene['NA_length'] = len(gene['NA_seq'])
 
-    if (
-            gene['NA_seq'] and
-            gene['AA_seq'] and
-            gene['NA_length'] != gene['AA_length'] * 3
-            ):
+    if (gene['NA_length'] % 3) != 0:
         gene['translation_issue'] = 1
 
     # use na for aa seq

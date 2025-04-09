@@ -28,7 +28,10 @@ def select_run_blast(message='Run blast?', show_option=True):
     return option
 
 
-def parse_genbank_records(genbank_file):
+def parse_genbank_records(virus):
+
+    genbank_file = virus.genbank_file
+
     reference_list = []
     feature_list = []
     gene_list = []
@@ -78,6 +81,12 @@ def parse_genbank_records(genbank_file):
             features['SeqMethod'] = seq_methods.get(acc, '')
 
             total_ref_list.extend(refs)
+
+            if record.id in virus.special_accessions:
+                reference_list.extend(refs)
+                feature_list.append(features)
+                gene_list.extend(genes)
+                continue
 
             # if 'MAG' in record.annotations['keywords']:
             #     should_exclude = True

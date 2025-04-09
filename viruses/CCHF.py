@@ -15,7 +15,19 @@ class CCHF(Virus):
 
     @property
     def GENES(self):
-        return self.SEGMENTS
+        return [
+            'RDRP',
+            'G',
+            'N',
+        ]
+
+    @property
+    def special_accessions(self):
+        return [
+            'DQ211638',
+            'DQ211625',
+            'DQ211612',
+            ]
 
     @property
     def comparison_file(self):
@@ -47,7 +59,7 @@ class CCHF(Virus):
         pubmed['Gene'] = pubmed['Gene'].apply(partial(translate_pubmed_genes, self))
         return categorize_host_specimen(self, pubmed)
 
-    def pick_phylo_sequence(self, genes, picked_genes=['S', 'M', 'L']):
+    def pick_phylo_sequence(self, genes, picked_genes=['RdRp', 'G', 'N']):
         return super().pick_phylo_sequence(genes, picked_genes, coverage_pcnt=0.85)
 
 
@@ -62,16 +74,35 @@ def build_blast_db(virus):
         with open(virus.reference_folder / f'{s}.gb', "r") as handle:
             for record in SeqIO.parse(handle, "genbank"):
 
-                # TODO, support all genes, or support segments
-
-                aa_seq = [
+                gene_seq = [
                     i
                     for i in record.features
                     if i.type == 'CDS'
-                ][0].qualifiers['translation'][0]
-                aa_seqs.append(SeqRecord(Seq(aa_seq), id=s, description=''))
-                na_seqs.append(
-                    SeqRecord(Seq(record.seq), id=s, description=''))
+                ]
+                for aa in gene_seq:
+                    gene = None
+                    if 'gene' in aa.qualifiers:
+                        gene = aa.qualifiers['gene'][0].upper()
+                    else:
+                        gene = aa.qualifiers[
+                            'product'][0].upper().replace(' PROTEIN', '').strip()
+
+                    if gene == 'glycoprotein precursor'.upper():
+                        gene = 'G'
+                    elif gene == 'nucleoprotein'.upper():
+                        gene = 'N'
+
+                    if gene not in virus.GENES:
+                        continue
+
+                    aa_seqs.append(
+                        SeqRecord(Seq(aa.qualifiers['translation'][0]), id=gene, description=''))
+
+                    na_seq = aa.location.extract(record.seq).upper()
+                    if na_seq[-3:] in ['TAG', 'TGA', 'TAA']:
+                        na_seq = na_seq[:-3]
+                    na_seqs.append(
+                        SeqRecord(Seq(na_seq), id=gene, description=''))
 
     ref_aa_file = virus.reference_folder / f"{virus.name}_RefAAs.fasta"
     with open(ref_aa_file, "w") as output_handle:

@@ -67,8 +67,7 @@ def create_tables(db_file):
             "NA_length" INTEGER,
             "NA_start" INTEGER,
             "NA_stop" INTEGER,
-            "PcntMatch" REAL,
-            "HSPLength" INTEGER,
+            "PcntMatch" INTEGER,
             FOREIGN KEY (Accession) REFERENCES tblSequences (Accession)
         )
     """)
@@ -179,7 +178,7 @@ def create_database(virus_obj, references, isolates, features, genes, pubmed,
 
     fill_in_table(virus_obj.DB_FILE, 'tblEntries', tblEntries)
 
-    genes['PcntMatch'] = genes['pcnt_id']
+    genes['PcntMatch'] = genes['pcnt_id'].astype(int)
 
     fill_in_table(virus_obj.DB_FILE, 'tblIsolates', isolates)
 
