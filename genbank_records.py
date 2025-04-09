@@ -97,6 +97,11 @@ def parse_genbank_records(genbank_file):
                 nonclinical_list.append(features)
                 continue
 
+            if 'Biochemical characterization'.lower() in refs[0]['Title'].lower():
+                lab_host_list.append(features)
+                nonclinical_list.append(features)
+                continue
+
             if 'mouse-adapted' in features['note']:
                 lab_host_list.append(features)
                 nonclinical_list.append(features)
