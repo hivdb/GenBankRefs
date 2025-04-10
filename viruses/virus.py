@@ -327,6 +327,8 @@ class Virus:
             print('# Seq with N: ', len(sub_gene_df[sub_gene_df['num_N'] == 1]))
             print('# Seq with <90% cover: ', len(sub_gene_df[sub_gene_df['NA_length'] < ref_na_length * 0.9]))
 
+            sub_gene_df = sub_gene_df[sub_gene_df['num_N'] < 3]
+
             pos_pairs = [
                 (row['NA_start'], row['NA_stop'])
                 for i, row in sub_gene_df.iterrows()
