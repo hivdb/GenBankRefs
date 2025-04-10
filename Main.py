@@ -301,12 +301,12 @@ def update_genbank_by_pubmed(features, genbank2pubmed):
 def update_genes_by_features(genes, features):
     for i, g in genes.iterrows():
         feature = features[features['Accession'] == g['Accession']]
-        genes.at[i, 'Host'] = feature['Host'].tolist()[0]
-        genes.at[i, 'IsolateYear'] = feature['IsolateYear'].tolist()[0]
-        genes.at[i, 'RecordYear'] = feature['RecordYear'].tolist()[0]
-        genes.at[i, 'NonClinical'] = feature['NonClinical'].tolist()[0]
-        genes.at[i, 'isolate_source'] = feature['isolate_source'].tolist()[0]
-        genes.at[i, 'Country'] = feature['Country'].tolist()[0]
+        genes.loc[i, 'Host'] = feature['Host'].tolist()[0]
+        genes.loc[i, 'IsolateYear'] = feature['IsolateYear'].tolist()[0]
+        genes.loc[i, 'RecordYear'] = feature['RecordYear'].tolist()[0]
+        genes.loc[i, 'NonClinical'] = feature['NonClinical'].tolist()[0]
+        genes.loc[i, 'isolate_source'] = feature['isolate_source'].tolist()[0]
+        genes.loc[i, 'Country'] = feature['Country'].tolist()[0]
 
     return genes
 

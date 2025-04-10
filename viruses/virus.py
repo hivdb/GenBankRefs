@@ -73,6 +73,11 @@ class Virus:
         return Path("OutputData") / f"{self.name}"
 
     @property
+    def alignment_folder(self):
+        (self.output_excel_dir / 'alignment').mkdir(exist_ok=True)
+        return self.output_excel_dir / 'alignment'
+
+    @property
     def output_excel_dir(self):
         (self.output_dir / 'excels').mkdir(exist_ok=True)
         return self.output_dir / 'excels'
@@ -295,6 +300,10 @@ class Virus:
 
     @property
     def ref_na_gene_map(self):
+        return load_fasta(self.reference_folder / f"{self.name}_RefNAs.fasta")
+
+    @property
+    def ref_aa_gene_map(self):
         return load_fasta(self.reference_folder / f"{self.name}_RefNAs.fasta")
 
     def pick_phylo_sequence(self, genes, picked_genes=[], coverage_pcnt=1):
@@ -654,7 +663,7 @@ def viz_alignment_coverage(image_file_path, gene, position_pairs):
     ticks = list(range(0, max(x)+1, tick_step))
     if max(x) not in ticks:
         ticks.append(max(x))
-    print(ticks)
+    # print(ticks)
     plt.xticks(ticks, rotation=90)
 
     plt.savefig(str(image_file_path), dpi=300)

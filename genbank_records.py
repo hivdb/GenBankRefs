@@ -3,9 +3,11 @@ import pandas as pd
 from operator import itemgetter
 
 from GenBankFunctions import filter_by_taxonomy
-from GenBankFunctions import pooled_blast_genes
-from GenBankFunctions import detect_additional_genes
-from GenBankFunctions import detect_gene_by_biopython
+
+from Alignment import check_genbank_coding_seq
+from Alignment import detect_non_annot_gene_by_blast
+from Alignment import detect_non_annot_gen_by_biopython
+from Alignment import align_genes
 
 from Utilities import extract_year_from_date_fields
 from Utilities import extract_year_from_journal
@@ -200,10 +202,10 @@ def process_one_record(record):
                 'Order': idx + 1,
 
                 'AA_raw_seq': aa_seq,
-                'AA_raw_length': len(aa_seq) if aa_seq else '',
+                'AA_raw_length': len(aa_seq) if aa_seq else 0,
 
                 'NA_raw_seq': na_seq,
-                'NA_raw_length': len(na_seq) if na_seq else '',
+                'NA_raw_length': len(na_seq) if na_seq else 0,
 
             })
 
@@ -344,13 +346,17 @@ def process_gene_list(gene_list, run_blast, virus_obj):
     if run_blast:
         virus_obj.build_blast_db()
 
-        gene_list2 = pooled_blast_genes(gene_list, virus_obj)
-        additional_gene_list = detect_additional_genes(
-            gene_list, gene_list2, virus_obj)
+        # Step 1
+        checked_gene_list = check_genbank_coding_seq(gene_list, virus_obj)
 
+        # Step 2
+        additional_gene_list = detect_non_annot_gene_by_blast(
+            gene_list, checked_gene_list, virus_obj)
+
+        # Step 3
         with_gene_acc = [
             i['Accession']
-            for i in gene_list2 + additional_gene_list
+            for i in checked_gene_list + additional_gene_list
             if i['Gene']
         ]
         without_gene = [
@@ -358,16 +364,21 @@ def process_gene_list(gene_list, run_blast, virus_obj):
             for i in gene_list
             if i['Accession'] not in with_gene_acc
         ]
-        print("Accessions no gene after blast", len(without_gene))
-        print('CDS_NAME', set([i['CDS_NAME'] for i in without_gene]))
-        missing_genes = detect_gene_by_biopython(without_gene, virus_obj)
-        print('Detected missing genes', len(missing_genes))
-        print('Genes', [i['Gene'] for i in missing_genes])
-        gene_list = gene_list2 + additional_gene_list + missing_genes
+        print("# Accessions no gene after blast", len(without_gene))
+        print('CDS_NAME list: ', set([i['CDS_NAME'] for i in without_gene]))
+        missing_genes = detect_non_annot_gen_by_biopython(
+            without_gene, virus_obj)
+        print('# Detected missing genes: ', len(missing_genes))
+        print('Genes list:', [i['Gene'] for i in missing_genes])
+
+        gene_list = checked_gene_list + additional_gene_list + missing_genes
         gene_list.sort(key=itemgetter('Accession', 'Gene'))
 
         gene_df = pd.DataFrame(gene_list)
         gene_df['SeqID'] = gene_df.index + 1
+
+        gene_df = pd.DataFrame(align_genes(virus_obj, gene_df))
+
         gene_df.to_excel(str(virus_obj.genbank_gene_file), index=False)
         gene_df = pd.read_excel(
             str(virus_obj.genbank_gene_file)).fillna('')
@@ -386,6 +397,7 @@ def process_gene_list(gene_list, run_blast, virus_obj):
         gene_df.to_excel(str(virus_obj.genbank_gene_file), index=False)
         gene_df = pd.read_excel(
             str(virus_obj.genbank_gene_file)).fillna('')
+
     gene_df = virus_obj.process_gene_list(gene_df)
     gene_df.to_excel(str(virus_obj.genbank_gene_file), index=False)
 

@@ -63,7 +63,7 @@ def create_tables(db_file):
             "AA_length" INTEGER,
             "AA_start" INTEGER,
             "AA_stop" INTEGER,
-            "NA_Seq" TEXT,
+            "NA_seq" TEXT,
             "NA_length" INTEGER,
             "NA_start" INTEGER,
             "NA_stop" INTEGER,
@@ -77,12 +77,11 @@ def create_tables(db_file):
             "SeqID" INTEGER,
             "AA_num_ins" INTEGER,
             "AA_num_del" INTEGER,
-            "AA_blast_failed" INTEGER,
+            "AA_num_stop" INTEGER,
             "NA_num_ins" INTEGER,
             "NA_num_del" INTEGER,
-            "NA_blast_failed" INTEGER,
             "num_N" INTEGER,
-            "translation_issue" INTEGER,
+            "translation_error" INTEGER,
             FOREIGN KEY (SeqID) REFERENCES tblSequences (SeqID)
         )
     """)
@@ -198,15 +197,16 @@ def create_database(virus_obj, references, isolates, features, genes, pubmed,
     ]]
     fill_in_table(virus_obj.DB_FILE, 'tblSequences', tblGBSequences)
 
-    tblIndels = genes[(genes['AA_num_ins'] != 0) | (genes['AA_num_del'] != 0) |
-                      (genes['AA_blast_failed'] == 1) |
-                      (genes['NA_num_ins'] != 0) | (genes['NA_num_del'] != 0) |
-                      (genes['NA_blast_failed'] == 1) | (genes['num_N'] != 0) |
-                      (genes['translation_issue'] != 0)]
+    # tblIndels = genes[(genes['AA_num_ins'] != 0) | (genes['AA_num_del'] != 0) |
+    #                   (genes['NA_num_ins'] != 0) | (genes['NA_num_del'] != 0) |
+    #                   (genes['num_N'] != 0) |
+    #                   (genes['translation_error'] != 0)]
 
-    tblIndels = tblIndels[[
-        'SeqID', 'AA_num_ins', 'AA_num_del', 'AA_blast_failed', 'NA_num_ins',
-        'NA_num_del', 'NA_blast_failed', 'num_N', 'translation_issue'
+    tblIndels = genes[[
+        'SeqID',
+        'AA_num_ins', 'AA_num_del', 'AA_num_stop',
+        'NA_num_ins', 'NA_num_del', 'num_N',
+        'translation_error'
     ]]
 
     fill_in_table(virus_obj.DB_FILE, 'tblIndels', tblIndels)
