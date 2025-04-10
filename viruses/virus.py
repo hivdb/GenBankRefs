@@ -9,6 +9,7 @@ from collections import defaultdict
 import matplotlib as mpl
 from distinctipy import get_colors
 from operator import itemgetter
+import matplotlib.pyplot as plt
 
 
 timestamp = datetime.now().strftime('%m_%d')
@@ -302,6 +303,17 @@ class Virus:
                                    picked_genes,
                                    coverage_pcnt=coverage_pcnt)
 
+    def viz_alignment_coverage(self, gene_df):
+
+        for gene in self.GENES:
+            pos_pairs = [
+                (row['NA_start'], row['NA_stop'])
+                for i, row in gene_df.iterrows()
+                if row['Gene'] == gene
+            ]
+            image_file_path = self.output_excel_dir / f'{gene}_alignment_coverage.png'
+            viz_alignment_coverage(image_file_path, gene, pos_pairs)
+
 
 Virus('default')
 
@@ -524,7 +536,6 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
             )
 
 
-
 def get_sequences_limited_pattern_each(metadata, g_list):
     # print(len(g_list))
     pattern_acc = defaultdict(list)
@@ -617,3 +628,38 @@ def convert_country_to_region(metadata):
     ]
 
     return metadata
+
+
+def viz_alignment_coverage(image_file_path, gene, position_pairs):
+
+    position_pairs.sort(key=lambda x: -(x[1] - x[0]))
+
+    plt.figure(figsize=(10, 4))
+
+    for i, (start, end) in enumerate(position_pairs):
+        plt.hlines(y=i, xmin=start, xmax=end, color='blue', linewidth=2)
+
+    plt.xlabel('Gene Position (bp)')
+    plt.ylabel('# Seq')
+    plt.title(f'{gene}')
+    plt.tight_layout()
+
+    x = [
+        (i[1] - i[0] + 1)
+        for i in position_pairs
+    ]
+    tick_step = closest_smaller_base(max(x) / 5)
+    ticks = list(range(0, max(x)+1, tick_step))
+    if max(x) not in ticks:
+        ticks.append(max(x))
+    print(ticks)
+    plt.xticks(ticks, rotation=90)
+
+    plt.savefig(str(image_file_path), dpi=300)
+    plt.close()
+
+
+def closest_smaller_base(n):
+    bases = [10, 100, 1000]
+    smaller_bases = [b for b in bases if b <= n]
+    return max(smaller_bases) if smaller_bases else None
