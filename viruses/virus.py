@@ -10,6 +10,7 @@ import matplotlib as mpl
 from distinctipy import get_colors
 from operator import itemgetter
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 timestamp = datetime.now().strftime('%m_%d')
@@ -315,15 +316,55 @@ class Virus:
     def viz_alignment_coverage(self, gene_df):
 
         for gene in self.GENES:
+            sub_gene_df = gene_df[gene_df['Gene'] == gene]
+
+            ref_na = self.ref_na_gene_map[gene]
+            ref_na_length = len(ref_na)
+
+            print(f'Gene {gene}, # Seq', len(sub_gene_df))
+            print('# Seq with ins: ', len(sub_gene_df[sub_gene_df['NA_num_ins'] == 1]))
+            print('# Seq with del: ', len(sub_gene_df[sub_gene_df['NA_num_del'] == 1]))
+            print('# Seq with N: ', len(sub_gene_df[sub_gene_df['num_N'] == 1]))
+            print('# Seq with <90% cover: ', len(sub_gene_df[sub_gene_df['NA_length'] < ref_na_length * 0.9]))
+
             pos_pairs = [
                 (row['NA_start'], row['NA_stop'])
-                for i, row in gene_df.iterrows()
-                if row['Gene'] == gene
+                for i, row in sub_gene_df.iterrows()
             ]
             image_folder = self.output_excel_dir / 'alignment_coverage'
             image_folder.mkdir(exist_ok=True)
             image_file_path = image_folder / f'{gene}.png'
             viz_alignment_coverage(image_file_path, gene, pos_pairs)
+
+            image_folder = self.output_excel_dir / 'alignment'
+            image_folder.mkdir(exist_ok=True)
+            image_file_path = image_folder / f'{gene}_na_length.png'
+            viz_histogram(image_file_path, [
+                row['NA_length']
+                for i, row in sub_gene_df.iterrows()],
+                title=f'{gene} NA coverage'
+            )
+
+            image_file_path = image_folder / f'{gene}_na_num_N.png'
+            viz_histogram(image_file_path, [
+                row['num_N']
+                for i, row in sub_gene_df.iterrows()],
+                title=f"{gene} # N"
+            )
+
+            image_file_path = image_folder / f'{gene}_na_num_ins.png'
+            viz_histogram(image_file_path, [
+                row['NA_num_ins']
+                for i, row in sub_gene_df.iterrows()],
+                title=f"{gene} # ins"
+            )
+
+            image_file_path = image_folder / f'{gene}_na_num_del.png'
+            viz_histogram(image_file_path, [
+                row['NA_num_del']
+                for i, row in sub_gene_df.iterrows()],
+                title=f"{gene} # del"
+            )
 
 
 Virus('default')
@@ -674,3 +715,16 @@ def closest_smaller_base(n):
     bases = [10, 100, 1000]
     smaller_bases = [b for b in bases if b <= n]
     return max(smaller_bases) if smaller_bases else None
+
+
+def viz_histogram(image_file_path, data, title):
+    data = np.array(data)
+    unique_values = np.sort(np.unique(data))
+    counts = [np.sum(data == val) for val in unique_values]
+    plt.bar(unique_values, counts, edgecolor='black')
+
+    plt.title(title)
+    # plt.xlabel('NA length')
+    plt.ylabel('# Seq')
+    plt.savefig(str(image_file_path), dpi=300)
+    plt.close()
