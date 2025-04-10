@@ -311,7 +311,9 @@ class Virus:
                 for i, row in gene_df.iterrows()
                 if row['Gene'] == gene
             ]
-            image_file_path = self.output_excel_dir / f'{gene}_alignment_coverage.png'
+            image_folder = self.output_excel_dir / 'alignment_coverage'
+            image_folder.mkdir(exist_ok=True)
+            image_file_path = image_folder / f'{gene}.png'
             viz_alignment_coverage(image_file_path, gene, pos_pairs)
 
 
