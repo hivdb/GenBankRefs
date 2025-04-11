@@ -305,7 +305,7 @@ class Virus:
 
     @property
     def ref_aa_gene_map(self):
-        return load_fasta(self.reference_folder / f"{self.name}_RefNAs.fasta")
+        return load_fasta(self.reference_folder / f"{self.name}_RefAAs.fasta")
 
     def pick_phylo_sequence(self, genes, picked_genes=[], coverage_pcnt=1):
         return pick_phylo_sequence(self,
@@ -322,12 +322,32 @@ class Virus:
             ref_na_length = len(ref_na)
 
             print(f'Gene {gene}, # Seq', len(sub_gene_df))
-            print('# Seq with ins: ', len(sub_gene_df[sub_gene_df['NA_num_ins'] == 1]))
-            print('# Seq with del: ', len(sub_gene_df[sub_gene_df['NA_num_del'] == 1]))
-            print('# Seq with N: ', len(sub_gene_df[sub_gene_df['num_N'] == 1]))
-            print('# Seq with <90% cover: ', len(sub_gene_df[sub_gene_df['NA_length'] < ref_na_length * 0.9]))
+            print('# Seq with ins: ', len(
+                sub_gene_df[
+                    sub_gene_df['NA_num_ins'] > 0]))
+            print('# Seq with del: ', len(
+                sub_gene_df[
+                    sub_gene_df['NA_num_del'] > 0]))
+            print('# Seq with N: ', len(
+                sub_gene_df[
+                    sub_gene_df['NA_num_N'] > 0]))
+            print('# Seq with <90% cover: ', len(
+                sub_gene_df[
+                    sub_gene_df['NA_length'] < (ref_na_length * 0.9)]))
+            print('# Seq with codon issue:', len(
+                sub_gene_df[sub_gene_df['AA_num_codon_issue'] > 0]
+            ))
+            print('# no QA issue:', len(
+                sub_gene_df[
+                    (sub_gene_df['NA_num_ins'] == 0) &
+                    (sub_gene_df['NA_num_del'] == 0) &
+                    (sub_gene_df['NA_num_N'] == 0) &
+                    (sub_gene_df['NA_length'] >= (ref_na_length * 0.9)) &
+                    (sub_gene_df['AA_num_codon_issue'] == 0)
+                ]
+            ))
 
-            sub_gene_df = sub_gene_df[sub_gene_df['num_N'] < 3]
+            # sub_gene_df = sub_gene_df[sub_gene_df['NA_num_N'] < 3]
 
             pos_pairs = [
                 (row['NA_start'], row['NA_stop'])
@@ -349,7 +369,7 @@ class Virus:
 
             image_file_path = image_folder / f'{gene}_na_num_N.png'
             viz_histogram(image_file_path, [
-                row['num_N']
+                row['NA_num_N']
                 for i, row in sub_gene_df.iterrows()],
                 title=f"{gene} # N"
             )

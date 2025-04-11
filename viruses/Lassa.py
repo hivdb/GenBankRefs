@@ -146,6 +146,7 @@ def process_features(features_df):
 
     return features_df
 
+
 # Function to standardize biological terms in feature tables
 def translate_bio_term(features_df):
     name_map = {

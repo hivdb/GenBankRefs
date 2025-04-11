@@ -1,4 +1,3 @@
-from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.Data.CodonTable import TranslationError
 
@@ -11,9 +10,7 @@ from pathlib import Path
 from xml.parsers.expat import ExpatError
 from collections import defaultdict
 from skbio.alignment import StripedSmithWaterman
-from bioinfo import dump_fasta
-from bioinfo import load_fasta
-import subprocess
+
 
 
 def check_genbank_coding_seq(gene_list, virus_obj, poolsize=20):
@@ -285,6 +282,8 @@ def detect_gene_by_blast(args):
         if blast['hit_name'] in exist_genes:
             continue
 
+        exist_genes.append(blast['hit_name'])
+
         blast_result = get_blast_result(isolate, blast, {})
 
         blast_result['CDS_NAME'] = ''
@@ -438,50 +437,80 @@ def align_gene_seq(args):
     ref_na = virus.ref_na_gene_map[gene_name]
     ref_aa = virus.ref_aa_gene_map[gene_name]
 
+    if (len(ref_na) % 3) != 0:
+        print(gene_name, 'has frameshift in reference!')
+
     # query is the references
 
     query = StripedSmithWaterman(ref_na)
 
     alignment = query(row['NA_raw_seq'])
+    row['cigar'] = alignment.cigar
 
-    row['NA_seq'] = alignment.aligned_target_sequence
-    row['NA_length'] = len(alignment.aligned_target_sequence)
-    row['NA_start'] = alignment.query_begin + 1
-    row['NA_stop'] = alignment.query_end + 1
-    row['NA_num_ins'] = alignment.aligned_query_sequence.count('-')
-    row['NA_num_del'] = alignment.aligned_target_sequence.count('-')
-    row['num_N'] = alignment.aligned_target_sequence.count('N')
-    row['align_len'] = len(alignment.aligned_target_sequence)
+    aligned_ref = alignment.aligned_query_sequence
+    aligned_seq = alignment.aligned_target_sequence
+
+    # if row['Accession'] == 'MK575070' and row['Gene'] == 'L':
+    #     print(len([1 for i, j in zip(aligned_seq, aligned_ref) if i != j]), 'www', alignment.cigar)
+
+    # TODO, pre adjust will change AA alignment
+    # aligned_ref, aligned_seq = adjust_alignment(aligned_ref, aligned_seq)
+
+    # TODO add prefix or suffix of seq, will make the alignment a bit better.
+    (
+        aligned_ref_codon, aligned_seq_codon,
+        na_start, na_stop) = get_codon_alignment(
+            ref_na, ref_aa,
+            row['NA_raw_seq'],
+            aligned_ref, aligned_seq,
+            alignment, adjacent_window=10)
+
+    aligned_ref = ''.join(aligned_ref_codon)
+    aligned_seq = ''.join(aligned_seq_codon)
+
+    # aligned_ref, aligned_seq, na_start, na_stop = get_new_aligned_ref_seq(
+    #     ref_na, aligned_ref_codon, aligned_seq_codon
+    # )
+
+    row['NA_seq'] = aligned_seq
+    row['NA_length'] = len(aligned_seq)
+    row['NA_start'] = na_start
+    row['NA_stop'] = na_stop
+
+    row['NA_num_ins'] = aligned_ref.count('-')
+    row['NA_num_del'] = aligned_seq.count('-')
+    row['NA_ins_del_diff_3'] = abs(row['NA_num_ins'] - row['NA_num_del']) % 3
+    row['NA_num_N'] = aligned_seq.count('N')
+
+    row['align_len'] = len(aligned_ref.replace('-', ''))
     row['pcnt_id'] = count_pcnt_identity(
-        alignment.aligned_query_sequence,
-        alignment.aligned_target_sequence,
+        aligned_ref,
+        aligned_seq,
         len(ref_na)
     )
 
-    row['AA_seq'] = row['AA_raw_seq']
-    row['AA_length'] = len(row['AA_raw_seq'])
+    aa_start = (na_start - 1) // 3 + 1
+    row = translate_aligned_codon(
+        row, ref_aa, aa_start, aligned_ref_codon, aligned_seq_codon)
 
-    if not row['AA_seq']:
-        try:
-            trans_seq = Seq(alignment.aligned_target_sequence)
-            trans_seq = trans_seq[:len(trans_seq) - (len(trans_seq) % 3)]
-            aa_seq = Seq(trans_seq).translate()
-            row['AA_seq'] = str(aa_seq)
-            row['AA_length'] = len(aa_seq)
-        except TranslationError:
-            row['AA_seq'] = ''
-            row['AA_length'] = 0
-            row['translation_error'] = 1
-
-    if row['AA_seq']:
-        query = StripedSmithWaterman(ref_aa)
-        alignment = query(row['AA_seq'])
-        row['AA_start'] = alignment.query_begin + 1
-        row['AA_stop'] = alignment.query_end + 1
-        row['AA_num_ins'] = alignment.aligned_query_sequence.count('-')
-        row['AA_num_del'] = alignment.aligned_target_sequence.count('-')
-        row['AA_num_stop'] = alignment.aligned_target_sequence.count('*')
     return row
+
+
+# def get_new_aligned_ref_seq(ref_na, aligned_ref_codon, aligned_seq_codon):
+
+#     aligned_ref = ''.join(aligned_ref_codon)
+#     aligned_seq = ''.join(aligned_seq_codon)
+
+#     p1 = get_pos_pre(aligned_seq, '-')
+#     p2 = get_pos_post(aligned_seq, '-')
+
+#     assert (len(aligned_ref) == len(aligned_seq))
+
+#     aligned_ref = aligned_ref[p1: p2]
+#     aligned_seq = aligned_seq[p1: p2]
+#     start = p1 + 1
+#     stop = len(ref_na) - (len(aligned_seq) - p2)
+#     return aligned_ref, aligned_seq, start, stop
 
 
 def count_pcnt_identity(aligned_ref, aligne_seq, ref_length):
@@ -491,3 +520,377 @@ def count_pcnt_identity(aligned_ref, aligne_seq, ref_length):
         if i == j
     ]
     return int(len(same) * 100 / ref_length)
+
+
+def adjust_alignment(ref, seq, window_size=30):
+    # TODO auto guess window size, by diff '-' % 3 == 0
+    # This method is not an ideal one because
+    # 1. it blindly adjust the window
+    # 2. it didn't consider the codon, amino acid alignment.
+
+    new_ref = []
+    mid_ref = []
+    new_seq = []
+    mid_seq = []
+    num_ins = 0
+
+    for r, s in zip(ref, seq):
+        if r != '-' and s != '-':
+            if num_ins == 0:
+                new_ref.append(r)
+                new_seq.append(s)
+            else:
+                mid_ref.append(r)
+                mid_seq.append(s)
+        elif r == '-' and s == '-':
+            continue
+        elif r == '-':
+            num_ins += 1
+            mid_ref.append(r)
+            mid_seq.append(s)
+            if (num_ins % 3) == 0:
+                mid_ref = ''.join(mid_ref).replace('-', '')
+                mid_seq = ''.join(mid_seq).replace('-', '')
+                if num_ins == 0:
+                    new_ref.append(mid_ref)
+                    new_seq.append(mid_seq)
+                elif num_ins > 0:
+                    new_ref.append(mid_ref + '-' * num_ins)
+                    new_seq.append(mid_seq)
+                elif num_ins < 0:
+                    new_ref.append(mid_ref)
+                    new_seq.append(mid_seq + '-' * (-num_ins))
+                mid_ref = []
+                mid_seq = []
+                num_ins = 0
+                continue
+        elif s == '-':
+            num_ins -= 1
+            mid_ref.append(r)
+            mid_seq.append(s)
+            if (num_ins % 3) == 0:
+                mid_ref = ''.join(mid_ref).replace('-', '')
+                mid_seq = ''.join(mid_seq).replace('-', '')
+                if num_ins == 0:
+                    new_ref.append(mid_ref)
+                    new_seq.append(mid_seq)
+                elif num_ins > 0:
+                    new_ref.append(mid_ref + '-' * num_ins)
+                    new_seq.append(mid_seq)
+                elif num_ins < 0:
+                    new_ref.append(mid_ref)
+                    new_seq.append(mid_seq + '-' * (-num_ins))
+                mid_ref = []
+                mid_seq = []
+                num_ins = 0
+                continue
+
+        # Not to extend forever
+        # TODO: any better way?
+        if len(mid_ref) >= window_size:
+            mid_ref = ''.join(mid_ref)
+            mid_seq = ''.join(mid_seq)
+            new_ref.append(mid_ref)
+            new_seq.append(mid_seq)
+            mid_ref = []
+            mid_seq = []
+            num_ins = 0
+
+    if mid_ref:
+        new_ref.append(''.join(mid_ref))
+        new_seq.append(''.join(mid_seq))
+
+    new_ref = ''.join(new_ref)
+    new_seq = ''.join(new_seq)
+
+    # TODO
+    # if new_ref.count('-') == new_seq.count('-'):
+    #     new_ref = new_ref.replace('-', '')
+    #     new_seq = new_seq.replace('-', '')
+
+    assert (new_ref.replace('-', '') == ref.replace('-', ''))
+    assert (new_seq.replace('-', '') == seq.replace('-', ''))
+
+    assert (len(new_ref) == len(new_seq))
+
+    return new_ref, new_seq
+
+
+def get_codon_alignment(
+        ref_na, ref_aa,
+        seq_na,
+        aligned_ref, aligned_seq,
+        alignment,
+        adjacent_window=10):
+
+    na_start = alignment.query_begin
+    na_stop = alignment.query_end
+
+    pre_ref = ref_na[:alignment.query_begin]
+
+    chop_length = len(pre_ref) % 3
+    if chop_length:
+        chop_length = 3 - chop_length
+        aligned_ref = aligned_ref[chop_length:]
+        aligned_seq = aligned_seq[chop_length:]
+        na_start += chop_length
+
+    # remove tail and head that are not codon, in case the query seq missing
+    # tail and head.
+    # although build the full sequence is an option, the tail and head codon
+    # in cds won't be changed
+
+    ref_codon_list = get_ref_codon_list(aligned_ref)
+
+    aligned_ref = ''.join(ref_codon_list)
+    aligned_seq = aligned_seq[: len(aligned_ref)]
+    na_stop = na_start + len(ref_codon_list) * 3 - 1
+    assert (len(aligned_ref) == len(aligned_seq))
+
+    seq_codon_list = []
+    cursor = 0
+    for codon in ref_codon_list:
+        seq_codon = aligned_seq[cursor: cursor + len(codon)]
+        cursor += len(codon)
+        seq_codon_list.append(seq_codon)
+
+    if adjacent_window:
+        seq_codon_list = adj_adjacent_seq_codon_list(
+            ref_codon_list, seq_codon_list, adjacent_window)
+        ref_codon_list, seq_codon_list = adjust_codon_tail_del(
+            ref_codon_list, seq_codon_list)
+
+    # assert (len(''.join(ref_codon_list)) == len(aligned_ref))
+    assert (len(ref_codon_list) == len(seq_codon_list))
+    # TODO: issue, the frameshift of references translation is not considered,
+    # should be reflexted in codon alignment
+    assert (len(''.join(ref_codon_list)) == len(''.join(seq_codon_list)))
+    # assert (len(ref_codon_list) == len(ref_aa))
+
+    return ref_codon_list, seq_codon_list, na_start + 1, na_stop + 1
+
+
+def get_ref_codon_list(aligned_ref):
+    ref_codon_list = []
+    ref_codon = []
+
+    for idx, r in enumerate(aligned_ref):
+        ref_codon.append(r)
+        codon_core = ''.join(ref_codon).replace('-', '')
+        if len(codon_core) == 3:
+            ref_codon = ''.join(ref_codon)
+
+            codon_pre = ref_codon[:get_pos_pre(ref_codon, '-')]
+            this_codon = ref_codon[get_pos_pre(ref_codon, '-'):]
+            # codon_post = ref_codon[get_pos_post(ref_codon, '-'):]
+            if codon_pre:
+                if ref_codon_list:
+                    ref_codon_list[-1] += codon_pre
+                else:
+                    this_codon = ref_codon
+
+            ref_codon_list.append(this_codon)
+
+            ref_codon = []
+
+    return ref_codon_list
+
+
+def adj_adjacent_seq_codon_list(ref_codon_list, seq_codon_list, adjacent_window):
+    adj_adjacent = []
+    cursor = 0
+    while cursor < len(seq_codon_list):
+        codon = seq_codon_list[cursor]
+        # Normal codon
+        if '-' not in codon and len(codon) == 3:
+            adj_adjacent.append(codon)
+            cursor += 1
+            continue
+
+        forword_window = adjust_look_forward(
+            ref_codon_list[cursor: cursor + adjacent_window],
+            seq_codon_list[cursor: cursor + adjacent_window])
+
+        # Get codons in a window
+        seq_list = []
+        # depend on AA to align codon
+        ref_list = []
+
+        for i in range(forword_window):
+            next_cursor = cursor + i
+            if next_cursor >= len(seq_codon_list):
+                break
+            next_seq = seq_codon_list[next_cursor]
+            next_ref = ref_codon_list[next_cursor]
+
+            # Normal codon
+            # if '-' not in next_seq and len(next_seq) == 3:
+            #     break
+
+            seq_list.append(next_seq)
+            ref_list.append(next_ref)
+
+        # print(ref_list)
+        # print(seq_list)
+
+        join_codon = ''.join(seq_list)
+        codon_core = join_codon.replace('-', '')
+
+        # Only codon can be translated will be adjusted.
+        if len(codon_core) % 3 != 0:
+            adj_adjacent.extend(seq_list)
+            cursor += len(seq_list)
+            continue
+
+        # Adjust by original codon length
+        codon_core_list = [
+            codon_core[i:i + 3]
+            for i in range(0, len(codon_core), 3)]
+
+        new_codon_list = []
+        for idx, c in enumerate(seq_list):
+            if idx < len(codon_core_list):
+                new_c = codon_core_list[idx]
+                new_c += '-' * (len(c) - len(new_c))
+                new_codon_list.append(new_c)
+            else:
+                new_codon_list.append('-' * len(c))
+
+        adj_adjacent.extend(new_codon_list)
+        cursor += len(new_codon_list)
+
+    return adj_adjacent
+
+
+def adjust_look_forward(ref_codons, seq_codons):
+    # Match long deletion in ref and seq and remove them in this window
+    ref_del = 0
+    seq_del = 0
+    for idx, (r, s) in enumerate(zip(ref_codons, seq_codons)):
+        ref_del += r.count('-')
+        seq_del += s.count('-')
+
+        if ref_del and seq_del and (ref_del == seq_del):
+            break
+
+    return (idx + 1)
+
+
+def adjust_codon_tail_del(ref_codon_list, seq_codon_list):
+    new_ref = []
+    new_seq = []
+    for i, j in zip(ref_codon_list, seq_codon_list):
+        if ('-' in i) and ('-' in j):
+            if i.count('-') == j.count('-'):
+                new_ref.append(i.replace('-', ''))
+                new_seq.append(j.replace('-', ''))
+                continue
+
+        new_ref.append(i)
+        new_seq.append(j)
+
+    return new_ref, new_seq
+
+
+def translate_aligned_codon(
+        row, ref_aa, na_start, ref_codon, seq_codon):
+    AA_list = []
+    issue_list = []
+    ins_list = []
+    del_list = []
+    stop_list = []
+
+    for idx, (r, s) in enumerate(zip(ref_codon, seq_codon)):
+        if (len(s) % 3) != 0:
+            AA_list.append((idx + na_start, 'X'))
+            issue_list.append((idx + na_start, r, s))
+            continue
+        try:
+            trans_seq = Seq(s)
+            aa = str(Seq(trans_seq).translate())
+
+            if aa == '*':
+                stop_list.append((idx + na_start, aa))
+            elif aa == '-':
+                del_list.append((idx + na_start, aa))
+            elif len(aa) > 1:
+                ins_list.append((idx + na_start, aa))
+
+            AA_list.append((idx + na_start, aa))
+        except TranslationError:
+            AA_list.append((idx + na_start, 'X'))
+            issue_list.append((idx + na_start, r, s))
+
+    row['AA_codon_issue'] = ', '.join([
+        f"{pos} ({r}, {s})"
+        for pos, r, s in issue_list
+    ])
+    row['AA_num_codon_issue'] = len(issue_list)
+
+    aa_seq = ''.join([aa for (pos, aa) in AA_list])
+    row['AA_seq'] = aa_seq
+    row['AA_length'] = len(aa_seq)
+
+    row['AA_start'] = min([pos for (pos, aa) in AA_list])
+    row['AA_stop'] = max([pos for (pos, aa) in AA_list])
+
+    row['AA_ins_pos'] = ', '.join([
+        str(pos)
+        for (pos, aa) in ins_list
+    ])
+    row['AA_del_pos'] = ', '.join([
+        str(pos)
+        for (pos, aa) in del_list
+    ])
+    row['AA_stop_pos'] = ', '.join([
+        str(pos)
+        for (pos, aa) in stop_list
+    ])
+
+    row['AA_num_ins'] = len(ins_list)
+    row['AA_num_del'] = len(del_list)
+    row['AA_num_stop'] = len(stop_list)
+
+    ref_aa = ref_aa[row['AA_start'] - 1: row['AA_stop']]
+    mutations = [
+        f"{a}{pos}{b}"
+        for (a, (pos, b)) in zip(ref_aa, AA_list)
+        if (a != b)
+    ]
+
+    row['Mutations'] = ', '.join(mutations)
+    row['Num_mutations'] = len(mutations)
+    # if row['AA_seq']:
+    #     query = StripedSmithWaterman(ref_aa)
+    #     alignment = query(row['AA_seq'])
+    #     row['AA_start'] = alignment.query_begin + 1
+    #     row['AA_stop'] = alignment.query_end + 1
+    #     row['AA_num_ins'] = alignment.aligned_query_sequence.count('-')
+    #     row['AA_num_del'] = alignment.aligned_target_sequence.count('-')
+    #     row['AA_num_stop'] = alignment.aligned_target_sequence.count('*')
+
+    return row
+
+
+def get_pos_pre(str, char):
+    pos = 0
+    for c in str:
+        if c == char:
+            pos += 1
+        else:
+            break
+    return pos
+
+
+def get_pos_post(str, char):
+    pos = len(str)
+    for c in str[::-1]:
+        if c == char:
+            pos -= 1
+        else:
+            break
+    return pos
+
+
+# TODO auto detect AA alignment error
+# consecutive positions mutations, or X

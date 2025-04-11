@@ -75,13 +75,17 @@ def create_tables(db_file):
     conn.execute("""
         CREATE TABLE "tblIndels" (
             "SeqID" INTEGER,
+            "AA_ins_pos" TEXT,
             "AA_num_ins" INTEGER,
+            "AA_del_pos" TEXT,
             "AA_num_del" INTEGER,
+            "AA_stop_pos" TEXT,
             "AA_num_stop" INTEGER,
+            "Mutations" TEXT,
+            "Num_mutations" TEXT,
             "NA_num_ins" INTEGER,
             "NA_num_del" INTEGER,
-            "num_N" INTEGER,
-            "translation_error" INTEGER,
+            "NA_num_N" INTEGER,
             FOREIGN KEY (SeqID) REFERENCES tblSequences (SeqID)
         )
     """)
@@ -197,16 +201,19 @@ def create_database(virus_obj, references, isolates, features, genes, pubmed,
     ]]
     fill_in_table(virus_obj.DB_FILE, 'tblSequences', tblGBSequences)
 
-    # tblIndels = genes[(genes['AA_num_ins'] != 0) | (genes['AA_num_del'] != 0) |
-    #                   (genes['NA_num_ins'] != 0) | (genes['NA_num_del'] != 0) |
-    #                   (genes['num_N'] != 0) |
-    #                   (genes['translation_error'] != 0)]
-
     tblIndels = genes[[
         'SeqID',
-        'AA_num_ins', 'AA_num_del', 'AA_num_stop',
-        'NA_num_ins', 'NA_num_del', 'num_N',
-        'translation_error'
+        'AA_ins_pos',
+        'AA_num_ins',
+        'AA_del_pos',
+        'AA_num_del',
+        'AA_stop_pos',
+        'AA_num_stop',
+        'Mutations',
+        'Num_mutations',
+        'NA_num_ins',
+        'NA_num_del',
+        'NA_num_N',
     ]]
 
     fill_in_table(virus_obj.DB_FILE, 'tblIndels', tblIndels)
