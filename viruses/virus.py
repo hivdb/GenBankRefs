@@ -11,7 +11,8 @@ from distinctipy import get_colors
 from operator import itemgetter
 import matplotlib.pyplot as plt
 import numpy as np
-
+from bioinfo import dump_fasta
+from collections import Counter
 
 timestamp = datetime.now().strftime('%m_%d')
 
@@ -337,24 +338,38 @@ class Virus:
             print('# Seq with codon issue:', len(
                 sub_gene_df[sub_gene_df['AA_num_codon_issue'] > 0]
             ))
-            print('# no QA issue:', len(
-                sub_gene_df[
-                    (sub_gene_df['NA_num_ins'] == 0) &
-                    (sub_gene_df['NA_num_del'] == 0) &
-                    (sub_gene_df['NA_num_N'] == 0) &
-                    (sub_gene_df['NA_length'] >= (ref_na_length * 0.9)) &
-                    (sub_gene_df['AA_num_codon_issue'] == 0)
-                ]
-            ))
 
-            # sub_gene_df = sub_gene_df[sub_gene_df['NA_num_N'] < 3]
+            good_seq = sub_gene_df[
+                (sub_gene_df['NA_num_ins'] == 0) &
+                (sub_gene_df['NA_num_del'] == 0) &
+                (sub_gene_df['NA_num_N'] == 0) &
+                (sub_gene_df['AA_num_codon_issue'] == 0)
+            ]
+
+            covrage = check_most_covered_range(good_seq)
+
+            # print('# no QA issue:', len(
+            #     sub_gene_df[
+            #         (sub_gene_df['NA_num_ins'] == 0) &
+            #         (sub_gene_df['NA_num_del'] == 0) &
+            #         (sub_gene_df['NA_num_N'] == 0) &
+            #         (sub_gene_df['NA_length'] >= 100) &
+            #         (sub_gene_df['AA_num_codon_issue'] == 0)
+            #     ]
+            # ))
 
             pos_pairs = [
                 (row['NA_start'], row['NA_stop'])
-                for i, row in sub_gene_df.iterrows()
+                for i, row in good_seq.iterrows()
+                # for i, row in sub_gene_df.iterrows()
             ]
+
             image_folder = self.output_excel_dir / 'alignment_coverage'
             image_folder.mkdir(exist_ok=True)
+
+            save_path = image_folder / f'{gene}_phylo.fasta'
+            dump_phylo_fasta(good_seq, covrage, save_path)
+
             image_file_path = image_folder / f'{gene}.png'
             viz_alignment_coverage(image_file_path, gene, pos_pairs)
 
@@ -750,3 +765,83 @@ def viz_histogram(image_file_path, data, title):
     plt.ylabel('# Seq')
     plt.savefig(str(image_file_path), dpi=300)
     plt.close()
+
+
+def check_most_covered_range(sequences):
+
+    pos_coverage = defaultdict(int)
+
+    for i, row in sequences.iterrows():
+        start = row['NA_start']
+        stop = row['NA_stop']
+        for ofst in range(start, stop):
+            pos = ofst + 1
+            pos_coverage[pos] += 1
+
+    cover_count = list(Counter(pos_coverage.values()).items())
+    cover_count.sort(key=lambda x: x[-1], reverse=True)
+
+    top_3 = cover_count[:3]
+
+    top_choices = []
+    for (pc, cnt) in top_3:
+        pos_list = [
+            int(pos)
+            for pos, cov in pos_coverage.items()
+            if cov == pc
+        ]
+        pos_list.sort()
+
+        choose_range = find_largest_conseq(pos_list)
+        choose_range['height'] = pc
+        top_choices.append(choose_range)
+
+    top_choices = sorted(
+        top_choices, key=itemgetter('height', 'width'), reverse=True)
+
+    print('Top choices', top_choices)
+
+    return top_choices[0]
+
+
+def find_largest_conseq(numbers):
+    numbers = sorted(numbers)
+    # print(numbers)
+    range_list = []
+    for idx, n1 in enumerate(numbers):
+        candid = {
+            'start': n1,
+            'stop': n1,
+            'width': 0,
+        }
+        for n2 in numbers[idx + 1:]:
+            if (n2 - candid['stop']) == 1:
+                candid['stop'] = n2
+                candid['width'] = n2 - n1 + 1
+            else:
+                break
+        range_list.append(candid)
+    # print(range_list)
+    range_list.sort(key=itemgetter('width'), reverse=True)
+    return range_list[0]
+
+
+def dump_phylo_fasta(seqs, coverage, save_file):
+    result = {}
+    c_start = coverage['start']
+    c_stop = coverage['stop']
+    for _, i in seqs.iterrows():
+        start = i['NA_start']
+        if start > c_start:
+            continue
+        cut_start = c_start - start
+        stop = i['NA_stop']
+        if stop < c_stop:
+            continue
+        cut_stop = stop - c_stop
+        seq_na = i['NA_seq']
+        seq_na = seq_na[cut_start:len(seq_na) - cut_stop]
+        result[i['Accession']] = seq_na
+
+    dump_fasta(save_file, result)
+

@@ -84,7 +84,7 @@ def parse_genbank_records(virus):
 
             total_ref_list.extend(refs)
 
-            if record.id in virus.special_accessions:
+            if record.id.split('.', 1)[0] in virus.special_accessions:
                 reference_list.extend(refs)
                 feature_list.append(features)
                 gene_list.extend(genes)
@@ -365,6 +365,10 @@ def process_gene_list(gene_list, run_blast, virus_obj):
             if i['Accession'] not in with_gene_acc
         ]
         print("# Accessions no gene after blast", len(without_gene))
+        print('Accessions:', [
+            i['Accession']
+            for i in without_gene
+        ])
         print('CDS_NAME list: ', set([i['CDS_NAME'] for i in without_gene]))
         missing_genes = detect_non_annot_gen_by_biopython(
             without_gene, virus_obj)
@@ -400,7 +404,7 @@ def process_gene_list(gene_list, run_blast, virus_obj):
 
     gene_df = virus_obj.process_gene_list(gene_df)
 
-    gene_df = pd.DataFrame(align_genes(virus_obj, gene_df))
+    # gene_df = pd.DataFrame(align_genes(virus_obj, gene_df))
     gene_df.to_excel(str(virus_obj.genbank_gene_file), index=False)
     # exit()
 
