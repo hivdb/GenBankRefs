@@ -408,8 +408,6 @@ def process_gene_list(gene_list, run_blast, virus_obj):
     gene_df.to_excel(str(virus_obj.genbank_gene_file), index=False)
     # exit()
 
-    virus_obj.viz_alignment_coverage(gene_df)
-
     return gene_df
 
 

@@ -346,7 +346,7 @@ class Virus:
                 (sub_gene_df['AA_num_codon_issue'] == 0)
             ]
 
-            covrage = check_most_covered_range(good_seq)
+            coverage = check_most_covered_range(good_seq)
 
             # print('# no QA issue:', len(
             #     sub_gene_df[
@@ -367,8 +367,7 @@ class Virus:
             image_folder = self.output_excel_dir / 'alignment_coverage'
             image_folder.mkdir(exist_ok=True)
 
-            save_path = image_folder / f'{gene}_phylo.fasta'
-            dump_phylo_fasta(good_seq, covrage, save_path)
+            build_pre_phylo_tree(good_seq, coverage, image_folder, gene, ref_na)
 
             image_file_path = image_folder / f'{gene}.png'
             viz_alignment_coverage(image_file_path, gene, pos_pairs)
@@ -596,33 +595,46 @@ def pick_phylo_sequence(virus, genes, picked_genes, coverage_pcnt=1):
         dump_fasta(virus.phylo_folder / f"{gene_name}_ref_na.fasta", {gene_name: ref_na})
         dump_fasta(virus.phylo_folder / f'{gene_name}_isolates.fasta', g_list)
 
-        cmds = (
-            f"cd {virus.phylo_folder}; "
-            f"rm -rf output_{gene_name}; "
-            f"ViralMSA.py -e hivdbteam@list.stanford.edu -s {gene_name}_isolates.fasta -o output_{gene_name} -r {gene_name}_ref_na.fasta --omit_ref; "
-            f"cd output_{gene_name}; "
-            f"iqtree2 -s {gene_name}_isolates.fasta.aln -m GTR+G4+F -bb 1000 -nt AUTO; "
+        align_and_build_tree(
+            virus.phylo_folder,
+            f"{gene_name}_ref_na.fasta",
+            f"{gene_name}_isolates.fasta",
+            f"{gene_name}_isolates.fasta.aln",
+            f"output_{gene_name}"
         )
-        print('Run command:')
-        print(cmds)
 
-        option_no_output = input("Show tree building details? [y/n]") == 'y'
-        if option_no_output:
-            subprocess.run(
-                cmds,
-                # stdout=subprocess.PIPE,
-                # stderr=subprocess.PIPE,
-                text=True,
-                shell=True
-            )
-        else:
-            subprocess.run(
-                cmds,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-                # text=True,
-                shell=True
-            )
+
+def align_and_build_tree(
+            folder, ref_file, fasta_file, alignment_file, output_folder):
+
+    cmds = (
+        f"cd {folder}; "
+        f"rm -rf {output_folder}; "
+        f"ViralMSA.py -e hivdbteam@list.stanford.edu -s "
+        f"{fasta_file} -o {output_folder} -r {ref_file} --omit_ref; "
+        f"cd {output_folder}; "
+        f"iqtree2 -s {alignment_file} -m GTR+G4+F -bb 1000 -nt AUTO; "
+    )
+    print('Run command:')
+    print(cmds)
+
+    option_no_output = input("Show tree building details? [y/n]") == 'y'
+    if option_no_output:
+        subprocess.run(
+            cmds,
+            # stdout=subprocess.PIPE,
+            # stderr=subprocess.PIPE,
+            text=True,
+            shell=True
+        )
+    else:
+        subprocess.run(
+            cmds,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            # text=True,
+            shell=True
+        )
 
 
 def get_sequences_limited_pattern_each(metadata, g_list):
@@ -782,6 +794,7 @@ def check_most_covered_range(sequences):
     cover_count.sort(key=lambda x: x[-1], reverse=True)
 
     top_3 = cover_count[:3]
+    # print(cover_count)
 
     top_choices = []
     for (pc, cnt) in top_3:
@@ -844,4 +857,47 @@ def dump_phylo_fasta(seqs, coverage, save_file):
         result[i['Accession']] = seq_na
 
     dump_fasta(save_file, result)
+
+
+def build_pre_phylo_tree(sequences, coverage, folder, gene, ref_na):
+    save_path = folder / f'{gene}_phylo.fasta'
+
+    # print(len(sequences))
+    sequences = pick_seq_by_country(sequences, at_least=3)
+    # print(len(sequences))
+    dump_phylo_fasta(sequences, coverage, save_path)
+    dump_fasta(folder / f"{gene}_ref_na.fasta", {gene: ref_na})
+
+    if True or input('Align phylogenetic tree? [y/n]') == 'y':
+        cmds = (
+            f"cd {folder}; rm -rf {gene}; mkdir -p {gene}; cp {gene}_phylo.fasta {gene}; cd {gene}; "
+            f"iqtree2 -s {gene}_phylo.fasta -m TN93 -bb 1000 -nt AUTO; "
+        )
+        print('Run command:')
+        print(cmds)
+
+        subprocess.run(
+            cmds,
+            # stdout=subprocess.DEVNULL,
+            # stderr=subprocess.DEVNULL,
+            # text=True,
+            shell=True
+        )
+
+
+def pick_seq_by_country(sequences, at_least=3):
+    countries = [
+        i['Country']
+        for _, i in sequences.iterrows()
+    ]
+
+    countries = [
+        c
+        for c, num in Counter(countries).items()
+        if num >= at_least and c
+    ]
+
+    # print(countries)
+
+    return sequences[sequences['Country'].isin(countries)]
 

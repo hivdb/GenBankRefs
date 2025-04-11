@@ -12,7 +12,6 @@ from collections import defaultdict
 from skbio.alignment import StripedSmithWaterman
 
 
-
 def check_genbank_coding_seq(gene_list, virus_obj, poolsize=20):
     """
         For speeding up blast running, using multiprocessing method

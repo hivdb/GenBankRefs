@@ -73,19 +73,21 @@ def create_tables(db_file):
     """)
 
     conn.execute("""
-        CREATE TABLE "tblIndels" (
+        CREATE TABLE "tblInsertions" (
             "SeqID" INTEGER,
-            "AA_ins_pos" TEXT,
-            "AA_num_ins" INTEGER,
-            "AA_del_pos" TEXT,
-            "AA_num_del" INTEGER,
-            "AA_stop_pos" TEXT,
-            "AA_num_stop" INTEGER,
-            "Mutations" TEXT,
-            "Num_mutations" TEXT,
-            "NA_num_ins" INTEGER,
-            "NA_num_del" INTEGER,
-            "NA_num_N" INTEGER,
+            "Positions" TEXT,
+            FOREIGN KEY (SeqID) REFERENCES tblSequences (SeqID)
+        )
+    """)
+
+    conn.execute("""
+        CREATE TABLE "tblQA" (
+            "SeqID" INTEGER,
+            "Num_N" INTEGER,
+            "Num_frameshift" INTEGER,
+            "Num_indels" INTEGER,
+            "Num_stop" INTEGER,
+            "Num_mutations" INTEGER,
             FOREIGN KEY (SeqID) REFERENCES tblSequences (SeqID)
         )
     """)
@@ -201,22 +203,30 @@ def create_database(virus_obj, references, isolates, features, genes, pubmed,
     ]]
     fill_in_table(virus_obj.DB_FILE, 'tblSequences', tblGBSequences)
 
-    tblIndels = genes[[
+    genes['Positions'] = genes['AA_ins_pos']
+
+    tblInsertions = genes[[
         'SeqID',
-        'AA_ins_pos',
-        'AA_num_ins',
-        'AA_del_pos',
-        'AA_num_del',
-        'AA_stop_pos',
-        'AA_num_stop',
-        'Mutations',
-        'Num_mutations',
-        'NA_num_ins',
-        'NA_num_del',
-        'NA_num_N',
+        'Positions'
     ]]
 
-    fill_in_table(virus_obj.DB_FILE, 'tblIndels', tblIndels)
+    fill_in_table(virus_obj.DB_FILE, 'tblInsertions', tblInsertions)
+
+    genes['Num_N'] = genes['NA_num_N']
+    genes['Num_frameshift'] = genes['AA_num_codon_issue']
+    genes['Num_indels'] = genes['AA_num_ins'] + genes['AA_num_del']
+    genes['Num_stop'] = genes['AA_num_stop']
+
+    tblQA = genes[[
+        'SeqID',
+        'Num_N',
+        'Num_frameshift',
+        'Num_indels',
+        'Num_stop',
+        'Num_mutations',
+    ]]
+
+    fill_in_table(virus_obj.DB_FILE, 'tblQA', tblQA)
 
     # PubMed Tables
     tblPublications = pubmed[[

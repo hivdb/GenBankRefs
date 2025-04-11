@@ -156,7 +156,9 @@ def extract_genbank_ref_feature_gene(virus_obj):
     # Pick sequences for genes in each virus and generate phylogenetic tree - requirements vary for each
 
     if yes_no('Generate phylogenetics?', True):
-        virus_obj.pick_phylo_sequence(genes)
+        virus_obj.viz_alignment_coverage(genes)
+
+        # virus_obj.pick_phylo_sequence(genes)
 
     return references, isolates, features, genes
 
