@@ -863,12 +863,12 @@ def build_pre_phylo_tree(sequences, coverage, folder, gene, ref_na):
     save_path = folder / f'{gene}_phylo.fasta'
 
     # print(len(sequences))
-    sequences = pick_seq_by_country(sequences, at_least=3)
+    sequences, countries = pick_seq_by_country(sequences, at_least=3)
     # print(len(sequences))
     dump_phylo_fasta(sequences, coverage, save_path)
     dump_fasta(folder / f"{gene}_ref_na.fasta", {gene: ref_na})
 
-    if True or input('Align phylogenetic tree? [y/n]') == 'y':
+    if False and input('Align phylogenetic tree? [y/n]') == 'y':
         cmds = (
             f"cd {folder}; rm -rf {gene}; mkdir -p {gene}; cp {gene}_phylo.fasta {gene}; cd {gene}; "
             f"iqtree2 -s {gene}_phylo.fasta -m TN93 -bb 1000 -nt AUTO; "
@@ -884,6 +884,77 @@ def build_pre_phylo_tree(sequences, coverage, folder, gene, ref_na):
             shell=True
         )
 
+    read_me = folder / gene / 'README.md'
+    with open(read_me, 'w') as fd:
+        fd.write(f"Num of sequences: {len(sequences)}\n")
+        for c, n in countries:
+            fd.write(f"{c}: {n}\n")
+
+        fd.write('Coverage:\n')
+        for k, v in coverage.items():
+            fd.write(f"{k}: {v}\n")
+
+    generate_rppr_command(folder / gene, len(sequences), gene)
+
+    draw_k_adcl_chart(folder, gene)
+
+
+def draw_k_adcl_chart(folder, gene):
+    folder = folder / gene
+
+    pairs = []
+    for i in folder.iterdir():
+        if not i.is_dir():
+            continue
+        if not i.name.isdigit():
+            continue
+        for j in i.iterdir():
+            if j.name == 'adcl.txt':
+                with open(j) as fd:
+                    pairs.append(fd.read().strip().split(','))
+
+    if not pairs:
+        return
+
+    x = [
+        int(i)
+        for i, j in pairs
+    ]
+    y = [
+        float(j)
+        for i, j in pairs
+    ]
+
+    plt.scatter(x, y)
+    plt.xlabel("K")
+    plt.ylabel("ADCL")
+    image_file_path = folder / f'{gene}_ADCL.png'
+    plt.savefig(str(image_file_path), dpi=300)
+    plt.close()
+
+
+def generate_rppr_command(folder, query_length, gene):
+    file_path = folder / 'run.sh'
+
+    lines = []
+    for i in range(query_length):
+        i += 1
+
+        cmd_tmpl = (
+            f'mkdir -p {i}; '
+            f'rppr min_adcl_tree --algorithm pam --leaves {i} '
+            f'--out-dir {i} '
+            f'--all-adcls-file {i}/adcl.txt '
+            '-o leaves.txt '
+            f'{gene}_phylo.fasta.treefile; echo {i}'
+        )
+        lines.append(cmd_tmpl)
+
+    with open(file_path, 'w') as fd:
+        for i in lines:
+            fd.write(i)
+            fd.write('\n')
+
 
 def pick_seq_by_country(sequences, at_least=3):
     countries = [
@@ -892,12 +963,15 @@ def pick_seq_by_country(sequences, at_least=3):
     ]
 
     countries = [
-        c
+        (c, num)
         for c, num in Counter(countries).items()
         if num >= at_least and c
     ]
 
     # print(countries)
 
-    return sequences[sequences['Country'].isin(countries)]
+    return sequences[sequences['Country'].isin([
+        i[0]
+        for i in countries
+    ])], countries
 
