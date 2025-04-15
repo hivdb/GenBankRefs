@@ -13,6 +13,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from bioinfo import dump_fasta
 from collections import Counter
+from statistics import median
+
 
 timestamp = datetime.now().strftime('%m_%d')
 
@@ -346,8 +348,6 @@ class Virus:
                 (sub_gene_df['AA_num_codon_issue'] == 0)
             ]
 
-            coverage = check_most_covered_range(good_seq)
-
             # print('# no QA issue:', len(
             #     sub_gene_df[
             #         (sub_gene_df['NA_num_ins'] == 0) &
@@ -367,7 +367,12 @@ class Virus:
             image_folder = self.output_excel_dir / 'alignment_coverage'
             image_folder.mkdir(exist_ok=True)
 
-            build_pre_phylo_tree(good_seq, coverage, image_folder, gene, ref_na)
+            coverage = check_most_covered_range(
+                good_seq, image_folder, gene, gene_length=len(ref_na))
+
+            build_pre_phylo_tree(
+                self,
+                good_seq, coverage, image_folder, gene, ref_na)
 
             image_file_path = image_folder / f'{gene}.png'
             viz_alignment_coverage(image_file_path, gene, pos_pairs)
@@ -779,45 +784,251 @@ def viz_histogram(image_file_path, data, title):
     plt.close()
 
 
-def check_most_covered_range(sequences):
+# def is_true_sub_range(start1, stop1, start2, stop2):
 
-    pos_coverage = defaultdict(int)
+#     if start1 > start2:
+#         return False
 
-    for i, row in sequences.iterrows():
-        start = row['NA_start']
-        stop = row['NA_stop']
-        for ofst in range(start, stop):
-            pos = ofst + 1
-            pos_coverage[pos] += 1
+#     if stop1 < stop2:
+#         return False
 
-    cover_count = list(Counter(pos_coverage.values()).items())
-    cover_count.sort(key=lambda x: x[-1], reverse=True)
+#     if start1 == start2 and stop1 == stop2:
+#         return False
 
-    top_3 = cover_count[:3]
-    # print(cover_count)
+#     return True
 
-    top_choices = []
-    for (pc, cnt) in top_3:
-        pos_list = [
-            int(pos)
-            for pos, cov in pos_coverage.items()
-            if cov == pc
+
+def check_most_covered_range(sequences, image_folder, gene, gene_length):
+
+    range_list = set()
+
+    for idx, row in sequences.iterrows():
+        start1 = row['NA_start']
+        stop1 = row['NA_stop']
+        range_list.add((start1, stop1))
+
+        for jdx, row2 in sequences.iterrows():
+            if idx >= jdx:
+                continue
+
+            start2 = row2['NA_start']
+            stop2 = row2['NA_stop']
+
+            n_start = max(start1, start2)
+            n_stop = min(stop1, stop2)
+
+            range_list.add((n_start, n_stop))
+
+    choices = defaultdict(int)
+    for (start1, stop1) in range_list:
+        for jdx, row2 in sequences.iterrows():
+            start2 = row2['NA_start']
+            stop2 = row2['NA_stop']
+            if start2 <= start1 and stop2 >= stop1:
+                choices[(start1, stop1)] += 1
+
+    choices = [
+        {
+            'start': start,
+            'stop': stop,
+            'width': stop - start + 1,
+            'height': h,
+        }
+        for (start, stop), h in choices.items()
+    ]
+
+    choices.sort(key=itemgetter('height'), reverse=True)
+
+    choices = [
+        i
+        for i in choices
+        if i['width'] >= gene_length * 0.25
+    ]
+
+    # pos_height = defaultdict(int)
+
+    # for i, row in sequences.iterrows():
+    #     start = row['NA_start']
+    #     stop = row['NA_stop']
+    #     for ofst in range(start, stop):
+    #         pos = ofst + 1
+    #         pos_height[pos] += 1
+
+    # heights = sorted(pos_height.values(), reverse=True)
+
+    # # max_height = max(heights)
+    # # min_height = min(heights)
+
+    # choices = []
+
+    # # make sure in a range, the most seq is first choice
+    # checked = []
+    # for height in heights:
+    #     pos_list = [
+    #         int(pos)
+    #         for pos, cov in pos_height.items()
+    #         if cov >= height
+    #     ]
+    #     pos_list.sort()
+    #     pos_list = tuple(pos_list)
+    #     if pos_list in checked:
+    #         continue
+
+    #     checked.append(pos_list)
+
+    #     choose_range = find_max_conseq_range_for_height(
+    #         pos_list, at_least=gene_length * 0.25)
+
+    #     if not choose_range:
+    #         continue
+
+    #     choose_range['height'] = height
+    #     choices.append(choose_range)
+
+    # remove duplications
+    # choices = list({tuple(sorted(d.items())) for d in choices})
+
+    # choices = [dict(t) for t in choices]
+
+    # min_width = min([i['width'] for i in choices])
+    # max_width = max([i['width'] for i in choices])
+
+    choices.sort(key=itemgetter('height'), reverse=True)
+
+    [
+        c.update({
+            'id': idx + 1,
+            'num_haplo': len(set(
+                get_sequence_by_coverage(sequences, c).values()))
+        })
+        for idx, c in enumerate(choices)
+    ]
+
+    # overlap genes using same name
+    #  will cause height less than actual sequence
+    #  for example LASA P contains sub genes
+    # for i in choices:
+    #     if i['height'] != i['num_haplo']:
+    #         print(i)
+
+    [
+        c.update({
+            # 'area': c['width'] * c['height'],
+            'area': c['width'] * c['num_haplo'],
+        })
+        for idx, c in enumerate(choices)
+    ]
+
+    # min_haplo = min([i['num_haplo'] for i in choices])
+    # max_haplo = max([i['num_haplo'] for i in choices])
+
+    # [
+    #     c.update({
+    #         'n_height': (c['height'] - min_height) / (max_height - min_height),
+    #         'n_width': (c['width'] - min_width) / (max_width - min_width),
+    #         'n_haplo': (c['num_haplo'] - min_haplo) / (max_haplo - min_haplo),
+    #     })
+    #     for idx, c in enumerate(choices)
+    # ]
+
+    x = [
+        i['width'] for i in choices
+    ]
+    y = [
+        i['num_haplo'] for i in choices
+    ]
+
+    plt.scatter(x, y, s=5)
+    plt.xlabel("Width")
+    plt.ylabel("# Haplo")
+    image_file_path = image_folder / f'{gene}_W_H.png'
+
+    plt.savefig(str(image_file_path), dpi=300)
+    plt.close()
+
+    # First group the choices and keep 1 in a group, then get the best group
+    # Choices which are too similar should only choose one.
+    best_choices = find_best_choices(choices)
+
+    for idx, c in enumerate(best_choices):
+        print(f"Group {idx} represent: {c}")
+
+    # c = input('Choose the group for tree:')
+
+    # TODO: use normalize method is not a good idea, how to choose right one?
+    # [
+    #     c.update({
+    #         'choicer': (
+    #             c['n_haplo'] * 0.5 +
+    #             c['n_width'] * 0.5
+    #             )
+    #     })
+    #     for c in best_choices
+    # ]
+
+    best_choices.sort(key=itemgetter('area'))
+    median_one = len(best_choices) // 2 - 1
+    the_choice = best_choices[median_one]
+    print('Choose:', the_choice)
+
+    return the_choice
+
+
+def find_best_choices(choices, height_limit=50, width_limit=50):
+    # print(choices)
+
+    dist_limit = height_limit ** 2 + width_limit ** 2
+
+    groups = []
+    group1 = []
+    group2 = []
+    remain = choices
+
+    while remain:
+        i = remain[0]
+
+        for j in remain:
+            dist = (
+                (i['width'] - j['width']) ** 2 +
+                (i['height'] - j['height']) ** 2)
+
+            # TODO determine distance big gap
+            if dist <= dist_limit:
+                group1.append(j['id'])
+            else:
+                group2.append(j['id'])
+
+        groups.append(
+            [
+                r
+                for r in remain
+                if r['id'] in group1
+            ]
+        )
+
+        remain = [
+            r
+            for r in remain
+            if r['id'] in group2
         ]
-        pos_list.sort()
+        group1 = []
+        group2 = []
 
-        choose_range = find_largest_conseq(pos_list)
-        choose_range['height'] = pc
-        top_choices.append(choose_range)
+    # for idx, i in enumerate(groups):
+    #     print(f"group {idx}")
+    #     for j in i:
+    #         print(j)
 
-    top_choices = sorted(
-        top_choices, key=itemgetter('height', 'width'), reverse=True)
+    group_main = []
+    for g in groups:
+        m = len(g) // 2
+        g.sort(key=itemgetter('area'), reverse=True)
+        group_main.append(g[m])
 
-    print('Top choices', top_choices)
-
-    return top_choices[0]
+    return group_main
 
 
-def find_largest_conseq(numbers):
+def find_max_conseq_range_for_height(numbers, at_least=100):
     numbers = sorted(numbers)
     # print(numbers)
     range_list = []
@@ -835,11 +1046,20 @@ def find_largest_conseq(numbers):
                 break
         range_list.append(candid)
     # print(range_list)
+    range_list = [
+        i
+        for i in range_list
+        if i['width'] >= at_least
+    ]
     range_list.sort(key=itemgetter('width'), reverse=True)
-    return range_list[0]
+
+    if range_list:
+        return range_list[0]
+    else:
+        return None
 
 
-def dump_phylo_fasta(seqs, coverage, save_file):
+def get_sequence_by_coverage(seqs, coverage):
     result = {}
     c_start = coverage['start']
     c_stop = coverage['stop']
@@ -848,6 +1068,7 @@ def dump_phylo_fasta(seqs, coverage, save_file):
         if start > c_start:
             continue
         cut_start = c_start - start
+
         stop = i['NA_stop']
         if stop < c_stop:
             continue
@@ -856,16 +1077,37 @@ def dump_phylo_fasta(seqs, coverage, save_file):
         seq_na = seq_na[cut_start:len(seq_na) - cut_stop]
         result[i['Accession']] = seq_na
 
-    dump_fasta(save_file, result)
+    return result
 
 
-def build_pre_phylo_tree(sequences, coverage, folder, gene, ref_na):
+def build_pre_phylo_tree(virus, sequences, coverage, folder, gene, ref_na):
     save_path = folder / f'{gene}_phylo.fasta'
 
     # print(len(sequences))
-    sequences, countries = pick_seq_by_country(sequences, at_least=3)
+    # sequences, countries = pick_seq_by_country(sequences, at_least=3)
     # print(len(sequences))
-    dump_phylo_fasta(sequences, coverage, save_path)
+    selected_sequences = get_sequence_by_coverage(sequences, coverage)
+
+    sequences = {}
+    for acc, seq in selected_sequences.items():
+        if acc in virus.special_accessions:
+            print(acc, 'special accesssion included')
+            sequences[seq] = acc
+
+        if seq in sequences:
+            continue
+
+        sequences[seq] = acc
+
+    sequences = {
+        v: k
+        for k, v in sequences.items()
+    }
+
+    print(coverage, len(sequences))
+
+    dump_fasta(save_path, selected_sequences)
+
     dump_fasta(folder / f"{gene}_ref_na.fasta", {gene: ref_na})
 
     if False and input('Align phylogenetic tree? [y/n]') == 'y':
@@ -878,17 +1120,18 @@ def build_pre_phylo_tree(sequences, coverage, folder, gene, ref_na):
 
         subprocess.run(
             cmds,
-            # stdout=subprocess.DEVNULL,
-            # stderr=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
             # text=True,
             shell=True
         )
 
     read_me = folder / gene / 'README.md'
+    read_me.parent.mkdir(exist_ok=True)
     with open(read_me, 'w') as fd:
-        fd.write(f"Num of sequences: {len(sequences)}\n")
-        for c, n in countries:
-            fd.write(f"{c}: {n}\n")
+        fd.write(f"Num of selected sequences: {len(sequences)}\n")
+        # for c, n in countries:
+        #     fd.write(f"{c}: {n}\n")
 
         fd.write('Coverage:\n')
         for k, v in coverage.items():
@@ -925,7 +1168,7 @@ def draw_k_adcl_chart(folder, gene):
         for i, j in pairs
     ]
 
-    plt.scatter(x, y)
+    plt.scatter(x, y, s=5)
     plt.xlabel("K")
     plt.ylabel("ADCL")
     image_file_path = folder / f'{gene}_ADCL.png'
@@ -974,4 +1217,3 @@ def pick_seq_by_country(sequences, at_least=3):
         i[0]
         for i in countries
     ])], countries
-
