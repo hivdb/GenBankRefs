@@ -5,6 +5,7 @@ import subprocess
 import pandas as pd
 from bioinfo import dump_fasta
 from bioinfo import load_fasta
+from Bio import Phylo
 from collections import defaultdict
 import matplotlib as mpl
 from distinctipy import get_colors
@@ -347,6 +348,8 @@ class Virus:
                 (sub_gene_df['NA_num_N'] == 0) &
                 (sub_gene_df['AA_num_codon_issue'] == 0)
             ]
+            print('NA length', len(ref_na))
+            print('# Good seq:', len(good_seq))
 
             # print('# no QA issue:', len(
             #     sub_gene_df[
@@ -364,18 +367,24 @@ class Virus:
                 # for i, row in sub_gene_df.iterrows()
             ]
 
-            image_folder = self.output_excel_dir / 'alignment_coverage'
+            image_folder = self.output_excel_dir / 'phylo_v2'
             image_folder.mkdir(exist_ok=True)
 
             coverage = check_most_covered_range(
                 good_seq, image_folder, gene, gene_length=len(ref_na))
 
-            build_pre_phylo_tree(
-                self,
-                good_seq, coverage, image_folder, gene, ref_na)
+            # build_pre_phylo_tree(
+            #     self,
+            #     good_seq, coverage, image_folder, gene, ref_na)
 
-            image_file_path = image_folder / f'{gene}.png'
-            viz_alignment_coverage(image_file_path, gene, pos_pairs)
+            # draw_k_adcl_chart(image_folder, gene)
+            num_leaves, adcl = get_turning_point(image_folder, gene)
+            print('# Leaves left for tree', num_leaves, 'ADCL:', adcl)
+
+            get_trimed_tree(good_seq, image_folder, gene, num_leaves)
+
+            # image_file_path = image_folder / f'{gene}.png'
+            # viz_alignment_coverage(image_file_path, gene, pos_pairs)
 
             image_folder = self.output_excel_dir / 'alignment'
             image_folder.mkdir(exist_ok=True)
@@ -1139,7 +1148,62 @@ def build_pre_phylo_tree(virus, sequences, coverage, folder, gene, ref_na):
 
     generate_rppr_command(folder / gene, len(sequences), gene)
 
-    draw_k_adcl_chart(folder, gene)
+
+def get_turning_point(folder, gene):
+    folder = folder / gene
+
+    pairs = []
+    for i in folder.iterdir():
+        if not i.is_dir():
+            continue
+        if not i.name.isdigit():
+            continue
+        for j in i.iterdir():
+            if j.name == 'adcl.txt':
+                with open(j) as fd:
+                    pairs.append(fd.read().strip().split(','))
+
+    if not pairs:
+        return None, None
+
+    pairs = [
+        (float(x), float(y))
+        for x, y in pairs
+    ]
+
+    turning_point = get_max_slope_change_point(pairs)
+    return turning_point
+
+
+def get_max_slope_change_point(points):
+    points.sort(key=lambda x: x[0])
+
+    slopes = []
+    for i in range(len(points) - 1):
+        x0, y0 = points[i]
+        x1, y1 = points[i + 1]
+        dx = float(x1) - float(x0)
+        dy = float(y1) - float(y0)
+
+        slope = dy / dx if dx != 0 else float('inf')
+        slopes.append((points[i + 1], slope))
+
+    x0, y0 = points[0]
+    x1, y1 = points[-1]
+    dx = float(x1) - float(x0)
+    dy = float(y1) - float(y0)
+
+    slope = dy / dx if dx != 0 else float('inf')
+
+    if slope == float('inf'):
+        return None
+
+    slope_similarity = [
+        (p, abs(i - slope))
+        for p, i in slopes
+    ]
+    slope_similarity.sort(key=lambda x: x[-1])
+    return slope_similarity[0][0]
 
 
 def draw_k_adcl_chart(folder, gene):
@@ -1217,3 +1281,51 @@ def pick_seq_by_country(sequences, at_least=3):
         i[0]
         for i in countries
     ])], countries
+
+
+def get_trimed_tree(seqs, folder, gene, num_leaves):
+    acc2country = {}
+    for i, row in seqs.iterrows():
+        acc2country[row['Accession']] = row['Country']
+
+    leave_names = []
+
+    folder = folder / gene
+    tree_file_path = None
+
+    for i in folder.iterdir():
+        if i.suffix == '.treefile':
+            tree_file_path = i
+
+        if not i.is_dir():
+            continue
+        if not i.name.isdigit():
+            continue
+        if i.name != str(int(num_leaves)):
+            continue
+        for j in i.iterdir():
+            if j.name == 'leaves.txt':
+                with open(j) as fd:
+                    leave_names = [
+                        n.strip()
+                        for n in fd.readlines()
+                    ]
+
+    if not tree_file_path:
+        return
+
+    tree = Phylo.read(tree_file_path, 'newick')
+    tree = tree.as_phyloxml()
+
+    for leaf in tree.get_terminals():
+        if leaf.name not in leave_names:
+            leaf.color = 'red'
+        leaf.name = acc2country[leaf.name]
+
+    # for leaf in tree.get_terminals():
+    #     if leaf.name in leave_names:
+    #         tree.prune(leaf)
+
+    new_tree_path = tree_file_path.parent / f'{tree_file_path.name}.xml'
+    Phylo.write(tree, new_tree_path, "phyloxml")
+
