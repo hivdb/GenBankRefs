@@ -377,7 +377,7 @@ class Virus:
             #     self,
             #     good_seq, coverage, image_folder, gene, ref_na)
 
-            # draw_k_adcl_chart(image_folder, gene)
+            draw_k_adcl_chart(image_folder, gene)
             num_leaves, adcl = get_turning_point(image_folder, gene)
             print('# Leaves left for tree', num_leaves, 'ADCL:', adcl)
 
