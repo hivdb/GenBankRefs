@@ -1322,10 +1322,14 @@ def get_trimed_tree(seqs, folder, gene, num_leaves):
             leaf.color = 'red'
         leaf.name = acc2country[leaf.name]
 
-    # for leaf in tree.get_terminals():
-    #     if leaf.name in leave_names:
-    #         tree.prune(leaf)
-
     new_tree_path = tree_file_path.parent / f'{tree_file_path.name}.xml'
     Phylo.write(tree, new_tree_path, "phyloxml")
 
+    tree = Phylo.read(tree_file_path, 'newick')
+
+    for leaf in tree.get_terminals():
+        if leaf.name in leave_names:
+            tree.prune(leaf)
+
+    new_tree_path = tree_file_path.parent / f'{tree_file_path.name}_prune.newick'
+    Phylo.write(tree, new_tree_path, "newick")
