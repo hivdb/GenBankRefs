@@ -418,7 +418,7 @@ def align_genes(virus, genes_df, poolsize=20):
         parameters = [
             (row, virus)
             for idx, row in genes_df.iterrows()
-            # if row['Accession'] in ('PP431160', 'LT601601')
+            # if row['Accession'] in ('MH887930')
         ]
         alignment_result = []
         for count, i in enumerate(
@@ -808,17 +808,69 @@ def adjust_codon_tail_del(ref_codon_list, seq_codon_list):
     return new_ref, new_seq
 
 
-def try_fix_frame_shift(ref_codon, seq_codon, window=10):
+def merge_issue_position(issue_pos_bins_gap, pairs=2, window=5):
+
+    merged_issue_pos_bins_gap = []
+    idx = 0
+    while idx < len(issue_pos_bins_gap):
+        paired_groups = [
+            issue_pos_bins_gap[idx + i]
+            for i in range(pairs)
+            if (idx + i) < len(issue_pos_bins_gap)
+        ]
+
+        closed_paired_groups = paired_groups[:1]
+        for i in paired_groups[1:]:
+            if (i[0] - closed_paired_groups[-1][1]) <= window:
+                closed_paired_groups.append(i)
+            else:
+                break
+
+        paired_groups = closed_paired_groups
+
+        new_del = sum([
+            i[-1]
+            for i in paired_groups
+        ])
+
+        if (new_del % 3) == 0:
+            merged_issue_pos_bins_gap.append((
+                paired_groups[0][0], paired_groups[-1][1], new_del
+            ))
+            idx += len(closed_paired_groups)
+
+        else:
+            merged_issue_pos_bins_gap.append(paired_groups[0])
+            idx += 1
+
+    return merged_issue_pos_bins_gap
+
+
+def try_merge_issue_position(issue_pos_bins_gap, max_pairs=3, window=10):
+    candid_pairs = issue_pos_bins_gap
+    # print([i for i in candid_pairs if i[-1] != 0])
+
+    for i in range(2, max_pairs + 1):
+        while True:
+            new_pairs = merge_issue_position(candid_pairs, i, window)
+            if len(new_pairs) == len(candid_pairs):
+                candid_pairs = new_pairs
+                break
+
+            candid_pairs = new_pairs
+
+    # print([i for i in candid_pairs if i[-1] != 0])
+    return candid_pairs
+
+
+def try_fix_frame_shift(ref_codon, seq_codon):
+    # Include indels and frameshifts
     issue_list = []
     for idx, (r, s) in enumerate(zip(ref_codon, seq_codon)):
-        if (len(s) % 3) != 0:
-            issue_list.append((idx, r, s))
+        if len(s) == 3 and ('-' not in s):
             continue
-        try:
-            trans_seq = Seq(s)
-            str(Seq(trans_seq).translate())
-        except TranslationError:
-            issue_list.append((idx, r, s))
+
+        issue_list.append((idx, r, s))
 
     if not issue_list:
         return ref_codon, seq_codon
@@ -838,48 +890,15 @@ def try_fix_frame_shift(ref_codon, seq_codon, window=10):
         ])
         issue_pos_bins_gap.append((i, j, num_del))
 
-    merged_issue_pos_bins_gap = issue_pos_bins_gap[:1]
-    for idx in range(1, len(issue_pos_bins_gap)):
-
-        prev = merged_issue_pos_bins_gap[-1]
-        this = issue_pos_bins_gap[idx]
-
-        if (this[-1] % 3) == 0:
-            merged_issue_pos_bins_gap.append(this)
-            continue
-
-        if (prev[-1] % 3) == 0:
-            merged_issue_pos_bins_gap.append(this)
-            continue
-
-        if (this[0] - prev[1]) > window:
-            merged_issue_pos_bins_gap.append(this)
-            continue
-
-        new_start = prev[0]
-        new_stop = this[1]
-        new_del = (prev[-1] + this[-1])
-
-        check_ref_codon = ''.join(ref_codon[new_start: new_stop + 1])
-        check_seq_codon = ''.join(seq_codon[new_start: new_stop + 1])
-
-        # if (check_seq_codon.count('-') - check_ref_codon.count('-')) != new_del:
-        #     merged_issue_pos_bins_gap.append(this)
-        #     continue
-
-        new_del = check_seq_codon.count('-') - check_ref_codon.count('-')
-
-        merged_issue_pos_bins_gap[-1] = (
-            new_start, new_stop, new_del
-        )
-
     # print('-' * 100)
     # print(issue_list)
     # print(issue_pos_bins)
     # print(issue_pos_bins_gap)
-    # print(merged_issue_pos_bins_gap)
 
-    for start, stop, num_del in merged_issue_pos_bins_gap:
+    issue_pos_bins_gap = try_merge_issue_position(issue_pos_bins_gap)
+    # print(issue_pos_bins_gap)
+
+    for start, stop, num_del in issue_pos_bins_gap:
         if num_del % 3 != 0:
             continue
 
@@ -1128,9 +1147,17 @@ def translate_aligned_codon(
         str(pos)
         for (pos, aa) in ins_list
     ])
+    row['AA_ins'] = ', '.join([
+        f"{pos}{aa}"
+        for (pos, aa) in ins_list
+    ])
     row['AA_del_pos'] = ', '.join([
         str(pos)
         for (pos, aa) in del_list
+    ])
+    row['AA_del'] = ', '.join([
+        f"{pos}{aa}"
+        for (pos, aa) in ins_list
     ])
     row['AA_stop_pos'] = ', '.join([
         str(pos)
