@@ -1,6 +1,7 @@
 from pathlib import Path
 from datetime import datetime
 from Utilities import get_logger
+from Utilities import dump_csv
 import subprocess
 import pandas as pd
 from bioinfo import dump_fasta
@@ -344,8 +345,8 @@ class Virus:
 
             good_seq = sub_gene_df[
                 (sub_gene_df['NA_num_ins'] == 0) &
-                (sub_gene_df['NA_num_del'] == 0) &
-                (sub_gene_df['NA_num_N'] == 0) &
+                (sub_gene_df['NA_num_del'] <= 10) &
+                (sub_gene_df['NA_num_N'] <= 0) &
                 (sub_gene_df['AA_num_codon_issue'] == 0)
             ]
             print('NA length', len(ref_na))
@@ -366,6 +367,8 @@ class Virus:
                 for i, row in good_seq.iterrows()
                 # for i, row in sub_gene_df.iterrows()
             ]
+            # image_file_path = image_folder / f'{gene}.png'
+            # viz_alignment_coverage(image_file_path, gene, pos_pairs)
 
             image_folder = self.output_excel_dir / 'phylo_v2'
             image_folder.mkdir(exist_ok=True)
@@ -378,13 +381,13 @@ class Virus:
             #     good_seq, coverage, image_folder, gene, ref_na)
 
             draw_k_adcl_chart(image_folder, gene)
-            num_leaves, adcl = get_turning_point(image_folder, gene)
+            if self.name == 'Nipah':
+                num_leaves, adcl = get_turning_point(image_folder, gene, adcl_cutoff=0.001)
+            else:
+                num_leaves, adcl = get_turning_point(image_folder, gene, adcl_cutoff=0.01)
             print('# Leaves left for tree', num_leaves, 'ADCL:', adcl)
 
-            get_trimed_tree(good_seq, image_folder, gene, num_leaves)
-
-            # image_file_path = image_folder / f'{gene}.png'
-            # viz_alignment_coverage(image_file_path, gene, pos_pairs)
+            get_trimed_tree(sub_gene_df, image_folder, gene, num_leaves)
 
             image_folder = self.output_excel_dir / 'alignment'
             image_folder.mkdir(exist_ok=True)
@@ -1097,25 +1100,47 @@ def build_pre_phylo_tree(virus, sequences, coverage, folder, gene, ref_na):
     # print(len(sequences))
     selected_sequences = get_sequence_by_coverage(sequences, coverage)
 
-    sequences = {}
+    tree_sequences = defaultdict(list)
     for acc, seq in selected_sequences.items():
-        if acc in virus.special_accessions:
-            print(acc, 'special accesssion included')
-            sequences[seq] = acc
+        # if acc in virus.special_accessions:
+        #     print(acc, 'special accesssion included')
+        #     tree_sequences[seq].append(acc)
+        #     continue
 
-        if seq in sequences:
-            continue
+        tree_sequences[seq].append(acc)
 
-        sequences[seq] = acc
+    meta_info = []
+    for haplo, acc_list in tree_sequences.items():
+        hosts = [i for i in sequences['Host'].to_list() if i.strip()]
+        hosts = sorted(list(Counter(hosts).items()), key=lambda x: x[-1], reverse=True)
+        countries = [i for i in sequences['Country'].to_list() if i.strip()]
+        countries = sorted(list(Counter(countries).items()), key=lambda x: x[-1], reverse=True)
+        isolate_years = [str(int(i)) for i in sequences['IsolateYear'].to_list() if i]
+        isolate_years = sorted(list(Counter(isolate_years).items()), key=lambda x: x[-1], reverse=True)
+        # print(hosts)
+        # print(countries)
+        # print(isolate_years)
+        meta_info.append({
+            'seq': haplo,
+            'acc_list': ','.join(acc_list),
+            'main_host': hosts[0][0],
+            'hosts': ', '.join([f"{i} {j}" for i, j in hosts]),
+            'main_country': countries[0][0],
+            'countries': ', '.join([f"{i} {j}" for i, j in countries]),
+            'main_isolate_year': isolate_years[0][0],
+            'isolate_years': ', '.join([f"{i} {j}" for i, j in isolate_years]),
+        })
 
-    sequences = {
-        v: k
-        for k, v in sequences.items()
+    dump_csv(folder / f'{gene}_meta.csv', meta_info)
+
+    tree_sequences = {
+        v[0]: k
+        for k, v in tree_sequences.items()
     }
 
-    print(coverage, len(sequences))
+    print(coverage, len(tree_sequences))
 
-    dump_fasta(save_path, selected_sequences)
+    dump_fasta(save_path, tree_sequences)
 
     dump_fasta(folder / f"{gene}_ref_na.fasta", {gene: ref_na})
 
@@ -1175,7 +1200,7 @@ def get_turning_point(folder, gene, adcl_cutoff=0.01):
         pairs = [
             (num_leaves, int(adcl))
             for num_leaves, adcl in pairs
-            if int(adcl * 100) >= adcl_cutoff * 100]
+            if int(adcl * 1000) >= adcl_cutoff * 1000]
         num_leaves = max([leaves for leaves, _ in pairs])
         print('# Leaves', num_leaves, adcl_cutoff)
         return num_leaves, adcl_cutoff
@@ -1293,9 +1318,9 @@ def pick_seq_by_country(sequences, at_least=3):
 
 
 def get_trimed_tree(seqs, folder, gene, num_leaves):
-    acc2country = {}
+    acc2metadata = {}
     for i, row in seqs.iterrows():
-        acc2country[row['Accession']] = row['Country']
+        acc2metadata[row['Accession']] = f"{row['Country']} {row['Host']} {int(row['IsolateYear']) if row['IsolateYear'] else row['IsolateYear']}"
 
     leave_names = []
 
@@ -1329,7 +1354,7 @@ def get_trimed_tree(seqs, folder, gene, num_leaves):
     for leaf in tree.get_terminals():
         if leaf.name not in leave_names:
             leaf.color = 'red'
-        leaf.name = acc2country[leaf.name]
+        leaf.name = acc2metadata[leaf.name]
 
     new_tree_path = tree_file_path.parent / f'{tree_file_path.name}.xml'
     Phylo.write(tree, new_tree_path, "phyloxml")
@@ -1339,6 +1364,8 @@ def get_trimed_tree(seqs, folder, gene, num_leaves):
     for leaf in tree.get_terminals():
         if leaf.name in leave_names:
             tree.prune(leaf)
+        else:
+            leaf.name = f"{acc2metadata[leaf.name]} {leaf.name}"
 
     new_tree_path = tree_file_path.parent / f'{tree_file_path.name}_prune.newick'
     Phylo.write(tree, new_tree_path, "newick")

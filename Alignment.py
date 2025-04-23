@@ -483,7 +483,8 @@ def align_gene_seq(args):
 
     row['NA_num_ins'] = aligned_ref.count('-')
     row['NA_num_del'] = aligned_seq.count('-')
-    row['NA_ins_del_diff_3'] = abs(row['NA_num_ins'] - row['NA_num_del']) % 3
+    row['NA_ins_del_diff'] = row['NA_num_ins'] - row['NA_num_del']
+    row['NA_ins_del_diff_r'] = (row['NA_num_ins'] - row['NA_num_del']) % 3
     row['NA_num_N'] = aligned_seq.count('N')
 
     row['align_len'] = len(aligned_ref.replace('-', ''))
@@ -1093,7 +1094,7 @@ def translate_aligned_codon(
 
             if aa == '*':
                 stop_list.append((idx + na_start, aa))
-            elif aa == '-':
+            elif aa.count('-') == len(aa):
                 del_list.append((idx + na_start, aa))
             elif len(aa) > 1:
                 ins_list.append((idx + na_start, aa))
@@ -1157,7 +1158,7 @@ def translate_aligned_codon(
     ])
     row['AA_del'] = ', '.join([
         f"{pos}{aa}"
-        for (pos, aa) in ins_list
+        for (pos, aa) in del_list
     ])
     row['AA_stop_pos'] = ', '.join([
         str(pos)
