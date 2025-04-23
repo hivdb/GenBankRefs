@@ -368,11 +368,12 @@ class Virus:
                 for i, row in good_seq.iterrows()
                 # for i, row in sub_gene_df.iterrows()
             ]
-            # image_file_path = image_folder / f'{gene}.png'
-            # viz_alignment_coverage(image_file_path, gene, pos_pairs)
 
             image_folder = self.output_excel_dir / 'phylo_v2'
             image_folder.mkdir(exist_ok=True)
+
+            image_file_path = image_folder / f'{gene}.png'
+            viz_alignment_coverage(image_file_path, gene, pos_pairs)
 
             coverage = check_most_covered_range(
                 good_seq, image_folder, gene, gene_length=len(ref_na))
@@ -381,39 +382,40 @@ class Virus:
                 self,
                 good_seq, coverage, image_folder, gene, ref_na)
 
-            draw_k_adcl_chart(image_folder, gene)
-            if self.name == 'Nipah':
-                num_leaves, adcl = get_turning_point(image_folder, gene, adcl_cutoff=0.001)
-            else:
-                num_leaves, adcl = get_turning_point(image_folder, gene, adcl_cutoff=0.01)
-            print('# Leaves left for tree', num_leaves, 'ADCL:', adcl)
+            # draw_k_adcl_chart(image_folder, gene)
+            # if self.name == 'Nipah':
+            #     num_leaves, adcl = get_turning_point(image_folder, gene, adcl_cutoff=0.001)
+            # else:
+            #     num_leaves, adcl = get_turning_point(image_folder, gene, adcl_cutoff=0.01)
+            # print('# Leaves left for tree', num_leaves, 'ADCL:', adcl)
 
-            get_trimed_tree(sub_gene_df, image_folder, gene, num_leaves)
+            # get_trimed_tree(sub_gene_df, image_folder, gene, num_leaves)
 
-            image_folder = self.output_excel_dir / 'alignment'
-            image_folder.mkdir(exist_ok=True)
-            image_file_path = image_folder / f'{gene}_na_length.png'
+            image_folder2 = self.output_excel_dir / 'alignment'
+            image_folder2.mkdir(exist_ok=True)
+
+            image_file_path = image_folder2 / f'{gene}_na_length.png'
             viz_histogram(image_file_path, [
                 row['NA_length']
                 for i, row in sub_gene_df.iterrows()],
                 title=f'{gene} NA coverage'
             )
 
-            image_file_path = image_folder / f'{gene}_na_num_N.png'
+            image_file_path = image_folder2 / f'{gene}_na_num_N.png'
             viz_histogram(image_file_path, [
                 row['NA_num_N']
                 for i, row in sub_gene_df.iterrows()],
                 title=f"{gene} # N"
             )
 
-            image_file_path = image_folder / f'{gene}_na_num_ins.png'
+            image_file_path = image_folder2 / f'{gene}_na_num_ins.png'
             viz_histogram(image_file_path, [
                 row['NA_num_ins']
                 for i, row in sub_gene_df.iterrows()],
                 title=f"{gene} # ins"
             )
 
-            image_file_path = image_folder / f'{gene}_na_num_del.png'
+            image_file_path = image_folder2 / f'{gene}_na_num_del.png'
             viz_histogram(image_file_path, [
                 row['NA_num_del']
                 for i, row in sub_gene_df.iterrows()],
