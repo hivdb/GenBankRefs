@@ -2,6 +2,7 @@ from pathlib import Path
 from datetime import datetime
 from Utilities import get_logger
 from Utilities import dump_csv
+from Utilities import load_csv
 import subprocess
 import pandas as pd
 from bioinfo import dump_fasta
@@ -344,8 +345,8 @@ class Virus:
             ))
 
             good_seq = sub_gene_df[
-                (sub_gene_df['NA_num_ins'] == 0) &
-                (sub_gene_df['NA_num_del'] <= 10) &
+                (sub_gene_df['NA_num_ins'] <= 0) &
+                (sub_gene_df['NA_num_del'] <= 0) &
                 (sub_gene_df['NA_num_N'] <= 0) &
                 (sub_gene_df['AA_num_codon_issue'] == 0)
             ]
@@ -376,9 +377,9 @@ class Virus:
             coverage = check_most_covered_range(
                 good_seq, image_folder, gene, gene_length=len(ref_na))
 
-            # build_pre_phylo_tree(
-            #     self,
-            #     good_seq, coverage, image_folder, gene, ref_na)
+            build_pre_phylo_tree(
+                self,
+                good_seq, coverage, image_folder, gene, ref_na)
 
             draw_k_adcl_chart(image_folder, gene)
             if self.name == 'Nipah':
@@ -1111,15 +1112,25 @@ def build_pre_phylo_tree(virus, sequences, coverage, folder, gene, ref_na):
 
     meta_info = []
     for haplo, acc_list in tree_sequences.items():
-        hosts = [i for i in sequences['Host'].to_list() if i.strip()]
+        sub_sequence = sequences[sequences['Accession'].isin(acc_list)]
+        hosts = [i for i in sub_sequence['Host'].to_list()]
         hosts = sorted(list(Counter(hosts).items()), key=lambda x: x[-1], reverse=True)
-        countries = [i for i in sequences['Country'].to_list() if i.strip()]
+        countries = [i for i in sub_sequence['Country'].to_list()]
         countries = sorted(list(Counter(countries).items()), key=lambda x: x[-1], reverse=True)
-        isolate_years = [str(int(i)) for i in sequences['IsolateYear'].to_list() if i]
+        isolate_years = [(str(int(i)) if i else i) for i in sub_sequence['IsolateYear'].to_list()]
         isolate_years = sorted(list(Counter(isolate_years).items()), key=lambda x: x[-1], reverse=True)
         # print(hosts)
         # print(countries)
         # print(isolate_years)
+        main_host = [i for i, j in hosts if i]
+        main_host = main_host[0] if main_host else ''
+
+        main_country = [i for i, j in countries if i]
+        main_country = main_country[0] if main_country else ''
+
+        main_isolate_year = [i for i, j in isolate_years if i]
+        main_isolate_year = main_isolate_year[0] if main_isolate_year else ''
+
         meta_info.append({
             'seq': haplo,
             'acc_list': ','.join(acc_list),
@@ -1318,9 +1329,13 @@ def pick_seq_by_country(sequences, at_least=3):
 
 
 def get_trimed_tree(seqs, folder, gene, num_leaves):
+    meta_file = folder / f'{gene}_meta.csv'
+    meta_data = load_csv(meta_file)
     acc2metadata = {}
-    for i, row in seqs.iterrows():
-        acc2metadata[row['Accession']] = f"{row['Country']} {row['Host']} {int(row['IsolateYear']) if row['IsolateYear'] else row['IsolateYear']}"
+    for i in meta_data:
+        for acc in i['acc_list'].split(','):
+            acc = acc.strip()
+            acc2metadata[acc] = f"{i['main_country']} {i['main_host']} {int(i['main_isolate_year']) if i['main_isolate_year'] else i['main_isolate_year']}"
 
     leave_names = []
 
