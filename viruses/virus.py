@@ -1149,7 +1149,7 @@ def build_pre_phylo_tree(virus, sequences, coverage, folder, gene, ref_na):
     generate_rppr_command(folder / gene, len(sequences), gene)
 
 
-def get_turning_point(folder, gene):
+def get_turning_point(folder, gene, adcl_cutoff=0.01):
     folder = folder / gene
 
     pairs = []
@@ -1167,9 +1167,18 @@ def get_turning_point(folder, gene):
         return None, None
 
     pairs = [
-        (float(x), float(y))
-        for x, y in pairs
+        (float(leaves), float(adcl))
+        for leaves, adcl in pairs
     ]
+
+    if adcl_cutoff:
+        pairs = [
+            (num_leaves, int(adcl))
+            for num_leaves, adcl in pairs
+            if int(adcl * 100) >= adcl_cutoff * 100]
+        num_leaves = max([leaves for leaves, _ in pairs])
+        print('# Leaves', num_leaves, adcl_cutoff)
+        return num_leaves, adcl_cutoff
 
     turning_point = get_max_slope_change_point(pairs)
     return turning_point

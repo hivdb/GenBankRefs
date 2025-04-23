@@ -10,6 +10,8 @@ from pathlib import Path
 from xml.parsers.expat import ExpatError
 from collections import defaultdict
 from skbio.alignment import StripedSmithWaterman
+from skbio import Protein
+from skbio.alignment import global_pairwise_align_protein
 
 
 def check_genbank_coding_seq(gene_list, virus_obj, poolsize=20):
@@ -416,6 +418,7 @@ def align_genes(virus, genes_df, poolsize=20):
         parameters = [
             (row, virus)
             for idx, row in genes_df.iterrows()
+            # if row['Accession'] in ('PP431160', 'LT601601')
         ]
         alignment_result = []
         for count, i in enumerate(
@@ -431,6 +434,8 @@ def align_genes(virus, genes_df, poolsize=20):
 
 def align_gene_seq(args):
     row, virus = args
+
+    # print(row['Accession'])
 
     gene_name = row['Gene']
     ref_na = virus.ref_na_gene_map[gene_name]
@@ -653,17 +658,28 @@ def get_codon_alignment(
         cursor += len(codon)
         seq_codon_list.append(seq_codon)
 
-    if adjacent_window:
-        seq_codon_list = adj_adjacent_seq_codon_list(
-            ref_codon_list, seq_codon_list, adjacent_window)
-        ref_codon_list, seq_codon_list = adjust_codon_tail_del(
-            ref_codon_list, seq_codon_list)
+    # Before this step, the alignment is the same as the input.
+
+    # if adjacent_window:
+    #     seq_codon_list = adjust_adjacent_seq_codon_list(
+    #         ref_codon_list, seq_codon_list, adjacent_window)
+    #     ref_codon_list, seq_codon_list = adjust_codon_tail_del(
+    #         ref_codon_list, seq_codon_list)
+    # print('*' * 10)
+    ref_codon_list, seq_codon_list = try_fix_frame_shift(ref_codon_list, seq_codon_list)
 
     # assert (len(''.join(ref_codon_list)) == len(aligned_ref))
     assert (len(ref_codon_list) == len(seq_codon_list))
     # TODO: issue, the frameshift of references translation is not considered,
     # should be reflexted in codon alignment
-    assert (len(''.join(ref_codon_list)) == len(''.join(seq_codon_list)))
+    try:
+        assert (len(''.join(ref_codon_list)) == len(''.join(seq_codon_list)))
+    except AssertionError as e:
+        print('ref', ''.join(ref_codon_list))
+        print('seq', ''.join(seq_codon_list))
+        raise e
+
+    # print('*' * 10)
     # assert (len(ref_codon_list) == len(ref_aa))
 
     return ref_codon_list, seq_codon_list, na_start + 1, na_stop + 1
@@ -679,6 +695,7 @@ def get_ref_codon_list(aligned_ref):
         if len(codon_core) == 3:
             ref_codon = ''.join(ref_codon)
 
+            # Move prefix deletion to previous codon
             codon_pre = ref_codon[:get_pos_pre(ref_codon, '-')]
             this_codon = ref_codon[get_pos_pre(ref_codon, '-'):]
             # codon_post = ref_codon[get_pos_post(ref_codon, '-'):]
@@ -695,14 +712,14 @@ def get_ref_codon_list(aligned_ref):
     return ref_codon_list
 
 
-def adj_adjacent_seq_codon_list(ref_codon_list, seq_codon_list, adjacent_window):
-    adj_adjacent = []
+def adjust_adjacent_seq_codon_list(ref_codon_list, seq_codon_list, adjacent_window):
+    adjust_adjacent = []
     cursor = 0
     while cursor < len(seq_codon_list):
         codon = seq_codon_list[cursor]
         # Normal codon
         if '-' not in codon and len(codon) == 3:
-            adj_adjacent.append(codon)
+            adjust_adjacent.append(codon)
             cursor += 1
             continue
 
@@ -737,7 +754,7 @@ def adj_adjacent_seq_codon_list(ref_codon_list, seq_codon_list, adjacent_window)
 
         # Only codon can be translated will be adjusted.
         if len(codon_core) % 3 != 0:
-            adj_adjacent.extend(seq_list)
+            adjust_adjacent.extend(seq_list)
             cursor += len(seq_list)
             continue
 
@@ -755,10 +772,10 @@ def adj_adjacent_seq_codon_list(ref_codon_list, seq_codon_list, adjacent_window)
             else:
                 new_codon_list.append('-' * len(c))
 
-        adj_adjacent.extend(new_codon_list)
+        adjust_adjacent.extend(new_codon_list)
         cursor += len(new_codon_list)
 
-    return adj_adjacent
+    return adjust_adjacent
 
 
 def adjust_look_forward(ref_codons, seq_codons):
@@ -789,6 +806,253 @@ def adjust_codon_tail_del(ref_codon_list, seq_codon_list):
         new_seq.append(j)
 
     return new_ref, new_seq
+
+
+def try_fix_frame_shift(ref_codon, seq_codon, window=10):
+    issue_list = []
+    for idx, (r, s) in enumerate(zip(ref_codon, seq_codon)):
+        if (len(s) % 3) != 0:
+            issue_list.append((idx, r, s))
+            continue
+        try:
+            trans_seq = Seq(s)
+            str(Seq(trans_seq).translate())
+        except TranslationError:
+            issue_list.append((idx, r, s))
+
+    if not issue_list:
+        return ref_codon, seq_codon
+
+    issue_pos_bins = get_pos_bin([idx for idx, r, s in issue_list])
+
+    issue_pos_bins_gap = []
+    for i, j in issue_pos_bins:
+        pos_info = [
+            (idx, r, s)
+            for idx, r, s in issue_list
+            if idx >= i and idx <= j
+        ]
+        num_del = sum([
+            (s.count('-') - r.count('-'))
+            for idx, r, s in pos_info
+        ])
+        issue_pos_bins_gap.append((i, j, num_del))
+
+    merged_issue_pos_bins_gap = issue_pos_bins_gap[:1]
+    for idx in range(1, len(issue_pos_bins_gap)):
+
+        prev = merged_issue_pos_bins_gap[-1]
+        this = issue_pos_bins_gap[idx]
+
+        if (this[-1] % 3) == 0:
+            merged_issue_pos_bins_gap.append(this)
+            continue
+
+        if (prev[-1] % 3) == 0:
+            merged_issue_pos_bins_gap.append(this)
+            continue
+
+        if (this[0] - prev[1]) > window:
+            merged_issue_pos_bins_gap.append(this)
+            continue
+
+        new_start = prev[0]
+        new_stop = this[1]
+        new_del = (prev[-1] + this[-1])
+
+        check_ref_codon = ''.join(ref_codon[new_start: new_stop + 1])
+        check_seq_codon = ''.join(seq_codon[new_start: new_stop + 1])
+
+        # if (check_seq_codon.count('-') - check_ref_codon.count('-')) != new_del:
+        #     merged_issue_pos_bins_gap.append(this)
+        #     continue
+
+        new_del = check_seq_codon.count('-') - check_ref_codon.count('-')
+
+        merged_issue_pos_bins_gap[-1] = (
+            new_start, new_stop, new_del
+        )
+
+    # print('-' * 100)
+    # print(issue_list)
+    # print(issue_pos_bins)
+    # print(issue_pos_bins_gap)
+    # print(merged_issue_pos_bins_gap)
+
+    for start, stop, num_del in merged_issue_pos_bins_gap:
+        if num_del % 3 != 0:
+            continue
+
+        if num_del != 0:
+            # print(start, stop, num_del)
+            # print(ref_codon[start: stop + 1])
+            # print(seq_codon[start: stop + 1])
+            ref_codon, seq_codon = process_not_zero(
+                ref_codon, seq_codon, start, stop)
+            continue
+
+        sub_ref_codon = ref_codon[start: stop + 1]
+        sub_seq_codon = seq_codon[start: stop + 1]
+
+        # print(start, stop, num_del)
+        # print(sub_ref_codon)
+        # print(sub_seq_codon)
+
+        sub_ref = ''.join(sub_ref_codon).replace('-', '')
+        sub_seq = ''.join(sub_seq_codon).replace('-', '')
+
+        new_sub_ref_codon = []
+        new_sub_seq_codon = []
+        for i in range(len(sub_ref) // 3):
+            new_sub_ref_codon.append(sub_ref[i * 3: i * 3 + 3])
+            new_sub_seq_codon.append(sub_seq[i * 3: i * 3 + 3])
+
+        # print(new_sub_ref_codon)
+        # print(new_sub_seq_codon)
+        ref_codon[start: stop + 1] = new_sub_ref_codon
+        seq_codon[start: stop + 1] = new_sub_seq_codon
+
+    # print(ref_codon)
+    # print(seq_codon)
+    # print('0' * 10)
+
+    return ref_codon, seq_codon
+
+
+def switch_position(ref, seq, ofst1, ofst2):
+    assert ofst1 < ofst2
+
+    ref_1 = ref[ofst1]
+    ref_2 = ref[ofst2]
+    seq_1 = seq[ofst1]
+    seq_2 = seq[ofst2]
+
+    ref = ref[:ofst1] + ref_2 + ref[ofst1 + 1: ofst2] + ref_1 + ref[ofst2 + 1:]
+    seq = seq[:ofst1] + seq_2 + seq[ofst1 + 1: ofst2] + seq_1 + seq[ofst2 + 1:]
+    return ref, seq
+
+
+def move_position_forward(ref, seq, start, stop):
+    assert start < stop
+    for i in range(start, stop):
+        ref, seq = switch_position(ref, seq, i, i + 1)
+
+    return ref, seq
+
+
+def move_position_backward(ref, seq, start, stop):
+    assert start < stop
+    for i in range(stop, start, -1):
+        ref, seq = switch_position(ref, seq, i - 1, i)
+
+    return ref, seq
+
+
+def find_next_not_del(sequence):
+    for i in sequence:
+        if i != '-':
+            break
+    return i
+
+
+def find_next_del(sequence):
+    for i in sequence:
+        if i == '-':
+            break
+    return i
+
+
+def process_not_zero(ref_codon, seq_codon, start, stop):
+    sub_ref_codon = ''.join(ref_codon[start: stop + 1])
+    sub_seq_codon = ''.join(seq_codon[start: stop + 1])
+
+    total_del = sub_seq_codon.count('-') - sub_ref_codon.count('-')
+
+    sub_ref_codon, sub_seq_codon = align_codon_by_aa(
+        sub_ref_codon, sub_seq_codon)
+
+    # print(start, stop, num_del)
+    # print(sub_ref_codon)
+    # print(sub_seq_codon)
+
+    try:
+        assert (total_del == (''.join(sub_seq_codon).count('-') - ''.join(sub_ref_codon).count('-')))
+    except AssertionError as e:
+        print('Ref', ''.join(ref_codon[start: stop + 1]))
+        print('Seq', ''.join(seq_codon[start: stop + 1]))
+        raise e
+
+    for idx, i in enumerate(sub_ref_codon):
+        if i != '---':
+            break
+
+    sub_ref_codon_pre_ins = sub_ref_codon[:idx]
+    sub_ref_codon = sub_ref_codon[idx:]
+    sub_seq_codon_match_ins = sub_seq_codon[:idx]
+    sub_seq_codon = sub_seq_codon[idx:]
+
+    if (start - 1) >= 0:
+        ref_codon[start - 1] += ''.join(sub_ref_codon_pre_ins)
+        seq_codon[start - 1] += ''.join(sub_seq_codon_match_ins)
+
+    new_sub_ref_codon = []
+    new_sub_seq_codon = []
+    for i, j in zip(sub_ref_codon, sub_seq_codon):
+        if i == '---':
+            new_sub_ref_codon[-1] += i
+            new_sub_seq_codon[-1] += j
+        else:
+            new_sub_ref_codon.append(i)
+            new_sub_seq_codon.append(j)
+
+    # print(new_sub_ref_codon)
+    # print(new_sub_seq_codon)
+    ref_codon[start: stop + 1] = new_sub_ref_codon
+    seq_codon[start: stop + 1] = new_sub_seq_codon
+
+    return ref_codon, seq_codon
+
+
+def align_codon_by_aa(sub_ref_codon, sub_seq_codon):
+
+    sub_ref_codon = sub_ref_codon.replace('-', '')
+    new_sub_ref_codon = []
+    for i in range(len(sub_ref_codon) // 3):
+        new_sub_ref_codon.append(sub_ref_codon[i * 3: i * 3 + 3])
+    sub_ref_codon = new_sub_ref_codon
+
+    sub_seq_codon = sub_seq_codon.replace('-', '')
+    new_sub_seq_codon = []
+    for i in range(len(sub_seq_codon) // 3):
+        new_sub_seq_codon.append(sub_seq_codon[i * 3: i * 3 + 3])
+    sub_seq_codon = new_sub_seq_codon
+
+    new_ref_aa = str(Seq(''.join(sub_ref_codon)).translate())
+    new_seq_aa = str(Seq(''.join(sub_seq_codon)).translate())
+
+    alignment, score, _ = global_pairwise_align_protein(
+        Protein(new_ref_aa), Protein(new_seq_aa))
+
+    # print(alignment)
+    aligned_ref_aa, aligned_seq_aa = [str(seq) for seq in alignment]
+
+    idx = -1
+    for k in aligned_ref_aa:
+        if k == '-':
+            sub_ref_codon.insert(idx + 1, '---')
+        else:
+            idx += 1
+
+    idx = -1
+    for k in aligned_seq_aa:
+        if k == '-':
+            sub_seq_codon.insert(idx + 1, '---')
+        else:
+            idx += 1
+
+    # print(sub_ref_codon)
+    # print(sub_seq_codon)
+    return sub_ref_codon, sub_seq_codon
 
 
 def translate_aligned_codon(
@@ -824,6 +1088,33 @@ def translate_aligned_codon(
         f"{pos} ({r}, {s})"
         for pos, r, s in issue_list
     ])
+
+    issue_pos_bins = get_pos_bin([pos for pos, r, s in issue_list])
+    issue_pos_bins_gap = []
+    for i, j in issue_pos_bins:
+        pos_info = [
+            (pos, r, s)
+            for pos, r, s in issue_list
+            if pos >= i and pos <= j
+        ]
+        num_del = sum([
+            (s.count('-') - r.count('-'))
+            for pos, r, s in pos_info
+        ])
+        issue_pos_bins_gap.append((i, j, num_del))
+
+    row['AA_codon_issue_pos_gaps'] = ', '.join([
+        f'({i}, {j}) ({num_del})'
+        for i, j, num_del in issue_pos_bins_gap
+    ])
+    row['AA_codon_issue_pos_gaps_n'] = len(issue_pos_bins_gap)
+    num_total_del = sum([
+        (s.count('-') - r.count('-'))
+        for pos, r, s in issue_list
+    ])
+    row['AA_codon_issue_gaps_t'] = num_total_del
+    row['AA_codon_issue_gaps_q'] = num_total_del // 3
+    row['AA_codon_issue_gaps_r'] = num_total_del % 3
     row['AA_num_codon_issue'] = len(issue_list)
 
     aa_seq = ''.join([aa for (pos, aa) in AA_list])
@@ -893,3 +1184,27 @@ def get_pos_post(str, char):
 
 # TODO auto detect AA alignment error
 # consecutive positions mutations, or X
+
+
+def get_pos_bin(pos_list):
+    bins = []
+    bin_start = None
+    bin_stop = None
+    for i in pos_list:
+        if not bin_start:
+            bin_start = i
+            bin_stop = i
+            continue
+
+        if i != (bin_stop + 1):
+            bins.append((bin_start, bin_stop))
+            bin_start = i
+            bin_stop = i
+            continue
+
+        bin_stop = i
+
+    if bin_start and bin_stop:
+        bins.append((bin_start, bin_stop))
+
+    return bins
