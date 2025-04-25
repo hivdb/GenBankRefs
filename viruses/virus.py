@@ -372,24 +372,28 @@ class Virus:
             image_folder = self.output_excel_dir / 'phylo_v2'
             image_folder.mkdir(exist_ok=True)
 
+            # remove duplicated sequence from a gene, keep the longest one or with AA
+            build_tree_for_all_seq(sub_gene_df, image_folder, gene)
+
             image_file_path = image_folder / f'{gene}.png'
             viz_alignment_coverage(image_file_path, gene, pos_pairs)
 
-            coverage = check_most_covered_range(
-                good_seq, image_folder, gene, gene_length=len(ref_na))
+            if input('Build tree for ADCL? [y/n]:') == 'y':
+                coverage = check_most_covered_range(
+                    good_seq, image_folder, gene, gene_length=len(ref_na))
 
-            build_pre_phylo_tree(
-                self,
-                good_seq, coverage, image_folder, gene, ref_na)
+                build_pre_phylo_tree(
+                    self,
+                    good_seq, coverage, image_folder, gene, ref_na)
 
-            # draw_k_adcl_chart(image_folder, gene)
-            # if self.name == 'Nipah':
-            #     num_leaves, adcl = get_turning_point(image_folder, gene, adcl_cutoff=0.001)
-            # else:
-            #     num_leaves, adcl = get_turning_point(image_folder, gene, adcl_cutoff=0.01)
-            # print('# Leaves left for tree', num_leaves, 'ADCL:', adcl)
+                # draw_k_adcl_chart(image_folder, gene)
+                # if self.name == 'Nipah':
+                #     num_leaves, adcl = get_turning_point(image_folder, gene, adcl_cutoff=0.001)
+                # else:
+                #     num_leaves, adcl = get_turning_point(image_folder, gene, adcl_cutoff=0.01)
+                # print('# Leaves left for tree', num_leaves, 'ADCL:', adcl)
 
-            # get_trimed_tree(sub_gene_df, image_folder, gene, num_leaves)
+                # get_trimed_tree(sub_gene_df, image_folder, gene, num_leaves)
 
             image_folder2 = self.output_excel_dir / 'alignment'
             image_folder2.mkdir(exist_ok=True)
@@ -964,9 +968,10 @@ def check_most_covered_range(sequences, image_folder, gene, gene_length):
     # First group the choices and keep 1 in a group, then get the best group
     # Choices which are too similar should only choose one.
     best_choices = find_best_choices(choices)
+    dump_csv(image_folder / 'seq_cut_choices.csv', best_choices)
 
-    for idx, c in enumerate(best_choices):
-        print(f"Group {idx} represent: {c}")
+    # for idx, c in enumerate(best_choices):
+    #     print(f"Group {idx} represent: {c}")
 
     # c = input('Choose the group for tree:')
 
@@ -1096,7 +1101,6 @@ def get_sequence_by_coverage(seqs, coverage):
 
 
 def build_pre_phylo_tree(virus, sequences, coverage, folder, gene, ref_na):
-    save_path = folder / f'{gene}_phylo.fasta'
 
     # print(len(sequences))
     # sequences, countries = pick_seq_by_country(sequences, at_least=3)
@@ -1153,7 +1157,7 @@ def build_pre_phylo_tree(virus, sequences, coverage, folder, gene, ref_na):
 
     print(coverage, len(tree_sequences))
 
-    dump_fasta(save_path, tree_sequences)
+    dump_fasta(folder / f'{gene}_phylo.fasta', tree_sequences)
 
     dump_fasta(folder / f"{gene}_ref_na.fasta", {gene: ref_na})
 
@@ -1185,6 +1189,68 @@ def build_pre_phylo_tree(virus, sequences, coverage, folder, gene, ref_na):
             fd.write(f"{k}: {v}\n")
 
     generate_rppr_command(folder / gene, len(sequences), gene)
+
+
+def build_tree_for_all_seq(sequences, folder, gene):
+    selected_sequences = {
+        row['Accession']: row['NA_seq_full_length']
+        for i, row in sequences.iterrows()
+    }
+    print('# selected sequences', len(selected_sequences))
+    dump_fasta(folder / f'{gene}_full_phylo.fasta', selected_sequences)
+
+    if input('Align full phylogenetic tree? [y/n]') == 'y':
+        cmds = (
+            f"cd {folder}; rm -rf {gene}_full; mkdir -p {gene}_full; cp {gene}_full_phylo.fasta {gene}_full; cd {gene}_full; "
+            f"iqtree2 -s {gene}_full_phylo.fasta -m TN93 -bb 1000 -nt AUTO --write-all; "
+        )
+        print('Run command:')
+        print(cmds)
+
+        subprocess.run(
+            cmds,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            # text=True,
+            shell=True
+        )
+        annotate_full_tree(sequences, folder, gene)
+
+
+def annotate_full_tree(seqs, folder, gene):
+
+    acc2metadata = {}
+    for idx, i in seqs.iterrows():
+        acc = i['Accession']
+        acc2metadata[acc] = f"{i['Country']} {i['Host']} {int(i['IsolateYear']) if i['IsolateYear'] else i['IsolateYear']}"
+
+    folder = folder / f"{gene}_full"
+    tree_file_path = None
+
+    for i in folder.iterdir():
+        if i.suffix == '.treefile':
+            tree_file_path = i
+            break
+
+    if not tree_file_path:
+        return
+
+    tree = Phylo.read(tree_file_path, 'newick')
+    tree = tree.as_phyloxml()
+
+    for leaf in tree.get_terminals():
+        leaf.name = f"{acc2metadata[leaf.name]} {leaf.name}"
+
+    new_tree_path = tree_file_path.parent / f'{tree_file_path.name}.xml'
+    Phylo.write(tree, new_tree_path, "phyloxml")
+
+    tree = Phylo.read(tree_file_path, 'newick')
+
+    for leaf in tree.get_terminals():
+        leaf.name = f"{acc2metadata[leaf.name]} {leaf.name}"
+
+    new_tree_path = tree_file_path.parent / f'{tree_file_path.name}.newick'
+    Phylo.write(tree, new_tree_path, "newick")
 
 
 def get_turning_point(folder, gene, adcl_cutoff=0.01):

@@ -418,7 +418,7 @@ def align_genes(virus, genes_df, poolsize=20):
         parameters = [
             (row, virus)
             for idx, row in genes_df.iterrows()
-            # if row['Accession'] in ('MH887930')
+            # if row['Accession'] in ('MK117870', 'PP431195')
         ]
         alignment_result = []
         for count, i in enumerate(
@@ -477,6 +477,12 @@ def align_gene_seq(args):
     # )
 
     row['NA_seq'] = aligned_seq
+    aligned_seq_wo_insertion = ''.join([
+        i[:3] if ('-' not in i) else '---'
+        for i in aligned_seq_codon
+    ])
+    row['NA_seq_full_length'] = '-' * (na_start - 1) + aligned_seq_wo_insertion + '-' * (len(ref_na) - na_stop)
+    row['len_NA_seq_full_length'] = len(row['NA_seq_full_length'])
     row['NA_length'] = len(aligned_seq)
     row['NA_start'] = na_start
     row['NA_stop'] = na_stop
@@ -934,7 +940,7 @@ def try_fix_frame_shift(ref_codon, seq_codon):
 
     # print(ref_codon)
     # print(seq_codon)
-    # print('0' * 10)
+    # print('1' * 80)
 
     return ref_codon, seq_codon
 
@@ -988,10 +994,14 @@ def process_not_zero(ref_codon, seq_codon, start, stop):
 
     total_del = sub_seq_codon.count('-') - sub_ref_codon.count('-')
 
-    sub_ref_codon, sub_seq_codon = align_codon_by_aa(
-        sub_ref_codon, sub_seq_codon)
+    # print(start, stop, total_del)
+    # print(sub_ref_codon)
+    # print(sub_seq_codon)
 
-    # print(start, stop, num_del)
+    sub_ref_codon, sub_seq_codon = align_codon_by_aa(
+        sub_ref_codon, sub_seq_codon, total_del)
+
+    # print(start, stop, total_del)
     # print(sub_ref_codon)
     # print(sub_seq_codon)
 
@@ -1033,7 +1043,7 @@ def process_not_zero(ref_codon, seq_codon, start, stop):
     return ref_codon, seq_codon
 
 
-def align_codon_by_aa(sub_ref_codon, sub_seq_codon):
+def align_codon_by_aa(sub_ref_codon, sub_seq_codon, total_del):
 
     sub_ref_codon = sub_ref_codon.replace('-', '')
     new_sub_ref_codon = []
@@ -1069,6 +1079,15 @@ def align_codon_by_aa(sub_ref_codon, sub_seq_codon):
             sub_seq_codon.insert(idx + 1, '---')
         else:
             idx += 1
+
+    if total_del < 0:
+        for i in range(sub_ref_codon.count('---') - (abs(total_del) // 3)):
+            sub_ref_codon.remove('---')
+            sub_seq_codon.remove('---')
+    else:
+        for i in range(sub_seq_codon.count('---') - (abs(total_del) // 3)):
+            sub_ref_codon.remove('---')
+            sub_seq_codon.remove('---')
 
     # print(sub_ref_codon)
     # print(sub_seq_codon)
@@ -1219,7 +1238,7 @@ def get_pos_bin(pos_list):
     bin_start = None
     bin_stop = None
     for i in pos_list:
-        if not bin_start:
+        if bin_start is None:
             bin_start = i
             bin_stop = i
             continue
@@ -1232,7 +1251,7 @@ def get_pos_bin(pos_list):
 
         bin_stop = i
 
-    if bin_start and bin_stop:
+    if bin_start is not None and bin_stop is not None:
         bins.append((bin_start, bin_stop))
 
     return bins
