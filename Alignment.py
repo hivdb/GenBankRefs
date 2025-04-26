@@ -481,6 +481,7 @@ def align_gene_seq(args):
         i[:3] if ('-' not in i) else '---'
         for i in aligned_seq_codon
     ])
+    row['NA_seq_for_phylo'] = aligned_seq_wo_insertion
     row['NA_seq_full_length'] = '-' * (na_start - 1) + aligned_seq_wo_insertion + '-' * (len(ref_na) - na_stop)
     row['len_NA_seq_full_length'] = len(row['NA_seq_full_length'])
     row['NA_length'] = len(aligned_seq)
@@ -665,27 +666,21 @@ def get_codon_alignment(
         cursor += len(codon)
         seq_codon_list.append(seq_codon)
 
-    # Before this step, the alignment is the same as the input.
-
     # if adjacent_window:
     #     seq_codon_list = adjust_adjacent_seq_codon_list(
     #         ref_codon_list, seq_codon_list, adjacent_window)
     #     ref_codon_list, seq_codon_list = adjust_codon_tail_del(
     #         ref_codon_list, seq_codon_list)
-    # print('*' * 10)
+
+    # Method 2
     ref_codon_list, seq_codon_list = try_fix_frame_shift(ref_codon_list, seq_codon_list)
 
+    # print('*' * 10)
     # assert (len(''.join(ref_codon_list)) == len(aligned_ref))
     assert (len(ref_codon_list) == len(seq_codon_list))
     # TODO: issue, the frameshift of references translation is not considered,
     # should be reflexted in codon alignment
-    try:
-        assert (len(''.join(ref_codon_list)) == len(''.join(seq_codon_list)))
-    except AssertionError as e:
-        print('ref', ''.join(ref_codon_list))
-        print('seq', ''.join(seq_codon_list))
-        raise e
-
+    assert (len(''.join(ref_codon_list)) == len(''.join(seq_codon_list)))
     # print('*' * 10)
     # assert (len(ref_codon_list) == len(ref_aa))
 

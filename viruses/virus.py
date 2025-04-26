@@ -1,22 +1,26 @@
 from pathlib import Path
 from datetime import datetime
+import subprocess
+from collections import defaultdict
+from operator import itemgetter
+from collections import Counter
+from math import sqrt
+
+import pandas as pd
+from Bio import Phylo
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from distinctipy import get_colors
+import numpy as np
+from tn93 import tn93
+
 from Utilities import get_logger
 from Utilities import dump_csv
 from Utilities import load_csv
-import subprocess
-import pandas as pd
 from bioinfo import dump_fasta
 from bioinfo import load_fasta
-from Bio import Phylo
-from collections import defaultdict
-import matplotlib as mpl
-from distinctipy import get_colors
-from operator import itemgetter
-import matplotlib.pyplot as plt
-import numpy as np
-from bioinfo import dump_fasta
-from collections import Counter
-from statistics import median
 
 
 timestamp = datetime.now().strftime('%m_%d')
@@ -80,9 +84,10 @@ class Virus:
         return Path("OutputData") / f"{self.name}"
 
     @property
-    def alignment_folder(self):
-        (self.output_excel_dir / 'alignment').mkdir(exist_ok=True)
-        return self.output_excel_dir / 'alignment'
+    def phylo_folder(self):
+        d = self.output_excel_dir / 'phylo_v2'
+        d.mkdir(exist_ok=True)
+        return d
 
     @property
     def output_excel_dir(self):
@@ -300,12 +305,6 @@ class Virus:
         return cds
 
     @property
-    def phylo_folder(self):
-        d = self.output_excel_dir / 'phylo'
-        d.mkdir(exist_ok=True)
-        return d
-
-    @property
     def ref_na_gene_map(self):
         return load_fasta(self.reference_folder / f"{self.name}_RefNAs.fasta")
 
@@ -344,14 +343,14 @@ class Virus:
                 sub_gene_df[sub_gene_df['AA_num_codon_issue'] > 0]
             ))
 
-            good_seq = sub_gene_df[
-                (sub_gene_df['NA_num_ins'] <= 0) &
-                (sub_gene_df['NA_num_del'] <= 0) &
-                (sub_gene_df['NA_num_N'] <= 0) &
-                (sub_gene_df['AA_num_codon_issue'] == 0)
-            ]
+            # good_seq = sub_gene_df[
+            #     (sub_gene_df['NA_num_ins'] <= 0) &
+            #     (sub_gene_df['NA_num_del'] <= 0) &
+            #     (sub_gene_df['NA_num_N'] <= 0) &
+            #     (sub_gene_df['AA_num_codon_issue'] == 0)
+            # ]
             print('NA length', len(ref_na))
-            print('# Good seq:', len(good_seq))
+            # print('# Good seq:', len(good_seq))
 
             # print('# no QA issue:', len(
             #     sub_gene_df[
@@ -365,61 +364,58 @@ class Virus:
 
             pos_pairs = [
                 (row['NA_start'], row['NA_stop'])
-                for i, row in good_seq.iterrows()
+                for i, row in sub_gene_df.iterrows()
                 # for i, row in sub_gene_df.iterrows()
             ]
 
-            image_folder = self.output_excel_dir / 'phylo_v2'
-            image_folder.mkdir(exist_ok=True)
-
-            # remove duplicated sequence from a gene, keep the longest one or with AA
-            build_tree_for_all_seq(sub_gene_df, image_folder, gene)
-
-            image_file_path = image_folder / f'{gene}.png'
+            image_file_path = self.phylo_folder / f'{gene}.png'
             viz_alignment_coverage(image_file_path, gene, pos_pairs)
 
             if input('Build tree for ADCL? [y/n]:') == 'y':
                 coverage = check_most_covered_range(
-                    good_seq, image_folder, gene, gene_length=len(ref_na))
+                    sub_gene_df, self.phylo_folder, gene, gene_length=len(ref_na))
 
                 build_pre_phylo_tree(
                     self,
-                    good_seq, coverage, image_folder, gene, ref_na)
+                    sub_gene_df, coverage, self.phylo_folder, gene, ref_na)
+                calculate_pairwise_distance(self.phylo_folder, gene)
 
-                # draw_k_adcl_chart(image_folder, gene)
-                # if self.name == 'Nipah':
-                #     num_leaves, adcl = get_turning_point(image_folder, gene, adcl_cutoff=0.001)
-                # else:
-                #     num_leaves, adcl = get_turning_point(image_folder, gene, adcl_cutoff=0.01)
-                # print('# Leaves left for tree', num_leaves, 'ADCL:', adcl)
+            if False and input('Get annotated tree? [y/n]') == 'y':
+                draw_k_adcl_chart(self.phylo_folder, gene)
+                if self.name == 'Nipah':
+                    num_leaves, adcl = get_turning_point(self.phylo_folder, gene, adcl_cutoff=0.001)
+                else:
+                    num_leaves, adcl = get_turning_point(self.phylo_folder, gene, adcl_cutoff=0.01)
+                print('# Leaves left for tree', num_leaves, 'ADCL:', adcl)
 
-                # get_trimed_tree(sub_gene_df, image_folder, gene, num_leaves)
+                get_trimed_tree(sub_gene_df, self.phylo_folder, gene, num_leaves)
 
-            image_folder2 = self.output_excel_dir / 'alignment'
-            image_folder2.mkdir(exist_ok=True)
+            if False and input('Build tree for all sequences? [y/n]') == 'y':
 
-            image_file_path = image_folder2 / f'{gene}_na_length.png'
+                build_tree_for_all_seq(sub_gene_df, self.phylo_folder, gene, num_leaves)
+
+            image_file_path = self.phylo_folder / gene / f'{gene}_na_length.png'
             viz_histogram(image_file_path, [
                 row['NA_length']
                 for i, row in sub_gene_df.iterrows()],
                 title=f'{gene} NA coverage'
             )
 
-            image_file_path = image_folder2 / f'{gene}_na_num_N.png'
+            image_file_path = self.phylo_folder / gene / f'{gene}_na_num_N.png'
             viz_histogram(image_file_path, [
                 row['NA_num_N']
                 for i, row in sub_gene_df.iterrows()],
                 title=f"{gene} # N"
             )
 
-            image_file_path = image_folder2 / f'{gene}_na_num_ins.png'
+            image_file_path = self.phylo_folder / gene / f'{gene}_na_num_ins.png'
             viz_histogram(image_file_path, [
                 row['NA_num_ins']
                 for i, row in sub_gene_df.iterrows()],
                 title=f"{gene} # ins"
             )
 
-            image_file_path = image_folder2 / f'{gene}_na_num_del.png'
+            image_file_path = self.phylo_folder / gene / f'{gene}_na_num_del.png'
             viz_histogram(image_file_path, [
                 row['NA_num_del']
                 for i, row in sub_gene_df.iterrows()],
@@ -817,7 +813,7 @@ def viz_histogram(image_file_path, data, title):
 #     return True
 
 
-def check_most_covered_range(sequences, image_folder, gene, gene_length):
+def check_most_covered_range(sequences, folder, gene, gene_length):
 
     range_list = set()
 
@@ -960,7 +956,7 @@ def check_most_covered_range(sequences, image_folder, gene, gene_length):
     plt.scatter(x, y, s=5)
     plt.xlabel("Width")
     plt.ylabel("# Haplo")
-    image_file_path = image_folder / f'{gene}_W_H.png'
+    image_file_path = folder / f'{gene}_W_H.png'
 
     plt.savefig(str(image_file_path), dpi=300)
     plt.close()
@@ -968,7 +964,7 @@ def check_most_covered_range(sequences, image_folder, gene, gene_length):
     # First group the choices and keep 1 in a group, then get the best group
     # Choices which are too similar should only choose one.
     best_choices = find_best_choices(choices)
-    dump_csv(image_folder / 'seq_cut_choices.csv', best_choices)
+    dump_csv(folder / 'seq_cut_choices.csv', best_choices)
 
     # for idx, c in enumerate(best_choices):
     #     print(f"Group {idx} represent: {c}")
@@ -1093,7 +1089,7 @@ def get_sequence_by_coverage(seqs, coverage):
         if stop < c_stop:
             continue
         cut_stop = stop - c_stop
-        seq_na = i['NA_seq']
+        seq_na = i['NA_seq_for_phylo']
         seq_na = seq_na[cut_start:len(seq_na) - cut_stop]
         result[i['Accession']] = seq_na
 
@@ -1155,13 +1151,13 @@ def build_pre_phylo_tree(virus, sequences, coverage, folder, gene, ref_na):
         for k, v in tree_sequences.items()
     }
 
-    print(coverage, len(tree_sequences))
+    print(coverage, '# Unique seq in tree:', len(tree_sequences))
 
     dump_fasta(folder / f'{gene}_phylo.fasta', tree_sequences)
 
     dump_fasta(folder / f"{gene}_ref_na.fasta", {gene: ref_na})
 
-    if False and input('Align phylogenetic tree? [y/n]') == 'y':
+    if input('Align phylogenetic tree? [y/n]') == 'y':
         cmds = (
             f"cd {folder}; rm -rf {gene}; mkdir -p {gene}; cp {gene}_phylo.fasta {gene}; cd {gene}; "
             f"iqtree2 -s {gene}_phylo.fasta -m TN93 -bb 1000 -nt AUTO; "
@@ -1180,7 +1176,7 @@ def build_pre_phylo_tree(virus, sequences, coverage, folder, gene, ref_na):
     read_me = folder / gene / 'README.md'
     read_me.parent.mkdir(exist_ok=True)
     with open(read_me, 'w') as fd:
-        fd.write(f"Num of selected sequences: {len(sequences)}\n")
+        fd.write(f"Num of selected sequences: {len(tree_sequences)}\n")
         # for c, n in countries:
         #     fd.write(f"{c}: {n}\n")
 
@@ -1188,36 +1184,78 @@ def build_pre_phylo_tree(virus, sequences, coverage, folder, gene, ref_na):
         for k, v in coverage.items():
             fd.write(f"{k}: {v}\n")
 
-    generate_rppr_command(folder / gene, len(sequences), gene)
+    generate_rppr_command(folder / gene, len(tree_sequences), gene)
 
 
-def build_tree_for_all_seq(sequences, folder, gene):
+def build_tree_for_all_seq(sequences, folder, gene, num_leaves):
     selected_sequences = {
         row['Accession']: row['NA_seq_full_length']
         for i, row in sequences.iterrows()
     }
-    print('# selected sequences', len(selected_sequences))
     dump_fasta(folder / f'{gene}_full_phylo.fasta', selected_sequences)
 
     if input('Align full phylogenetic tree? [y/n]') == 'y':
-        cmds = (
-            f"cd {folder}; rm -rf {gene}_full; mkdir -p {gene}_full; cp {gene}_full_phylo.fasta {gene}_full; cd {gene}_full; "
-            f"iqtree2 -s {gene}_full_phylo.fasta -m TN93 -bb 1000 -nt AUTO --write-all; "
-        )
-        print('Run command:')
-        print(cmds)
+        print('# selected sequences', len(selected_sequences))
 
-        subprocess.run(
-            cmds,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            # text=True,
-            shell=True
-        )
-        annotate_full_tree(sequences, folder, gene)
+        # cmds = (
+        #     f"cd {folder}; rm -rf {gene}_full; mkdir -p {gene}_full; cp {gene}_full_phylo.fasta {gene}_full; cd {gene}_full; "
+        #     f"iqtree2 -s {gene}_full_phylo.fasta -m TN93 -bb 1000 -nt AUTO --write-all; "
+        # )
+        # print('Run command:')
+        # print(cmds)
+
+        # subprocess.run(
+        #     cmds,
+        #     stdout=subprocess.DEVNULL,
+        #     stderr=subprocess.DEVNULL,
+        #     # text=True,
+        #     shell=True
+        # )
+        annotate_full_tree(sequences, folder, gene, num_leaves)
 
 
-def annotate_full_tree(seqs, folder, gene):
+def get_adcl_leaves(folder, gene, num_leaves):
+    leave_names = []
+
+    folder = folder / gene
+
+    fasta_file = None
+
+    for i in folder.iterdir():
+        if i.suffix == '.fasta':
+            fasta_file = i
+            continue
+
+        if not i.is_dir():
+            continue
+        if not i.name.isdigit():
+            continue
+        if i.name != str(int(num_leaves)):
+            continue
+        for j in i.iterdir():
+            if j.name == 'leaves.txt':
+                with open(j) as fd:
+                    leave_names = [
+                        n.strip()
+                        for n in fd.readlines()
+                    ]
+
+    full_leaves = load_fasta(fasta_file).keys()
+
+    leave_names = [
+        i
+        for i in full_leaves
+        if i not in leave_names
+    ]
+
+    print(len(leave_names))
+
+    return leave_names
+
+
+def annotate_full_tree(seqs, folder, gene, num_leaves):
+
+    leave_names = get_adcl_leaves(folder, gene, num_leaves)
 
     acc2metadata = {}
     for idx, i in seqs.iterrows():
@@ -1239,6 +1277,8 @@ def annotate_full_tree(seqs, folder, gene):
     tree = tree.as_phyloxml()
 
     for leaf in tree.get_terminals():
+        if leaf.name in leave_names:
+            leaf.color = 'red'
         leaf.name = f"{acc2metadata[leaf.name]} {leaf.name}"
 
     new_tree_path = tree_file_path.parent / f'{tree_file_path.name}.xml'
@@ -1452,3 +1492,67 @@ def get_trimed_tree(seqs, folder, gene, num_leaves):
 
     new_tree_path = tree_file_path.parent / f'{tree_file_path.name}_prune.newick'
     Phylo.write(tree, new_tree_path, "newick")
+
+
+def calculate_pairwise_distance(folder, gene):
+
+    meta_file = folder / f'{gene}_meta.csv'
+    meta_data = load_csv(meta_file)
+    acc2metadata = {}
+    for i in meta_data:
+        for acc in i['acc_list'].split(','):
+            acc = acc.strip()
+            acc2metadata[acc] = i['main_country']
+
+    distances = []
+    keys = []
+    with open(folder / gene / f'{gene}_phylo.fasta.mldist') as fd:
+        fd.readline()
+        for i in fd.readlines():
+            d = i.strip().split(' ')
+            d = [i.strip() for i in d if i.strip()]
+            keys.append(d[0])
+            d = [float(i) for i in d[1:]]
+            distances.append(d)
+
+    # print(keys)
+    # print('# sequences calculate pairwise distance', len(sequences))
+
+    # sequences = [
+    #     SeqRecord(Seq(seq), id=acc, description=acc)
+    #     for acc, seq in sequences.items()]
+
+    # # tn = tn93.TN93()
+
+    all_distance = []
+    distance_by_country = defaultdict(list)
+    count_by_country = defaultdict(set)
+    for idx in range(len(distances)):
+        for jdx in range(len(distances)):
+            if idx >= jdx:
+                continue
+            dist = distances[idx][jdx]
+            all_distance.append(dist)
+
+            c1 = acc2metadata[keys[idx]]
+            c2 = acc2metadata[keys[jdx]]
+            if c1 != c2:
+                continue
+            count_by_country[c1].add(keys[idx])
+            count_by_country[c1].add(keys[jdx])
+            distance_by_country[c1].append(dist)
+
+    print('# pairwise distance', len(distances), len(all_distance))
+
+    print(
+        'all sequence',
+        f"{round(np.percentile(all_distance, 50) * 100, 1)}%",
+        f"{round(np.percentile(all_distance, 25) * 100, 1)}%-{round(np.percentile(all_distance, 75) * 100, 1)}%",
+    )
+
+    for c, d_list in distance_by_country.items():
+        print(
+            f"{c} ({len(count_by_country[c])}):",
+            f"{round(np.percentile(d_list, 50) * 100, 1)}%",
+            f"{round(np.percentile(d_list, 25) * 100, 1)}%-{round(np.percentile(d_list, 75) * 100, 1)}%",
+        )

@@ -1,6 +1,7 @@
 from Bio import SeqIO
 import pandas as pd
 from operator import itemgetter
+from collections import defaultdict
 
 from GenBankFunctions import filter_by_taxonomy
 
@@ -376,6 +377,9 @@ def process_gene_list(gene_list, run_blast, virus_obj):
         print('Genes list:', [i['Gene'] for i in missing_genes])
 
         gene_list = checked_gene_list + additional_gene_list + missing_genes
+
+        gene_list = keep_longest_gene_seq(gene_list)
+
         gene_list.sort(key=itemgetter('Accession', 'Gene'))
 
         gene_df = pd.DataFrame(gene_list)
@@ -461,3 +465,16 @@ def translate_seq_method(seq_method):
         return 'Sanger and NGS'
     else:
         return ''.join(list(seq_method_list))
+
+
+def keep_longest_gene_seq(gene_seq):
+    acc_gene_groups = defaultdict(list)
+    for i in gene_seq:
+        acc_gene_groups[(i['Accession'], i['Gene'])].append(i)
+
+    keep_list = []
+    for i, seq_list in acc_gene_groups.items():
+        seq_list.sort(key=lambda x: len(x['NA_raw_seq']))
+        keep_list.append(seq_list[-1])
+
+    return keep_list
