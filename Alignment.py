@@ -439,7 +439,7 @@ def align_gene_seq(args):
 
     gene_name = row['Gene']
     ref_na = virus.ref_na_gene_map[gene_name]
-    ref_aa = virus.ref_aa_gene_map[gene_name]
+    ref_aa = virus.ref_aa_gene_map.get(gene_name, '')
 
     if (len(ref_na) % 3) != 0:
         print(gene_name, 'has frameshift in reference!')
@@ -464,7 +464,7 @@ def align_gene_seq(args):
     (
         aligned_ref_codon, aligned_seq_codon,
         na_start, na_stop) = get_codon_alignment(
-            ref_na, ref_aa,
+            ref_na,
             row['NA_raw_seq'],
             aligned_ref, aligned_seq,
             alignment, adjacent_window=10)
@@ -629,7 +629,7 @@ def adjust_alignment(ref, seq, window_size=30):
 
 
 def get_codon_alignment(
-        ref_na, ref_aa,
+        ref_na,
         seq_na,
         aligned_ref, aligned_seq,
         alignment,
@@ -1183,15 +1183,16 @@ def translate_aligned_codon(
     row['AA_num_del'] = len(del_list)
     row['AA_num_stop'] = len(stop_list)
 
-    ref_aa = ref_aa[row['AA_start'] - 1: row['AA_stop']]
-    mutations = [
-        f"{a}{pos}{b}"
-        for (a, (pos, b)) in zip(ref_aa, AA_list)
-        if (a != b)
-    ]
+    if ref_aa:
+        ref_aa = ref_aa[row['AA_start'] - 1: row['AA_stop']]
+        mutations = [
+            f"{a}{pos}{b}"
+            for (a, (pos, b)) in zip(ref_aa, AA_list)
+            if (a != b)
+        ]
 
-    row['Mutations'] = ', '.join(mutations)
-    row['Num_mutations'] = len(mutations)
+        row['Mutations'] = ', '.join(mutations)
+        row['Num_mutations'] = len(mutations)
     # if row['AA_seq']:
     #     query = StripedSmithWaterman(ref_aa)
     #     alignment = query(row['AA_seq'])

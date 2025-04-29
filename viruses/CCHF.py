@@ -30,6 +30,13 @@ class CCHF(Virus):
             ]
 
     @property
+    def special_exclude(self):
+        return [
+            'MH483986',
+            'MH483989'
+        ]
+
+    @property
     def comparison_file(self):
         return self.output_dir / f"{self.name}_Combined_11_06a.xlsx"
 

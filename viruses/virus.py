@@ -51,6 +51,10 @@ class Virus:
         return []
 
     @property
+    def special_exclude(self):
+        return []
+
+    @property
     def GENES(self):
         return []
 
@@ -327,45 +331,54 @@ class Virus:
             ref_na_length = len(ref_na)
 
             print(f'Gene {gene}, # Seq', len(sub_gene_df))
+
+            gene_df_w_meta = sub_gene_df[
+                (sub_gene_df['Country'] != '') &
+                (sub_gene_df['Host'] != '') &
+                (sub_gene_df['IsolateYear'] != '') &
+                (~sub_gene_df['Accession'].isin(self.special_exclude))]
+
+            print(f'Gene {gene}, # Seq w meta', len(gene_df_w_meta))
+
             print('# Seq with ins: ', len(
-                sub_gene_df[
-                    sub_gene_df['NA_num_ins'] > 0]))
+                gene_df_w_meta[
+                    gene_df_w_meta['NA_num_ins'] > 0]))
             print('# Seq with del: ', len(
-                sub_gene_df[
-                    sub_gene_df['NA_num_del'] > 0]))
+                gene_df_w_meta[
+                    gene_df_w_meta['NA_num_del'] > 0]))
             print('# Seq with N: ', len(
-                sub_gene_df[
-                    sub_gene_df['NA_num_N'] > 0]))
+                gene_df_w_meta[
+                    gene_df_w_meta['NA_num_N'] > 0]))
             print('# Seq with <90% cover: ', len(
-                sub_gene_df[
-                    sub_gene_df['NA_length'] < (ref_na_length * 0.9)]))
+                gene_df_w_meta[
+                    gene_df_w_meta['NA_length'] < (ref_na_length * 0.9)]))
             print('# Seq with codon issue:', len(
-                sub_gene_df[sub_gene_df['AA_num_codon_issue'] > 0]
+                gene_df_w_meta[gene_df_w_meta['AA_num_codon_issue'] > 0]
             ))
 
-            # good_seq = sub_gene_df[
-            #     (sub_gene_df['NA_num_ins'] <= 0) &
-            #     (sub_gene_df['NA_num_del'] <= 0) &
-            #     (sub_gene_df['NA_num_N'] <= 0) &
-            #     (sub_gene_df['AA_num_codon_issue'] == 0)
+            # good_seq = gene_df_w_meta[
+            #     (gene_df_w_meta['NA_num_ins'] <= 0) &
+            #     (gene_df_w_meta['NA_num_del'] <= 0) &
+            #     (gene_df_w_meta['NA_num_N'] <= 0) &
+            #     (gene_df_w_meta['AA_num_codon_issue'] == 0)
             # ]
             print('NA length', len(ref_na))
             # print('# Good seq:', len(good_seq))
 
             # print('# no QA issue:', len(
-            #     sub_gene_df[
-            #         (sub_gene_df['NA_num_ins'] == 0) &
-            #         (sub_gene_df['NA_num_del'] == 0) &
-            #         (sub_gene_df['NA_num_N'] == 0) &
-            #         (sub_gene_df['NA_length'] >= 100) &
-            #         (sub_gene_df['AA_num_codon_issue'] == 0)
+            #     gene_df_w_meta[
+            #         (gene_df_w_meta['NA_num_ins'] == 0) &
+            #         (gene_df_w_meta['NA_num_del'] == 0) &
+            #         (gene_df_w_meta['NA_num_N'] == 0) &
+            #         (gene_df_w_meta['NA_length'] >= 100) &
+            #         (gene_df_w_meta['AA_num_codon_issue'] == 0)
             #     ]
             # ))
 
             pos_pairs = [
                 (row['NA_start'], row['NA_stop'])
-                for i, row in sub_gene_df.iterrows()
-                # for i, row in sub_gene_df.iterrows()
+                for i, row in gene_df_w_meta.iterrows()
+                # for i, row in gene_df_w_meta.iterrows()
             ]
 
             image_file_path = self.phylo_folder / f'{gene}.png'
@@ -373,14 +386,14 @@ class Virus:
 
             if input('Build tree for ADCL? [y/n]:') == 'y':
                 coverage = check_most_covered_range(
-                    sub_gene_df, self.phylo_folder, gene, gene_length=len(ref_na))
+                    gene_df_w_meta, self.phylo_folder, gene, gene_length=len(ref_na))
 
                 build_pre_phylo_tree(
                     self,
-                    sub_gene_df, coverage, self.phylo_folder, gene, ref_na)
+                    gene_df_w_meta, coverage, self.phylo_folder, gene, ref_na)
                 calculate_pairwise_distance(self.phylo_folder, gene)
 
-            if False and input('Get annotated tree? [y/n]') == 'y':
+            if input('Get annotated tree? [y/n]') == 'y':
                 draw_k_adcl_chart(self.phylo_folder, gene)
                 if self.name == 'Nipah':
                     num_leaves, adcl = get_turning_point(self.phylo_folder, gene, adcl_cutoff=0.001)
@@ -388,37 +401,38 @@ class Virus:
                     num_leaves, adcl = get_turning_point(self.phylo_folder, gene, adcl_cutoff=0.01)
                 print('# Leaves left for tree', num_leaves, 'ADCL:', adcl)
 
-                get_trimed_tree(sub_gene_df, self.phylo_folder, gene, num_leaves)
+                get_trimed_tree(gene_df_w_meta, self.phylo_folder, gene, num_leaves)
+                get_trimed_tree(gene_df_w_meta, self.phylo_folder, gene, 100)
 
             if False and input('Build tree for all sequences? [y/n]') == 'y':
 
-                build_tree_for_all_seq(sub_gene_df, self.phylo_folder, gene, num_leaves)
+                build_tree_for_all_seq(gene_df_w_meta, self.phylo_folder, gene, num_leaves)
 
             image_file_path = self.phylo_folder / gene / f'{gene}_na_length.png'
             viz_histogram(image_file_path, [
                 row['NA_length']
-                for i, row in sub_gene_df.iterrows()],
+                for i, row in gene_df_w_meta.iterrows()],
                 title=f'{gene} NA coverage'
             )
 
             image_file_path = self.phylo_folder / gene / f'{gene}_na_num_N.png'
             viz_histogram(image_file_path, [
                 row['NA_num_N']
-                for i, row in sub_gene_df.iterrows()],
+                for i, row in gene_df_w_meta.iterrows()],
                 title=f"{gene} # N"
             )
 
             image_file_path = self.phylo_folder / gene / f'{gene}_na_num_ins.png'
             viz_histogram(image_file_path, [
                 row['NA_num_ins']
-                for i, row in sub_gene_df.iterrows()],
+                for i, row in gene_df_w_meta.iterrows()],
                 title=f"{gene} # ins"
             )
 
             image_file_path = self.phylo_folder / gene / f'{gene}_na_num_del.png'
             viz_histogram(image_file_path, [
                 row['NA_num_del']
-                for i, row in sub_gene_df.iterrows()],
+                for i, row in gene_df_w_meta.iterrows()],
                 title=f"{gene} # del"
             )
 
@@ -964,12 +978,17 @@ def check_most_covered_range(sequences, folder, gene, gene_length):
     # First group the choices and keep 1 in a group, then get the best group
     # Choices which are too similar should only choose one.
     best_choices = find_best_choices(choices)
-    dump_csv(folder / 'seq_cut_choices.csv', best_choices)
+    dump_csv(folder / gene / 'seq_cut_choices.csv', best_choices)
 
-    # for idx, c in enumerate(best_choices):
-    #     print(f"Group {idx} represent: {c}")
+    if input('Choose the group for tree? [y/n]') == 'y':
 
-    # c = input('Choose the group for tree:')
+        for idx, c in enumerate(best_choices):
+            print(f"Group {idx} represent: {c}")
+
+        cid = input('Please choose id:')
+        the_choice = best_choices[int(cid)]
+
+        return the_choice
 
     # TODO: use normalize method is not a good idea, how to choose right one?
     # [
@@ -1115,33 +1134,36 @@ def build_pre_phylo_tree(virus, sequences, coverage, folder, gene, ref_na):
     meta_info = []
     for haplo, acc_list in tree_sequences.items():
         sub_sequence = sequences[sequences['Accession'].isin(acc_list)]
-        hosts = [i for i in sub_sequence['Host'].to_list()]
-        hosts = sorted(list(Counter(hosts).items()), key=lambda x: x[-1], reverse=True)
+        # hosts = [i for i in sub_sequence['Host'].to_list()]
+        # hosts = sorted(list(Counter(hosts).items()), key=lambda x: x[-1], reverse=True)
         countries = [i for i in sub_sequence['Country'].to_list()]
         countries = sorted(list(Counter(countries).items()), key=lambda x: x[-1], reverse=True)
-        isolate_years = [(str(int(i)) if i else i) for i in sub_sequence['IsolateYear'].to_list()]
-        isolate_years = sorted(list(Counter(isolate_years).items()), key=lambda x: x[-1], reverse=True)
+        # isolate_years = [(str(int(i)) if i else i) for i in sub_sequence['IsolateYear'].to_list()]
+        # isolate_years = sorted(list(Counter(isolate_years).items()), key=lambda x: x[-1], reverse=True)
         # print(hosts)
         # print(countries)
         # print(isolate_years)
-        main_host = [i for i, j in hosts if i]
-        main_host = main_host[0] if main_host else ''
+        # main_host = [i for i, j in hosts if i]
+        # main_host = main_host[0] if main_host else ''
 
         main_country = [i for i, j in countries if i]
         main_country = main_country[0] if main_country else ''
 
-        main_isolate_year = [i for i, j in isolate_years if i]
-        main_isolate_year = main_isolate_year[0] if main_isolate_year else ''
+        # main_isolate_year = [i for i, j in isolate_years if i]
+        # main_isolate_year = main_isolate_year[0] if main_isolate_year else ''
+
+        main_acc = sub_sequence[sub_sequence['Country'] == main_country]['Accession'].to_list()[0]
 
         meta_info.append({
             'seq': haplo,
+            'main_acc': main_acc,
             'acc_list': ','.join(acc_list),
-            'main_host': hosts[0][0],
-            'hosts': ', '.join([f"{i} {j}" for i, j in hosts]),
+            # 'main_host': hosts[0][0],
+            # 'hosts': ', '.join([f"{i} {j}" for i, j in hosts]),
             'main_country': countries[0][0],
             'countries': ', '.join([f"{i} {j}" for i, j in countries]),
-            'main_isolate_year': isolate_years[0][0],
-            'isolate_years': ', '.join([f"{i} {j}" for i, j in isolate_years]),
+            # 'main_isolate_year': isolate_years[0][0],
+            # 'isolate_years': ', '.join([f"{i} {j}" for i, j in isolate_years]),
         })
 
     dump_csv(folder / f'{gene}_meta.csv', meta_info)
@@ -1239,6 +1261,9 @@ def get_adcl_leaves(folder, gene, num_leaves):
                         n.strip()
                         for n in fd.readlines()
                     ]
+            if j.name == 'adcl.txt':
+                with open(j) as fd:
+                    print('ADCL value:', fd.read().strip())
 
     full_leaves = load_fasta(fasta_file).keys()
 
@@ -1260,7 +1285,7 @@ def annotate_full_tree(seqs, folder, gene, num_leaves):
     acc2metadata = {}
     for idx, i in seqs.iterrows():
         acc = i['Accession']
-        acc2metadata[acc] = f"{i['Country']} {i['Host']} {int(i['IsolateYear']) if i['IsolateYear'] else i['IsolateYear']}"
+        acc2metadata[acc] = f"{i['Country']} {i['Host']} {int(i['IsolateYear']) if i['IsolateYear'] else i['IsolateYear']} i{'IsolateName'}"
 
     folder = folder / f"{gene}_full"
     tree_file_path = None
@@ -1279,7 +1304,7 @@ def annotate_full_tree(seqs, folder, gene, num_leaves):
     for leaf in tree.get_terminals():
         if leaf.name in leave_names:
             leaf.color = 'red'
-        leaf.name = f"{acc2metadata[leaf.name]} {leaf.name}"
+        leaf.name = f"{leaf.name} {acc2metadata[leaf.name]}"
 
     new_tree_path = tree_file_path.parent / f'{tree_file_path.name}.xml'
     Phylo.write(tree, new_tree_path, "phyloxml")
@@ -1287,7 +1312,7 @@ def annotate_full_tree(seqs, folder, gene, num_leaves):
     tree = Phylo.read(tree_file_path, 'newick')
 
     for leaf in tree.get_terminals():
-        leaf.name = f"{acc2metadata[leaf.name]} {leaf.name}"
+        leaf.name = f"{leaf.name} {acc2metadata[leaf.name]}"
 
     new_tree_path = tree_file_path.parent / f'{tree_file_path.name}.newick'
     Phylo.write(tree, new_tree_path, "newick")
@@ -1440,33 +1465,28 @@ def get_trimed_tree(seqs, folder, gene, num_leaves):
     meta_file = folder / f'{gene}_meta.csv'
     meta_data = load_csv(meta_file)
     acc2metadata = {}
-    for i in meta_data:
-        for acc in i['acc_list'].split(','):
-            acc = acc.strip()
-            acc2metadata[acc] = f"{i['main_country']} {i['main_host']} {int(i['main_isolate_year']) if i['main_isolate_year'] else i['main_isolate_year']}"
 
-    leave_names = []
+    for idx, row in seqs.iterrows():
+        for i in meta_data:
+            if row['Accession'] != i['main_acc']:
+                continue
+            for acc in i['acc_list'].split(','):
+                acc = acc.strip()
 
-    folder = folder / gene
+                acc2metadata[acc] = (
+                    f"{row['Accession']} "
+                    f"{row['Country']} "
+                    f"{row['Host']} "
+                    f"{int(row['IsolateYear']) if row['IsolateYear'] else i['IsolateYear']} "
+                    f"{row['IsolateName']}")
+
     tree_file_path = None
 
-    for i in folder.iterdir():
+    for i in (folder / gene).iterdir():
         if i.suffix == '.treefile':
             tree_file_path = i
 
-        if not i.is_dir():
-            continue
-        if not i.name.isdigit():
-            continue
-        if i.name != str(int(num_leaves)):
-            continue
-        for j in i.iterdir():
-            if j.name == 'leaves.txt':
-                with open(j) as fd:
-                    leave_names = [
-                        n.strip()
-                        for n in fd.readlines()
-                    ]
+    leave_names = get_adcl_leaves(folder, gene, num_leaves)
 
     if not tree_file_path:
         return
@@ -1475,22 +1495,28 @@ def get_trimed_tree(seqs, folder, gene, num_leaves):
     tree = tree.as_phyloxml()
 
     for leaf in tree.get_terminals():
-        if leaf.name not in leave_names:
+        if leaf.name in leave_names:
             leaf.color = 'red'
         leaf.name = acc2metadata[leaf.name]
 
-    new_tree_path = tree_file_path.parent / f'{tree_file_path.name}.xml'
+    new_tree_path = tree_file_path.parent / f'{tree_file_path.name}.{int(num_leaves)}.xml'
     Phylo.write(tree, new_tree_path, "phyloxml")
 
     tree = Phylo.read(tree_file_path, 'newick')
 
     for leaf in tree.get_terminals():
-        if leaf.name in leave_names:
+        if leaf.name not in leave_names:
             tree.prune(leaf)
         else:
-            leaf.name = f"{acc2metadata[leaf.name]} {leaf.name}"
+            leaf.name = acc2metadata[leaf.name]
 
-    new_tree_path = tree_file_path.parent / f'{tree_file_path.name}_prune.newick'
+    for clade in tree.find_clades():
+        if clade.is_terminal():
+            continue
+        if clade.confidence and int(clade.confidence) < 50:
+            clade.confidence = None
+
+    new_tree_path = tree_file_path.parent / f'{tree_file_path.name}.{int(num_leaves)}.newick'
     Phylo.write(tree, new_tree_path, "newick")
 
 

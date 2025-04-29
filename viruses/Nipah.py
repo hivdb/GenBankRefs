@@ -4,12 +4,14 @@ from Bio.SeqRecord import SeqRecord
 from .virus import Virus
 import subprocess
 
-# Define a class for Lassa Virus that inherits from the Virus class
+
 class Nipah(Virus):
 
     @property
     def GENES(self):
-        return ['N', 'P', 'M', 'F', 'G', 'L']
+        return [
+            # 'genome',
+            'N', 'P', 'M', 'F', 'G', 'L']
 
     @property
     def pubmed_file(self):
@@ -223,8 +225,6 @@ def get_additional_host_data(features_df):
                     updated_host.append("Bat")
                 else:
                     updated_host.append(a.capitalize())
-
-
 
         if not updated_host and host:
             updated_host = ['Other']

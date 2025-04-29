@@ -309,6 +309,7 @@ def update_genes_by_features(genes, features):
         genes.loc[i, 'NonClinical'] = feature['NonClinical'].tolist()[0]
         genes.loc[i, 'isolate_source'] = feature['isolate_source'].tolist()[0]
         genes.loc[i, 'Country'] = feature['Country'].tolist()[0]
+        genes.loc[i, 'IsolateName'] = feature['IsolateName'].tolist()[0]
 
     return genes
 
