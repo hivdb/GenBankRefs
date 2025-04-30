@@ -1481,10 +1481,24 @@ def get_trimed_tree(seqs, folder, gene, num_leaves):
                     f"{row['IsolateName']}")
 
     tree_file_path = None
+    highligh_file_path = None
 
     for i in (folder / gene).iterdir():
         if i.suffix == '.treefile':
             tree_file_path = i
+            continue
+        if i.name == 'Highlight_Accessions.csv':
+            highligh_file_path = i
+            continue
+
+    highlight_accs = load_csv(highligh_file_path)
+    highlight_accs = [
+        j
+        for row in highlight_accs
+        for j in row.values()
+        if j
+    ]
+    print(highlight_accs)
 
     leave_names = get_adcl_leaves(folder, gene, num_leaves)
 
@@ -1497,7 +1511,10 @@ def get_trimed_tree(seqs, folder, gene, num_leaves):
     for leaf in tree.get_terminals():
         if leaf.name in leave_names:
             leaf.color = 'red'
-        leaf.name = acc2metadata[leaf.name]
+        leaf_name = leaf.name
+        leaf.name = acc2metadata[leaf_name]
+        if leaf_name in highlight_accs:
+            leaf.name += ' *'
 
     new_tree_path = tree_file_path.parent / f'{tree_file_path.name}.{int(num_leaves)}.xml'
     Phylo.write(tree, new_tree_path, "phyloxml")
@@ -1508,7 +1525,10 @@ def get_trimed_tree(seqs, folder, gene, num_leaves):
         if leaf.name not in leave_names:
             tree.prune(leaf)
         else:
-            leaf.name = acc2metadata[leaf.name]
+            leaf_name = leaf.name
+            leaf.name = acc2metadata[leaf_name]
+            if leaf_name in highlight_accs:
+                leaf.name += ' *'
 
     for clade in tree.find_clades():
         if clade.is_terminal():
