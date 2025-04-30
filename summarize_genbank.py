@@ -101,6 +101,8 @@ def summarize_genbank_by_seq(virus_obj, df, genes_df, file_prefix=''):
     section = ['Summarize Genbank By Seq']
     summarize_report.append(section)
 
+    print('# special accesions', virus_obj.special_accessions)
+
     section = ['Host']
     hosts = count_number([v for i, v in df.iterrows()], 'Host')
     counts_formatted, percentages_formatted = format_counts_and_percentages(hosts)

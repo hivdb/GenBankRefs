@@ -113,6 +113,7 @@ def remove_no_pmid_ref_by_linked_accession(virus, ref):
 
     keep_ref = pd.concat([ref_with_pmid, pd.DataFrame(keep_ref)])
     print('# Submission sets after remove duplicated Acc:', len(keep_ref))
+    print('# Submission set with PMID original', len(keep_ref[keep_ref['PMID'] != '']))
     pd.DataFrame(remove_ref).to_excel(virus.output_excel_dir / f'{virus.name}_remove_submissions.xlsx')
     keep_ref.to_excel(virus.output_excel_dir / f'{virus.name}_keep_submissions.xlsx')
     return keep_ref
