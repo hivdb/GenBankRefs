@@ -799,9 +799,9 @@ def creat_views(db_file):
         tblEntries iso
         LEFT JOIN tblSequences seq ON iso.Accession = seq.Accession
         LEFT JOIN tblIsolates iso2 ON iso.Accession = iso2.Accession
-        JOIN tblGBRefLink ON iso.Accession = tblGBRefLink.Accession
-        JOIN vGPMatched match ON tblGBRefLink.RefID = match.RefID
-        JOIN tblPublicationData pData ON match.PubID = pData.PubID
+        LEFT JOIN tblGBRefLink ON iso.Accession = tblGBRefLink.Accession
+        LEFT JOIN vGPMatched match ON tblGBRefLink.RefID = match.RefID
+        LEFT JOIN tblPublicationData pData ON match.PubID = pData.PubID
 
     """
     run_create_view(db_file, tblSubmissionPubLinkedSeqData)
