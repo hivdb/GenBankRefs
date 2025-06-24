@@ -776,7 +776,7 @@ def creat_views(db_file):
     CREATE TABLE vSubmissionPubLinkedSeqData AS
     SELECT
         match.SubmissionSet,
-        COALESCE(match.Publication, '') AS Publication,
+        COALESCE(match.Publication || ' link: ' || pPub.PMID, '') AS Publication
         seq.Accession AS IsolateAccession,
         iso2.IsolateID,
         CASE
@@ -802,6 +802,7 @@ def creat_views(db_file):
         LEFT JOIN tblGBRefLink ON iso.Accession = tblGBRefLink.Accession
         LEFT JOIN vGPMatched match ON tblGBRefLink.RefID = match.RefID
         LEFT JOIN tblPublicationData pData ON match.PubID = pData.PubID
+        LEFT JOIN tblPublications pPub ON match.PubID = pPub.PubID
 
     """
     run_create_view(db_file, tblSubmissionPubLinkedSeqData)
