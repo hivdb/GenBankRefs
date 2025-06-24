@@ -776,7 +776,7 @@ def creat_views(db_file):
     CREATE TABLE vSubmissionPubLinkedSeqData AS
     SELECT
         match.SubmissionSet,
-        COALESCE(match.Publication || ' link: ' || pPub.PMID, '') AS Publication
+        COALESCE(match.Publication || ' link: ' || pPub.PMID, '') AS Publication,
         seq.Accession AS IsolateAccession,
         iso2.IsolateID,
         CASE
